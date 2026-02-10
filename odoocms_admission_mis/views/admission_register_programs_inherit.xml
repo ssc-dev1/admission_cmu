@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Admission Register Programs Tab - Add Parent/Child Fields -->
+    <record id="view_odoocms_admission_register_form_programs_inherit_mis" model="ir.ui.view">
+        <field name="name">odoocms.admission.register.form.programs.inherit.mis</field>
+        <field name="model">odoocms.admission.register</field>
+        <field name="inherit_id" ref="odoocms_admission.view_odoocms_admission_register_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='deg_program']/field[@name='program_ids']/tree/field[@name='duration']" position="after">
+                <field name="is_parent" 
+                       help="Check this if this program is a parent program. A parent program cannot have another parent program."/>
+                <field name="parent_program_id" 
+                       attrs="{'readonly': [('is_parent', '=', True)], 'required': [('is_parent', '=', False), ('parent_program_id', '!=', False)]}"
+                       options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"
+                       help="Select the parent program for this child program. Only parent programs from the same career will be shown. This field is disabled when 'Is Parent Program' is checked."/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

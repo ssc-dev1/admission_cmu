@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--***** Fee Paynment Register *****-->
+        <record id="view_ucp_odoocms_fee_payment_register_form" model="ir.ui.view">
+            <field name="name">ucp.odoocms.fee.payment.register.form</field>
+            <field name="model">odoocms.fee.payment.register</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_payment_register_form"/>
+            <field name="arch" type="xml">
+                <field name="barcode" position="attributes">
+                    <attribute name="string">Challan No</attribute>
+                </field>
+
+                <xpath expr="//notebook/page[@name='receipt_payment_page']/field[@name='fee_payment_ids']/tree/field[@name='receipt_number']" position="attributes">
+                    <attribute name="string">Challan No</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='receipt_payment_page']/field[@name='fee_payment_ids']/tree/field[@name='invoice_id']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='non_barcode_receipts_page']" position="attributes">
+                    <attribute name="string">Non Challan Receipts</attribute>
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='non_barcode_receipts_page']/field[@name='non_barcode_ids']/tree/field[@name='barcode']" position="attributes">
+                    <attribute name="string">Challan No</attribute>
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='already_processed_receipt_page']/field[@name='fee_processed_ids']/tree/field[@name='barcode']" position="attributes">
+                    <attribute name="string">Challan No</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!--***** Fee Payment Tree *****-->
+        <record id="view_ucp_odoocms_fee_payment_tree" model="ir.ui.view">
+            <field name="name">ucp.odoocms.fee.payment.tree</field>
+            <field name="model">odoocms.fee.payment</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_payment_tree"/>
+            <field name="arch" type="xml">
+                <field name="receipt_number" position="attributes">
+                    <attribute name="string">Challan No</attribute>
+                </field>
+            </field>
+        </record>
+
+        <!--***** Fee Payment Form *****-->
+        <record id="view_ucp_odoocms_fee_payment_form" model="ir.ui.view">
+            <field name="name">ucp.odoocms.fee.payment.form</field>
+            <field name="model">odoocms.fee.payment</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_payment_form"/>
+            <field name="arch" type="xml">
+                <field name="receipt_number" position="attributes">
+                    <attribute name="string">Challan No</attribute>
+                </field>
+            </field>
+        </record>
+
+        <!--***** Fee Payment Search *****-->
+        <record id="view_ucp_odoocms_fee_payment_search_view" model="ir.ui.view">
+            <field name="name">ucp.oodoocms.fee.payment.search</field>
+            <field name="model">odoocms.fee.payment</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_payment_search_view"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <field name="receipt_number" position="attributes">
+                    <attribute name="string">Challan No</attribute>
+                </field>
+            </field>
+        </record>
+
+        <!--***** Student Ledger Tree *****-->
+        <record id="view_ucp_odoocms_student_ledger_tree" model="ir.ui.view">
+            <field name="name">ucp.odoocms.student.ledger.tree</field>
+            <field name="model">odoocms.student.ledger</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_student_ledger_tree"/>
+            <field name="arch" type="xml">
+                <field name="slip_barcode" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </field>
+                <field name="slip_barcode" position="after">
+                    <field name="old_challan_no"/>
+                </field>
+            </field>
+        </record>
+
+        <!--***** Student Ledger Form *****-->
+        <record id="view_ucp_odoocms_student_ledger_form" model="ir.ui.view">
+            <field name="name">ucp.odoocms.student.ledger.form</field>
+            <field name="model">odoocms.student.ledger</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_student_ledger_from"/>
+            <field name="arch" type="xml">
+                <field name="slip_barcode" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="slip_barcode" position="after">
+                    <field name="old_challan_no"/>
+                </field>
+            </field>
+        </record>
+
+        <!--***** Student Ledger Search *****-->
+        <record id="view_ucp_odoocms_student_ledger_search" model="ir.ui.view">
+            <field name="name">ucp.odoocms.student.ledger.search</field>
+            <field name="model">odoocms.student.ledger</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_student_ledger_search"/>
+            <field name="arch" type="xml">
+                <field name="slip_barcode" position="before">
+                    <field name="old_challan_no"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

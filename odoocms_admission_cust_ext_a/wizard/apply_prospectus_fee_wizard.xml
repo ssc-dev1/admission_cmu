@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_apply_prospectus_fee_waiver_wizard" model="ir.ui.view">
+        <field name="name">apply.prospectus.fee.waiver.wizard.form</field>
+        <field name="model">apply.prospectus.fee.waiver.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Apply Prospectus Fee Waiver">
+                <group>
+                    <field name="waiver_type_id"/>
+                </group>
+                <footer>
+                    <button string="Apply" type="object" name="apply_waiver" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

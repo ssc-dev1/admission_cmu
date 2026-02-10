@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="merit_register_line_view_form" model="ir.ui.view">
+        <field name="name">merit_register_line_view_form</field>
+        <field name="model">odoocms.merit.register.line</field>
+        <field name="arch" type="xml">
+            <form string="Merit Register Line">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="applicant_id"/>
+                            <field name="merit_no"/>
+                            <field name="public_visible"/>
+                            <field name="matric_marks"/>
+                        </group>
+                        <group>
+                            <field name="program_id"/>
+                            <field name="aggregate"/>
+                            <field name="selected"/>
+                            <field name="inter_marks"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="open_merit"/>
+                       <!-- <field name="self_merit"/>-->
+                        <!--<field name="international"/>
+                        <field name="kpk_seats"/>
+                        <field name="ajk_seats"/>
+                        <field name="gilgit_seats"/>
+                        <field name="sindh_seats"/>
+                        <field name="baloch_seats"/>
+
+                        <field name="sports_quota"/>
+                        <field name="disabled_quota"/>-->
+                    </group>
+                    <notebook>
+                        <!-- <page string="Test Aggregate Group">
+                             <field name="cbt_aggregate_ids">
+                                 <tree editable="bottom">
+                                     <field name="name"/>
+                                     <field name="marks"/>
+                                 </tree>
+                             </field>
+                         </page>-->
+                        <!-- <page string="CBT Section Marks">
+                             <field name="cbt_section_ids">
+                                 <tree editable="bottom">
+                                     <field name="name"/>
+                                     <field name="marks"/>
+                                 </tree>
+                             </field>
+                         </page>-->
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="merit_register_line_view_tree" model="ir.ui.view">
+        <field name="name">merit_register_line_view_tree</field>
+        <field name="model">odoocms.merit.register.line</field>
+        <field name="arch" type="xml">
+            <tree string="Merit Registers Line">
+                <!--<field name="applicant_id"/>-->
+                <field name="reference_no"/>
+                <field name="program_id"/>
+                <field name="applicant"/>
+                <field name="matric_marks"/>
+                <field name="inter_marks"/>
+                <field name="open_merit"/>
+                <!--<field name="self_merit"/>
+                <field name="international"/>
+                <field name="kpk_seats"/>
+                <field name="ajk_seats"/>
+                <field name="gilgit_seats"/>
+                <field name="sindh_seats"/>
+                <field name="baloch_seats"/>
+                <field name="sports_quota"/>
+                <field name="disabled_quota"/>-->
+                <!--<field name="army_seats"/>
+                <field name="af_seats"/>
+                <field name="pn_seats"/>-->
+
+                <!--
+                <field name="cbt_english" optional="show"/>
+                <field name="cbt_t_english" optional="show"/>
+                <field name="cbt_per_english" optional="show"/>
+                <field name="cbt_physics" optional="show"/>
+                <field name="cbt_t_physics" optional="show"/>
+                <field name="cbt_per_physics" optional="show"/>
+                <field name="cbt_math" optional="show"/>
+                <field name="cbt_t_math" optional="show"/>
+                <field name="cbt_per_math" optional="show"/>
+                <field name="cbt_chemistry" optional="show"/>
+                <field name="cbt_t_chemistry" optional="show"/>
+                <field name="cbt_per_chemistry" optional="show"/>
+                <field name="cbt_bio" optional="show"/>
+                <field name="cbt_t_bio" optional="show"/>
+                <field name="cbt_per_bio" optional="show"/>
+                <field name="cbt_analytical" optional="show"/>
+                <field name="cbt_t_analytical" optional="show"/>
+                <field name="cbt_per_analytical" optional="show"/>
+                <field name="cbt_rc" optional="show"/>
+                <field name="cbt_t_rc" optional="show"/>
+                <field name="cbt_per_rc" optional="show"/>
+                <field name="cbt_ew" optional="show"/>
+                <field name="cbt_t_ew" optional="show"/>
+                <field name="cbt_per_ew" optional="show"/>
+                <field name="cbt_obtained" optional="show"/>
+                <field name="cbt_total" optional="show"/>
+                <field name="cbt_percentage" optional="show"/>
+                <field name="pre_test_marks" optional="show"/>-->
+                <field name="merit_no"/>
+                <field name="aggregate"/>
+                <field name="public_visible"/>
+                <field name="selected"/>
+            </tree>
+        </field>
+    </record>
+    <record id="merit_register_line_search" model="ir.ui.view">
+        <field name="name">Merit Register</field>
+        <field name="model">odoocms.merit.register.line</field>
+        <field name="arch" type="xml">
+            <search string="Search Merit">
+                <field name="program_id"/>
+                <field name="applicant_id"/>
+                <field name="merit_reg_id"/>
+                <field name="merit_no"/>
+                <field name="aggregate"/>
+
+                <filter string="Admission Register" name="admission_register"
+                        domain="[('merit_reg_id.register_id.state','in',('draft','cancel', 'confirm', 'application', 'sort', 'admission', 'merit', 'done'))]"/>
+
+                <filter name="merit_reg_id" string='Merit Register' icon="fa-pencil-square-o" domain="[]"
+                        context="{'group_by' : 'merit_reg_id'}"/>
+
+                <filter name="program_id" string='Program' icon="fa-pencil-square-o" domain="[]"
+                        context="{'group_by' : 'program_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="merit_register_line_action" model="ir.actions.act_window">
+        <field name="name">Merit Register Line</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.merit.register.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="merit_register_line_search"/>
+        <field name="context">{'search_default_admission_register':1}</field>
+    </record>
+    <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+
+    <menuitem
+            id="merit_register_line_menu"
+            name="Merit Register Line"
+            parent="merit_register_main_menu"
+            action="merit_register_line_action"
+            groups="odoocms_admission.group_admission_manager"
+            sequence="20"/>
+</odoo>

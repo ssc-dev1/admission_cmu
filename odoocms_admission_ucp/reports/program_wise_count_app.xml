@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="program_wise_count_application">
+        <t t-call="web.basic_layout">
+            <t t-call="web.html_container">
+                <style>
+                    body{
+                    font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;
+                    ;font-size:12px;
+                    }
+                </style>
+
+                <t t-set="company" t-value="request.env.company" />
+
+                <div class="container row text-center m-0 p-0">
+                    <div class="col-3 m-0 p-0">
+                        <img style="width:100px;height:100px;" class='text-center m-0 p-0' t-if='request.env.company.logo' t-att-src='image_data_uri(request.env.company.logo)' />
+                    </div>
+                    <div class="col-7 mt-3 m-0 p-0">
+                        <h5 class='m-0 p-0'>
+                            <b>
+                                <t t-out="company.name" />
+                            </b>
+                        </h5>
+                        <h5>
+                            <b>
+                                <t t-out="str(company.city).upper()" />
+                            </b>
+                        </h5>
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+                <div class="row justify-content-between text-center">
+                    <div style='text-align:left !important;' class=" col-4 m-0 p-0 mx-3">
+                        <!-- <span t-out="o.term_id.name" /> -->
+                    </div>
+                    <div class=" col-4 m-0 p-0">
+                        <span t-out="company.website" />
+                    </div>
+                </div>
+                <p class='text-center m-0'>
+                    <t t-out="company.street" />
+ ,                    <t t-out="company.street2" />
+ UAN:<t t-out="company.admission_phone" />
+ , Fax:<t t-out="'051-4486705'" />
+ , (            <t t-out="company.admission_mail" />
+ ) </p>
+        <h5 style='background-color:black !important;color:white;' class='text-center m-0 mb-2 py-1'>
+            <b>Admission Status Program Wise</b>
+        </h5>
+
+        <div t-attf-style='{{"page-break-after:always;" if len(docs) > 1 and o_index != len(docs)-1 else ""}}' class="container text-center">
+            <table class="table table-bordered">
+                <thead>
+                    <th>Sr#.</th>
+                    <th style='width:65% !important'>Program</th>
+                    <th style='width:10% !important'>Verified</th>
+                    <th style='width:10% !important'>Fee Pending</th>
+                    <th style='width:10% !important'>Total</th>
+                </thead>
+                <tbody>
+                    <t t-set="total_verified" t-value="0"/>
+                    <t t-set="total_pending" t-value="0"/>
+                    <t t-set="total_all" t-value="0"/>
+                    <t t-set="count_program" t-value="0"/>
+                    <t t-foreach="docs" t-as="o">
+                        <t t-set="application" t-value="o" />
+
+                        <t t-foreach="o.program_ids" t-as="program">
+                            <t t-set="count_program" t-value="count_program + 1"/>
+                            <tr>
+                                <td class='m-0 p-1' >
+                                    <t t-out="count_program"/>
+                                </td>
+                                <td style='text-align:left' class='m-0 p-1' >
+                                    <t t-out="program.name"/>
+
+                                </td>
+                                <td class='m-0 p-1' >
+                                    <t t-out="o.application_ids.search_count([('prefered_program_id','=',program.id),('fee_voucher_state','=','verify')])"/>
+                                    <t t-set="total_verified" t-value="total_verified + o.application_ids.search_count([('prefered_program_id','=',program.id),('fee_voucher_state','=','verify')])"/>
+                                </td>
+                                <!-- <td class='m-0 p-1' >
+                                    0
+                                </td> -->
+                                <!-- <td class='m-0 p-1' >
+                                    
+                                </td> -->
+                                <td class='m-0 p-1' >
+                                    <t t-out="o.application_ids.search_count([('prefered_program_id','=',program.id),('fee_voucher_state','!=','verify')])"/>
+                                    <t t-set="total_pending" t-value="total_pending + o.application_ids.search_count([('prefered_program_id','=',program.id),('fee_voucher_state','!=','verify')])"/>
+                                    
+                                </td>
+                                <td class='m-0 p-1' >
+                                    <t t-out="o.application_ids.search_count([('prefered_program_id','=',program.id)])"/>
+                                    <t t-set="total_all" t-value="total_all + o.application_ids.search_count([('prefered_program_id','=',program.id)])"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+
+                    <tr class='text-center'>
+                        <td  colspan='2' class='m-0 p-1 text-center' >
+                            Total
+                        </td>
+                        <td class='m-0 p-1' >
+                            <t t-out="total_verified"/>
+                        </td>
+                        <td class='m-0 p-1' >
+                            <t t-out="total_pending"/>
+                        </td>
+                        <td class='m-0 p-1' >
+                            <t t-out="total_all"/>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+
+    </t>
+</t>
+</template>
+
+<record id="progran_wise_applicant" model="report.paperformat">
+<field name="name">A4</field>
+<field name="default" eval="True"/>
+<field name="format">A4</field>
+<field name="page_height">0</field>
+<field name="page_width">0</field>
+<field name="orientation">Portrait</field>
+<field name="margin_top">5</field>
+<field name="margin_bottom">23</field>
+<field name="margin_left">15</field>
+<field name="margin_right">15</field>
+<field name="header_line" eval="False"/>
+<field name="header_spacing">35</field>
+<field name="dpi">90</field>
+</record>
+
+<record id="action_program_wise_count_application" model="ir.actions.report">
+<field name="name">Program Wise Admissin Report</field>
+<field name="model">odoocms.admission.register</field>
+<field name="report_type">qweb-pdf</field>
+<field name="report_name">odoocms_admission_ucp.program_wise_count_application</field>
+<field name="report_file">odoocms_admission_ucp.program_wise_count_application</field>
+<field name="binding_model_id" ref="model_odoocms_admission_register"/>
+<field name="paperformat_id" ref="progran_wise_applicant"/>
+</record>
+</odoo>

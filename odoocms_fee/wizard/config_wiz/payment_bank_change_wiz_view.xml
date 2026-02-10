@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_payment_bank_change_wiz" model="ir.ui.view">
+            <field name="name">payment.bank.change.wiz.view</field>
+            <field name="model">payment.bank.change.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Payment Bank Change">
+                    <group>
+                        <group>
+                            <field name="payment_register_id" readonly="1"/>
+                            <field name="old_bank_journal_id" readonly="1"/>
+                            <field name="bank_journal_id" domain="[('type','=','bank')]" required="1"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_change_payment_bank" string="Change Bank Journal" type="object"
+                                class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="act_payment_bank_change_wiz" model="ir.actions.act_window">
+            <field name="name">Change Bank Journal</field>
+            <field name="res_model">payment.bank.change.wiz</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_payment_bank_change_wiz"/>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="model_odoocms_fee_payment_register"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="groups_id" eval="[(4,ref('odoocms_fee.group_fee_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

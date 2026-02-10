@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+<record id="applicant_academic_subjects_view_form" model="ir.ui.view">
+    <field name="name">applicant.academic.subjects.view.form</field>
+    <field name="model">applicant.academic.subjects</field>
+    <field name="arch" type="xml">
+        <form string="">
+            <sheet>
+                <group>
+                    <field name="name"></field>
+                    <field name="code"></field>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+        <record id="view_applicant_subject_details" model="ir.ui.view">
+            <field name="name">odoocms.academic.subjects.tree</field>
+            <field name="model">applicant.academic.subjects</field>
+            <!--<field name="priority" eval="8" />-->
+            <field name="arch" type="xml">
+                <tree string="Subject Details">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <!-- <field name="code"/> -->
+                    <!-- <field name="obtained_marks"/> -->
+<!--                    <field name="percentage" invisible="1"/>-->
+                </tree>
+            </field>
+        </record>
+        <record id="action_applicant_subject_details" model="ir.actions.act_window">
+            <field name="name">Academic Group Subjects</field>
+            <field name="res_model">applicant.academic.subjects</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create Your Subject Details here...
+                </p>
+            </field>
+        </record>
+        <menuitem
+                id="menu_applicant_subject_details"
+                name="Academic Group Subjects"
+                parent="menu_odoocms_academic_setup"
+                action="action_applicant_subject_details"
+                groups="odoocms_admission.group_admission_manager"
+                sequence="160"/>
+        <!--        groups="odoocms.group_cms_manager,odoocms_admission.group_admission_manager"-->
+    </data>
+</odoo>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_integration_odoocms_institute_tree" model="ir.ui.view">
+        <field name="name">integration.odoocms.institute.tree</field>
+        <field name="model">odoocms.institute</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_institute_tree"/>
+        <field name="arch" type="xml">
+            <field name="website" position="after">
+                <field name="integration_code" optional="show"/>
+                <field name="customer_code" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_integration_odoocms_institute_form" model="ir.ui.view">
+        <field name="name">integration.odoocms.institute.form</field>
+        <field name="model">odoocms.institute</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_institute_form"/>
+        <field name="arch" type="xml">
+            <field name="active" position="after">
+                <field name="integration_code" required="1"/>
+                <field name="customer_code" required="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_integration_odoocms_institute_search" model="ir.ui.view">
+        <field name="name">integration.odoocms.institute.search</field>
+        <field name="model">odoocms.institute</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_institute_search"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="integration_code"/>
+                <field name="customer_code"/>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

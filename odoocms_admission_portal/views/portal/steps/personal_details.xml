@@ -1,0 +1,416 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="personal_details" name="Personal Details">
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/steps/personal.js"></script>
+
+
+        <div style='display: contents'>
+            <!-- header tabb -->
+            <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" onclick="$('#collapse1').slideToggle(1000); $('#angle_class1').toggleClass('fa-angle-down fa-angle-up');">
+                <a class="btn btn-link">
+                    <i style='color: white;font-size: 25px;' class="fa fa-user-circle float-left"></i>
+                    <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name" />
+                    </h2>
+                </a>
+                <a>
+                    <i id='angle_class1' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+                </a>
+            </div>
+            <div id="collapse1" class="row container-fluid mt-3 collapse_div">
+                <br />
+                <div class='col-8'>
+                    <form id='personal_detail_form' class="row g-3">
+                        <input type='hidden' name='step_name' value='personal'></input>
+                        <input type="hidden" name="step_no" t-att-value='counter_step' />
+
+                        <!-- geting first name, middle name,last name  -->
+                        <div class="mb-1 col-md-4 pb-2">
+                            <input id="first_name" style='pointer-events:none;' required='1' t-att-value='application_id.first_name' name='first_name' type="text" class="form-control inputText validate_char" />
+                            <span class="floating-label">First Name*</span>
+                        </div>
+                        <div class="mb-1 col-md-4 pb-2">
+                            <input id="middle_name" t-att-value='application_id.middle_name' name='middle_name' type="text" class="form-control inputText validate_char" />
+                            <span class="floating-label-norequired">Middle Name</span>
+                        </div>
+                        <div class="mb-1 col-md-4 pb-2">
+                            <input id="last_name" style='pointer-events:none' required="1" t-att-value='application_id.last_name' name='last_name' type="text" class="form-control inputText validate_char" />
+                            <span class="floating-label">Last Name*</span>
+                        </div>
+                        <!-- geting nationality,province and and domicile  -->
+                        <div class="mb-1 col-md-4 pb-2">
+                            <select style='pointer-events:none' required="1" class="form-control inputText" id="nationality" name="nationality">
+                                <t t-foreach="country_id" t-as="c">
+                                    <t t-if="application_id.nationality.id==c.id">
+                                        <option t-att-value='c.id' t-att-selected="application_id.nationality.id==c.id" t-att-id='c.id'>
+                                            <t t-esc="c.name" />
+                                        </option>
+                                    </t>
+                                </t>
+                            </select>
+                            <label class='floating-label' for="nationality">Nationality*</label>
+                        </div>
+                        <div id='province_div' class="mb-1 col-md-4 pb-2">
+                            <select required="1" placeholder='Province' class="form-control inputText" id="province_id" name="province_id">
+                                <option disabled='1' selected='1' value=''>Select Province</option>
+                                <t t-foreach="province_id" t-as="p">
+                                    <option t-att-value='p.id' t-att-selected='application_id.province_id.id==p.id' t-att-id='p.id'>
+                                        <t t-esc="p.name" />
+                                    </option>
+                                </t>
+                            </select>
+                            <label class='floating-label' for="province">Province*</label>
+                        </div>
+                        <div id='province2_div' class="mb-fs1 col-md-8">
+                            <input type="text" t-att-value='application_id.province2' id='province2' name='province2' placeholder="Province/State" class="form-control inputText" />
+                        </div>
+                        <div id='domicile_div' class="mb-1 col-md-4 pb-2">
+                            <select required="1" placeholder='Domicile' class="form-control inputText required" id="domicile_id" name="domicile_id">
+                                <option disabled='1' selected='1' value=''>Select Domicile</option>
+                                <t t-foreach="domicile_id" t-as="d">
+                                    <option t-att-selected='application_id.domicile_id.id==d.id' t-att-value='d.id'>
+                                        <t t-esc="d.name" />
+                                    </option>
+                                </t>
+                            </select>
+                            <label class='floating-label' for="domicile">Domicile*</label>
+                        </div>
+                        <!--  -->
+
+                        <!-- geting cnic ,dob and gender -->
+                        <div id='cnic_div' class="mb-1 col-md-4 pb-2">
+                            <input type="text" style='pointer-events:none' data-inputmask-clearincomplete="true" data-inputmask="'mask': '99999-9999999-9'" required='1' t-att-value='application_id.cnic' id='cnic' name='cnic' class="form-control inputText " />
+                            <span class="floating-label">CNIC*</span>
+                        </div>
+                        <div id='passport_div' style='display: none;' class="mb-1 col-md-4 pb-2">
+                            <input type="text" required='1' t-att-value='application_id.passport' id='passport' name='passport' class="form-control inputText " />
+                            <span class="floating-label">Passport*</span>
+                        </div>
+                        <t t-if="application_id.register_id">
+                            <input type='hidden' id='dob_min' t-att-value='application_id.register_id.dob_min' />
+                            <input type='hidden' id='dob_max' t-att-value='application_id.register_id.dob_max' />
+                        </t>
+                        <t t-else="">
+                            <input type='hidden' id='dob_min' t-att-value='dob_minimum' />
+                            <input type='hidden' id='dob_max' t-att-value='dob_maximum' />
+
+                        </t>
+                        <div class="mb-1 col-md-4 pb-2">
+                            <input style='background-color: white' name='date_of_birth' readonly="readonly" autocomplete="off" id='date_of_birth' typename='date_of_birth' minlenght='2' type="text" required='1' t-att-value="application_id.date_of_birth.strftime('%m/%d/%Y') if application_id.date_of_birth else ''" class="form-control inputText" />
+                            <span class="floating-label-norequired">Date Of Birth(mm/dd/yyyy)*</span>
+                        </div>
+                        <div class="mb-1 col-md-4 pb-2">
+                            <t t-set="gender" t-value="dict(application_id.fields_get(allfields=['gender'])['gender']['selection'])" />
+                            <select style='margin-bottom:0px;f  ont-size:12px' required='1' class="form-control inputText" id="gender" name="gender">
+                                <option disabled='1' selected='1' value=''>Select Gender</option>
+                                <t t-foreach="gender" t-as="g">
+                                    <option t-att-selected='g==application_id.gender' t-att-value="g">
+                                        <t t-esc="g_value" />
+                                    </option>
+                                </t>
+                            </select>
+
+                            <label class='floating-label-norequired' for="gender">Gender*</label>
+                        </div>
+                        <div class="mb-1 col-md-4 pb-2">
+                            <select style='margin-bottom:0px;font-size:12px' required="True" class="form-control inputText" id="religion_id" name="religion_id">
+                                <option disabled='1' t-att-selected='not application_id.religion_id'>Select
+                                    Religion</option>
+                                <t t-foreach="religion_id" t-as="religion_id">
+                                    <option t-att-selected='religion_id.id==application_id.religion_id.id' t-att-value="religion_id.id">
+                                        <t t-esc="religion_id.name" />
+                                    </option>
+                                </t>
+                            </select>
+                            <label class='floating-label' for="religion">Religion*</label>
+                        </div>
+
+                        <div class="mb-1 col-md-4 pb-2">
+                            <t t-set="blood_groups" t-value="dict(application_id.fields_get(allfields=['blood_group'])['blood_group']['selection'])" />
+                            <select style='margin-bottom:0px;font-size:12px' class="form-control inputText" id="blood_group" name="blood_group">
+                                <option disabled='1' selected='True' value=''>Select blood Group</option>
+
+                                <t t-foreach="blood_groups" t-as="blood_group">
+                                    <option t-att-selected="blood_group==application_id.blood_group" t-att-value="blood_group">
+                                        <t t-esc="blood_group_value" />
+                                    </option>
+                                </t>
+                            </select>
+                            <label class='floating-label' for="blood_group">Blood Group</label>
+                        </div>
+                        <div class="mb-1 col-md-5 pb-2">
+                            <select style='margin-bottom:0px;font-size:12px' required="1" class="form-control inputText" id="last_institute_attend" name="last_institute_attend">
+                                <option disabled='1' selected='True' value=''>Select Last School Attend</option>
+
+                                <t t-foreach="last_institute_attend" t-as="lsa">
+                                    <option t-att-selected="lsa.id==application_id.last_school_attend.id" t-att-value="lsa.id">
+                                        <t t-esc="lsa.name" />
+                                    </option>
+                                </t>
+                            </select>
+                            <label class='floating-label' for="last_institute_attend">Last Institute Attended*</label>
+
+                        </div>
+                        <div id='advertisement' class="mb-1 col-md-4 pb-2">
+                            <select style='margin-bottom:0px;font-size:12px' required="1" class="form-control inputText" id="advertisement" name="advertisement">
+                                <option disabled='1' selected='True' value=''>How Do You Know About Us</option>
+                                <t t-foreach="advertisement" t-as="ad">
+                                    <option t-att-selected="ad.id==application_id.advertisement.id" t-att-value="ad.id">
+                                        <t t-esc="ad.advertisement" />
+                                    </option>
+                                </t>
+                            </select>
+                            <label class='floating-label' for="advertisement">How Do You Know About Us*</label>
+                        </div>
+                        <div class="col-md-3"></div>
+
+                        <!-- gettin faher name  ,father cnic, father occupation, father cell -->
+                        <!-- <br/> -->
+                        <div class="mb-1 col-md-12 ml-2 mb-0">
+                            <h4 class='mt-3 mb-0'> Program Transfer/Migration:</h4>
+                            <hr class='mt-0 mb-0'></hr>
+                        </div>
+                        <div style='display:contents;' class='mt-2'>
+                        <div class="mb-1 pt-2 col-md-6 ml-2">
+            <div class="form-check form-switch">
+              <input t-attf-style=" {{'pointer-events: none;' if application_id.state != 'draft' else '' }}" class="form-check-input" t-att-checked='application_id.program_migration' type="checkbox" name='program_migration' role="switch" id="program_migration" />
+              <label style='font-size:12px' class="form-check-label" for="program_migration">Applying for Program Transfer/Migration</label>
+            </div>
+          </div>
+                        </div>
+                        <div id='migration_detail_div' style='display:contents;' class='mt-2'>
+                            <div id='migration' class="mb-1 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.program_migration== False else '' }}">
+                            <select style='margin-bottom:0px;font-size:12px'  class="form-control inputText" id="migration_type" name="migration_type">
+                                <option disabled='1' selected='True' value=''>Migration Type</option>
+                                <t t-set="migration_types" t-value="dict(application_id.fields_get(allfields=['migration_type'])['migration_type']['selection'])"/>
+                                <t t-foreach="migration_types" t-as="mig">
+                                    <option t-att-selected="mig==application_id.migration_type" t-att-value="mig">
+                                        <t t-esc="mig_value" />
+                                    </option>
+                                </t>
+                            </select>
+                            <label class='floating-label' for="advertisement">Migration Type*</label>
+                        </div>
+                        </div>
+                        <div id='migration_detail_div' style='display:contents;' class='mt-2'>
+                            <div id='migration' class="mb-1 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.program_migration== False else '' }}">
+                            <select style='margin-bottom:0px;font-size:12px'  class="form-control inputText" id="migration_type" name="migration_type">
+                                <option disabled='1' selected='True' value=''>Migration Type</option>
+                                <t t-set="migration_types" t-value="dict(application_id.fields_get(allfields=['migration_type'])['migration_type']['selection'])"/>
+                                <t t-foreach="migration_types" t-as="mig">
+                                    <option t-att-selected="mig==application_id.migration_type" t-att-value="mig">
+                                        <t t-esc="mig_value" />
+                                    </option>
+                                </t>
+                            </select>
+                            <label class='floating-label' for="advertisement">Migration Type*</label>
+                        </div>
+                             <div id="migration_university_div" class="mb-1 pr-0 col-md-4 pb-2" t-attf-style="{{'display:none' if not application_id.migration_type== 'other_university' else '' }}">
+                                    <select style='margin-bottom:0px;' class="form-control inputText" t-att-required=" True if application_id.migration_type == 'other_university' else False "  id="migration_university" name="migration_university">
+                                                    <option disabled='1' selected='1' value=''>Select Institute/University:</option>
+                                                    <t t-foreach="educational_institute_university" t-as="ei">
+                                                        <option t-att-id='ei.code' t-att-value="ei.name">
+                                                            <t t-esc="ei.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                            </div>
+                            <div id="migration_registration_div" class="mb-1 pr-0 col-md-4 pb-2" t-attf-style="{{'display:none' if not application_id.migration_type== 'inter_university' else '' }}">
+                                    <input  t-att-value='application_id.current_registration_no' class="form-control inputText" t-att-required=" True if application_id.migration_type == 'inter_university' else False "  id="current_registration_no" name="current_registration_no">
+                                                  </input>
+                                <span class="floating-label">Registration Number</span>
+                            </div>
+                            <div id="migration_semester_div" class="mb-1 pr-0 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.program_migration== False else '' }}">
+                                    <input t-att-required=" True if application_id.program_migration == 'True' else False " t-att-value='application_id.last_studied_semester' id="last_studied_semester" name='last_studied_semester' type="text"  class="form-control inputText" />
+                                    <span class="floating-label">Last Studied Semester</span>
+                            </div>
+                            <div id="migration_last_obtained_cgpa_div" class="mb-1 pr-0 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.program_migration== False else '' }}">
+                                    <input t-att-required=" True if application_id.program_migration == 'True' else False " t-att-value='application_id.last_obtained_cgpa' id="last_obtained_cgpa" name='last_obtained_cgpa' type="text"  class="form-control inputText" />
+                                    <span class="floating-label">Last Obtained CGPA</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-1 col-md-12 ml-2 mb-0">
+                            <h4 class='mt-3 mb-0'> Family Details:</h4>
+                            <hr class='mt-0 mb-0'></hr>
+                        </div>
+
+                        <div style='display:contents;' class='mt-2'>
+                            <div class="mb-1 pr-0 col-md-4 pb-2">
+                                <input required="1" t-att-value='application_id.father_name' id="father_name" name='father_name' type="text" class="form-control inputText validate_char" />
+                                <span class="floating-label">Father Name*</span>
+                            </div>
+                            <div class="mb-1 pr-0 col-md-4 pb-2">
+                                <t t-set="father_status" t-value="dict(application_id.fields_get(allfields=['father_status'])['father_status']['selection'])" />
+                                <select required='1' class="form-control inputText" id="father_status" name="father_status">
+                                    <option selected='1' value=''>Select Father Status</option>
+                                    <t t-foreach="father_status" t-as="status">
+                                        <option t-att-selected='status==application_id.father_status' t-att-value="status">
+                                            <t t-esc="status_value" />
+                                        </option>
+                                    </t>
+                                </select>
+                                <label class='floating-label' for="father_status">Father Status*</label>
+
+                            </div>
+                            <div class="mb-1 pr-0 col-md-4 pb-2">
+                                <t t-if="application_id.nationality.id==177">
+                                    <input required="1" data-inputmask-clearincomplete="true" data-inputmask="'mask': '99999-9999999-9'" id='father_cnic' t-att-value='application_id.father_cnic' name='father_cnic' type="text" class="form-control inputText" />
+                                    <span class="floating-label">Father CNIC</span>
+                                </t>
+                                <t t-else="">
+                                    <input id='father_cnic' t-att-value='application_id.father_cnic' name='father_cnic' type="text" class="form-control inputText" />
+                                    <span class="floating-label">Father Passport</span>
+                                </t>
+                            </div>
+                        </div>
+
+                        <div id='father_status_div' style='display:contents;' class='mt-2'>
+                            <div class="mb-1 pr-0 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.father_status=='deceased' else '' }}">
+                                <t t-if="application_id.applicant_type=='national'">
+                                    <input required="1" t-att-value='application_id.father_cell' id="father_cell" name='father_cell' type="text" data-inputmask-clearincomplete="true" data-inputmask="'mask': '0399-9{7,7}'" class="form-control inputText validate_number" />
+                                    <span class="floating-label">Father Cell</span>
+                                </t>
+                                <t t-else="">
+                                    <input t-att-value='application_id.father_cell' id="father_cell" name='father_cell' type="text" data-inputmask-clearincomplete="true" data-inputmask="'mask': '09{4,}'" class="form-control inputText validate_number" />
+                                    <span class="floating-label-norequired">Father Cell</span>
+                                </t>
+                            </div>
+                            <div class="mb-1 pr-0 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.father_status=='deceased' else '' }}">
+                                <t t-set="father_education" t-value="dict(application_id.fields_get(allfields=['father_education'])['father_education']['selection'])" />
+                                <select required='1' class="form-control inputText " id="father_education" name="father_education">
+                                    <option selected='1' value=''>Select Father Education</option>
+                                    <t t-foreach="father_education" t-as="edu">
+                                        <option t-att-selected='edu==application_id.father_education' t-att-value="edu">
+                                            <t t-esc="edu_value" />
+                                        </option>
+                                    </t>
+                                </select>
+                                <label class='floating-label' for="father_status">Father Education</label>
+                            </div>
+                            <div class="mb-1 pr-0 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.father_status=='deceased' else '' }}">
+                                <select required='1' class="form-control inputText" id="father_profession" name="father_profession">
+                                    <option selected='1' value=''>Select Father Profession</option>
+                                    <t t-foreach="profession_id" t-as="profession">
+                                        <t t-if="profession.apply_on !='f'">
+
+                                            <option t-att-selected='profession.id==application_id.father_profession.id' t-att-value="profession.id">
+                                                <t t-esc="profession.name" />
+                                            </option>
+                                        </t>
+                                    </t>
+                                </select>
+                                <label class='floating-label' for="father_status">Father Profession</label>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <!-- gettin mother name  ,mother cnic, mother occupation, mother cell -->
+                        <div style='display:contents;' class='mt-2'>
+                            <div class="mb-1 pr-0 col-md-4 pb-2">
+                                <input required="1" t-att-value='application_id.mother_name' id="mother_name" name='mother_name' type="text" class="form-control inputText validate_char " />
+                                <span class="floating-label">Mother Name*</span>
+                            </div>
+                            <div class="mb-1 pr-0 col-md-4 pb-2">
+                                <t t-set="mother_status" t-value="dict(application_id.fields_get(allfields=['mother_status'])['mother_status']['selection'])" />
+                                <select required='1' class="form-control inputText" id="mother_status" name="mother_status">
+                                    <option selected='1' value=''>Select Mother Status</option>
+                                    <t t-foreach="mother_status" t-as="status">
+                                        <option t-att-selected='status==application_id.mother_status' t-att-value="status">
+                                            <t t-esc="status_value" />
+                                        </option>
+                                    </t>
+                                </select>
+                                <label class='floating-label' for="Mother_status">Mother Status*</label>
+                            </div>
+                            <div class="mb-1 pr-0 col-md-4 pb-2">
+                                <t t-if="application_id.nationality.id==177">
+
+                                    <input required="1" id='mother_cnic' data-inputmask-clearincomplete="true" data-inputmask="'mask': '99999-9999999-9'" t-att-value='application_id.mother_cnic' name='mother_cnic' type="text" class="form-control inputText" />
+                                    <span class="floating-label">Mother CNIC</span>
+                                </t>
+                                <t t-else="">
+                                    <input id='mother_cnic' t-att-value='application_id.mother_cnic' name='mother_cnic' type="text" class="form-control inputText" />
+                                    <span class="floating-label">Mother Passport</span>
+                                </t>
+                            </div>
+                        </div>
+
+                        <div id='mother_status_div' class='mt-2' style="display:contents;">
+                            <div class="mb-1 pr-0 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.mother_status=='deceased' else '' }}">
+                                <t t-if="application_id.applicant_type=='national'">
+                                    <input required='1' t-att-value='application_id.mother_cell' id="mother_cell" name='mother_cell' type="text" data-inputmask-clearincomplete="true" data-inputmask="'mask': '0399-9{7,7}'" class="form-control inputText validate_number" />
+                                    <span class="floating-label-norequired">Mother Cell</span>
+                                </t>
+                                <t t-else="">
+                                    <input t-att-value='application_id.mother_cell' id="mother_cell" name='mother_cell' type="text" data-inputmask-clearincomplete="true" data-inputmask="'mask': '09{4,}'" class="form-control inputText validate_number" />
+                                    <span class="floating-label-norequired">Mother Cell</span>
+                                </t>
+                            </div>
+                            <div class="mb-1 pr-0 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.mother_status=='deceased' else '' }}">
+                                <t t-set="mother_education" t-value="dict(application_id.fields_get(allfields=['mother_education'])['mother_education']['selection'])" />
+                                <select required="1" class="form-control inputText " id="mother_education" name="mother_education">
+                                    <option selected='1' value=''>Select Mother Education</option>
+                                    <t t-foreach="mother_education" t-as="edu">
+                                        <option t-att-selected='edu==application_id.mother_education' t-att-value="edu">
+                                            <t t-esc="edu_value" />
+                                        </option>
+                                    </t>
+                                </select>
+                                <label class='floating-label' for="mother_education">Mother
+                                    Education</label>
+                            </div>
+                            <div class="mb-1 pr-0 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.mother_status=='deceased' else '' }}">
+                                <select required="1" class="form-control inputText" id="mother_profession" name="mother_profession">
+                                    <option selected='1' value=''>Select Mother Profession</option>
+                                    <t t-foreach="profession_id" t-as="profession">
+                                        <t t-if="profession.apply_on != 'm' ">
+                                            <option t-att-selected='profession.id==application_id.mother_profession.id' t-att-value="profession.id">
+                                                <t t-esc="profession.name" />
+                                            </option>
+                                        </t>
+                                    </t>
+                                </select>
+                                <label class='floating-label' for="mother_profession">Mother
+                                    Profession</label>
+                            </div>
+                        </div>
+                        <!-- sibling -->
+                        <div class="col-md-2 ml-2">
+                            <h5 style='opacity:0.7' class='mt-4 pr-0' for="sibling">Siblings:</h5>
+                        </div>
+                        <div class="mb-1 col-md-2">
+                            <input id="brothers" name='brothers' t-att-value='application_id.brothers' type="number" min="0" class="form-control inputText" />
+                            <span class="floating-label-norequired">Brothers</span>
+                        </div>
+                        <div class="mb-1 col-md-2">
+                            <input id="sisters" name='sisters' t-att-value='application_id.sisters' type="number" min="0" class="form-control inputText" />
+                            <span class="floating-label-norequired">Sisters</span>
+                        </div>
+                        <br />
+                        <div class="col-12">
+                            <input type='submit' class='form-control' style="display: None"></input>
+                        </div>
+                    </form>
+                    <button onclick="check_form_validation(this)" t-attf-style="border:None; {{'display:none' if application_id.state != 'draft' else '' }}" class="btn btn-primary ml-1">Update</button>
+                </div>
+                <!-- column two -->
+                <div class='col-3'>
+                    <div class='d-flex align-items-center justify-content-center'>
+                        <!-- t-attf-style=" {{'pointer-events: none;' if application_id.state != 'draft' else '' }}" -->
+                        <div class='circle_image'>
+                            <img onclick="document.getElementById('profile_image').click()" id='profile_image_preview' t-att-src="image_data_uri(application_id.image) if application_id.image else '/odoocms_admission_portal/static/img/profile.jpg'" alt="Avatar"></img>
+                        </div>
+                        <input style='display:none' class="form-check-input" type="checkbox" t-att-checked='1 if application_id.image else 0' id="profile_image_checked" />
+                        <input style='display:None' class="form-control" onChange="profileImageUpdate(this)" accept="image/*" type="file" id="profile_image" name='profile_image'></input>
+                    </div>
+                    <div class='text-center mt-1'>
+                        <h6>Profile Picture</h6>
+                        <p style='color:black;'>Please Upload a Passport Size (2X2) Picture.</p>
+                        <p style='color:black;'>Preferably with light blue Background</p>
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <br />
+        </div>
+    </template>
+</odoo>

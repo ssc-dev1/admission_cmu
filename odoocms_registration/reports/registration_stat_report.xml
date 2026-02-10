@@ -1,0 +1,117 @@
+<odoo>
+    <template id ="odoocms_registration.registration_stat_report">
+			<t t-call="web.html_container">
+<!--			<t t-call="web.basic_layout">-->
+                <style>
+                    #stat-list {
+                      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                      border-collapse: collapse;
+                      width: 100%;
+                      margin-top:10px;
+                    }
+                    #stat-list td, #stat-list th {
+                      border: 1px solid #ddd;
+                      padding: 2px;
+                    }
+                    #stat-list tr:nth-child(even){background-color: #f2f2f2;}
+                    #stat-list tr:hover {background-color: #ddd;}
+                    #stat-list th {
+                      padding-top: 2px;
+                      padding-bottom: 2px;
+                      text-align: left;
+                      background-color: #A9A9A9;
+                      color: white;
+                    }
+                    #personal-info {
+                      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                      border-collapse: collapse;
+                      width: 95%;
+                      margin-top:15px;
+                      display: inline;
+                    }
+                    #personal-info td, #personal-info th {
+                      padding: 3px;
+                    }
+                    #personal-info th {
+                      padding-top: 3px;
+                      text-align: left;
+                    }
+                </style>
+				<div class="page" style="font-size: 16px; border-style: double; padding:10px ">
+                    <div class="row">
+                        <div style="width:100% ;font-size:18px; font-weight:bold; text-align:center">
+                            <div class="col col-12">
+                                <span t-esc="request.env.company.name" t-if="request.env.company.name"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="width:100% ;font-size:16px; font-weight:bold; text-align:center">
+                            <div class="col col-12">
+                                Registration Stat Report
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:25px; height:">
+                        <div class="col-6">
+                            <!-- <table id="personal-info"> -->
+                                <strong>Term:</strong> <span t-esc="' ' + str(term.name)"/>
+                            <!-- </table> -->
+                        </div><br/>
+                        <div class="col-6">
+                            <!-- <table id="personal-info"> -->
+                           <strong>Date:</strong> <span t-esc="' '+str(today)"/>
+                            <!-- </table> -->
+                        </div>
+                    </div>
+                    <table id="stat-list">
+                         <tr>
+                             <th style="width:20%">Faculty</th>
+                             <th style="width:20%">Program</th>
+                             <th style="text-align:left; width:8%">New Admissions</th>
+                             <th style="text-align:left; width:8%">Registered</th>
+                             <th style="text-align:left; width:8%">Confirmed</th>
+                             <th style="text-align:left; width:8%">Total</th>
+                         </tr>
+                        <t t-foreach="institutes" t-as="institute">
+                             <t t-foreach="institute['programs']" t-as="program">
+                                <tr>
+                                    <td t-if="program_index == 0" t-att-rowspan="len(institute['programs'])+1"><span t-esc="institute['name']"/></td>
+                                     <td><span t-esc="program['name']"/></td>
+                                     <td style="text-align:right"><span t-esc="program['new']"/></td>
+                                     <td style="text-align:right"><span t-esc="program['registered']"/></td>
+                                     <td style="text-align:right"><span t-esc="program['confirmed']"/></td>
+                                     <td style="text-align:right"><span t-esc="program['total']"/></td>
+                                 </tr>
+                             </t>
+                            <tr>
+                                 <td><b>Total</b></td>
+                                 <td style="text-align:right"><b><span t-esc="institute['new']"/></b></td>
+                                 <td style="text-align:right"><b><span t-esc="institute['registered']"/></b></td>
+                                 <td style="text-align:right"><b><span t-esc="institute['confirmed']"/></b></td>
+                                 <td style="text-align:right"><b><span t-esc="institute['total']"/></b></td>
+                             </tr>
+
+                        </t>
+                     </table>
+                </div>
+<!--            </t>-->
+        </t>
+    </template>
+
+    <record id="action_server_report_registration_stat" model="ir.actions.server">
+        <field name="name">Registration Stat Report</field>
+        <field name="model_id" ref="odoocms.model_odoocms_institute"/>
+        <field name="state">code</field>
+        <field name="groups_id"  eval="[(4, ref('base.group_user'))]"/>
+        <field name="code">action = model.registration_stat()</field>
+    </record>
+
+    <menuitem
+            id="menu_report_registration_stat"
+            name="Registration Stat Report"
+            action="action_server_report_registration_stat"
+            parent="menu_odoocms_registration_report"
+            sequence="10"/>
+</odoo>

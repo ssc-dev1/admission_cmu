@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_change_course_info_tree" model="ir.ui.view">
+            <field name="name">odoocms.change.course.info.tree</field>
+            <field name="model">odoocms.change.course.info</field>
+            <field name="arch" type="xml">
+                <tree string="Change Course Info " delete="false">
+                    <field name="name"/>
+                    <field name="term_id"/>
+                    <field name="course_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_change_course_info_form" model="ir.ui.view">
+            <field name="name">odoocms.change.course.info.form</field>
+            <field name="model">odoocms.change.course.info</field>
+            <field name="arch" type="xml">
+                <form string="Change Course Info" delete="false">
+                    <header>
+                        <button name="get_classes" string="Get Classes" type="object" class="oe_highlight"
+                                states="draft" groups="odoocms.group_cms_manager"/>
+                        <button name="action_confirm" string="Confirm" type="object" class="oe_highlight"
+                                states="draft" groups="odoocms.group_cms_manager"/>
+                        <button name="action_cancel" string="Cancel" type="object"
+                                states="draft" groups="odoocms.group_cms_manager"/>
+                        <button name="action_reset_draft" string="Reset to Draft" states="cancel" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="term_id" required="1"
+                                    options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="course_id" required="1"
+                                    options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                            <group>
+                                <field name="course_name"/>
+                                <field name="course_code"/>
+                                <field name="composition"/>
+
+                            </group>
+                            <group>
+                                <field name="new_course_name"/>
+                                <field name="new_course_code"/>
+                            </group>
+                        </group>
+                       <group>
+                           <field name="component_lines" nolabel="1">
+                               <tree editable="bottom">
+                                    <field name="component"/>
+                                    <field name="weightage"/>
+                               </tree>
+                           </field>
+                       </group>
+                        <group>
+                            <field name="class_ids" nolabel="1">
+                                <tree editable="bottom" create="false">
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="term_id" readonly="1" optional="show"/>
+                                    <field name="grade_staff_id" readonly="1" optional="show"/>
+                                    <field name="student_count" optional="show"/>
+                                    <field name="state" invisible="1"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_odoocms_change_course_info" model="ir.actions.act_window">
+            <field name="name">Change Course Info</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoocms.change.course.info</field>
+            <field name="view_mode">tree,form</field>
+<!--            <field name="search_view_id" ref="view_odoocms_course_registration_search"/>-->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+
+        <menuitem
+                id="menu_odoocms_change_course_info"
+                name="Change Course Info"
+                action="action_odoocms_change_course_info"
+                parent="menu_odoocms_registration_classes"
+                sequence="55"/>
+
+    </data>
+</odoo>

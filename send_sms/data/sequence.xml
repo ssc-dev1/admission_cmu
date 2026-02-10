@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="seq_sms_track" model="ir.sequence">
+        <field name="name">SMS Track Sequence</field>
+        <field name="code">sms_track</field>
+        <field name="prefix">%(year)s/%(month)s/</field>
+        <field name="padding">3</field>
+    </record>
+
+    <record id="seq_sms_cron" model="ir.sequence">
+        <field name="name">SMS Cron Sequence</field>
+        <field name="code">send_sms.cron</field>
+        <field name="prefix">%(year)s/%(month)s/</field>
+        <field name="padding">3</field>
+    </record>
+
+    <record id="seq_send_sms_employee" model="ir.sequence">
+        <field name="name">Send SMS Employee Sequence</field>
+        <field name="code">send.sms.employee</field>
+        <field name="prefix">E/</field>
+        <field name="padding">3</field>
+    </record>
+
+    <record id="seq_send_sms_student" model="ir.sequence">
+        <field name="name">Send SMS Student Sequence</field>
+        <field name="code">send.sms.student</field>
+        <field name="prefix">S/</field>
+        <field name="padding">3</field>
+    </record>
+
+    <record id="seq_send_sms_list" model="ir.sequence">
+        <field name="name">Send SMS List Sequence</field>
+        <field name="code">send.sms.list</field>
+        <field name="prefix">SL/</field>
+        <field name="padding">3</field>
+    </record>
+</odoo>

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="ucp_program_wise_fin_summary_wiz_view_form" model="ir.ui.view">
+        <field name="name">ucp.program.wise.fin.summary.wiz.form</field>
+        <field name="model">program.wise.fin.summary.wiz</field>
+        <field name="inherit_id" ref="odoocms_fee.program_wise_fin_summary_wiz_view_form"/>
+        <field name="arch" type="xml">
+            <field name="program_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="program_id" position="after">
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create':True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+            </field>
+
+            <xpath expr="//group[@name='main_group']" position="after">
+                <group name="ucp_fin_sum_rep_main_group1">
+                    <group name="group_1">
+                        <field name="main_challan"/>
+                        <field name="second_challan"/>
+                        <field name="admission_challan"/>
+                        <field name="admission_2nd_challan"/>
+                    </group>
+                    <group name="group_2">
+                        <field name="add_drop_challan"/>
+                        <field name="prospectus_challan"/>
+                        <field name="hostel_challan"/>
+                        <field name="misc_challan"/>
+                    </group>
+                </group>
+
+                <notebook>
+                    <page name="institute_ids" string="Faculties">
+                        <field name="institute_ids" options="{'no_create':True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}">
+                            <tree>
+                                <field name="code"/>
+                                <field name="name"/>
+                                <field name="campus_id"/>
+                                <field name="phone"/>
+                                <field name="email"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                    <page name="program_ids" string="Programs">
+                        <field name="program_ids" options="{'no_create':True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}">
+                            <tree>
+                                <field name="code"/>
+                                <field name="name"/>
+                                <field name="career_id"/>
+                                <field name="department_id"/>
+                                <field name="discipline_id"/>
+                                <field name="active"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                    <page name="term_ids" string="Terms">
+                        <field name="term_ids" options="{'no_create':True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}">
+                            <tree>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="enrollment_active"/>
+                                <field name="current"/>
+                                <field name="type"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+            <xpath expr="//footer/button[@name='print_report']" position="after">
+                <button name="make_excel" string="Generate Excel Report" type="object" class="btn-primary"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

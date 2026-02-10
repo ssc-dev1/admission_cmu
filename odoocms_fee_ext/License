@@ -1,0 +1,108 @@
+SOFTWARE LICENCE AGREEMENT
+==========================
+
+This AGREEMENT is made effective on the date of the purchase of the software
+between AARSOL Pvt. Ltd., Company incorporated under the Companies Oridance, 1984 
+(hereinafter referred to as “Licensor"), and the purchaser of the 
+software/ product (hereinafter referred to as "Licensee").
+
+PREAMBLE
+--------
+
+Licensor is a software deveolpment organization engaged in the
+business of developing software for enterprise level businesses. 
+OdooCMS is the core product solely developed by AARSOL by using the Odoo framework. 
+It is an ISO certified organization having a team of more than 50 creative engineers which come from different
+backgrounds. It has developed more than 50 extensions and apps in the
+past few years for open source platforms which are used and trusted globally. 
+Licensee now wishes to obtain license, and Licensor wishes to grant a license, 
+to allow use of the software subject to the terms and conditions set forth herein.
+
+THEREFORE, with the intent to be legally bound, the parties hereby agree as follows:
+
+DEFINITIONS.
+-----------
+
+As used in this Agreement, the following capitalized terms shall have the definitions set forth below:
+
+"Derivative Works" are works developed by Licensee, its officers, agents, 
+contractors or employees, which are based upon, in whole or in part, the 
+Source Code and/or the Documentation and may also be based upon and/or 
+incorporate one or more other preexisting works of the Licensor. Derivative 
+Works may be any improvement, revision, modification, translation (including 
+compilation or recapitulation by computer), abridgment, condensation, 
+expansion, or any other form in which such a preexisting work may be recast, 
+transformed, or adapted.  For purposes hereof, a Derivative Work shall also 
+include any compilation that incorporates such a preexisting work.
+
+"Documentation" is written, printed or otherwise recorded or stored (digital 
+or paper) material relating to the Software and/or Source Code, including 
+technical specifications and instructions for its use including Software/ 
+Source Code annotations and other descriptions of the principles of its 
+operation and instructions for its use.
+
+"Improvements" shall mean, with respect to the Software, all modifications and 
+changes made, developed, acquired or conceived after the date hereof and 
+during the entire term of this Agreement.
+
+"Source Code" is the computer programming source code form of the Software in 
+the form maintained by the Licensor, and includes all non-third-party 
+executables, libraries, components, and Documentation created or used in the 
+creation, development, maintenance, and support of the Software as well as all 
+updates, error corrections and revisions thereto provided by Licensor, in 
+whole or in part.
+
+SOFTWARE LICENSE.
+-----------------
+
+This license covers all Odoo modules for CMS & ERP, software, and associated documentation
+(collectively known as the “Software”) developed by AARSOL Pvt. Ltd.
+
+AARSOL Pvt. Ltd. provides the licensee (the “User”) with a non-exclusive, non-transferable license to 
+employ the Software for internal business purposes in accordance with the terms and conditions outlined below.
+
+The right and license does not authorize the Licensee to share any backup 
+or archival copies of the Software and / or the Source Code and Documentation 
+on any public internet space including github , stackoverflow etc . The 
+Licensee must ensure that the backup are not accessible to any other person 
+and the Licensee must prevent copying / use of source code by any unauthorized 
+persons.
+
+The right and license does not authorize the Licensee to migrate the 
+domain license to another domain.
+
+RESTRICTIONS.
+-------------
+
+The User agrees to adhere to the following stipulations:
+
+No Sharing: The Software, or any segment of it, must not be shared, distributed,
+or sub-licensed without the explicit written consent of AARSOL Pvt. Ltd.
+
+Intellectual Property Rights: AARSOL Pvt. Ltd. retains all intellectual property rights associated with the Software at all times.
+
+No Duplication or Commercial Use: The User is prohibited from copying, selling, or using the Software for personal or commercial benefit
+without prior written authorization from AARSOL Pvt. Ltd.
+
+No Modifications Permitted: The Software must not be altered, modified, or adapted in any way, including but not limited to
+reverse engineering, de-compiling, or disassembling.
+
+Authorized Usage Only: The User may only use the Software for the business purposes for which it was originally intended.
+Any unauthorized use, including copying or utilizing the code for purposes outside the original intent, is strictly forbidden.
+
+FORCE MAJEURE.
+--------------
+
+The Licensor will not be liable for any delay or failure to perform any of its
+obligations under this Agreement by reasons, events or other matters beyond 
+its reasonable control.
+
+Disclaimer of Warranty
+----------------------
+
+THE SOFTWARE IS OFFERED "AS IS" WITHOUT ANY WARRANTIES, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. AARSOL PVT. LTD. WILL NOT BE LIABLE FOR ANY DAMAGES THAT MAY RESULT FROM THE USE
+OR INABILITY TO USE THE SOFTWARE.
+
+
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_admission_register_form_inherit" model="ir.ui.view">
+            <field name="name">view.odoocms.admission.register.form.inherit</field>
+            <field name="model">odoocms.admission.register</field>
+            <field name="inherit_id" ref="odoocms_admission.view_odoocms_admission_register_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//sheet/group/group/field[@name='enable_admission_challan']" position="after">
+                    <field name="semester_start_date"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

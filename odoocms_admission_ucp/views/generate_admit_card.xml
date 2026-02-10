@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="generate_admit_card_view_form" model="ir.ui.view">
+        <field name="name">generate_admit_card_view_form</field>
+        <field name="model">generate.admit.card</field>
+        <field name="arch" type="xml">
+            <form string="generate_admit_card_form">
+                <header>
+                    <button type="object" name="generate_admit_card" string="Generate Admit Card"
+                            class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="register_id" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="generate_admit_card_action" model="ir.actions.act_window">
+        <field name="name">generate.admit.card</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">generate.admit.card</field>
+        <field name="view_mode">form</field>
+    </record>
+    <!--<menuitem id="generate_admit_card_menu" name="Generate Admit Card" action="generate_admit_card_action"
+              sequence="270"
+              parent="admission_entry_test_menu"/>-->
+</odoo>

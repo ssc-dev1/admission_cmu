@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="fee_challan_print_form_wiz_view" model="ir.ui.view">
+        <field name="name">fee.challan.print.form.wiz.view</field>
+        <field name="model">fee.challan.print.form.wiz</field>
+        <field name="arch" type="xml">
+            <form string="Challan Print Form">
+                <group>
+                    <group>
+                        <field name="challan_type" required="1"/>
+                        <field name="term_id" required="1"
+                               options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>
+                        <field name="student_id_domain" invisible="1"/>
+                        <field name="student_id" domain="student_id_domain"
+                               options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>
+                        <field name="registration_no" attrs="{'invisible':[('student_id','!=',False)]}"/>
+                        <field name="installment_no" attrs="{'invisible':[('challan_type','!=','installment')]}"/>
+
+                        <field name="challan_no_domain" invisible="1"/>
+                        <field name="challan_no" domain="challan_no_domain"
+                               options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="action_open_print_challan_form" string="Show" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn btn-sm btn-default" special="cancel"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fee_challan_print_form_wiz" model="ir.actions.act_window">
+        <field name="name">Challan Print Form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fee.challan.print.form.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+            id="menu_fee_challan_print_form_view"
+            action="action_fee_challan_print_form_wiz"
+            name="Challan Print Form"
+            parent="odoocms_fee.menu_student_fee_request_root"
+            sequence="600"/>
+</odoo>

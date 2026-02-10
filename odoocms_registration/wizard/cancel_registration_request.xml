@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+		<record id="view_odoocms_cancel_registration_form" model="ir.ui.view">
+			<field name="name">odoocms.cancel.registration.form</field>
+			<field name="model">odoocms.cancel.registration</field>
+			<field name="arch" type="xml">
+				<form string="Cancel Registration Requests">
+					<group string="Students">
+						<field name="request_ids" nolabel="1" domain="[('state','in',('draft','submit'))]">
+							<tree>
+								<field name="name"/>
+								<field name="student_id"/>
+								<field name="source"/>
+								<field name="cnt"/>
+								<field name="state"/>
+							</tree>
+						</field>
+					</group>
+					<footer>
+						<button name="cancel_requests" string="Cancel Requests" type="object" class="btn-primary"/>
+						<button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+			   </form>
+			</field>
+		</record>
+
+		<record id="act_odoocms_cancel_registration" model="ir.actions.act_window">
+            <field name="name">Cancel Registration Requests</field>
+            <field name="res_model">odoocms.cancel.registration</field>
+			<field name="binding_model_id" ref="odoocms_registration.model_odoocms_course_registration"/>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+			<field name="groups_id" eval="[(4, ref('odoocms.group_cms_manager'))]"/>
+        </record>
+
+<!--		<act_window-->
+<!--				id="act_odoocms_cancel_registration"-->
+<!--				name="Cancel Registration Requests"-->
+<!--				binding_model="odoocms.course.registration"-->
+<!--				res_model="odoocms.cancel.registration"-->
+<!--				binding_views="list,form"  view_mode="form"  target="new"-->
+<!--				groups="odoocms.group_cms_manager"/>-->
+
+    </data>
+</odoo>

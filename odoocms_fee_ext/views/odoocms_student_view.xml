@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_student_form_inherit3" model="ir.ui.view">
+            <field name="name">odoocms.student.form.inherit3</field>
+            <field name="model">odoocms.student</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_student_form_inherit2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="scholarship_ids" string="Scholarship Eligibility">
+                        <field name="scholarship_eligibility_ids" readonly="0">
+                            <tree editable="bottom">
+                                <field name="scholarship_id"/>
+                                <field name="applied_term_id"/>
+                                <field name="program_term_scholarship_id" optional="hide"/>
+                                <field name="scholarship_value"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="applied_scholarship_ids" string="Applied Scholarship">
+                        <field name="applied_scholarship_ids" readonly="1">
+                            <tree>
+                                <field name="sequence" widget="handle"/>
+                                <field name="scholarship_id"/>
+                                <field name="scholarship_percentage"/>
+                                <field name="term_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="log" string="Log">
+                        <field name="log" readonly="1"/>
+                    </page>
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='receipt_type_ids']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='receipt_type_ids']" position="after">
+                    <field name="challan_type"/>
+                    <field name="installment_no" optional="hide"/>
+                    <field name="add_drop_no" optional="hide"/>
+                </xpath>
+
+
+                <xpath expr="//page[@name='othersettings']/group/group[1]" position="after">
+                    <group>
+                        <field name="scholarship_id" groups="base.group_no_one"/>
+                        <field name="scholarship_policy_id" groups="base.group_no_one"/>
+                        <field name="scholarship_policy_line_id" groups="base.group_no_one"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

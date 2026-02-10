@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_odoocms_course_registration_tree" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.tree</field>
+            <field name="model">odoocms.course.registration</field>
+            <field name="arch" type="xml">
+                <tree string="Course Enrollment" delete="false">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="program_id"/>
+                    <field name="term_id"/>
+                    <field name="limit_error" optional="hide"/>
+                    <field name="source"/>
+                    <field name="cnt"/>
+                    <field name="bulk_id" optional="hide"/>
+                    <field name="other_request_id" optional="hide"/>
+                    <field name="reg_date" optional="hide"/>
+                    <field name="date_effective" optional="hide"/>
+                    <field name="enrollment_type" optional="hide"/>
+                    <field name="add_drop_request" optional="hide"/>
+                    <field name="add_drop_request_no_txt" optional="hide"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_form" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.form</field>
+            <field name="model">odoocms.course.registration</field>
+            <field name="arch" type="xml">
+                <form string="Course Enrollment" delete="false">
+                    <header>
+<!--                        <button name="action_invoice" string="Make Invoice" type="object" class="oe_highlight"-->
+<!--                                attrs="{'invisible': [('can_invoice', '=', False)]}"-->
+<!--                                groups="odoocms.group_cms_manager"/>-->
+                        <button name="web_registration" string="Web Registration" type="object" class="oe_highlight"
+                                states="draft" groups="odoocms.group_cms_coordinator,odoocms.group_cms_advisor"/>
+                        <button name="action_submit" string="Submit" type="object" class="oe_highlight"
+                                attrs="{'invisible':['|',('error','!=',False),('state','!=','draft')]}"/>
+                        <button name="action_approve" string="Approve" type="object" class="oe_highlight"
+                                states="submit" groups="odoocms.group_cms_coordinator,odoocms.group_cms_advisor"/>
+                        <button name="action_part_approve" string="Approve - Partial" type="object" class="oe_highlight"
+                                states="part_approved" groups="odoocms.group_cms_coordinator,odoocms.group_cms_advisor"/>
+<!--                        attrs="{'invisible': [('can_approve', '=', False)]}"-->
+                        <button name="action_reject" string="Reject" type="object" class="oe_highlight"
+                                states="submit,error" groups="odoocms.group_cms_coordinator,odoocms.group_cms_advisor"/>
+                        <button name="action_cancel" string="Cancel" type="object"
+                                states="draft,submit,error" groups="odoocms.group_cms_coordinator,odoocms.group_cms_advisor"/>
+                        <button name="action_reset_draft" string="Reset to Draft" class="oe_highlight" states="submit,error,rejected,cancel"
+                                type="object"/>
+                        <button name="action_retest_limits" string="Retest" type="object"
+                            attrs="{'invisible':[('error','=',False)]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,submit,approved"/>
+                        <field name="can_approve" invisible="1"/>
+<!--                        <field name="can_invoice" invisible="1"/>-->
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="student_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="program_id"
+                                    options="{'no_open': True, 'no_create': True}"/>
+                                <field name="term_id" domain="[('enrollment_active','=',True)]"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                            <group>
+                                <field name="last_date"/>
+                                <field name="reg_date"/>
+                                <field name="date_effective" required="1"/>
+                                <field name="new_courses"/>
+                            </group>
+                            <group>
+                                <field name="register_backend"/>
+                                <field name="override_max_limit" groups="odoocms.group_cms_override"/>
+                                <field name="override_prereq" groups="odoocms.group_cms_override"/>
+                                <field name="bypass_probation" groups="odoocms.group_cms_override"/>
+                                <field name="bypass_date" groups="odoocms.group_cms_override"/>
+                            </group>
+                            <group>
+                                <field name="source" readonly="1"/>
+                                <field name="other_request_id" readonly="1"/>
+                                <field name="limit_error" invisible="1" force_save="1"/>
+                                <field name="bulk_id" readonly="1"
+                                       attrs="{'invisible':[('bulk_id','=',False)]}"/>
+                                <field name="enrollment_type" readonly="1"/>
+                                <field name="add_drop_request" readonly="1"/>
+                                <field name="add_drop_request_no_txt" readonly="1"
+                                    attrs="{'invisible': [('add_drop_request','=',False)]}"/>
+                            </group>
+                        </group>
+
+                        <group attrs="{'invisible':[('limit_error','=',False)]}">
+                            <h3>
+                                <field name="limit_error_text" class="text-danger" readonly="1" force_save="1"/>
+                            </h3>
+                        </group>
+                         <group>
+                            <h3>
+                                <field name="error" class="text-danger" readonly="1" attrs="{'invisible':[('error','=',False)]}" force_save="1"/>
+                            </h3>
+                        </group>
+
+                        <div attrs="{'invisible':[('registered_course_ids','=',[])]}">
+                            <separator string="Registered Courses" colspan="2"/>
+                            <field name="registered_course_ids" widget="many2many_tags"/>
+                        </div>
+                        <!--                        <button name="get_courses" type="object" string="Get Courses" class="oe_highlight"/>-->
+                        <div attrs="{'invisible':['|','|',('error','!=',False),('state','!=','draft'),('source','=','portal')]}">
+                           <group attrs="{'invisible': [('new_courses','=',False)]}">
+                                <field name="compulsory_course_ids" widget="many2many_tags"
+                                       domain="[('id','in',comp_domain)]"
+                                       context="{
+                                            'search_default_academic_session':1,
+                                            'search_default_batch':1,
+                                            'search_default_section':1,}"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                />
+                            </group>
+
+                            <group attrs="{'invisible': [('new_courses','=',False)]}">
+                                <field name="elective_course_ids" widget="many2many_tags"
+                                       domain="[('id','in', elec_domain)]"
+                                       context="{
+                                            'search_default_academic_session':1,
+                                            'search_default_batch':1,
+                                            'search_default_section':1,}"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                />
+                            </group>
+
+                            <group attrs="{'invisible': [('new_courses','=',False)]}">
+                                <field name="spec_course_ids" widget="many2many_tags"
+                                       domain="[('id','in', spec_domain)]"
+                                       context="{
+                                            'search_default_academic_session':1,
+                                            'search_default_batch':1,
+                                            'search_default_section':1,}"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                />
+                            </group>
+
+                            <group attrs="{'invisible': [('repeat_domain_bool','=',False)]}">
+                                <field name="repeat_course_ids" widget="many2many_tags" string="Failed Repeat Courses"
+                                       domain="[('id','in', repeat_domain)]"
+                                       context="{
+                                            'search_default_academic_session':1,
+                                            'search_default_batch':1,
+                                            'search_default_section':1,}"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                />
+                            </group>
+
+                            <group attrs="{'invisible': [('improve_domain_bool','=',False)]}">
+                                <field name="improve_course_ids" widget="many2many_tags" string="Improve Repeat Courses"
+                                       domain="[('id','in', improve_domain)]"
+                                       context="{
+                                            'search_default_academic_session':1,
+                                            'search_default_batch':1,
+                                            'search_default_section':1,}"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                />
+                            </group>
+
+                            <group attrs="{'invisible': [('additional_domain_bool','=',False)]}">
+                                <field name="additional_course_ids" widget="many2many_tags"
+                                       domain="[('id','in', additional_domain)]"
+                                       context="{
+                                            'search_default_academic_session':1,
+                                            'search_default_batch':1,
+                                            'search_default_section':1,}"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                />
+                            </group>
+
+                            <group attrs="{'invisible': [('alternate_domain_bool','=',False)]}">
+                                <field name="alternate_course_ids" widget="many2many_tags"
+                                       domain="[('id','in', alternate_domain)]"
+                                       context="{
+                                            'search_default_academic_session':1,
+                                            'search_default_batch':1,
+                                            'search_default_section':1,}"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                />
+                            </group>
+
+                            <group attrs="{'invisible': [('minor_domain_bool','=',False)]}">
+                                <field name="minor_course_ids" widget="many2many_tags"
+                                       domain="[('id','in', minor_domain)]"
+                                       context="{
+                                            'search_default_academic_session':1,
+                                            'search_default_batch':1,
+                                            'search_default_section':1,}"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                />
+                            </group>
+                        </div>
+                        <div attrs="{'invisible':[('state','=','draft'),('source','!=','portal')]}">
+                            <separator string="Courses to Register" colspan="2"
+                                attrs="{'invisible': [('add_drop_request','=',True)]}"/>
+                            <separator string="Courses to Add/Drop" colspan="2"
+                                attrs="{'invisible': [('add_drop_request','=',False)]}"/>
+                            <field name="line_ids" readonly="1">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="primary_class_id"/>
+                                    <field name="course_id" optional="hide"/>
+                                    <field name="course_type"/>
+                                    <field name="credits" sum='Total Credit Hours'/>
+                                    <field name="scope"/>
+                                    <field name="course_batch_id" optional="hide"/>
+                                    <field name="course_program_id" optional="hide"/>
+                                    <field name="course_institute_id" optional="show"/>
+                                    <field name="student_course_id" optional="show"/>
+                                    <field name="action" optional="show"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                            <separator string="Failed to Register" colspan="2" attrs="{'invisible': ['|',('failed_line_ids','=',False),('failed_line_ids','=',[])]}"/>
+                            <field name="failed_line_ids" readonly="1" attrs="{'invisible': ['|',('failed_line_ids','=',False),('failed_line_ids','=',[])]}">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="primary_class_id"/>
+                                    <field name="course_type"/>
+                                    <field name="credits" sum='Total Credit Hours'/>
+                                    <field name="scope"/>
+                                    <field name="course_batch_id" optional="hide"/>
+                                    <field name="course_program_id" optional="hide"/>
+                                    <field name="course_institute_id" optional="show"/>
+                                    <field name="error" optional="show"/>
+                                    <field name="action" optional="show"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </div>
+                        <field name="comp_domain" invisible="1"/>
+                        <field name="elec_domain" invisible="1"/>
+                        <field name="spec_domain" invisible="1"/>
+                        <field name="repeat_domain" invisible="1"/>
+                        <field name="improve_domain" invisible="1"/>
+                        <field name="additional_domain" invisible="1"/>
+                        <field name="alternate_domain" invisible="1"/>
+                        <field name="minor_domain" invisible="1"/>
+                        <field name="repeat_domain_bool" invisible="1"/>
+                        <field name="improve_domain_bool" invisible="1"/>
+                        <field name="additional_domain_bool" invisible="1"/>
+                        <field name="alternate_domain_bool" invisible="1"/>
+                        <field name="minor_domain_bool" invisible="1"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_search" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.search</field>
+            <field name="model">odoocms.course.registration</field>
+            <field name="arch" type="xml">
+                <search string="Course Enrollment">
+                    <field name="student_id"/>
+                    <field name="name"/>
+                    <field name="program_id"/>
+                    <field name="term_id"/>
+                    <newline/>
+                    <filter name='over_limit' string="Over Limit" domain="[('limit_error','=',True)]"/>
+                    <filter name='portal' string="Portal" domain="[('source','=','portal')]"/>
+                    <filter name='office' string="Back Office" domain="[('source','=','office')]"/>
+                    <filter name='bulk' string="Bulk" domain="[('source','=','bulk')]"/>
+                    <newline/>
+                    <filter name='generate_fee_filter' string="Fee to Generate" domain="[('generate_fee','=',True)]"/>
+                    <filter name='restrict_to_main_filter' string="Restrict to Main" domain="[('restrict_to_main','=',True)]"/>
+                    <newline/>
+                    <filter name='to_approve' string="To Approve" domain="[('state','=','submit')]"/>
+                    <filter name='add_drop_request_filter' string="Add Drop Request" domain="[('add_drop_request','=',True)]"/>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_by_program" string="Program" domain="[]" context="{'group_by':'program_id'}"/>
+                        <filter name="group_by_institute" string="Institute/Faculty" domain="[]" context="{'group_by':'institute_id'}"/>
+                        <filter name="group_by_batch" string="Batch" domain="[]" context="{'group_by':'batch_id'}"/>
+                        <filter name="group_by_semester" string="Academic Term" domain="[]"
+                                context="{'group_by':'term_id'}"/>
+                        <filter name="group_by_source" string="Source" domain="[]" context="{'group_by':'source'}"/>
+                        <filter name="group_by_enrollment_type" string="Enrollment Type" domain="[]" context="{'group_by':'enrollment_type'}"/>
+                        <filter name="group_by_reg_date" string="Enrollment Date" domain="[]" context="{'group_by':'reg_date'}"/>
+                        <filter name="group_by_date_effective" string="Effective Date" domain="[]" context="{'group_by':'date_effective'}"/>
+                        <filter name="group_by_status" string="Status" domain="[]" context="{'group_by':'state'}"/>
+                        <filter name="add_drop_request_no" string="Add Drop Request" domain="[]" context="{'group_by':'add_drop_request_no_txt'}"/>
+                    </group>
+
+                    <searchpanel>
+                        <field name="term_id" icon="fa-users"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_line_tree" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.line.tree</field>
+            <field name="model">odoocms.course.registration.line</field>
+            <field name="arch" type="xml">
+                <tree string="Course Enrollment Lines" delete="false">
+                    <field name="registration_id"/>
+                    <field name="student_id"/>
+                    <field name="program_id" optional="hide"/>
+                    <field name="department_id" optional="hide"/>
+                    <field name="batch_id" optional="hide"/>
+                    <field name="term_id"/>
+                    <field name="primary_class_id"/>
+                    <field name="course_id"/>
+                    <field name="course_type" optional="hide"/>
+                    <field name="credits" optional="hide"/>
+                    <field name="scope" optional="hide"/>
+                    <field name="action" optional="hide"/>
+                    <field name="state"/>
+                    <field name="sequence" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_line_pivot" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.line.pivot</field>
+            <field name="model">odoocms.course.registration.line</field>
+            <field name="arch" type="xml">
+                <pivot string="Course Enrollment Lines" display_quantity="true">
+                    <field name="program_id" type="row"/>
+                    <field name="credits" type="col"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_line_search" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.line.search</field>
+            <field name="model">odoocms.course.registration.line</field>
+            <field name="arch" type="xml">
+                <search string="Course Enrollment Lines">
+                    <field name="student_id"/>
+                    <field name="program_id"/>
+                    <field name="term_id"/>
+                    <newline/>
+                    <filter name='to_approve' string="To Approve" domain="[('state','=','submit')]"/>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_by_program" string="Program" domain="[]" context="{'group_by':'program_id'}"/>
+                        <filter name="group_by_term" string="Academic Term" domain="[]" context="{'group_by':'term_id'}"/>
+                        <filter name="group_by_primary_class" string="Primary Class" domain="[]" context="{'group_by':'primary_class_id'}"/>
+                        <filter name="group_by_course" string="Course" domain="[]" context="{'group_by':'course_id'}"/>
+                        <filter name="group_by_course_type" string="Course Type" domain="[]" context="{'group_by':'course_type'}"/>
+                        <filter name="group_by_scope" string="Scope" domain="[]" context="{'group_by':'scope'}"/>
+                        <filter name="group_by_action" string="Action" domain="[]" context="{'group_by':'action'}"/>
+                        <filter name="group_by_status" string="Status" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="action" icon="fa-users"/>
+                        <field name="scope" icon="fa-users"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_line_form" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.line.form</field>
+            <field name="model">odoocms.course.registration.line</field>
+            <field name="arch" type="xml">
+                <form string="Course Enrollment Line" delete="false" create="false" edit="false">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,submit,approved"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="student_id"/>
+                                <field name="primary_class_id"/>
+                                <field name="course_type"/>
+                                <field name="credits"/>
+                                <field name="action" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="scope"/>
+                                <field name="course_batch_id"/>
+                                <field name="course_program_id"/>
+                                <field name="course_institute_id"/>
+                            </group>
+                            <group>
+                                <field name="cross_id"/>
+                            </group>
+                            <group>
+                                <field name="student_course_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_cross_form" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.cross.form</field>
+            <field name="model">odoocms.course.registration.cross</field>
+            <field name="arch" type="xml">
+                <form string="Cross Course Enrollment" delete="false" create="false" edit="false">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,submit,approved"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="student_id"/>
+                                <field name="batch_id"/>
+                                <field name="program_id"/>
+                                <field name="department_id"/>
+                            </group>
+                            <group>
+                                <field name="primary_class_id"/>
+                                <field name="course_code"/>
+                                <field name="credits"/>
+                                <field name="course_type"/>
+                            </group>
+                            <group>
+                                <field name="course_batch_id"/>
+                                <field name="course_program_id"/>
+                                <field name="course_institute_id"/>
+                            </group>
+                            <group>
+                                <field name="registration_line_id"/>
+                                <field name="student_course_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_cross_kanban" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.cross.kanban</field>
+            <field name="model">odoocms.course.registration.cross</field>
+            <field name="arch" type="xml">
+                <kanban class="odoocms_student_kanban">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="primary_class_id"/>
+                    <field name="batch_id"/>
+                    <field name="course_type"/>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click  o_res_partner_kanban">
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title oe_partner_heading">
+                                        <field name="name"/>
+                                    </strong>
+                                    <ul>
+                                        <li t-if="record.student_id.raw_value">
+                                            Student:
+                                            <field name="student_id"/>
+                                        </li>
+                                        <li t-if="record.batch_id.raw_value">
+                                            Batch:
+                                            <field name="batch_id"/>
+                                        </li>
+                                        <li t-if="record.primary_class_id.raw_value">
+                                            Class:
+                                            <field name="primary_class_id"/>
+                                        </li>
+                                        <li t-if="record.course_type.raw_value">
+                                            Type:
+                                            <field name="course_type"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_cross_search" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.cross.search</field>
+            <field name="model">odoocms.course.registration.cross</field>
+            <field name="arch" type="xml">
+                <search string="Cross Enrollment">
+                    <field name="name"/>
+                    <newline/>
+                    <filter name='with_activity' string="Activities" domain="[('activity_ids','!=',False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_cross_office_tree" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.cross.office.tree</field>
+            <field name="model">odoocms.course.registration.cross.office</field>
+            <field name="arch" type="xml">
+                <tree string="Cross Institute Enrollment" delete="false">
+                    <field name="name"/>
+                    <field name="reg"/>
+                    <field name="student_id"/>
+                    <field name="primary_class_id"/>
+                    <field name="credits"/>
+                    <field name="course_type"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_cross_office_form" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.cross.office.form</field>
+            <field name="model">odoocms.course.registration.cross.office</field>
+            <field name="arch" type="xml">
+                <form string="Cross Institute Enrollment">
+                    <header>
+                        <button name="action_submit" string="Submit" type="object" class="oe_highlight"
+                                attrs="{'invisible':['|',('error','!=',False),('state','!=','draft')]}"
+                                groups="odoocms.group_cms_user"/>
+                        <button name="action_register" string="Register" type="object" class="oe_highlight"
+                                states="submit"
+                                groups="odoocms.group_cms_coordinator"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <h3>
+                                <field name="error" class="text-danger" readonly="1" attrs="{'invisible':[('error','=',False)]}" force_save="1"/>
+                            </h3>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="reg"/>
+                                <field name="student_id"/>
+                                <field name="batch_id"/>
+                                <field name="program_id"/>
+                                <field name="department_id"/>
+                            </group>
+                            <group>
+                                <field name="term_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="primary_class_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                    domain="[('term_id','=',term_id)]"/>
+                                <field name="course_code"/>
+                                <field name="credits"/>
+                                <field name="course_type"/>
+                            </group>
+                            <group>
+                                <field name="course_batch_id"/>
+                                <field name="course_program_id"/>
+                                <field name="course_institute_id"/>
+                            </group>
+                            <group>
+                                <field name="student_course_id"/>
+                            </group>
+                            <group>
+                                <field name="reg_date"/>
+                                <field name="date_effective"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_odoocms_course_registration_cross" model="ir.actions.act_window">
+            <field name="name">Cross Enrollment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoocms.course.registration.cross</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_odoocms_course_registration_cross_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{
+                'search_default_with_activity':1,
+                }</field>
+        </record>
+
+        <record id="action_odoocms_course_registration_cross_office" model="ir.actions.act_window">
+            <field name="name">Cross Institute Enrollment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoocms.course.registration.cross.office</field>
+            <field name="view_mode">kanban,tree,form</field>
+<!--            <field name="search_view_id" ref="view_odoocms_course_registration_cross_search"/>-->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record id="action_odoocms_course_registration" model="ir.actions.act_window">
+            <field name="name">Course Enrollment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoocms.course.registration</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_odoocms_course_registration_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{
+                'search_default_portal':1,
+                'search_default_office':1,
+                'search_default_to_approve':1,
+                }</field>
+        </record>
+
+        <record id="action_odoocms_course_registration_line" model="ir.actions.act_window">
+            <field name="name">Course Enrollment Lines</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoocms.course.registration.line</field>
+            <field name="view_mode">tree,pivot</field>
+            <field name="search_view_id" ref="view_odoocms_course_registration_line_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record id="view_odoocms_course_registration_must_search" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.must.search</field>
+            <field name="model">odoocms.course.registration.must</field>
+            <field name="arch" type="xml">
+                <search string="Cross Registration - MUST">
+                    <filter name='active' string="Active" domain="[('active','=',True)]"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_by_term" string="Term" domain="[]" context="{'group_by':'term_id'}"/>
+                        <filter name="group_by_batch" string="Batch" domain="[]" context="{'group_by':'batch_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_must_tree" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.must.tree</field>
+            <field name="model">odoocms.course.registration.must</field>
+            <field name="priority" eval="30"/>
+            <field name="arch" type="xml">
+                <tree string="Registration - MUST" editable="bottom">
+                    <field name="term_id"
+                        options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    <field name="batch_id"
+                        options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    <field name="course_id"
+                        options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_odoocms_course_registration_must" model="ir.actions.act_window">
+            <field name="name">Course Registration - MUST</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoocms.course.registration.must</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="view_odoocms_course_registration_must_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_course_registration"
+                name="Course Enrollment"
+                action="action_odoocms_course_registration"
+                parent="menu_odoocms_registration_registration"
+                sequence="10"/>
+
+        <menuitem
+                id="menu_odoocms_course_registration_line"
+                name="Course Enrollment Lines"
+                action="action_odoocms_course_registration_line"
+                parent="menu_odoocms_registration_registration"
+                sequence="15"/>
+
+        <menuitem
+                id="menu_odoocms_course_registration_cross_office"
+                name="Cross Institute Enrollment"
+                action="action_odoocms_course_registration_cross_office"
+                parent="menu_odoocms_registration_registration"
+                sequence="20"/>
+
+        <menuitem
+                id="menu_odoocms_course_registration_must"
+                name="Course Registration - MUST"
+                action="action_odoocms_course_registration_must"
+                parent="menu_registration_configuration"
+                sequence="400"/>
+
+
+    </data>
+</odoo>

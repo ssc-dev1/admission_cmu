@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="odoocms_fee_ucp.student_fee_letter_template">
+            <t t-call="web.basic_layout">
+                <t t-if="not company">
+                    <t t-if="company_id">
+                        <t t-set="company" t-value="company_id"/>
+                    </t>
+                    <t t-elif="o and 'company_id' in o">
+                        <t t-set="company" t-value="o.company_id.sudo()"/>
+                    </t>
+                    <t t-else="else">
+                        <t t-set="company" t-value="res_company"/>
+                    </t>
+                </t>
+
+                <style>
+                    #invoice-info {
+                    font-family: Times New Roman,Times,serif, Arial, Helvetica, sans-serif;
+                    border-collapse: collapse;
+                    width: 100%;
+                    margin: 0%;
+                    }
+
+                    #invoice-info td, #invoice-info th {
+                    border: 1px solid #ddd;
+                    padding: 1px, 3px, 1px, 3px;
+                    }
+
+                    #invoice-info th {
+                    text-align: left;
+                    width:60%;
+                    font-weight:normal;
+                    }
+
+
+                    #invoice-info td {
+                    text-align: right;
+                    width:40%;
+                    }
+
+
+                    #invoice-report {
+                    font-family: Times New Roman,Times,serif, Arial, Helvetica, sans-serif;
+                    border-collapse: collapse;
+                    width: 98%;
+                    margin: 1.5%;
+                    }
+
+                    #invoice-report td, #invoice-report th {
+                    border: 1px solid #ddd;
+                    padding: 2px;
+                    }
+
+                    #invoice-report th {
+                    text-align: left;
+                    width:60%;
+                    font-weight:normal;
+                    }
+
+
+                    #invoice-report td {
+                    text-align: right;
+                    width:40%;
+                    }
+
+
+                    #invoice-report-student-info {
+                    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                    border-collapse: collapse;
+                    width: 98%;
+                    margin: 1.5%;
+                    }
+
+                    #invoice-report-student-info td, #invoice-report-student-info th {
+                    border: 1px solid #ddd;
+                    padding: 3px;
+                    }
+
+                    #invoice-report-student-info th {
+                    text-align: left;
+                    width:40%;
+                    font-weight:bold;
+                    }
+                    #invoice-report-student-info td {
+                    text-align: right;
+                    width:60%;
+                    }
+
+                    .bottom-center {
+                    position: absolute;
+                    left: 25%;
+                    bottom: 0;
+                    }
+
+                    .watermark {
+                    position: absolute;
+                    top: 20%;
+                    left: 40%;
+                    transform: translate(-50%, -50%);
+                    font-size: 100px;
+                    color: #ccc;
+                    opacity: 0.1;
+                    z-index: -1;
+                    transform:rotate(200deg);
+                    -webkit-transform:rotate(320deg);
+                    }
+                </style>
+
+                <div class="row">
+                </div>
+                <div>
+                    <strong>
+                        <h3 style="text-align:center">
+                            <strong>TO WHOM IT MAY CONCERN</strong>
+                        </h3>
+                    </strong>
+
+                </div>
+                <p style="margin-left:50px;font-size:18px">
+                    It is certified that Ms. Sarah Zafar, Registration No. L1F22BSCS0023 is a bonafide student of
+                    Faculty of Information Technology and Computer Science, University of Central Punjab.
+                    During her studies she has paid the dues as detailed below:
+                </p>
+
+
+            </t>
+
+        </template>
+
+    </data>
+</odoo>

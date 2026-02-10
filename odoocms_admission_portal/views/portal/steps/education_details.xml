@@ -1,0 +1,538 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="education_details" name="Educations">
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/steps/education.js"></script>
+
+        <!-- Fourth Page Education Detail   -->
+        <div id='education_header_tab' class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" onclick="$('#collapse4').slideToggle(1000); $('#angle_class4').toggleClass('fa-angle-down fa-angle-up');">
+            <a class="btn btn-link">
+                <i style='color: white;font-size: 25px;' class="fa-solid fa-book float-left"></i>
+                <h2 style='color:white' class="float-left">&#160;&#160;<t t-esc="step.name"/>
+                </h2>
+            </a>
+            <a>
+                <i id='angle_class4' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+            </a>
+        </div>
+        <div id="collapse4" class="row container-fluid mt-2 collapse_div">
+            <div>
+                <h5 style="text-align: center; margin: 20px 0;">
+    Please start the academic entry from Secondary Education (Matric/O-Levels/Equivalent).
+                </h5>
+            </div>
+            <br/>
+            <div class='col-10 ml-1'>
+                <div class='container-fluid mt-3 mb-3'>
+                    <div class="table-responsive-sm">
+                        <table id='education_table' class="table table-lg table-hover">
+                            <thead>
+                                <tr>
+                                    <th class='col-auto text-align-center' scope="col">Degree Name</th>
+                                    <th class='col-auto text-align-center' scope="col">Specialization</th>
+                                    <th class='col-auto text-align-center' scope="col">Institute</th>
+                                    <th class='col-auto text-align-center' scope="col">Percentage/CGPA</th>
+                                    <th class='col-auto text-align-center' scope="col">Result Status</th>
+                                    <th class='col-auto text-align-center' scope="col">Attachment</th>
+                                    <th class='col-auto text-align-center' scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id='education_table_body'>
+                                <t t-foreach="(application_id.applicant_academic_ids).sorted(lambda x: x.degree_name.year_age)" t-as="edu">
+                                    <tr t-att-degree_level='edu.degree_level_id.name' t-att-id='edu.id'>
+                                        <input type="hidden" id="degree_level_id" t-att-value='edu.degree_level_id.id'/>
+                                        <input type="hidden" id="roll_no_tab" t-att-value='edu.roll_no'/>
+                                        <input type="hidden" id="degree_name" t-att-degree_name='edu.degree_name.name' t-att-value='edu.degree_name.id'/>
+                                        <input type="hidden" id="group_specialization_name" t-att-group_specialization_name='edu.group_specialization.name' t-att-value='edu.group_specialization.id'/>
+                                        <input type="hidden" id="board_tab" t-att-value='edu.board'/>
+                                        <input type="hidden" id="institute_tab" t-att-value='edu.institute'/>
+                                        <input type="hidden" id="tot_marks" t-att-value='edu.total_marks'/>
+                                        <input type="hidden" id="obt_marks" t-att-value='edu.obt_marks'/>
+                                        <input type="hidden" id="tot_cgpa" t-att-value='edu.total_cgpa'/>
+                                        <input type="hidden" id="obt_cgpa" t-att-value='edu.obtained_cgpa'/>
+                                        <input type="hidden" id="percentage_u" t-att-value='edu.percentage'/>
+                                        <input type="hidden" id="year_edu" t-att-value='edu.year'/>
+                                        <input type="hidden" id="sec_year_roll_no" t-att-value='edu.sec_year_roll_no'/>
+                                        <input type="hidden" id="result_status_update_" t-att-value='edu.result_status'/>
+                                        <td id='subject_marks_td' style='display:none'>
+                                            <t t-foreach="edu.applicant_subject_id" t-as="sub_mark">
+                                                <input type='hidden' t-att-id='sub_mark.name.id' t-att-value='sub_mark.name.name' t-att-total_marks='sub_mark.total_marks' t-att-obtained_marks='sub_mark.obtained_marks'/>
+                                            </t>
+                                        </td>
+
+                                        <td class='col-auto'>
+                                            <input type="text" readonly='1' class="form-control-plaintext col-auto" id="degree_val" t-att-value="edu.degree_name.name"/>
+                                        </td>
+                                        <td class='col-auto'>
+                                            <input type="text" readonly='1' class="form-control-plaintext col-auto" id='group_specialization_educ' t-att-value="edu.group_specialization.name"/>
+                                        </td>
+
+                                        <td class='col-auto'>
+                                            <input type="text" readonly='1' class="form-control-plaintext col-auto" id="institute_td" t-att-value="str(edu.institute) "/>
+                                        </td>
+
+                                        <td class='col-auto'>
+                                            <input type="text" readonly='1' class="form-control-plaintext col-auto" id="percentage_table" t-attf-value="{{str(edu.percentage)+'%'  if edu.percentage > 0 else str(edu.obtained_cgpa)+'CGPA' }}"/>
+                                        </td>
+                                        <td class='col-auto'>
+                                            <input type="text" readonly='1' class="form-control-plaintext col-auto" id="result_status_table" t-att-value="dict(edu.fields_get(allfields=['result_status'])['result_status']['selection'])[edu.result_status]"/>
+                                        </td>
+                                        <td class='col-auto'>
+                                            <a t-attf-href='/file/download/{{edu.id}}/{{edu._name}}'>
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                        </td>
+                                        <td class='col-auto'>
+                                            <div class="row container-fluid">
+                                                <div class="col-4 mx-1">
+                                                    <!-- or edu.result_status == 'waiting' -->
+                                                    <!-- t-if="application_id.state =='draft' " -->
+                                                    <t t-if="application_id.state =='draft' or edu.doc_state == 'rejected' ">
+                                                        <a role='button' id='education_update' t-att-value='edu.id' data-toggle="modal" data-target="#addeducation" data-whatever="@mdo" type="button" class="btn btn-outline-primary color_scheme_class2 p-1" onclick="update_education(this)">
+                                                            <i style='color: white;border:None' class="fa-regular fa-pen-to-square"></i>
+                                                        </a>
+                                                    </t>
+                                                </div>
+                                                <div class="col-4">
+                                                    <a role='button' t-attf-style="{{'display:none' if application_id.state != 'draft' or not len(application_id.applicant_academic_ids) -1 == edu_index else '' }}" id='education_delete' t-att-value='edu.id' type="button" class="btn education_recs btn-outline-primary color_scheme_class2 p-1" t-attf-onclick="delete_education(this,{{application_id.step_no}})">
+                                                        <i style="border:None;color:white; " class="fa-solid fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </t>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <a class="collapse-item">
+                                <span class="btn btn-primary btn-sm color_scheme_class" t-attf-style="border:None; {{'display:none' if application_id.state != 'draft'  else '' }}" data-toggle="modal" onclick="add_education_check()" data-target="#addeducation" data-whatever="@mdo">Add Education
+                                </span>
+                            </a>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="collapse-item">
+                                <span id="btn_save_next_edu" class="btn btn-primary btn-sm color_scheme_class" t-attf-style="border:None; {{'display:none' if application_id.state != 'draft' or not len(application_id.applicant_academic_ids) >= 2 else '' }}" onclick="next_step_check()">Save and Next
+                                </span>
+                            </a>
+                            <input type="hidden" id="step_no_edu_1" t-att-value='counter_step'/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='col-3'></div>
+        </div>
+        <br/>
+        <!-- modal for creating education -->
+        <div class="modal fade" id="addeducation" tabindex="-1" role="dialog" aria-labelledby="addeducationLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content" style="box-shadow: inset 0 0 15px 1px gray;width:100%">
+                    <div class="modal-header color_scheme_class">
+                        <h5 class="modal-title" id="addeducationLabel" style="color:white">Education Update</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class='container'>
+                            <form id="add_education_form" method="post">
+                                <t t-set="editable" t-value="application_id.state == 'draft'"/>
+                                <!-- this field is to check wheateher education is updated or new created -->
+                                <input type="hidden" id='update_education_check' value='0'/>
+                                <input type="hidden" id='step_no_edu' name="step_no" t-att-value='counter_step'/>
+                                <input type='hidden' id='step_name_edu' name='step_name' value='education'></input>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <input class="form-control " type="hidden" t-att-value='application_id.id' name="application_id" t-att-disabled='not editable' id="application_id"/>
+                                        <span for="degree_level" class="form-label-norequired" style="color:black">
+                                            Degree Level*:
+                                        </span>
+                                        <div class="form-group">
+                                            <select class="form-control" required="1" id="degree_level" name="degree_level" t-att-disabled='not editable'>
+                                                <option value='' code='' disabled='1' selected='1'>Select Degree Level
+                                                </option>
+                                                <t t-foreach="academic_data.filtered(lambda x:x.student_type==application_id.applicant_type)" t-as="degree_level">
+                                                    <option t-att-code='degree_level.code' t-att-value="degree_level.id">
+                                                        <t t-esc="degree_level.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <span for="degree_id" class="form-label-norequired" style="color:black">
+                                            Degree*:
+                                        </span>
+                                        <div class="form-group">
+                                            <select class="form-control" required="1" id="degree_id" name="degree_id" t-att-disabled='not editable'>
+                                                <option value='' disabled='1' selected='1'>Select Degree</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <span for="specialization_id" class="form-label-norequired" style="color:black">
+                                            Specializations :
+                                        </span>
+                                        <div class="form-group">
+                                            <select class="form-control" id="specialization_id" required="1" name="specialization_id" t-att-disabled='not editable'>
+                                                <option value='' disabled='1' selected='1'>Select Specializations
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <span for="passing_year" class="form-label-norequired" style="color:black">
+                                                Select Passing Year*:
+                                            </span>
+                                            <select class="form-control" required="1" id="year" name="year" t-att-disabled='not editable'>
+                                                <option selected='1' disabled='1' value=''>Select Passing Year</option>
+                                                <t t-foreach="passing_year" t-as="pass_year">
+                                                    <option t-att-value='pass_year.name'>
+                                                        <t t-esc="pass_year.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <span for="result_status" class="form-label-norequired" style="color:black">
+                                                Select Result Status*:
+                                            </span>
+                                            <select class="form-control" required="1" id="result_status" name="result_status" t-att-disabled='not editable'>
+                                                <option selected='1' disabled='1' value=''>Select Result Status</option>
+                                                <option value='waiting'>Waiting</option>
+                                                <option value='complete'>Declared</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <span for="roll_number_last" class="form-label-norequired" style="color:black">Second Year Board Roll No*:
+                                            </span>
+                                            <input required='1' class="form-control" type="text" name="roll_number_last" id="roll_number_last" t-att-disabled='not editable'/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <span for="last_year_slip" class="form-label-required">Last Year Roll No.
+                                                Slip*:
+                                            </span>
+                                            <input required="1" class="form-control" type="file" accept="image/*,application/pdf" id="last_year_slip" t-att-disabled='not editable'/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div id='calculator_btn_div' t-attf-class="float-left {{'d-none' if application_id.state != 'draft' else ''}}">
+                                    <div id='olevel_calculator_btn'>
+                                        <a role='button' data-toggle="modal" data-target="#olevel_calculator" data-whatever="@mdo" class='calculator-btn text-center ml-1'>
+                                            <i class="fas fa-calculator"></i>
+                                        </a>
+                                        <a role='button' data-toggle="modal" data-target="#olevel_calculator" data-whatever="@mdo" class=''>
+                                            PLease Click This Button To Add Grade
+                                        </a>
+                                    </div>
+                                    <div id='alevel_calculator_btn'>
+                                        <a role='button' data-toggle="modal" data-target="#alevel_calculator" data-whatever="@mdo" class='calculator-btn text-center ml-1'>
+                                            <i class="fas fa-calculator"></i>
+                                        </a>
+                                        <a role='button' data-toggle="modal" data-target="#alevel_calculator" data-whatever="@mdo" class=''>
+                                            PLease Click This Button To Add Grade
+                                        </a>
+
+                                    </div>
+                                </div>
+                                <div style='display:none;' id="cgpa_marks_radio_row">
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="cgpa_radio" value='cgpa' name="marks_cgpa" checked='1' class="custom-control-input" t-att-disabled='not editable'/>
+                                        <label class="custom-control-label" for="cgpa_radio">CGPA</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" value='marks' id="marks_radio" name="marks_cgpa" class="custom-control-input" t-att-disabled='not editable'/>
+                                        <label class="custom-control-label" for="marks_radio">Marks</label>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div id='cgpa_div_row' class="row">
+                                    <div style='display:none;' class="col-3">
+                                        <div class="form-group">
+                                            <span for="percentage_cgpa" class="form-label-norequired" style="color:black">Percentage:
+                                            </span>
+                                            <input required='1' class="form-control validate_number" type="text" name="percentage_cgpa" id="percentage_cgpa" t-att-disabled='not editable'/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <span for="total_cgpa" class="form-label-norequired " style="color:black">
+                                                Total CGPA:
+                                            </span>
+                                            <input class="form-control validate_number" required="1" type="text" name="total_cgpa" id="total_cgpa" t-att-disabled='not editable'/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <span for="obtained_cgpa" class="form-label-norequired" style="color:black">
+                                                Obtained CGPA:
+                                            </span>
+                                            <input class="form-control validate_number" required="1" type="text" name="obtained_cgpa" id="obtained_cgpa" t-att-disabled='not editable'/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id='marks_div_row' class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <span for="total_marks" class="form-label-norequired " style="color:black">
+                                                Total Marks:
+                                            </span>
+                                            <input class="form-control validate_number" maxlength='4' required="1" type="text" name="total_marks" id="total_marks" t-att-disabled='not editable'/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <span for="obtained_marks" class="form-label-norequired" style="color:black">Obtained Marks:
+                                            </span>
+                                            <input class="form-control validate_number" maxlength='4' required="1" type="text" name="obtained_marks" id="obtained_marks" t-att-disabled='not editable'/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <span for="percentage" class="form-label-norequired" style="color:black">
+                                                Percentage:
+                                            </span>
+                                            <input required='1' class="form-control" style='pointer-events:none;' type="text" name="percentage" id="percentage" t-att-disabled='not editable'/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style='display: contents'>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+
+                                            <div style='display:none;' id='educational_institute_college' class="form-group">
+                                                <!-- <span for="institute" class="form-label-norequired" style="color:black">School/Institute:</span>
+                                                <input class="form-control " type="text" name="institute" id="institute"/> -->
+                                                <span for="institute" class="form-label-norequired" style="color:black">
+                                                    Institute:
+                                                </span>
+                                                <select style='margin-bottom:0px;' t-att-required=" True if application_id.applicant_type == 'national' else False " class="form-control" id="institute_college" name="institute_college" t-att-disabled='not editable'>
+                                                    <option disabled='1' selected='1' value=''>Select Institute:
+                                                    </option>
+                                                    <t t-foreach="educational_institute_college" t-as="ei">
+                                                        <option t-att-id='ei.code' t-att-value="ei.name">
+                                                            <t t-esc="ei.name"/>
+                                                        </option>
+                                                    </t>
+                                                    <option t-att-id='12' t-att-value="12">
+                                                        other
+                                                    </option>
+                                                </select>
+
+                                            </div>
+                                            <div style='display:none;' id='educational_institute_university' class="form-group">
+                                                <!-- <span for="institute" class="form-label-norequired" style="color:black">School/Institute:</span>
+                                                <input class="form-control " type="text" name="institute" id="institute"/> -->
+                                                <span for="institute" class="form-label-norequired" style="color:black">
+                                                    Institute:
+                                                </span>
+                                                <select style='margin-bottom:0px;' t-att-required=" True if application_id.applicant_type == 'national' else False " class="form-control" id="institute_university" name="institute_university" t-att-disabled='not editable'>
+                                                    <option disabled='1' selected='1' value=''>Select Institute:
+                                                    </option>
+                                                    <t t-foreach="educational_institute_university" t-as="ei">
+                                                        <option t-att-id='ei.code' t-att-value="ei.name">
+                                                            <t t-esc="ei.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+
+                                            </div>
+                                            <div id='educational_institute_school' class="form-group">
+                                                <span for="institute" class="form-label-norequired" style="color:black">
+                                                    Institute Name*:
+                                                </span>
+                                                <input style='margin-bottom:0px;' required='1' class="form-control" type="text" name="institute_school" id="institute_school" t-att-disabled='not editable'/>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <span for="roll_no" class="form-label-norequired" style="color:black">
+                                                    Board Roll No.
+                                                </span>
+                                                <input class="form-control " type="text" name="roll_no" id="roll_no" t-att-disabled='not editable'/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <span for="board" class="form-label-norequired" style="color:black">
+                                                    Board*:
+                                                </span>
+                                                <select style='margin-bottom:0px;' required="True" class="form-control" id="board" name="board" t-att-disabled='not editable'>
+                                                    <option disabled='1' selected='1' value=''>Select Board</option>
+                                                    <t t-foreach="board_id" t-as="bd">
+                                                        <option t-att-id='bd.name' t-att-value="bd.name">
+                                                            <t t-esc="bd.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="mb-3 col-6">
+                                            <label for="degree_document" class="form-label">Degree Document*:</label>
+                                            <input required="1" class="form-control" type="file" accept="image/*,application/pdf" id="degree_document" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id='subject_div' class='row'></div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input style="display: none" type="submit" value='Add Education' class="btn btn-primary "/>
+                                    </div>
+                                    <div class="col-6"></div>
+                                </div>
+                            </form>
+                            <button onclick="document.getElementById('update_education_check').value=0;$('#degree_level').removeAttr('disabled');$('#degree_id').removeAttr('disabled'); document.getElementById('add_education_form').reset();" type="button" class="btn btn-secondary " data-dismiss="modal">Close
+                            </button>
+                            <button type="button" onclick="check_form_validation(this)" class="btn btn-primary ml-1 color_scheme_class">Update
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- calculator o level -->
+        <div class="modal fade" id="alevel_calculator" tabindex="-1" role="dialog" aria-labelledby="alevel_calculatorLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content" style="box-shadow: inset 0 0 15px 1px gray;width:100%">
+                    <div class="modal-header color_scheme_class">
+                        <h5 class="modal-title" id="alevel_calculatorLabel" style="color:white">Calculate A-Level
+                            Marks
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <span style='color:red;'>Please Select High Level Grade First</span>
+                        <hr/>
+                        <div class='container'>
+                            <form id="calculate_alevel">
+                                <t t-set="subject_alevel" t-value="['Subject 1','Subject 2','Subject 3','Subject 4','Subject 5',]"/>
+                                <t t-foreach="subject_alevel" t-as="subject">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <span for="subject" class="form-label-norequired">
+                                                <t t-esc="subject"/>
+Grade:
+                                            </span>
+                                            <t t-if="subject in  ['Subject 4','Subject 5'] ">
+                                                <t t-set="req" t-value="0"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="req" t-value="1"/>
+                                            </t>
+                                            <select t-att-required="req" class="form-control" id="subject" name="subject">
+                                                <option disabled='1' selected='1' value=''>Select Grade</option>
+                                                <option value="90">A*</option>
+                                                <option value="85">A</option>
+                                                <option value="75">B</option>
+                                                <option value="65">C</option>
+                                                <option value="55">D</option>
+                                                <option value="45">E</option>
+                                                <option value="40">F (before June2010)</option>
+                                                <option value="35">G (before June 2010)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </t>
+                                <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
+                                <button type='submit' class="btn btn-primary ml-1">Calculate</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- calculator a level -->
+        <div class="modal fade" id="olevel_calculator" tabindex="-1" role="dialog" aria-labelledby="olevel_calculatorLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content" style="box-shadow: inset 0 0 15px 1px gray;width:100%">
+                    <div class="modal-header color_scheme_class">
+                        <h5 class="modal-title" id="olevel_calculatorLabel" style="color:white">Calculate O-Level
+                            Marks
+                        </h5>
+                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                        </button> -->
+                    </div>
+                    <div class="modal-body">
+                        <span style='color:red;'>Please Select High Level Grade First</span>
+                        <hr/>
+                        <div class='container'>
+                            <form id="calculate_olevel">
+                                <t t-set="subject_olevel1" t-value="['Subject 1','Subject 2','Subject 3','Subject 4','Subject 5']"/>
+                                <t t-set="subject_olevel2" t-value="['Subject 6','Subject 7','Subject 8','Subject 9','Subject 10']"/>
+                                <div class="row">
+
+                                    <t t-foreach="subject_olevel1" t-as="subject">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <span for="subject" class="form-label-norequired">
+                                                    <t t-esc="subject"/>
+                                                    Grade:
+                                                </span>
+                                                <select required="1" class="form-control" id="subject" name="subject">
+                                                    <option disabled='1' selected='1' value=''>Select Grade</option>
+                                                    <option value="90">A*</option>
+                                                    <option value="85">A</option>
+                                                    <option value="75">B</option>
+                                                    <option value="65">C</option>
+                                                    <option value="55">D</option>
+                                                    <option value="45">E</option>
+                                                    <option value="40">F (before June2010)</option>
+                                                    <option value="35">G (before June 2010)</option>
+                                                </select>
+                                                <!-- <input required='1' class="form-control" readonly="1" type="text" name="subject" id="subject"/> -->
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <t t-foreach="subject_olevel2" t-as="subject">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <span for="subject" class="form-label-norequired">
+                                                    <t t-esc="subject"/>
+                                                    Grade:
+                                                </span>
+                                                <t t-if="subject in  ['Subject 9','Subject 10'] ">
+                                                    <t t-set="req" t-value="0"/>
+                                                </t>
+
+                                                <t t-else="">
+                                                    <t t-set="req" t-value="1"/>
+                                                </t>
+                                                <select t-att-required="req" class="form-control" id="subject" name="subject">
+                                                    <option disabled='1' selected='1' value=''>Select Grade</option>
+                                                    <option value="90">A*</option>
+                                                    <option value="85">A</option>
+                                                    <option value="75">B</option>
+                                                    <option value="65">C</option>
+                                                    <option value="55">D</option>
+                                                    <option value="45">E</option>
+                                                    <option value="40">F (before June2010)</option>
+                                                    <option value="35">G (before June 2010)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                                <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
+                                <button type='submit' class="btn btn-primary ml-1">Calculate</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

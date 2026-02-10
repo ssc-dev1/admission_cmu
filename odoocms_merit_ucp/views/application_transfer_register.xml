@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="application_transfer_register_view_form" model="ir.ui.view">
+        <field name="name">application.transfer.register.view.form</field>
+        <field name="model">application.transfer.register</field>
+        <field name="arch" type="xml">
+            <form string="Transfer Register">
+                <header>
+                    <button name="transffered_merit" type="object" class='btn btn-primary' states='draft' string="Transfer"/>
+                    <button name="generate_offer_letter" type="object" class='btn btn-primary' states='done' string="Generate Offer"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field attrs="{'readonly': [('state', '=', 'done')]}" name="name" />
+                            <field attrs="{'readonly': [('state', '=', 'done')]}" name="prefered_program_id" options="{'no_open': True, 'no_create': True}" />
+                        </group>
+                        <group>
+                            <field attrs="{'readonly': [('state', '=', 'done')]}" name="admission_register_id" options="{'no_open': True, 'no_create': True}" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Applicants">
+                            <field attrs="{'readonly': [('state', '=', 'done')]}" name="transfer_applicant_ids">
+                                <tree decoration-success='transferd' create="false" delete="true" edit="true" editable="bottom">
+                                    <field name="transferd" invisible='1' />
+                                    <field name="applicant_id" />
+                                    <field name="preference_first" />
+                                    <field name="preference_second" />
+                                    <field name="preference_third" />
+                                    <field name="merit_register_id"  options="{'no_open': True, 'no_create': True}" domain="[('remaining_seats', '>', 0)]" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="application_transfer_register_view_tree" model="ir.ui.view">
+        <field name="name">application.transfer.register.view.tree</field>
+        <field name="model">application.transfer.register</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="admission_register_id" />
+                <field name="prefered_program_id" />
+            </tree>
+        </field>
+    </record>
+    <record id="application_transfer_register_action" model="ir.actions.act_window">
+        <field name="name">Application Transfer Register</field>
+        <field name="res_model">application.transfer.register</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="application_transfer_menu" name="Application Transfer Register" parent="merit_register_main_menu" action="application_transfer_register_action" groups="odoocms_admission.group_admission_manager" sequence="30"/>
+
+</odoo>

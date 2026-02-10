@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="odoocms_student_term_att_fine_wiz_view" model="ir.ui.view">
+            <field name="name">odoocms.student.term.att.fine.wiz.view</field>
+            <field name="model">odoocms.student.term.att.fine.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Drop Courses">
+                    <group>
+                        <group>
+                            <field name="term_id" required="1" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_create_student_term_att" string="Create Att Fine" type="object" class="btn-primary"/>
+                        <button name="action_recalculate_student_term_att" string="Re-Calculate Att Fine" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_odoocms_student_term_att_fine_wiz" model="ir.actions.act_window">
+            <field name="name">Create Attendance Fine</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoocms.student.term.att.fine.wiz</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="odoocms_fee_ucp.model_odoocms_student_term_att_fine"/>
+            <field name="binding_view_types">form,list</field>
+        </record>
+
+    </data>
+</odoo>

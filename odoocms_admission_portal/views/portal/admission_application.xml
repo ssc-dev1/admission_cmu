@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <template id="admission_application" name="Online Application Register">
+	<t t-call="website.layout">
+    <t t-set="gradient" t-value="value"/>
+    <div t-attf-style="--bg-col:{{color_scheme}};--gd-col:{{color_scheme2}}" >
+      <input id='color_scheme' type='hidden' t-att-value='color_scheme'></input>
+      <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id='application_update_alert' class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div style='color:white' class="toast-header">
+            <i class="fas fa-bell"></i>
+            <strong class="mr-auto ml-1">Alert</strong>
+            <small style='color:white;' class="text-muted">Just now</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            </button>
+          </div>
+          <div id='toast_body_alert' class="toast-body">
+          </div>
+        </div>
+      </div>
+      <t t-set="no_header" t-value="True"/>
+      <t t-set="html_data" t-value="{'style': 'height: 100%;'}"/>
+      <t t-set="no_footer" t-value="True"/>
+      <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/bootstrap/css/bootstrap.min.css"/>
+      <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/fontawesome/css/all.css"/>
+      <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/css/admission_application.css"/>
+      <link rel="stylesheet" href="/odoocms_admission_portal/static/css/jquery-ui.theme.css"></link>
+      <link rel="stylesheet" href="/odoocms_admission_portal/static/css/jquery-ui.min.css"></link>
+      <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery.min.js"></script>
+      <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery-mask.js"></script>
+      <script type="text/javascript" src="/odoocms_admission_portal/static/js/popper.min.js"></script>
+      <script type="text/javascript" src="/odoocms_admission_portal/static/bootstrap/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="/odoocms_admission_portal/static/css/loader.css"></link>
+      <link rel="shortcut icon" type="image/x-icon" href="/odoocms_admission_portal/static/img/cust_white_logo.png"/>
+
+
+
+      <!-- all the website content should inside this div -->
+
+      <div style='z-index:12' class="toast toast-container position-fixed float-right " id="myToast" data-bs-autohide="false">
+        <div style='color:white;' class="toast-header">
+          <strong class="me-auto">
+            <i class="bi-gift-fill"></i> Reference No : <t t-esc="application_id.application_no"/>
+          </strong>
+        </div>
+      </div>
+
+      <!-- <div style='display:none' class="ring1"> </div> -->
+      <!-- <div class="ring2"> </div> -->
+
+
+      <button id='alert_show_button' style='display: none' class='btn btn-primary' ></button>
+
+      <div id='main_div' style='display:contents;'>
+
+        <input id='application_step' type='hidden' t-att-value='application_id.step_no'></input>
+        <input id='application_state' type='hidden' t-att-value='application_id.state'></input>
+
+        <div id='page_loader' class="loading"></div>
+        <t t-call="odoocms_admission_portal.register_header"/>
+        <t t-call="odoocms_admission_portal.register_progress"/>
+        <t t-set="counter_step" t-value="1"/>
+        <div id="all_step">
+          <t t-foreach="(steps_id.main_step_id).sorted(lambda r :r.step_no) " t-as="main">
+            <div t-att-id='main.id' class="main_step_div">
+
+              <div class='container mx-3'>
+                <div class='main_step_heading'>
+                  <strong>
+                    <t t-esc="main.name"/>
+                  </strong>
+                </div>
+                <!-- <hr/> -->
+                <br/>
+              </div>
+              <t t-foreach="steps_id" t-as="step">
+                <t t-if="step.main_step_id.id == main.id">
+                  <t t-call="{{step.template.key}}"/>
+                  <t t-set="counter_step" t-value="counter_step + 1"/>
+                </t>
+              </t>
+            </div>
+          </t>
+        </div>
+      </div>
+
+      <!-- message popup -->
+      <div id='message_popup' class="modal message_popup" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Message!</h5>
+              <button id='close_popup_message' type="button" class="btn-close" data-bs-dismiss="message_popup" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p style='color:green' id='message_popup_text'></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/admission_application.js"></script>
+</t>
+  </template>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+    <!-- Inherit Program Form View - Add Parent/Child Fields -->
+    <!-- Note: This view inherits from odoocms.view_odoocms_program_form (not base) to avoid validation during odoocms_admission loading -->
+    <record id="view_odoocms_program_form_inherit_mis" model="ir.ui.view">
+        <field name="name">odoocms.program.form.inherit.mis</field>
+        <field name="model">odoocms.program</field>
+        <field name="inherit_id" ref="odoocms.view_odoocms_program_form"/>
+        <field name="arch" type="xml">
+            <field name="sequence_number" position="after">
+                <field name="is_parent" 
+                       help="Check this if this program is a parent program. A parent program cannot have another parent program."/>
+                <field name="parent_program_id" 
+                       attrs="{'readonly': [('is_parent', '=', True)]}"
+                       options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"
+                       help="Select the parent program for this child program. Only parent programs from the same career will be shown. This field is disabled when 'Is Parent Program' is checked."/>
+            </field>
+        </field>
+    </record>
+</odoo>

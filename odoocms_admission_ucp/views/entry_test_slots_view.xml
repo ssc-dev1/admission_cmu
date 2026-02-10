@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="entry_test_slots_view_form" model="ir.ui.view">
+        <field name="name">entry_test_slots_view_form</field>
+        <field name="model">odoocms.entry.test.slots</field>
+        <field name="arch" type="xml">
+            <form string="Entry Test Slots">
+                <sheet>
+                    <widget name="web_ribbon" title="Entry Test Slots" bg_color="bg-success"/>
+                    <h3 style="text-align: center;">Entry Test Slots</h3>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group></group>
+                        <group>
+                            <field name="time_from" widget="float_time"/>
+                        </group>
+                         <group>
+                            <field name="time_to" widget="float_time"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="entry_test_slots_view_tree" model="ir.ui.view">
+        <field name="name">entry_test_slots_view_tree</field>
+        <field name="model">odoocms.entry.test.slots</field>
+        <field name="arch" type="xml">
+            <tree string="Entry Test Slots">
+                <field name="time_from" widget="float_time"/>
+                <field name="time_to" widget="float_time"/>
+            </tree>
+        </field>
+    </record>
+    <record id="entry_test_slots_action" model="ir.actions.act_window">
+        <field name="name">Entry Test Slots</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.entry.test.slots</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+    <menuitem
+            id="entry_test_slots_menu"
+            name="Entry Test Slots"
+            action="entry_test_slots_action"
+            sequence="270"
+            parent="entry_test_room_setup_menu"
+    />
+</odoo>

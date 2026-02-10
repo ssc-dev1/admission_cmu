@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ucp_receipt_received_detail_wiz_form_view" model="ir.ui.view">
+        <field name="name">ucp.receipt.received.detail.wiz.form.view</field>
+        <field name="model">receipt.received.detail.wiz</field>
+        <field name="inherit_id" ref="odoocms_fee.view_receipt_received_detail_wiz_form"/>
+        <field name="arch" type="xml">
+            <field name="date_to" position="after">
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create':True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+            </field>
+            <xpath expr="//group[@name='main_group']" position="after">
+                <notebook>
+                    <page name="institute_ids" string="Faculties">
+                        <field name="institute_ids" options="{'no_create':True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}">
+                            <tree>
+                                <field name="code"/>
+                                <field name="name"/>
+                                <field name="campus_id"/>
+                                <field name="phone"/>
+                                <field name="email"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="journal_ids" string="Banks">
+                        <field name="journal_ids" domain="[('type','=','bank')]" options="{'no_create':True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="odoocms_fee.action_receipt_received_detail_wiz" model="ir.actions.act_window">
+        <field name="name">Invoice Received Detail Report</field>
+    </record>
+
+
+</odoo>

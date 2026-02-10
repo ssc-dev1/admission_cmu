@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="faculty_staff_load_view_tree" model="ir.ui.view">
+        <field name="name">faculty.staff.load.view.tree</field>
+        <field name="model">faculty.staff.load</field>
+        <field name="arch" type="xml">
+            <tree create="0" >
+                <field name="faculty_staff_id" />
+                <field name="institute_id" />
+                <field name="department_id" />
+                <field name="program_id" />
+                <field name="type" />
+                <field name="term_id" optional="hide"/>
+                <field name="credit_hours" />
+                <field name="code" />
+                <field name="strength" />
+                <field name="title" />
+                <field name="class_faculty_id" optional="hide"/>
+                <field name="class_dept_id" optional="hide"/>
+                <field name="company_id" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="faculty_staff_load_pivot" model="ir.ui.view">
+        <field name="name">faculty.staff.load.pivot</field>
+        <field name="model">faculty.staff.load</field>
+        <field name="arch" type="xml">
+            <pivot string="Students" display_quantity="true">
+                <field name="id"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="faculty_staff_view_search" model="ir.ui.view">
+        <field name="name">faculty.staff.load.view.search</field>
+        <field name="model">faculty.staff.load</field>
+        <field name="arch" type="xml">
+            <search>
+               <group expand="1" string="Group By">
+                   <filter string="Staff" name="faculty_staff_id_grp" context="{'group_by':'faculty_staff_id'}"/>
+                   <filter string="Faculty" name="institute_id_grp" context="{'group_by':'institute_id'}"/>
+                   <filter string="Department" name="department_id_grp" context="{'group_by':'department_id'}"/>
+                   <filter string="Program" name="program_id_grp" context="{'group_by':'program_id'}"/>
+                   <filter string="Term" name="term_id_grp" context="{'group_by':'term_id'}"/>
+                   <filter string="Company" name="company_id_grp" context="{'group_by':'company_id'}"/>
+               </group>
+
+            </search>
+        </field>
+    </record>
+
+<!--    <record id="faculty_staff_load_action" model="ir.actions.act_window">-->
+<!--        <field name="name">Faculty Staff Load</field>-->
+<!--        <field name="res_model">faculty.staff.load</field>-->
+<!--        <field name="view_mode">tree,pivot</field>-->
+<!--        <field name="context">{'faculty_staff_id_grp': 1, 'default_faculty_staff_id_grp': 1}</field>-->
+<!--    </record>-->
+
+
+</odoo>

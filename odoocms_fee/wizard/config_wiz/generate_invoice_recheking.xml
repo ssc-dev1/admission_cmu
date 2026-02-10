@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_odoocms_generate_invoice_rechecking_form" model="ir.ui.view">
+			<field name="name">odoocms.generate.invoice.rechecking.form</field>
+			<field name="model">odoocms.generate.invoice.rechecking</field>
+			<field name="arch" type="xml">
+				<form string="Generate Invoice">
+					<group>
+						<field name="receipt_type_ids" widget="many2many_tags" readonly="1"/>
+						<group>
+							<field name="date_due"/>
+						</group>
+						<group>
+							<field name="tag" readonly="1"/>
+							<field name="reference"/>
+							<field name="description_id"/>
+						</group>
+					</group>
+					<group>
+						<field name="comment"/>
+					</group>
+
+					<notebook>
+						<page string="Students" attrs="{'invisible': [('student_ids','=',[])]}">
+							<group>
+								<field name="student_ids" colspan="4" nolabel="1">
+									<tree string="Students">
+										<field name="student_id" />
+										<field name="batch_id" />
+										<field name="academic_semester_id"/>
+										<field name="state"/>
+									</tree>
+								</field>
+							</group>
+						</page>
+					</notebook>
+					<footer>
+						<button name="generate_invoice_rechecking" string="Generate Invoice" type="object" class="btn-primary"/>
+						<button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+			   </form>
+			</field>
+		</record>
+
+	<record id="odoocms_generate_invoice_rechecking_action" model="ir.actions.act_window">
+		<field name="name">Generate Invoice</field>
+		<field name="res_model">odoocms.generate.invoice.rechecking</field>
+		<field name="view_mode">form</field>
+		<field name="target">new</field>
+		<field name="groups_id" eval="[(4, [ref('odoocms.group_cms_manager')])]"/>
+		<field name="binding_model_id" ref="odoocms_exam.model_odoocms_request_subject_rechecking"/>
+	</record>
+	
+</odoo>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<template id="report_faculty_id_card">
+            <t t-call="web.html_container">
+                <div class="page">
+                    <t t-call="web.basic_layout">
+
+                        <div style="height:150px;">
+                            <t t-foreach="docs" t-as="o">
+                                <div class="row" style="padding:2%;">
+                                    <div class="col col-12">
+                                        <t t-if="not o ">
+                                            <span>Sorry no record found</span>
+                                        </t>
+                                    </div>
+                                </div>
+                                <table style="width:100%; border: 1px solid black !important;">
+                                    <tr>
+                                        <td colspan="2" class="text-center">
+                                            <h2 class="text-center" style="color:black;">
+                                                Ghulam Ishaq Khan Institute
+                                                <!-- <t t-esc="o.company_id.name" />-->
+                                            </h2>
+                                        </td>
+                                        <td class="text-center" width="60px;" style="background:green;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="6" style="padding:1%;">
+                                            <img style="width:130px;height:150px;"
+                                                 t-att-src="'data:image/png;base64,%s' % to_text(o.image_1920)"/>
+                                        </td>
+
+                                        <td rowspan="6">
+                                            <!--  <img style="width:80px;height:80px;"
+                                                  t-att-src="image_data_uri(o.company_id.logo)" t-if="o.company_id.logo"/>-->
+                                            <img src="/odoocms/static/img/giki.png"/>
+                                        </td>
+                                        <td class="text-center" width="60px;" rowspan="9"
+                                            style="background:green; color:white; font:bold;">
+                                            <strong>F<br/>A<br/>C<br/>U<br/>L<br/>T<br/>Y
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-left:1%;">
+                                            <b t-esc="o.name"/>
+                                        </td>
+                                        <td/>
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-left:1%;">
+                                            <t t-esc="o.code"/>
+                                        </td>
+                                        <td/>
+                                        <td/>
+                                    </tr>
+                                    <tr/>
+
+                                </table>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+                <div class="page">
+                    <t t-call="web.basic_layout">
+                        <div style="height:150px;">
+                            <t t-foreach="docs" t-as="o">
+                                <div class="row" style="padding:2%;">
+                                    <div class="col col-12">
+                                        <t t-if="not o ">
+                                            <span>Sorry no record found</span>
+                                        </t>
+                                    </div>
+                                </div>
+                                <table style="width:100%; border: 1px solid black !important;">
+
+                                    <tr>
+                                        <td style="padding-left:2%;">
+                                            Name
+                                        </td>
+                                        <td>:</td>
+                                        <td style="padding-left:2%;">
+                                            <t t-esc="o.name"/>
+                                        </td>
+                                    </tr>
+<!--                                    <tr>-->
+<!--                                        <td style="padding-left:2%;">-->
+<!--                                            Father Name-->
+<!--                                        </td>-->
+<!--                                        <td>:</td>-->
+<!--                                        <td style="padding-left:2%;">-->
+<!--                                            <t t-esc="o.father_name"/>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+                                    <tr>
+                                        <td style="padding-left:2%;">
+                                            CNIC
+                                        </td>
+                                        <td>:</td>
+                                        <td style="padding-left:2%;">
+                                            <t t-esc="o.cnic"/>
+                                        </td>
+                                    </tr>
+<!--                                    <tr>-->
+<!--                                        <td style="padding-left:2%;">-->
+<!--                                            Blood Group-->
+<!--                                        </td>-->
+<!--                                        <td>:</td>-->
+<!--                                        <td style="padding-left:2%;">-->
+<!--                                            <t t-esc="o.blood_group"/>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+                                    <tr>
+                                        <td style="padding-left:2%;">
+                                            Emergency Contact
+                                        </td>
+                                        <td>:</td>
+                                        <td style="padding-left:2%;">
+                                            <t t-esc="o.emergency_contact"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-left:2%;">
+                                            Issued On
+                                        </td>
+                                        <td>:</td>
+                                        <td style="padding-left:2%;">
+                                            <t t-esc="datetime.date.today().strftime('%d-%m-%Y')"/>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                        <td>
+                                            <img
+                                               t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=%s'
+                                               % ('Code128',o.code, 500, 100,1)" style="width:250px;height:60px;"/>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-left:2%;" colspan="2">
+                                            If found please return the card to:
+                                            <br/>
+                                            GIKI Institute of Engineering Sciences and Tecnology.
+                                            <br/>
+                                            Topi 23640. District Swabi. Khyber Pakhtunkhwa, Pakistan.
+                                        </td>
+                                    </tr>
+                                </table>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </template>
+        <!--<template id="report_faculty_id_card">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-xs-2" style="margin:auto;">
+                                </div>
+                                <center>
+                                    <div class="col-xs-8" style="margin:auto">
+                                        <table class="table table-condensed" style="border: 3px solid black !important;">
+                                            <tr>
+                                                <td width="40%">
+                                                    <p style="text-align:center;padding-top:10px;">
+                                                        <img t-if="not o.image" t-att-src="'/web/static/src/img/placeholder.png'" height="120" border="1" width="120"/>
+                                                        <img t-if="o.image" t-att-src="'data:image/png;base64,%s' % to_text(o.image)" height="120" border="1" width="120"/>
+                                                    </p>
+                                                    <p style="text-align:center;">
+                                                        <strong><span t-field="o.name"/></strong>
+                                                    </p>
+                                                </td>
+                                                <td width="60%">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <p style="text-align:right;padding-top:30px;"><strong>ID : </strong></p>
+                                                                <p style="text-align:right;"><strong>Gender : </strong></p>
+                                                                <p style="text-align:right;"><strong>Blood Group : </strong></p>
+                                                            </td>
+                                                            <td>
+                                                                <p style="text-align:left;padding-top:30px;padding-left:10px;"  t-field="o.faculty_id"/>
+                                                                <p style="text-align:left;padding-left:10px;" t-field="o.gender"/>
+                                                                <p style="text-align:left;padding-left:10px;" t-field="o.blood_group"/>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </center>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>-->
+
+    </data>
+</odoo>

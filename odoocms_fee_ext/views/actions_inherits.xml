@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="odoocms_fee.action_odoocms_fee_donors" model="ir.actions.act_window">
+            <field name="name">Scholarship Donors</field>
+        </record>
+
+        <record id="odoocms_fee.action_odoocms_fee_waiver_type_view" model="ir.actions.act_window">
+            <field name="name">Scholarship Types</field>
+        </record>
+
+        <record id="odoocms_fee.action_odoocms_fee_waiver" model="ir.actions.act_window">
+            <field name="name">Scholarship Category Definitions</field>
+        </record>
+
+    </data>
+</odoo>

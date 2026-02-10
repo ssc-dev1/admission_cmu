@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="cbt_api_view_wiz_form" model="ir.ui.view">
+        <field name="name">cbt_api_view_wiz_form</field>
+        <field name="model">cbt.api.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Form Wizard" context="{'default_move_type': context.get('default_move_type')  }">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="total_paper"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="generate_multi_paper_student" string="Generate Papers" type="object" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="cbt_api_wizard_action" model="ir.actions.act_window">
+        <field name="name">Api Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cbt.api.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="binding_view_types">form</field>
+        <field name="target">new</field>
+    </record>
+    <record id="cbt_inherit_button_form" model="ir.ui.view">
+        <field name="name">cbt.inherit.button.form</field>
+        <field name="model">cbt.paper.generator</field>
+        <field name="inherit_id" ref="cbt.cbt_paper_generator_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='papers_generation']" position="after">
+                <button name="%(cbt.cbt_api_wizard_action)d" string="Allocate Papers To Students" type="action" class="btn-primary" attrs="{'invisible':[('state','!=','done')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

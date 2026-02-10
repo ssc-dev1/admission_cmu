@@ -1,0 +1,149 @@
+<odoo>
+    <template id="odoocms_fee_ucp.fee_defaulter_report">
+        <t t-call="web.html_container">
+            <div class="page" style="font-size: 16px; padding:10px ">
+                <t t-call="web.external_layout">
+                    <style>
+                        #invoice-report {
+                            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                            border-collapse: collapse;
+                            width: 100%;
+                        }
+                        #invoice-report td, #invoice-report th {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                        }
+                        #invoice-report tr:nth-child(even){
+                            background-color: #f2f2f2;
+                        }
+                        #invoice-report tr:hover {
+                            background-color: #ddd;
+                        }
+                        #invoice-report th {
+                            padding-top: 12px;
+                            padding-bottom: 12px;
+                            text-align: left;
+                            background-color: #17134e;
+                            color: white;
+                        }
+                    </style>
+
+
+                    <div class="row" style="font-size:25px; font-weight:bold;">
+                        <div class="col col-12" style="text-align:center">
+                            <span>Fee Defaulter Report</span>
+                        </div>
+                    </div>
+
+                    <p style="ont-size:18px; font-weight:bold;text-align:left">
+                        <span t-esc="term.name"/>-
+                        <span t-esc="label"/>
+                    </p>
+
+                    <table id="invoice-report">
+                        <tr>
+                            <th>Sr#</th>
+                            <th>Reg No</th>
+                            <th>Name</th>
+                            <th style="tet-align:center;">Amount</th>
+                            <th style="tet-align:center;">Fine Amount</th>
+                            <th>Due Date</th>
+                            <th>Fee Type</th>
+                            <th>Invoice Status</th>
+                            <th>Registration Status</th>
+                            <th>Remarks</th>
+                        </tr>
+                        <t t-set="total_amount" t-value="0"/>
+                        <t t-set="total_fine" t-value="0"/>
+
+                        <t t-foreach="data_lines" t-as="dta">
+                            <t t-set="faculty_total_amount" t-value="0"/>
+                            <t t-set="faculty_total_fine" t-value="0"/>
+
+                            <tr style="font-size:15px;font-weight:bold;">
+                                <td colspan="9">
+                                    <span t-esc="dta['faculty_name']"/>
+                                    -
+                                    <span t-esc="dta['faculty_code']"/>
+                                </td>
+                            </tr>
+                            <t t-foreach="dta['lines']" t-as="line">
+                                <t t-set="move" t-value="line.line_ids.mapped('move_id')"/>
+                                <t t-set="inv" t-value="move[0]"/>
+                                <tr style="font-size:12px;">
+                                    <td><span t-esc="line_index + 1"/></td>
+                                    <td><span t-esc="line.student_id.code"/></td>
+                                    <td><span t-esc="line.student_id.name"/></td>
+                                    <td class="text-right"><span t-esc="'{0:,.2f}'.format(line.amount_residual)"/></td>
+                                    <td class="text-right">
+                                        <!--                                    <span t-esc="'{0:,.2f}'.format(line.fine_amount)"/>-->
+                                    </td>
+                                    <td><span t-esc="line.date_due" t-options='{"widget": "date"}'/></td>
+                                    <td><span t-esc="label"/></td>
+                                    <td>
+                                        <span t-esc="dict(inv.fields_get(allfields=['payment_state'])['payment_state']['selection'])[inv.payment_state]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="dict(line.student_id.fields_get(allfields=['state'])['state']['selection'])[line.student_id.state]"/>
+                                    </td>
+                                    <td/>
+                                </tr>
+                                <t t-set="faculty_total_amount" t-value="faculty_total_amount + line.amount_residual"/>
+                                <t t-set="faculty_total_fine" t-value="0"/>
+                            </t>
+
+                            <!--*****  Faculty Total *****-->
+                            <tr style="font-size:12px;font-weight:bold;">
+                                <td colspan="3">Total</td>
+                                <td class="text-right">
+                                    <span t-esc="'{0:,.2f}'.format(faculty_total_amount)"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="'{0:,.2f}'.format(faculty_total_fine)"/>
+                                </td>
+                                <td style="text-weight:bold" colspan="5"/>
+                            </tr>
+
+                            <t t-set="total_amount" t-value="total_amount + faculty_total_amount"/>
+                            <t t-set="total_fine" t-value="total_fine + faculty_total_fine"/>
+                        </t>
+
+                        <!--*****  Grand Total *****-->
+                        <tr style="font-size:12px;font-weight:bold;">
+                            <td colspan="3">Grand Total</td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(total_amount)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(total_fine)"/>
+                            </td>
+                            <td style="text-weight:bold" colspan="5"/>
+                        </tr>
+                    </table>
+
+                    <!-- Print Date Time and User -->
+                    <br/>
+                    <div class="row" style='padding:6px;margin-top:-5px;'>
+                        <div class="col col-3" style="font-weight:bold;font-size:9px;">
+                            <span>Print Date:</span>
+                        </div>
+                        <div class="col col-3" style="text-align:left;">
+                            <div style='font-size:10px;'>
+                                <span style="padding-left:5px;" t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y %H:%M')"/>
+                            </div>
+                        </div>
+                        <div class="col col-3" style="font-weight:bold;font-size:9px;">
+                            <span>Print User:</span>
+                        </div>
+                        <div class="col col-3">
+                            <div style='font-size:10px;'>
+                                <span style="padding-left:5px;" t-esc="request.env.user.name"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+</odoo>

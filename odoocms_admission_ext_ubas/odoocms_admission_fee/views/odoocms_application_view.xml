@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_odoocms_admission_register_form" model="ir.ui.view">
+        <field name="name">odoocms.admission.register.form</field>
+        <field name="model">odoocms.admission.register</field>
+        <field name="inherit_id" ref="odoocms_admission.view_odoocms_admission_register_form"/>
+        <field name="arch" type="xml">
+            <field name="term_id" position="after">
+                <field name="invoice_payment_term_id"/>
+                <field name="journal_id"/>
+            </field>
+        </field>
+    </record>
+    <!--****** Admission Application Fee Tree View *****-->
+    <record id="view_odoocms_admission_application_fee_tree" model="ir.ui.view">
+        <field name="name">odoocms.admission.application.fee.tree.view</field>
+        <field name="model">odoocms.application</field>
+        <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_tree"/>
+        <field name="arch" type="xml">
+            <field name="cnic" position="after">
+                <field name="fee_voucher_state" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+
+    <!--****** Admission Application Fee Form View *****-->
+    <record id="view_odoocms_admission_application_fee_form" model="ir.ui.view">
+        <field name="name">odoocms.admission.application.fee.form.view</field>
+        <field name="model">odoocms.application</field>
+        <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='send_to_verify']" position="after">
+                <button name="verify_voucher" type="object" class="oe_highlight"
+                        string="Verify Fee Voucher" groups="base.group_user"
+                        help="Click to verify the Voucher if it is valid"
+                        attrs="{'invisible': [('fee_voucher_state', '!=','upload')]}"
+                />
+                <button name="univerify_voucher" type="object" class="oe_highlight"
+                        string="Unverify Fee Voucher" groups="base.group_user"
+                        help="Click to Unverify the Voucher if it is not valid"
+                        attrs="{'invisible': [('fee_voucher_state', '!=','upload')]}"
+                />
+
+                <field name="prospectus_inv_id" invisible="1"/>
+                <button name="action_create_prospectus_invoice"
+                        type="object"
+                        class="oe_highlight"
+                        string="Generate Processing Fee Challan"
+                        attrs="{'invisible':[('prospectus_inv_id','!=',False)]}"
+                />
+            </xpath>
+
+            <!-- <xpath expr="//notebook/page[@name='preferences']" position="after">
+                 <page name="voucher_details" string="Voucher Details">
+                     <group>
+                         <group>
+                             <field name="voucher_number"/>
+                             <field name="voucher_date"/>
+                             <field name="voucher_verified_date"/>
+                             <field name="voucher_issued_date"/>
+                             <field name="fee_voucher_state"/>
+                             <field name="amount"/>
+                         </group>
+                         <group>
+                             <field name="voucher_image" widget='image' class="oe_avatar"
+                                    options='{"preview_image":"voucher_image"}'/>
+                         </group>
+                     </group>
+                 </page>
+             </xpath>-->
+
+            <!-- <xpath expr="//notebook/page[@name='pre_test_name']" position="after">
+                 <page string="Fee Payer" name="fee_payer">
+                     <group>
+                         <group>
+                             <field name="fee_payer_name"/>
+                         </group>
+                         <group>
+                             <field name="fee_payer_cnic"/>
+                         </group>
+                     </group>
+                 </page>
+             </xpath>-->
+        </field>
+    </record>
+
+
+    <!--****** Admission Application Fee Search View *****-->
+    <record id="view_odoocms_admission_application_fee_search" model="ir.ui.view">
+        <field name="name">odoocms.admission.application.fee.search.view</field>
+        <field name="model">odoocms.application</field>
+        <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_search"/>
+        <field name="arch" type="xml">
+            <field name="register_id" position="after">
+                <field name="voucher_number"/>
+                <field name="fee_voucher_state"/>
+            </field>
+
+            <filter name="filter_by_application_date" position="after">
+                <separator/>
+                <filter string="Voucher Not Downloaded" name="filter_voucher_not_downloaded" domain="[('fee_voucher_state','=','no')]"/>
+                <filter string="Voucher Not Uploaded" name="filter_voucher_not_uploaded" domain="[('fee_voucher_state','=','download')]"/>
+                <filter string="Voucher Image Uploaded Only" name="filter_image_uploaded_only" domain="[('fee_voucher_state','=','uploadO')]"/>
+                <filter string="Voucher Not Verified" name="filter_voucher_upload" domain="[('fee_voucher_state','=','upload')]"/>
+                <filter string="Voucher Verify" name="filter_voucher_verify" domain="[('fee_voucher_state','=','verify')]"/>
+                <filter string="Voucher UnVerify" name="filter_voucher_unverify" domain="[('fee_voucher_state','=','unverify')]"/>
+                <separator/>
+            </filter>
+            <filter name="group_by_application_date" position="after">
+                <filter name="group_by_fee_voucher_state" string='Fee Voucher Status' icon="fa-pencil-square-o" domain="[]" context="{'group_by' : 'fee_voucher_state'}"/>
+                <separator/>
+            </filter>
+        </field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="view_odoocms_admission_register_form_welcome_tab_inherit" model="ir.ui.view">
+    <field name="name">odoocms.admission.register.form.welcome.tab.inherit.mis</field>
+    <field name="model">odoocms.admission.register</field>
+    <field name="inherit_id" ref="odoocms_admission.view_odoocms_admission_register_form"/>
+    <field name="arch" type="xml">
+
+      <!-- Add the toggle (enable_welcome_letter) in the left column after enable_admission_challan -->
+      <xpath expr="//sheet/group/group/field[@name='enable_admission_challan']" position="after">
+        <field name="enable_welcome_letter"/>
+      </xpath>
+
+      <!-- Add the Welcome Letter tab (read-only unless toggle is on) -->
+      <xpath expr="//sheet/notebook" position="inside">
+        <page name="welcome_letter" string="Welcome Letter Setup">
+          <field name="welcome_letter" widget="html"
+                 attrs="{'readonly': [('enable_welcome_letter','=',False)]}"
+                 colspan="4"/>
+          <div class="o_form_label"
+               attrs="{'invisible': [('enable_welcome_letter','=',True)]}">
+            Enable the toggle above to edit this template.
+          </div>
+        </page>
+      </xpath>
+
+    </field>
+  </record>
+</odoo>

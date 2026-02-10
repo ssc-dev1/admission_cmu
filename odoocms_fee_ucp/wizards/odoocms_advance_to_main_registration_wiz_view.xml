@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_advance_to_main_registration_wiz" model="ir.ui.view">
+            <field name="name">godoocms.advance.to.main.registration.wiz.view</field>
+            <field name="model">odoocms.advance.to.main.registration.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Advance To Main Registration">
+                    <p style="text-align:center;text-weight:bold;">
+                        <li>
+                            <b>Set the <span style="color:red;">'generate_fee'</span> Variable Value To True Before Running This Process</b>
+                        </li>
+                    </p>
+                    <group>
+                        <group>
+                            <field name="date" required="1"/>
+                            <field name="current_term_id" required="1" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True,'no_open': True, 'limit': 10}"/>
+                            <field name="registration_term_id" required="1" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True,'no_open': True, 'limit': 10}"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Institutes/Schools">
+                            <field name="institute_ids" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True,'no_open': True, 'limit': 10}"/>
+                        </page>
+                        <page string="Departments/Faculties">
+                            <field name="department_ids" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True,'no_open': True, 'limit': 10}"/>
+                        </page>
+                        <page string="Programs">
+                            <field name="program_ids" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True,'no_open': True, 'limit': 10}"/>
+                        </page>
+                        <page string="Registrations">
+                            <field name="registration_ids" domain="[('state', '=', 'draft'), ('generate_fee', '=', True)]"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True,'no_open': True, 'limit': 10}"/>
+                        </page>
+                    </notebook>
+
+                    <footer>
+                        <button name="action_advance_to_main_registration_funct" string="Advance To Main" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_odoocms_advance_to_main_registration_wiz" model="ir.actions.act_window">
+            <field name="name">Advance To Main Registration</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoocms.advance.to.main.registration.wiz</field>
+            <field name="view_mode">form,list</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem
+                id="menu_advance_to_main_registration_wiz"
+                name="Advance To Main Registration"
+                action="action_odoocms_advance_to_main_registration_wiz"
+                parent="odoocms_fee.menu_odoocms_student_fee_payment_main"
+                groups="base.group_no_one"
+                sequence="40"/>
+
+    </data>
+</odoo>

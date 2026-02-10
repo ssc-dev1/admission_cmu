@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="odoocms_approve_dbs_wiz_form" model="ir.ui.view">
+        <field name="name">odoocms.approve.dbs.wiz.form</field>
+        <field name="model">odoocms.approve.dbs.wiz</field>
+        <field name="arch" type="xml">
+            <form string="Approve Grades">
+                <group>
+                	<group>
+						<field name="dbs_id" readonly="1"/>
+		            </group>
+		            <group>
+		            </group>
+                </group>
+                <footer>
+                    <button name="approve_dbs" string="Approve Grades" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="act_odoocms_approve_dbs" model="ir.actions.act_window">
+        <field name="name">Approve Grades</field>
+        <field name="res_model">odoocms.approve.dbs.wiz</field>
+        <field name="binding_model_id" ref="odoocms_academic.model_odoocms_dbs"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+<!--    <act_window-->
+<!--        id="act_odoocms_approve_dbs"-->
+<!--        name="Approve Grades"-->
+<!--        binding_model="odoocms.dbs"-->
+<!--        res_model="odoocms.approve.dbs.wiz"-->
+<!--        binding_views="list,form"  view_mode="form"-->
+<!--        target="new"-->
+<!--        groups="odoocms.group_cms_user"/>-->
+
+</odoo>

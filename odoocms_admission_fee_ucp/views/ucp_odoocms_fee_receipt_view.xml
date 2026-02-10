@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--***** odoocms_fee.odoocms_receipt_form inherited view *****-->
+<!--    <record id="ucp_inherited_odoocms_receipt_form_view" model="ir.ui.view">-->
+<!--        <field name="name">ucp.inherited.odoocms.receipt.form.view</field>-->
+<!--        <field name="model">account.move</field>-->
+<!--        <field name="inherit_id" ref="odoocms_fee.odoocms_receipt_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="student_id" position="after">-->
+<!--                <field name="application_id" readonly="1"/>-->
+<!--            </field>-->
+<!--&lt;!&ndash;            <field name="barcode" position="after">&ndash;&gt;-->
+<!--&lt;!&ndash;                <field name="old_challan_no" readonly="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                <field name="prev_challan_no"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            </field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <xpath expr="//page[@name='other_info']//field[@name='forward_invoice']" position="after">&ndash;&gt;-->
+<!--&lt;!&ndash;                <field name="show_challan_on_portal" readonly="1" string="Show on Portal"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                <field name="transaction_id" readonly="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                <field name="online_vendor" readonly="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            </xpath>&ndash;&gt;-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="ucp_inherited_odoocms_receipt_tree_view" model="ir.ui.view">-->
+<!--        <field name="name">ucp.inherited.odoocms.receipt.tree.view</field>-->
+<!--        <field name="model">account.move</field>-->
+<!--        <field name="inherit_id" ref="odoocms_fee.odoocms_receipt_tree"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="barcode" position="after">-->
+<!--                <field name="old_challan_no" optional="show"/>-->
+<!--                <field name="application_id" optional="show"/>-->
+<!--            </field>-->
+
+<!--            <field name="student_code" position="after">-->
+<!--                <field name="student_name" string="Student"/>-->
+<!--            </field>-->
+
+<!--            <field name="student_id" position="attributes">-->
+<!--                <attribute name="invisible">1</attribute>-->
+<!--            </field>-->
+<!--            <field name="name" position="attributes">-->
+<!--                <attribute name="invisible">1</attribute>-->
+<!--            </field>-->
+<!--            <field name="barcode" position="attributes">-->
+<!--                <attribute name="invisible">1</attribute>-->
+<!--            </field>-->
+<!--            <field name="amount_total_signed" position="after">-->
+<!--                <field name="admission_fee" string="Admission" optional="show"/>-->
+<!--                <field name="tuition_fee" string="Tuition" optional="show"/>-->
+<!--                <field name="misc_fee" string="Misc" optional="hide"/>-->
+<!--                <field name="hostel_fee" string="Hostel" optional="hide"/>-->
+<!--                <field name="fine_amount" string="Fine" optional="hide"/>-->
+<!--                <field name="tax_amount" string="Tax" optional="hide"/>-->
+<!--            </field>-->
+
+<!--            <field name="payment_state" position="after">-->
+<!--                <field name="paid_bank_name" string="Bank Name" optional="hide"/>-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="ucp_inherited_odoocms_receipt_filter_view" model="ir.ui.view">-->
+<!--        <field name="name">ucp.inherited.odoocms.receipt.filter.view</field>-->
+<!--        <field name="model">account.move</field>-->
+<!--        <field name="inherit_id" ref="odoocms_fee.view_fee_receipts_filter"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="barcode" position="after">-->
+<!--                <field name="old_challan_no"/>-->
+<!--                <field name="application_id"/>-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <!--***** Prospectus Receipts Action *****-->
+    <record id="odoocms_fee.action_odoocms_prospectus_fee_receipt" model="ir.actions.act_window">
+        <field name="domain">[('move_type','=','out_invoice'), ('challan_type', '=', 'prospectus_challan')]</field>
+    </record>
+
+    <!--***** Hostel Fee Action *****-->
+    <record id="odoocms_fee.action_odoocms_hostel_fee_receipt" model="ir.actions.act_window">
+        <field name="domain">[('move_type','=','out_invoice'), ('challan_type', '=', 'hostel_fee')]</field>
+    </record>
+
+    <!--****** Prospectus Challans *****-->
+    <record id="menu_odoocms_admission_prospectus_challan" model="ir.ui.menu">
+        <field name="name">Prospectus Challans</field>
+        <field name="parent_id" ref="odoocms_admission_fee.menu_odoocms_admission_finance_main"/>
+        <field name="action" ref="odoocms_fee.action_odoocms_prospectus_fee_receipt"/>
+        <field name="sequence" eval="110"/>
+    </record>
+
+
+</odoo>

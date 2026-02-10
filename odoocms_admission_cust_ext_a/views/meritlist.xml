@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="merit_register_view_form_inherit" model="ir.ui.view">
+            <field name="name">merit.register.view.form.inherit</field>
+            <field name="model">odoocms.merit.registers</field>
+            <field name="inherit_id" ref="odoocms_merit_ucp.merit_register_view_form" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='register_id']" position="before">
+                    <field name="posting_date" string="Posting Date" readonly="1" />
+                </xpath>
+
+                <xpath expr="//notebook/page[1]//field[@name='merit_lines']//tree//field[@name='merit_no']" position="replace">
+                    <field name="pre_test_name" string="Pre Test Name" />
+                    <field name="offer_send_status"/>
+                    <field name="pre_test_percentage"  />
+                    <field name="pretest_marks" />
+                    <field name="bs_percentage" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

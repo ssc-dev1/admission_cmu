@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="odoocms_scholarship" name="Scholarship Page">
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/steps/scholarship.js"></script>
+        <script>function toggleNeedBasedFields() {
+    var checkbox = document.getElementById('need_based_scholarship_checkbox');
+    var fieldsContainer = document.getElementById('need_based_fields_container');
+    if (!checkbox || !fieldsContainer) return;
+
+    var requiredFields = fieldsContainer.querySelectorAll('select, input[type="text"]');
+
+    if (checkbox.checked) {
+        fieldsContainer.style.display = 'block';
+        requiredFields.forEach(function (field) {
+            field.setAttribute('required', 'required');
+        });
+    } else {
+        fieldsContainer.style.display = 'none';
+        requiredFields.forEach(function (field) {
+            field.removeAttribute('required');
+            // Optional: clear values when hidden
+            field.value = '';
+        });
+    }
+}</script>
+
+
+        <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2"
+             onclick="$('#scholarshipcollapse').slideToggle(1000); $('#scholarship_dropdown').toggleClass('fa-angle-down fa-angle-up');">
+            <a class="btn btn-link">
+                <i style='color: white;font-size: 25px;' class="fa-solid fa-address-card float-left"></i>
+                <h2 style='color:white' class="float-left">&#160;&#160;<t t-esc="step.name"/></h2>
+            </a>
+            <a>
+                <i id='scholarship_dropdown' class="fas fa-angle-down float-right p-0 m-0"
+                   style="font-size: 40px; cursor: pointer;color: white"></i>
+            </a>
+        </div>
+
+        <div id="scholarshipcollapse" class="row container-fluid mt-3 collapse_div">
+            <br/>
+                
+
+            <div class='col-8'>
+                <form id='scholarship_form' class="row">
+                    <input type="hidden" name="step_no" t-att-value='counter_step'/>
+                    <input type='hidden' name='step_name' value='scholarship'/>
+
+                    <div class="mb-1 col-md-12 ml-2 mb-0 text-center">
+                        <h4 class='mt-3 mb-0'>Need Based Scholarship</h4>
+                        <hr class='mt-0 mb-0'/>
+                    </div>
+
+                    <!-- Need Based Scholarship Checkbox (always visible; no merit-list condition) -->
+                    <!-- Need Based Scholarship Checkbox -->
+                    <!-- XML mein sirf checkbox rakho, hidden field hata do -->
+                    <div class="mb-4 col-md-12 text-center">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" 
+                                id="need_based_scholarship_checkbox"
+                                name="need_based_scholarship_applied"
+                                value="True"
+                                t-att-checked="application_id.need_based_scholarship_applied and 'checked'"
+                                onchange="toggleNeedBasedFields()"/>
+                            <label class="form-check-label" for="need_based_scholarship_checkbox">
+                                <strong>I want to apply for Need Based Scholarship</strong>
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <!-- Need Based Scholarship Fields Container (no merit-list condition) -->
+                    <div id="need_based_fields_container" class="col-md-12"
+                         t-att-style="not application_id.need_based_scholarship_applied and 'display: none;' or ''">
+
+                        <!-- First Row: Occupation, Job Status, Residential Status -->
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <select class="form-control inputText" id="guardian_occupation_scho" name="guardian_occupation_scho">
+                                    <option selected='1' disabled='1' value=''>Select Father/Guardian Occupation</option>
+                                    <t t-foreach="profession_id" t-as="profession">
+                                        <option t-att-selected="profession.name == application_id.guardian_occupation"
+                                                t-att-value="profession.name">
+                                            <t t-esc="profession.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                                <label class='floating-label' for="guardian_occupation_scho">Father/Guardian Occupation</label>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <t t-set="job_selection"
+                                   t-value="dict(application_id.fields_get(allfields=['guardian_job_status'])['guardian_job_status']['selection'])"/>
+                                <select class="form-control" select='1' id="job_status_scho" name="job_status_scho">
+                                    <option value='' disabled='1' selected='1'>Select Guardian Job Status</option>
+                                    <t t-foreach="job_selection" t-as="status">
+                                        <option t-att-selected='application_id.guardian_job_status==status'
+                                                t-att-value="status">
+                                            <t t-esc="status_value"/>
+                                        </option>
+                                    </t>
+                                </select>
+                                <label class='floating-label' for="job_status_scho">Guardian Job Status</label>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <t t-set="residential_status"
+                                   t-value="dict(application_id.fields_get(allfields=['residential_status'])['residential_status']['selection'])"/>
+                                <select class="form-control" id="residential_status_scho" name="residential_status_scho">
+                                    <option value='' disabled='1' selected='1'>Select Guardian Residential Status</option>
+                                    <t t-foreach="residential_status" t-as="resi_status">
+                                        <option t-att-selected='application_id.residential_status==resi_status'
+                                                t-att-value="resi_status">
+                                            <t t-esc="resi_status_value"/>
+                                        </option>
+                                    </t>
+                                </select>
+                                <label class='floating-label' for="residential_status_scho">Guardian Residential Status</label>
+                            </div>
+                        </div>
+
+                        <!-- Second Row: Monthly Income, Family Members -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <input class="form-control inputText" type='text'
+                                       t-att-value='application_id.guardian_monthly_income'
+                                       name="guardian_monthly_income" id="guardian_monthly_income"/>
+                                <span class="floating-label-norequired">Father/Guardians Monthly Income</span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <input class="form-control inputText" t-att-value='application_id.family_member' type='text'
+                                       name="family_member_scho" id="family_member_scho"/>
+                                <span class="floating-label-norequired">Family Members</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div class="mb-1 col-md-12 ml-2 mb-0 text-center mt-4">
+                        <h4 class='mt-3 mb-0'>PGC Scholarship</h4>
+                        <hr class='mt-0 mb-0'/>
+                    </div>
+
+                    <div style='display:none' class="mb-1 mt-3 col-md-4">
+                        <input class="form-control inputText " type='text'
+                               t-att-value='application_id.previous_school_attend' name="previous_school_attend_scho"
+                               id="previous_school_attend_scho"/>
+                        <span class="floating-label-norequired">Previous Institute Attend</span>
+                    </div>
+
+                    <div class="mb-1 mt-3 col-md-4">
+                        <input class="form-control inputText " type='text'
+                               t-att-value='application_id.pgc_registration_no' name="pgc_registration_number_scho"
+                               id="pgc_registration_number_scho"/>
+                        <span class="floating-label-norequired">Previous Registration No</span>
+                    </div>
+
+                    <div class="mb-1 col-md-4 pb-2">
+                        <select class="form-control" id="pgc_institute" name="pgc_institute">
+                            <option value='' disabled='1' selected='1'>Select PGC Institute</option>
+                            <t t-foreach="pgc_institute_id" t-as="institute">
+                                <option t-att-selected='application_id.pgc_institute_id.id==institute.id'
+                                        t-att-value="institute.id">
+                                    <t t-esc="institute.name"/>
+                                </option>
+                            </t>
+                        </select>
+                        <label class='floating-label' for="pgc_institute">Select PGC Institute</label>
+                    </div>-->
+
+                    <div class="col-12">
+                        <input type="submit" style='display: none;' class="btn btn-primary"/>
+                    </div>
+                </form>
+
+                <button onclick="check_form_validation(this)" style="border:None;" class="btn btn-primary ml-1">
+                    Update/Skip
+                </button>
+            </div>
+
+            <div class='col-3 border-left'>
+                <t t-raw="step.step_details"/>
+            </div>
+        </div>
+        <br/>
+    </template>
+</odoo>
+

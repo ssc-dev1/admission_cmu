@@ -1,0 +1,77 @@
+<odoo>
+    <record id="view_tree_custom_email_sms_send" model="ir.ui.view">
+        <field name="name">custom.email.sms.send.tree</field>
+        <field name="model">custom.email.sms.send</field>
+        <field name="arch" type="xml">
+            <tree string="Email/SMS Sender">
+                <field name="selection_type"/>
+                <field name="applicant_ids"/>
+            </tree>
+        </field>
+    </record>
+    
+
+
+    <record id="view_form_custom_email_sms_send" model="ir.ui.view">
+        <field name="name">custom.email.sms.send.form</field>
+        <field name="model">custom.email.sms.send</field>
+        <field name="arch" type="xml">
+            <form string="Email/SMS Sender">
+                <header>
+                    <button string="Send" type="object" name="send_selected_action" class="btn-primary" attrs="{'invisible':[('state', '!=', 'draft')]}"/>
+                    <!-- <button string="Cancel" class="btn-secondary" special="cancel" attrs="{'invisible':[('state', '=', 'draft')]}"/> -->
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="selection_type" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="cus_mobile_email" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="company" attrs="{'readonly': [('state', '=', 'done')], 'invisible': [('cus_mobile_email', '=', False)]}"/>
+                        </group>
+                        <!-- <group></group> -->
+                    </group>
+                    <group attrs="{'invisible': [('selection_type', '!=', 'email')]}">
+                        <field name="email_subject" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        <field name="email_body" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                    </group>
+                    <group attrs="{'invisible': [('selection_type', '!=', 'sms')]}">
+                        <field name="sms_body" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                    </group>
+                    <group>
+                        <field name="applicant_ids" widget="many2many_tags" string="Applicants" attrs="{'readonly': [('state', '=', 'done')], 'invisible': [('cus_mobile_email', '=', True)]}"/>
+                        <field name="custom_text" string="Custom Email/Number" attrs="{'readonly': [('state', '=', 'done')], 'invisible': [('cus_mobile_email', '=', False)]}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+
+    <record id="action_custom_email_sms_send" model="ir.actions.act_window">
+        <field name="name">Email/SMS Sender</field>
+        <field name="res_model">custom.email.sms.send</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>    <!--  -->
+        <field name="view_ids" eval="[(5, 0, 0),
+    (0, 0, {'view_mode': 'tree', 'view_id': ref('view_tree_custom_email_sms_send')}),
+    (0, 0, {'view_mode': 'form', 'view_id': ref('view_form_custom_email_sms_send')})]"/>
+        <field name="context">{}</field>
+        <!-- <field name="domain">[()] -->
+        <!-- </field> -->
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Email/SMS Sender record here.
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem
+    id="menu_custom_email_sms_send_interface"
+    name="Email/SMS Sender"
+    parent="odoocms_admission.admission_applicant_menu"
+    action="action_custom_email_sms_send"
+    groups="odoocms_admission.group_admission_user"
+    sequence="26"/>
+</odoo>

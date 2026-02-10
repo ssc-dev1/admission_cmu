@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    <record id="inherited_view_res_users_form" model="ir.ui.view">-->
+<!--        <field name="name">res.users.inherited.form.view</field>-->
+<!--        <field name="model">res.users</field>-->
+<!--        <field name="inherit_id" ref="odoocms.view_users_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="user_type" position="after">-->
+<!--                <field name="department_id_new" string="Department" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True}"/>-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+</odoo>

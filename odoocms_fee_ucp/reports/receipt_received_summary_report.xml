@@ -1,0 +1,269 @@
+<odoo>
+    <template id="odoocms_fee.receipt_received_summary_report">
+        <t t-call="web.html_container">
+            <div class="page" style='font-size: 14px; padding:10px; margin:5em; font-family: "Times New Roman", Times, serif;'>
+                <t t-call="web.external_layout">
+                    <style>
+                        #invoice-report {
+                        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                        border-collapse: collapse;
+                        width: 100%;
+                        }
+
+                        #invoice-report td, #invoice-report th {
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                        text-align:center;
+                        }
+
+                        #invoice-report tr:nth-child(even){background-color: #f2f2f2;}
+
+                        #invoice-report tr:hover {background-color: #ddd;}
+
+                        #invoice-report th {
+                        padding-top: 12px;
+                        padding-bottom: 12px;
+                        background-color: #17134e;
+                        color: white;
+                        }
+
+                        #top-info {
+                        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                        border-collapse: collapse;
+                        width: 100%;
+                        margin-top:15px;
+                        display: inline;
+                        }
+
+                        #top-info td, #personal-info th {
+                        padding: 3px;
+                        }
+                    </style>
+
+                    <div>
+                        <div class="col col-12" style="font-size:25px; font-weight:bold; text-align:center;">
+                            <span style="border-bottom:1px solid" t-esc="company.name" t-if="company.name"/>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col col-12" style="font-size:18px; font-weight:bold; text-align:center;">
+                            <span style="border-bottom:1px solid">
+                                Invoice Received Summary Report
+                            </span>
+                        </div>
+                    </div>
+
+                    <table id="top-info">
+                        <tr>
+                            <td style="font-weight:bold;width:10%;">Date From:</td>
+                            <td style="width:10%;">
+                                <span style="margin-right:10px;" t-esc="date_from"/>
+                            </td>
+                            <td style="font-weight:bold;width:10%;">Date To:</td>
+                            <td>
+                                <span style="margin-right:10px;" t-esc="date_to"/>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    <table id="invoice-report">
+                        <tr style="text-align:center">
+                            <th rowspan="2">Sr#</th>
+                            <th rowspan="2">Transaction Date</th>
+                            <th colspan="2">ABB</th>
+                            <th colspan="2">BAL</th>
+                            <th colspan="2">BIPL</th>
+                            <th colspan="2">DIB</th>
+                            <th colspan="2">FBL</th>
+                            <th colspan="2">HBL</th>
+                            <th colspan="2">TMF</th>
+                            <th colspan="2">BOP</th>
+                            <th colspan="2">Total</th>
+                        </tr>
+                        <tr style="text-align:center">
+                            <th>Inv</th>
+                            <th>Amt</th>
+                            <th>Inv</th>
+                            <th>Amt</th>
+                            <th>Inv</th>
+                            <th>Amt</th>
+                            <th>Inv</th>
+                            <th>Amt</th>
+                            <th>Inv</th>
+                            <th>Amt</th>
+                            <th>Inv</th>
+                            <th>Amt</th>
+                            <th>Inv</th>
+                            <th>Amt</th>
+                            <th>Inv</th>
+                            <th>Amt</th>
+                            <th>Inv</th>
+                            <th>Amt</th>
+                        </tr>
+
+                        <t t-foreach="date_wise_amount" t-as="inv">
+                            <tr style="font-size:12px;">
+                                <td>
+                                    <span t-esc="inv_index+1"/>
+                                </td>
+                                <td>
+                                    <span t-esc="inv['date']"/>
+                                </td>
+
+                                <td style="text-align:right">
+                                    <span t-esc="inv['abb_inv'] and '{0:,.0f}'.format(inv['abb_inv']) or ''"/>
+                                </td>
+                                <td style="text-align:right">
+                                    <span t-esc="inv['abb_amt'] and '{0:,.0f}'.format(inv['abb_amt']) or ''"/>
+                                </td>
+
+                                <td style="text-align:right">
+                                    <span t-esc="inv['bal_inv'] and '{0:,.0f}'.format(inv['bal_inv']) or ''"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="inv['bal_amt'] and '{0:,.0f}'.format(inv['bal_amt']) or ''"/>
+                                </td>
+
+                                <td style="text-align:right">
+                                    <span t-esc="inv['bipl_inv'] and '{0:,.0f}'.format(inv['bipl_inv']) or ''"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="inv['bipl_amt'] and '{0:,.0f}'.format(inv['bipl_amt']) or ''"/>
+                                </td>
+
+                                <td style="text-align:right">
+                                    <span t-esc="inv['dib_inv'] and '{0:,.0f}'.format(inv['dib_inv']) or ''"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="inv['dib_amt'] and '{0:,.0f}'.format(inv['dib_amt']) or ''"/>
+                                </td>
+
+                                <td style="text-align:right">
+                                    <span t-esc="inv['fbl_inv'] and '{0:,.0f}'.format(inv['fbl_inv']) or ''"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="inv['fbl_amt'] and '{0:,.0f}'.format(inv['fbl_amt']) or ''"/>
+                                </td>
+
+                                <td style="text-align:right">
+                                    <span t-esc="inv['hbl_inv'] and '{0:,.0f}'.format(inv['hbl_inv']) or ''"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="inv['hbl_amt'] and '{0:,.0f}'.format(inv['hbl_amt']) or ''"/>
+                                </td>
+
+                                <td style="text-align:right">
+                                    <span t-esc="inv['tmf_inv'] and '{0:,.0f}'.format(inv['tmf_inv']) or ''"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="inv['tmf_amt'] and '{0:,.0f}'.format(inv['tmf_amt']) or ''"/>
+                                </td>
+
+                                <td style="text-align:right">
+                                    <span t-esc="inv['bop_inv'] and '{0:,.0f}'.format(inv['bop_inv']) or ''"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="inv['bop_amt'] and '{0:,.0f}'.format(inv['bop_amt']) or ''"/>
+                                </td>
+
+                                <td style="text-align:right;">
+                                    <span t-esc="inv['received_inv'] and '{0:,.0f}'.format(inv['received_inv']) or ''"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="inv['received_amount'] and '{0:,.0f}'.format(inv['received_amount']) or ''"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <tr style="font-weight:bold;font-size:12px;">
+                            <td colspan="2">Grand Total</td>
+                            <td style="text-align:right">
+                                <span t-esc="totals['total_abb_inv'] and '{0:,.0f}'.format(totals['total_abb_inv']) or ''"/>
+                            </td>
+                            <td style="text-align:right">
+                                <span t-esc="totals['total_abb_amt'] and '{0:,.0f}'.format(totals['total_abb_amt']) or ''"/>
+                            </td>
+                            <td style="text-align:right">
+                                <span t-esc="totals['total_bal_inv'] and '{0:,.0f}'.format(totals['total_bal_inv']) or ''"/>
+                            </td>
+                            <td style="text-align:right;">
+                                <span t-esc="totals['total_bal_amt'] and '{0:,.0f}'.format(totals['total_bal_amt']) or ''"/>
+                            </td>
+
+                            <td style="text-align:right">
+                                <span t-esc="totals['total_bipl_inv'] and '{0:,.0f}'.format(totals['total_bipl_inv']) or ''"/>
+                            </td>
+                            <td style="text-align:right;">
+                                <span t-esc="totals['total_bipl_amt'] and '{0:,.0f}'.format(totals['total_bipl_amt']) or ''"/>
+                            </td>
+
+                            <td style="text-align:right">
+                                <span t-esc="totals['total_dib_inv'] and '{0:,.0f}'.format(totals['total_dib_inv']) or ''"/>
+                            </td>
+                            <td style="text-align:right;">
+                                <span t-esc="totals['total_dib_amt'] and '{0:,.0f}'.format(totals['total_dib_amt']) or ''"/>
+                            </td>
+
+                            <td style="text-align:right">
+                                <span t-esc="totals['total_fbl_inv'] and '{0:,.0f}'.format(totals['total_fbl_inv']) or ''"/>
+                            </td>
+                            <td style="text-align:right;">
+                                <span t-esc="totals['total_fbl_amt'] and '{0:,.0f}'.format(totals['total_fbl_amt']) or ''"/>
+                            </td>
+
+                            <td style="text-align:right">
+                                <span t-esc="totals['total_hbl_inv'] and '{0:,.0f}'.format(totals['total_hbl_inv']) or ''"/>
+                            </td>
+                            <td style="text-align:right;">
+                                <span t-esc="totals['total_hbl_amt'] and '{0:,.0f}'.format(totals['total_hbl_amt']) or ''"/>
+                            </td>
+
+                            <td style="text-align:right">
+                                <span t-esc="totals['total_tmf_inv'] and '{0:,.0f}'.format(totals['total_tmf_inv']) or ''"/>
+                            </td>
+                            <td style="text-align:right;">
+                                <span t-esc="totals['total_tmf_amt'] and '{0:,.0f}'.format(totals['total_tmf_amt']) or ''"/>
+                            </td>
+
+                            <td style="text-align:right">
+                                <span t-esc="totals['total_bop_inv'] and '{0:,.0f}'.format(totals['total_bop_inv']) or ''"/>
+                            </td>
+                            <td style="text-align:right;">
+                                <span t-esc="totals['total_bop_amt'] and '{0:,.0f}'.format(totals['total_bop_amt']) or ''"/>
+                            </td>
+
+                            <td style="text-align:right;">
+                                <span t-esc="totals['total_received_inv'] and '{0:,.0f}'.format(totals['total_received_inv']) or ''"/>
+                            </td>
+                            <td style="text-align:right;">
+                                <span t-esc="totals['total_received_amount'] and '{0:,.0f}'.format(totals['total_received_amount']) or ''"/>
+                            </td>
+                        </tr>
+                    </table>
+
+
+                    <table class='table table-condensed' width='100%'>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="font-weight:bold;font-size:11px;">Print Date:</span>
+                                </td>
+                                <td style="font-weight:bold;font-size:11px;">
+                                    <span style="padding-left:5px;" t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y %H:%M')"/>
+                                </td>
+                                <td style="font-weight:bold;font-size:11px;">
+                                    <span>Print User:</span>
+                                </td>
+                                <td style="font-weight:bold;font-size:11px;">
+                                    <span style="padding-left:5px;" t-esc="request.env.user.name"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </t>
+            </div>
+        </t>
+    </template>
+
+</odoo>

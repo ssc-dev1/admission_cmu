@@ -1,0 +1,140 @@
+<templates id="template" xml:space="preserve">
+    <t t-name="admission_comparison_report">
+        <div class="mt-3">
+            <div class="d-flex justify-content-center">
+                <h3 class="mb-4">
+                    Admission Comparison Report
+                </h3>
+            </div>
+            <div class="mb-3">
+                <div class="filter_view_tb">
+                    <form class="form-inline justify-content-center">
+                        <!-- <div class="form-group mb-2 mx-2">
+                            <label for="from_date" class="mr-2">From</label>
+                            <input type="date" class="form-control" id="from_date" name="from_date"/>
+                        </div>
+                        <div class="form-group mb-2 mx-2">
+                            <label for="to_date" class="mr-2">To</label>
+                            <input type="date" class="form-control" id="to_date" name="to_date"/>
+                        </div> -->
+        <div class="form-group mb-2 mx-2">
+            <label for="company_select">Company:</label>
+            <select id="company_select" class="form-control">
+            </select>
+        </div>
+        <div class="form-group mb-2 mx-2">
+            <label for="term_select">Recent Term:</label>
+            <select id="term_select" class="form-control">
+            </select>
+        </div>
+        <div class="form-group mb-2 mx-2">
+            <label for="compare_term">Compare with Term:</label>
+            <select id="compare_term" class="form-control">
+            </select>
+        </div>
+        
+        <div class="form-group mb-2 mx-2">
+    <label for="integer_input">No of Days:</label>
+    <input type="number" id="integer_input" class="form-control" placeholder="Enter days" />
+</div>
+                        <div class="form-group mb-2 mx-2">
+                            <label for="report_type" class="mr-2">Report Type</label>
+                            <select class="form-control" id="report_type" name="report_type">
+                                <option value="summary">Summary</option>
+                                <!-- <option value="detail">Detail</option> -->
+                            </select>
+                        </div>
+                        <div class="form-group mb-2 mx-2 group-by-container" style="display: none;">
+                            <label for="group_by" class="mr-2">Group By</label>
+                            <select class="form-control" id="group_by" name="group_by">
+                                <option value="program">Program</option>
+                                <!-- <option value="email">email</option>
+                                <option value="date">date</option> -->
+                            </select>
+                        </div>
+                        <div class="form-group mb-2 mx-2">
+                            <button type="button" class="btn btn-primary"
+                                    name="action_generate_report">Generate Report</button>
+                        </div>
+                        <div class="form-group mb-2 mx-2 download-icon-container" style="display: none;">
+                            <button type="button" class="btn btn-link" name="action_download_report">
+                                <i class="fa fa-download"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div>
+                <div class="table_view"></div>
+            </div>
+        </div>
+    </t>
+
+    
+        <t t-name="admission_comparison_report_view">
+        <div class="text-center" >
+     <h5 id ="report-description-title"><t t-esc="description"/></h5>
+    </div>
+        
+        <div class="d-flex justify-content-center">
+            <div class="table-responsive table_main_view" style="max-height: 90vh; overflow-y: auto;">
+           
+                <table id="smsReportTbl" class="table table-bordered table-striped table-hover col-8 m-auto">
+                    <thead class="thead-light">
+                        <tr>
+                            <th id="table_header_sticky">
+                                Sr.No
+                                <i t-attf-onclick="_report_sort_table(0)" class="fa fa-sort" aria-hidden="true"/>
+                            </th>
+                            <t t-set="index_for_sorting" t-value="0"/>
+                            <t t-foreach="report_headings" t-as="heading">
+                             <t t-set="index_for_sorting" t-value="index_for_sorting + 1"/>
+                                <th class="drag-header" style="min-width:200px" id="table_header_sticky">
+                             <t t-esc="heading"/>
+                                    <i t-attf-onclick="_report_sort_table(#{index_for_sorting})" class="fa fa-sort"
+                                       aria-hidden="true"/>
+                            </th>
+                            </t>
+                        </tr>
+    
+                        <tr>
+                            <t t-set="rhlen" t-value="report_headings.length"/>
+                            <t t-set="my_value" t-value="0"/>
+                            <th id="table_header_sticky">
+                                <input type="text" t-attf-id="smseReportfilter_#{my_value}"
+                                       t-attf-onkeyup="_smseReportfilter(#{rhlen},'smseReportfilter_','tableBody')"/>
+                            </th>
+                            <t t-foreach="report_headings" t-as="heading">
+                                <t t-set="my_value" t-value="my_value + 1"/>
+                                <th id="table_header_sticky">
+                                    <input type="text" t-attf-id="smseReportfilter_#{my_value}"
+                                           t-attf-onkeyup="_smseReportfilter(#{rhlen},'smseReportfilter_','tableBody')"/>
+                                </th>
+                            </t>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <t t-set="serial_no" t-value="0"/>
+                        <t t-foreach="report_lines" t-as="line">
+                            <tr>
+                                <t t-set="serial_no" t-value="serial_no + 1"/>
+                                <td><t t-esc="serial_no"/></td>
+                                <t t-foreach="keys" t-as="key">
+                                    <td>
+                                        <t t-esc="line[key]"/>
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+        <t t-name="admission_comparison_report_no_data">
+     <div class="d-flex justify-content-md-center align-items-center vh-100">
+        <p>No data to display</p>
+    </div>
+    </t>
+    </templates>
+    

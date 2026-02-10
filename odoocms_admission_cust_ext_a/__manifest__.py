@@ -1,0 +1,45 @@
+{
+    'name': 'Odoocms Admission CUST Ext A',
+    'version': '1.0.0',
+    'license': 'LGPL-3',
+    'category': 'OdooCMS',
+    'author': 'Abubakar',
+    'website': '',
+    'depends': ['odoocms_base',
+                'mail',
+                'odoocms',
+                'odoocms_admission',
+                'odoocms_assets',
+                'odoocms_fee',
+                'odoocms_admission_ucp',
+                'odoocms_admission_fee',
+                'odoocms_merit_ucp'],
+    'data': [
+        'security/security.xml',
+        'data/email_template.xml',
+        'reports/merit_list_register_report.xml',
+        'views/meritlist.xml',
+        'views/pre_test.xml',
+        'views/admission_register.xml',
+        'data/view_template_inherits.xml',
+        'views/views_inherit.xml',
+        'security/company_rule.xml',
+        'views/email_sms_custom.xml',
+        'security/ir.model.access.csv',
+        'views/email_sms_send.xml',
+        'views/odoocms_fee_barcode.xml',
+        'views/test_schedule_line.xml',
+        'views/prospectus_fee_waiver_type.xml',
+        'wizard/apply_prospectus_fee_wizard.xml',
+        'wizard/change_application_tag_view.xml'
+
+    ],
+    'demo': [],
+    'installable': True,
+    'auto_install': False,
+    'external_dependencies': {
+        'python': [],
+    },
+
+    'application': False
+}

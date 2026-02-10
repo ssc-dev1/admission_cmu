@@ -1,0 +1,206 @@
+# =========================================
+# ODOO + PYTHON PROJECT .gitignore
+# Safe for UAT/Production
+# =========================================
+
+
+# -------------------------
+# Python bytecode / cache
+# -------------------------
+__pycache__/
+*.py[codz]
+*$py.class
+
+
+# -------------------------
+# C extensions
+# -------------------------
+*.so
+
+
+# -------------------------
+# Distribution / packaging
+# -------------------------
+.Python
+build/
+dist/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+
+# -------------------------
+# Unit test / coverage
+# -------------------------
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py.cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+
+# -------------------------
+# Translations
+# -------------------------
+*.mo
+*.pot
+
+
+# -------------------------
+# Logs
+# -------------------------
+*.log
+log/
+logs/
+
+
+# -------------------------
+# Temporary / backup files
+# -------------------------
+*.bak
+*.swp
+*.swo
+*~
+*.tmp
+
+
+# -------------------------
+# Environments / venv
+# -------------------------
+.env
+.envrc
+.venv
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+
+# -------------------------
+# Jupyter
+# -------------------------
+.ipynb_checkpoints
+
+
+# -------------------------
+# IDEs / Editors
+# -------------------------
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/
+
+# Spyder
+.spyderproject
+.spyproject
+
+# Rope
+.ropeproject
+
+
+# -------------------------
+# OS junk
+# -------------------------
+.DS_Store
+Thumbs.db
+
+
+# -------------------------
+# ODOO SPECIFIC (IMPORTANT)
+# -------------------------
+
+# Odoo runtime data (data_dir)
+# Example: /opt/odoo15/.local/share/Odoo
+.local/
+*/.local/
+
+# Odoo filestore/sessions (sometimes appear in repo accidentally)
+filestore/
+sessions/
+
+# Odoo addons build outputs
+*.pyc
+
+
+# -------------------------
+# Database dumps / backups
+# -------------------------
+*.sql
+*.dump
+*.backup
+*.gz
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+
+# -------------------------
+# Secrets / Keys / Certs
+# -------------------------
+*.pem
+*.key
+*.crt
+*.pfx
+*.p12
+
+
+# -------------------------
+# Odoo config files (OPTIONAL)
+# -------------------------
+# If your repo contains odoo.conf, better NOT to commit it.
+# If you WANT to commit a sample config, rename it to:
+#   odoo.conf.example
+#
+# Uncomment below if needed:
+# *.conf
+# *.ini
+
+
+# -------------------------
+# Node / frontend (if exists)
+# -------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+
+# -------------------------
+# Docker
+# -------------------------
+docker-compose.override.yml
+
+
+# -------------------------
+# Misc tools
+# -------------------------
+.ruff_cache/
+.mypy_cache/
+.pytype/
+.pyre/
+.cursorignore
+.cursorindexingignore

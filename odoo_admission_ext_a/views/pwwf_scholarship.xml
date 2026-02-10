@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_odoocms_application_pwwf_tree_ext_a" model="ir.ui.view">
+        <field name="name">odoocms.application.scholarship.tree</field>
+        <field name="model">odoocms.application</field>
+        <field name="arch" type="xml">
+            <tree string="PWWF Scholarship Allocation">
+                <field name="register_id" invisible="1"/>
+                <field name="application_no"/>
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="date_of_birth" optional="show"/>
+                <field name="email" optional="hide"/>
+                <field name="mobile" optional="hide"/>
+                <field name="cnic" optional="show"/>
+                <field name="fee_voucher_state" optional="show"/>
+                <field name="prefered_program" optional="hide"/>
+                <field name="verification_status"/>
+                <field name="degree"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_application_pwwf_scholarship_form" model="ir.ui.view">
+        <field name="name">view.odoocms.application.pwwf.scholarship.form</field>
+        <field name="model">odoocms.application</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button type="object" name="pwwf_document_verified" string="Verify"
+                            groups="odoocms_admission.group_admission_user"
+                            class="oe_highlight" attrs="{'invisible':[('pwwf_verification_state', '==', 'verified')]}"/>
+
+                    <button type="object" name="pwwf_document_unverified"
+                            string="UnVerify"
+                            groups="odoocms_admission.group_admission_user"
+                            class="oe_highlight" attrs="{'invisible':[('pwwf_verification_state', '==', 'not_verified')]}"/>
+
+                    <button type="object" name="pwwf_document_rejected" string="Rejected"
+                            groups="odoocms_admission.group_admission_manager"
+                            class="oe_highlight" attrs="{'invisible':[('pwwf_verification_state', '==', 'rejected')]}"/>
+
+                    <!--                    <field name="pwwf_verification_state" widget="statusbar" statusbar_colors='{"verify":"blue","un_verify":"blue"}' />-->
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Rejected" bg_color="bg-danger" attrs="{'invisible': [('pwwf_verification_state', '!=', 'rejected')]}"/>
+                    <widget name="web_ribbon" title="Not Verified" bg_color="bg-warning" attrs="{'invisible': [('pwwf_verification_state', '!=', 'not_verified')]}"/>
+                    <widget name="web_ribbon" title="Verified" bg_color="bg-success" attrs="{'invisible': [('pwwf_verification_state', '!=', 'verified')]}"/>
+                    <h3 style="text-align: center;">Documents</h3>
+                    <group>
+                        <group>
+                            <field name="register_id" invisible="1"/>
+                            <field name="application_no"/>
+                            <field name="name"/>
+                            <field name="gender"/>
+                            <field name="email" optional="hide"/>
+                            <field name="mobile" optional="hide"/>
+                        </group>
+                        <group>
+                            <field name="cnic" optional="show"/>
+                            <field name="fee_voucher_state" optional="show"/>
+                            <field name="prefered_program" optional="hide"/>
+                            <field name="verification_status"/>
+                            <field name="degree"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="PWWF Document Details">
+                            <group>
+                                <group>
+                                    <field name="pwwf_scholarship"/>
+                                    <field name="pwwf_verification_state"/>
+                                </group>
+                                <group>
+                                    <field name="pwwf_file" options='{"zoom": true, "preview_image":"pwwf_file", "zoom_delay": 1000}'
+                                           widget="image"/>
+                                    <field name="pwwf_file_download"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_odoocms_application_pwwf_scholarship" model="ir.actions.act_window">
+        <field name="name">PWWF Scholarship</field>
+        <field name="res_model">odoocms.application</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>    <!--  -->
+        <field name="view_ids" eval="[(5, 0, 0),
+    (0, 0, {'view_mode': 'tree', 'view_id': ref('view_odoocms_application_pwwf_tree_ext_a')}),
+    (0, 0, {'view_mode': 'form', 'view_id': ref('view_odoocms_application_pwwf_scholarship_form')})]"/>
+        <field name="context">{}</field>
+        <field name="domain">[('pwwf_scholarship', '=', True)]
+        </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Application Scholarship here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_odoocms_application_pwwf_scholarship"
+            name="PWWF Scholarship"
+            parent="odoocms_admission.admission_applicant_menu"
+            action="action_odoocms_application_pwwf_scholarship"
+            groups="odoocms_admission.group_admission_user"
+            sequence="26"/>
+
+</odoo>
+
+
+
+

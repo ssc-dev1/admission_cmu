@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="merit_register_report_inherit" inherit_id="odoocms_merit_ucp.merit_register_report">
+        <xpath expr="//div[hasclass('container')][3]/table[1]/thead/th[6]" position="after">
+            <th t-if='o.program_id.career_id.code=="PG"'>BS%</th>
+        </xpath>
+       <xpath expr="//div[hasclass('container')][3]/table[1]/tbody/t/tr/td[6]" position="after">
+            <td t-if='o.program_id.career_id.code=="PG"' class='m-0 p-1'>
+                <t t-out="merit_line.bs_percentage or ''"/>
+            </td>
+        </xpath>
+    </template>
+</odoo>

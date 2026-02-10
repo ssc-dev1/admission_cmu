@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_odoocms_student_faculty_wise_challan" model="ir.sequence">
+            <field name="name">Student Faculty Wise Challan</field>
+            <field name="code">odoocms.student.faculty.wise.challan</field>
+            <field name="padding">5</field>
+        </record>
+
+        <record id="seq_odoocms_scholarship_continue_policy" model="ir.sequence">
+            <field name="name">Scholarship continue Policy</field>
+            <field name="code">odoocms.scholarship.continue.policy</field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="seq_odoocms_student_scholarship_block" model="ir.sequence">
+            <field name="name">Student Scholarship Block</field>
+            <field name="code">odoocms.student.scholarship.block</field>
+            <field name="prefix">SBLK/</field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="seq_odoocms_course_scholarship_block" model="ir.sequence">
+            <field name="name">Course Scholarship Block</field>
+            <field name="code">odoocms.course.scholarship.block</field>
+            <field name="prefix">CBLK/</field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="seq_odoocms_student_special_scholarship" model="ir.sequence">
+            <field name="name">Student Special Scholarship</field>
+            <field name="code">odoocms.student.special.scholarship</field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="seq_odoocms_challan_fine_policy" model="ir.sequence">
+            <field name="name">Challan Fine Policy Sequence</field>
+            <field name="code">odoocms.challan.fine.policy</field>
+            <field name="prefix">CFP/</field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="seq_odoocms_adddrop_policy" model="ir.sequence">
+            <field name="name">Add Drop Policy Sequence</field>
+            <field name="code">odoocms.adddrop.policy.line</field>
+            <field name="prefix">AD</field>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="seq_odoocms_fee_payments_amount_mismatch" model="ir.sequence">
+            <field name="name">Fee Payments Amount Mismatch Sequence</field>
+            <field name="code">odoocms.fee.payments.amount.mismatch</field>
+            <field name="prefix">PMM</field>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="seq_student_reg_no" model="ir.sequence">
+            <field name="name">Student Registration No Sequence</field>
+            <field name="code">student.reg.no.seq</field>
+            <field name="prefix">SR</field>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="seq_fee_defaulter_student" model="ir.sequence">
+            <field name="name">Fee Defaulter Student Sequence</field>
+            <field name="code">odoocms.fee.defaulter.student</field>
+            <field name="prefix"></field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="seq_fee_defaulter_student_line" model="ir.sequence">
+            <field name="name">Fee Defaulter Student Line Sequence</field>
+            <field name="code">odoocms.fee.defaulter.student.line</field>
+            <field name="prefix"></field>
+            <field name="padding">3</field>
+        </record>
+
+         <record id="seq_odoocms_student_fine_discounts" model="ir.sequence">
+            <field name="name">Student Fine Discounts Sequence</field>
+            <field name="code">odoocms.student.fine.discounts</field>
+            <field name="prefix">%(year)s/</field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="seq_odoocms_student_fine_discounts_line" model="ir.sequence">
+            <field name="name">Student Fine Discounts Line Sequence</field>
+            <field name="code">odoocms.student.fine.discounts.line</field>
+            <field name="prefix">%(year)s/</field>
+            <field name="padding">3</field>
+        </record>
+
+
+    </data>
+</odoo>
+

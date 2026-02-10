@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="odoocms_challan_status_report_view" model="ir.ui.view">
+        <field name="name">odoocms.challan.status.report.view</field>
+        <field name="model">odoocms.challan.status.report</field>
+        <field name="arch" type="xml">
+            <form string="Challan Status Report">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="term_id" options="{'no_quick_create':True,'no_create_edit':True,'no_create':True}" required="1"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create':True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Faculties" name="institute_ids">
+                            <field name="institute_ids">
+                                <tree>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="campus_id"/>
+                                    <field name="phone"/>
+                                    <field name="email"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Programs" name="program_ids">
+                            <field name="program_ids">
+                                <tree>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="career_id"/>
+                                    <field name="department_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="make_excel" string="Generate Excel Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_odoocms_challan_status_report" model="ir.actions.act_window">
+        <field name="name">Challan Status Report</field>
+        <field name="res_model">odoocms.challan.status.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem
+            id="menu_odoocms_challan_status_report"
+            name="Challan Status Report"
+            action="action_odoocms_challan_status_report"
+            parent="odoocms_fee.menu_fee_reports"
+            groups="odoocms_fee.group_fee_user,odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager"
+            sequence="550"/>
+
+</odoo>
+
+

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--***** Employee SMS Form *****-->
+        <record id="view_send_sms_employee_form" model="ir.ui.view">
+            <field name="name">send.sms.employee.form.view</field>
+            <field name="model">send.sms.employee</field>
+            <field name="arch" type="xml">
+                <form string="Employee SMS">
+                    <header>
+                        <button name="action_generate_detail" string="General Detail" states="draft" confirm="Are You Sure To Send SMS" type="object" class="btn-primary"/>
+                        <button name="action_employee_sms" string="Send" states="detail" type="object" class="btn-primary"/>
+                        <button name="action_cancel" string="Cancel" states="draft,detail" type="object" class="btn-primary"/>
+                        <button name="action_turn_to_draft" string="Turn To Draft" states="cancel,detail" type="object" class="btn-primary"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="type" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="sub_type" attrs="{'invisible':[('type','!=','faculty')],
+                                                                'required':[('type','=','faculty')],
+                                                                'readonly':[('state','!=','draft')]}"/>
+                                <field name="sms_length"/>
+                            </group>
+                            <group>
+                                <field name="date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="gateway_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+                            </group>
+                        </group>
+                        <group string="Message Detail">
+                            <field name="sms_body" nolabel="1" required="1"/>
+                        </group>
+
+                        <separator/>
+                        <notebook name="notebook_1">
+                            <page string="Departments">
+                                <field name="department_ids" attrs="{'readonly':[('state','!=','draft')]}" domain="[('company_id','=',company_id)]"/>
+                            </page>
+                            <page string="Employee(s)">
+                                <field name="employee_ids" attrs="{'readonly':[('state','!=','draft')]}" domain="[('company_id','=',company_id)]"/>
+                            </page>
+                        </notebook>
+
+                        <separator/>
+                        <notebook name="notebook_2">
+                            <page string="Excluded Departments">
+                                <field name="excluded_department_ids" attrs="{'readonly':[('state','!=','draft')]}" domain="[('company_id','=',company_id)]"/>
+                            </page>
+                            <page string="Excluded Employee(s)">
+                                <field name="excluded_employee_ids" attrs="{'readonly':[('state','!=','draft')]}" domain="[('company_id','=',company_id)]"/>
+                            </page>
+                        </notebook>
+
+                        <separator/>
+                        <notebook name="notebook_3">
+                            <page string="Detail">
+                                <field name="lines" readonly="1">
+                                    <tree>
+                                        <field name="employee_code" string="Code" optional="show"/>
+                                        <field name="employee_name" string="Name" optional="show"/>
+                                        <field name="mobile_no" string="Mobile#" optional="show"/>
+                                        <field name="department_id" optional="hide"/>
+                                        <field name="job_id" optional="hide"/>
+                                        <field name="date" optional="hide"/>
+                                        <field name="state" optional="hide"/>
+                                        <field name="employee_type" optional="hide"/>
+                                        <field name="sent" optional="show"/>
+                                    </tree>
+                                    <form>
+                                        <header>
+                                            <field name="state" widget="statusbar"/>
+                                        </header>
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="employee_code"/>
+                                                    <field name="employee_name"/>
+                                                    <field name="mobile_no"/>
+                                                </group>
+                                                <group>
+                                                    <field name="department_id"/>
+                                                    <field name="job_id"/>
+                                                    <field name="date"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--***** Employee SMS Tree *****-->
+        <record id="view_send_sms_employee_tree_view" model="ir.ui.view">
+            <field name="name">send.sms.employee.tree</field>
+            <field name="model">send.sms.employee</field>
+            <field name="arch" type="xml">
+                <tree string="Employee SMS" decoration-primary="state=='draft'" decoration-success="state=='sent'" decoration-danger="state=='cancel'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="type"/>
+                    <field name="sub_type"/>
+                    <field name="sms_length" optional="show"/>
+                    <field name="state" optional="hide"/>
+                    <field name="gateway_id" optional="hide"/>
+                    <field name="create_date" optional="hide"/>
+                    <field name="state" widget="badge" decoration-primary="state=='draft'" decoration-success="state=='sent'" decoration-danger="state=='cancel'"/>
+                    <field name="create_uid" string="Created By" optional="hide" widget="many2one_avatar_user"/>
+                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--***** Employee Search View *****-->
+        <record id="view_send_sms_employee_search" model="ir.ui.view">
+            <field name="name">send.sms.employee.select</field>
+            <field name="model">send.sms.employee</field>
+            <field name="arch" type="xml">
+                <search string="Employee SMS">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="type"/>
+                    <field name="sub_type"/>
+                    <field name="state"/>
+                    <field name="gateway_id"/>
+
+                    <group expand="0" string="Group By...">
+                        <filter string="Type" name="group_by_type" domain="[]" context="{'group_by':'type'}"/>
+                        <separator/>
+                        <filter string="Sub Type" name="group_by_sub_type" domain="[]" context="{'group_by':'sub_type'}"/>
+                        <separator/>
+                        <filter string="Status" name="group_by_state" domain="[]" context="{'group_by':'state'}"/>
+                        <separator/>
+                        <filter string="Company" name="group_by_company" domain="[]" context="{'group_by':'company_id'}"/>
+                        <separator/>
+                        <filter string="Date" name="group_by_date" domain="[]" context="{'group_by':'date'}"/>
+                        <separator/>
+                         <filter string="Company" name="group_by_company" domain="[]" context="{'group_by':'company_id'}"/>
+                        <separator/>
+                    </group>
+
+                </search>
+            </field>
+        </record>
+
+        <!--***** Employee SMS Kanban View *****-->
+        <record id="view_send_sms_employee_kanban" model="ir.ui.view">
+            <field name="name">send.sms.employee.kanban</field>
+            <field name="model">send.sms.employee</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" create="0" sample="1">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="type"/>
+                    <field name="sub_type"/>
+                    <field name="state"/>
+                    <field name="sms_length"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click container">
+                                <div class="row no-gutters">
+                                    <div class="col-12 badge badge-pill  bg-info text-white">
+                                        <strong class="o_kanban_record_title">
+                                            <t t-esc="record.name.raw_value"/>
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="row no-gutters justify-content-end" style="font-size:10px;">
+                                    <div class="col-3" style="font-weight:bold;">
+                                        <span>Type:</span>
+                                    </div>
+                                    <div class="col-9 ">
+                                        <strong>
+                                            <field name="type"/>
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="row no-gutters justify-content-end" style="font-size:10px;">
+                                    <div class="col-3" style="font-weight:bold;">
+                                        <span>Sub Type:</span>
+                                    </div>
+                                    <div class="col-9 ">
+                                        <strong>
+                                            <field name="sub_type"/>
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="row no-gutters justify-content-end" style="font-size:10px;">
+                                    <div class="col-3" style="font-weight:bold;">
+                                        <span>Date:</span>
+                                    </div>
+                                    <div class="col-9">
+                                        <strong>
+                                            <field name="date"/>
+                                        </strong>
+                                    </div>
+                                </div>
+
+
+                                <div class="row no-gutters justify-content-end" style="font-size:10px;">
+                                    <div class="col-3" style="font-weight:bold;">
+                                        <span>SMS Length:</span>
+                                    </div>
+                                    <div class="col-9 ">
+                                        <strong>
+                                            <field name="sms_length"/>
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="row no-gutters justify-content-end" style="font-size:10px;">
+                                    <div class="col-3" style="font-weight:bold;">
+                                        <span>Status:</span>
+                                    </div>
+                                    <div class="col-9 ">
+                                        <strong>
+                                            <field name="state"/>
+                                        </strong>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </t>
+                    </templates>
+
+                </kanban>
+            </field>
+        </record>
+
+        <!--***** Action *****-->
+        <record id="view_send_sms_employee_action" model="ir.actions.act_window">
+            <field name="name">Employee SMS</field>
+            <field name="res_model">send.sms.employee</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="search_view_id" eval="view_send_sms_employee_search"/>
+            <field name="context">{}</field>
+        </record>
+
+        <!--***** Menu *****-->
+        <menuitem
+                id="menu_send_sms_employee"
+                parent="menu_send_sms_main"
+                action="view_send_sms_employee_action"
+                groups="send_sms.group_odoo_sms_user,send_sms.group_odoo_sms_manager"
+                sequence="20"/>
+    </data>
+</odoo>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="cbt_card-stats" name="Card Stats">
+        <div id="card-stats" class="pt-0">
+            <div class="row">
+                <div class="col s12 m3 l3 xl3">
+                    <div class="card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text animate fadeLeft">
+                        <div class="padding-4">
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="display-flex media">
+                                        <a href="#" class="avatar mr-4">
+<!--                                            <img t-attf-src="/cbt_portal/static/img/{{paper.login}}.png" alt="users image" class="z-depth-4 circle" height="64" width="64"/>-->
+                                       <img src="/cbt_portal/static/img/avatar.jpeg" alt="users image" class="z-depth-4 circle" height="64" width="64"/>
+                                        </a>
+                                        <div class="media-body" style="color:black;">
+                                            <h6 class="media-heading">
+                                                <span class="users-view-name"><t t-esc="paper.name"/></span>
+                                               <!-- <span class="grey-text">@</span>
+                                                <span class="users-view-username grey-text">candy007</span>-->
+                                            </h6>
+                                            <span>ID :</span>
+                                            <span class="users-view-id"><t t-esc="paper.login"/></span>
+                                        </div>
+                                    </div><!--
+                                    <i class="material-icons background-round mt-1 mb-0 mr-0">
+                                        image
+                                    </i>
+                                    &lt;!&ndash;<p></p>&ndash;&gt;
+
+                                    <div class="col s7 m7 left">
+                                          <span>
+                                          <h5 class="no-margin white-text"></h5>
+                                        <p class="no-margin">Roll number: 123123123</p>
+                                        </span>
+                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m5 l5 xl5">
+                    <div class="card gradient-45deg-indigo-light-blue gradient-shadow min-height-100 white-text animate fadeLeft">
+                        <div class="padding-1">
+                            <div class="row">
+                                <div class="col s12 m12 mt-1">
+                                    <div class="display-flex media">
+                                        <a href="#" class="avatar mr-4">
+                                            <img src="/cbt_portal/static/img/ucp.svg" alt="users image" class="z-depth-4 circle" height="64" width="64"/>
+                                        </a>
+                                        <div class="media-body" style="color:black;">
+                                            <h6 class="media-heading">
+                                                <span class="users-view-name">UCP</span>
+                                               <!-- <span class="grey-text">@</span>
+                                                <span class="users-view-username grey-text">candy007</span>-->
+                                            </h6>
+                                            <span>Paper :</span>
+                                            <span class="users-view-id"><t t-esc="paper.paper_name"/></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m4 l4 xl4">
+                    <div class="card gradient-45deg-green-teal gradient-shadow min-height-100 white-text animate fadeLeft">
+                        <div class="padding-2">
+                            <div class="row" name="start_time_widget">
+                                <div class="col s7 m7">
+                                    <div class="display-flex media" style="color:black;">
+                                        <a href="#" class="avatar mr-4">
+
+                                                 <img src="/cbt_portal/static/img/clock.png" class="z-depth-4 circle" height="64" width="64" />
+
+                                        </a>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">
+                                                <span class="users-view-name"><t t-esc="'%02d:%02d' % (divmod(paper.test_time * 60, 60))"/> <input type="hidden" id="timer" t-att-value="'%02d:%02d' % (divmod(paper.test_time * 60, 60))" /> </span>
+                                               <!-- <span class="grey-text">@</span>
+                                                <span class="users-view-username grey-text">candy007</span>-->
+                                            </h6>
+                                            <span>Start Time</span>
+                                            <br/>
+
+                                            <span>Duration :</span>   <h7 style="color:black;"><t t-esc="paper.test_duration"/><small>Minute/s</small></h7> <input type="hidden" id="duration" t-att-value="paper.test_duration" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s5 m5 right-align" t-if="paper_page">
+                                    <h5 class="mb-0 white-text countdown"><t t-esc="paper.test_duration"/></h5>
+                                    <p class="no-margin">Remaining Time</p>
+                                    <!--<p>$25,000</p>-->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="cbt_widgets" name="CBT Widgets">
+        <div class="row">
+            <div class="col s12">
+                <div class="container">
+                    <div class="section">
+                        <t t-call="cbt_portal.cbt_card-stats"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

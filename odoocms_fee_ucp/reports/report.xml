@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--***** Fee Defaulter Report *****-->
+        <record id="odoocms_fee_ucp.action_fee_defaulter_report" model="ir.actions.report">
+            <field name="name">Fee Defaulter Report</field>
+            <field name="model">fee.defaulter.rep.wiz</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee_ucp.fee_defaulter_report</field>
+            <field name="report_file">odoocms_fee_ucp.fee_defaulter_report</field>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!--***** Student Fine History Report *****-->
+        <record id="odoocms_fee_ucp.action_student_fine_history_report" model="ir.actions.report">
+            <field name="name">Student Fine History Report</field>
+            <field name="model">student.fine.history.rep.wiz</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee_ucp.student_fine_history_report</field>
+            <field name="report_file">odoocms_fee_ucp.student_fine_history_report</field>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!--***** Fee Letter Report *****-->
+<!--        <record id="odoocms_fee_ucp.action_student_fee_letter_report" model="ir.actions.report">-->
+<!--            <field name="name">Fee Letter</field>-->
+<!--            <field name="model">odoocms.student</field>-->
+<!--            <field name="report_type">qweb-pdf</field>-->
+<!--            <field name="report_name">odoocms_fee_ucp.student_fee_letter_template</field>-->
+<!--            <field name="report_file">odoocms_fee_ucp.student_fee_letter_template</field>-->
+<!--            <field name="print_report_name">"%s Fee Letter" %(object.code)</field>-->
+<!--            <field name="binding_model_id" ref="odoocms.model_odoocms_student"/>-->
+<!--            <field name="binding_type">report</field>-->
+<!--        </record>-->
+
+    </data>
+</odoo>

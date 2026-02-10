@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_odoocms_unconfirmed_paid_bank_challan_tree" model="ir.ui.view">
+            <field name="name">odoocms.unconfirmed.paid.bank.challan.tree.view</field>
+            <field name="model">odoocms.unconfirmed.paid.bank.challan</field>
+            <field name="arch" type="xml">
+                <tree string="Unconfirmed Paid Bank Challan" decoration-danger="processed==False" decoration-success="processed==True">
+                    <field name="name"/>
+                    <field name="invoice_id" optional="hide"/>
+                    <field name="challan_amount" optional="show"/>
+                    <field name="received_amount" optional="show"/>
+                    <field name="bank" optional="show"/>
+                    <field name="transaction_id" optional="show"/>
+                    <field name="transaction_date" optional="show"/>
+                    <field name="transaction_time" optional="hide"/>
+                    <field name="processed_date" optional="show"/>
+                    <field name="processed" optional="show"/>
+                    <field name="type" optional="show"/>
+                    <field name="notes" optional="hide"/>
+                    <button name="action_button_process" type="object" string="Refresh" class="btn btn-link" attrs="{'invisible':[('processed','=',True)]}"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_unconfirmed_paid_bank_challan_form" model="ir.ui.view">
+            <field name="name">odoocms.unconfirmed.paid.bank.challan.form.view</field>
+            <field name="model">odoocms.unconfirmed.paid.bank.challan</field>
+            <field name="arch" type="xml">
+                <form string="Unconfirmed Paid Bank Challans">
+                    <header>
+                        <button name="action_button_process" type="object" class="oe_highlight" string="Refresh" attrs="{'invisible':[('processed','=',True)]}"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="invoice_id" readonly="1"/>
+                                <field name="challan_amount" readonly="1"/>
+                                <field name="received_amount" attrs="{'invisible':[('processed','=',True)]}"/>
+                                <field name="processed" invisible="1"/>
+                                <field name="type" readonly="1"/>
+                                <field name="notes" attrs="{'invisible':[('processed','=',True)]}"/>
+                            </group>
+                            <group>
+                                <field name="bank" readonly="1"/>
+                                <field name="transaction_id" attrs="{'invisible':[('processed','=',True)]}"/>
+                                <field name="transaction_date" readonly="1"/>
+                                <field name="processed_date" readonly="1"/>
+                                <field name="processed_date" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_odoocms_unconfirmed_paid_bank_challan_search" model="ir.ui.view">
+            <field name="name">odoocms.unconfirmed.paid.bank.challan.search</field>
+            <field name="model">odoocms.unconfirmed.paid.bank.challan</field>
+            <field name="arch" type="xml">
+                <search string="Unconfirmed Paid Bank Challan">
+                    <field name="name"/>
+                    <field name="bank"/>
+                    <field name="type"/>
+                    <field name="transaction_id"/>
+                    <field name="processed_date"/>
+                    <field name="transaction_date"/>
+
+                    <newline/>
+                    <filter name="processed" string="Processed" domain="[('processed', '=', True)]"/>
+                    <filter name="unprocessed" string="Unprocessed" domain="[('processed', '=',False)]"/>
+                    <separator/>
+                    <filter name="transaction_date_filters" string="Transaction Date" date="transaction_date"/>
+                    <filter name="processed_date_filters" string="Processed Date" date="processed_date"/>
+
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Bank" name="group_by_bank" domain="[]" context="{'group_by':'bank'}"/>
+                        <separator/>
+                        <filter string="Transaction Date" name="group_by_transaction_date" domain="[]"
+                                context="{'group_by':'transaction_date'}"/>
+                        <separator/>
+                        <filter string="Processed Date" name="group_by_processed_date" domain="[]"
+                                context="{'group_by':'processed_date'}"/>
+                        <separator/>
+                        <filter string="Type" name="group_by_type" domain="[]" context="{'group_by':'type'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_unconfirmed_paid_bank_challan" model="ir.actions.act_window">
+            <field name="name">Unconfirmed Paid Bank Challan</field>
+            <field name="res_model">odoocms.unconfirmed.paid.bank.challan</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_unconfirmed_paid_bank_challan"
+                name="Unconfirmed Paid Bank Challan"
+                sequence="30"
+                parent="odoocms_fee.menu_odoocms_student_fee_payment_main"
+                action="action_odoocms_unconfirmed_paid_bank_challan"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+        />
+
+    </data>
+</odoo>

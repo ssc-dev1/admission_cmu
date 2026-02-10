@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_odoocms_institute_tree" model="ir.ui.view">
+        <field name="name">odoocms.institute.tree</field>
+        <field name="model">odoocms.institute</field>
+        <field name="arch" type="xml">
+            <tree string="Institute/Faculty">
+                <field name="code"/>
+                <field name="name" string="Name"/>
+                <field name="campus_id"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="website"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_odoocms_institute_form" model="ir.ui.view">
+        <field name="name">odoocms.institute.form</field>
+        <field name="model">odoocms.institute</field>
+        <field name="arch" type="xml">
+            <form string="Institute/Faculty">
+                <sheet>
+                    <field name="image_1920" widget='image' class="oe_avatar"
+                           options='{"zoom":true, "preview_image":"image_128"}'/>
+                     <div name='institute_div' class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Institute Name"/>
+                        <h2>
+                            <field name="name" string="Name" required="1"/>
+                        </h2>
+                    </div>
+                    <group name="one">
+                        <group>
+                            <field name="code" required="1"/>
+                        </group>
+                        <group>
+                            <field name="campus_id"
+                                   options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="parent_id"
+                                options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                        <group>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="website" widget="url"/>
+                        </group>
+                        <group>
+                            <field name="effective_date"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group colspan="4">
+                        <field name="department_ids" widget="many2many_tags"
+                            options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    </group>
+
+                    <notebook>
+                        <page name="childs" string="Sub Institutes">
+                            <group colspan="4">
+                                <field name="child_ids" nolabel="1" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_odoocms_institute_search" model="ir.ui.view">
+        <field name="name">odoocms.institute.search</field>
+        <field name="model">odoocms.institute</field>
+        <field name="arch" type="xml">
+            <search string="Institute/Faculty">
+                <field name="name"/>
+                <field name="code"/>
+                <newline/>
+                <group expand="0" string="Group By...">
+                    <filter string="Campus" domain="[]" name="campus_grp" context="{'group_by':'campus_id'}"/>
+                </group>
+                <searchpanel>
+                    <field name="campus_id"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_odoocms_institute" model="ir.actions.act_window">
+        <field name="name">Institute/Faculty</field>
+        <field name="res_model">odoocms.institute</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_odoocms_institute_search"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the First Institute here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_odoocms_institute"
+            name="Institutes"
+            parent="menu_odoocms_organization_structure"
+            action="action_odoocms_institute"
+            sequence="20"/>
+
+</odoo>

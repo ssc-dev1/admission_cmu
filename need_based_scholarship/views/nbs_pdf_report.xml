@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="nbs_pdf_report" name="Need Based Scholarship Report">
+    <t t-call="web.html_container">
+
+      <t t-foreach="docs" t-as="nbs">
+        <!-- keep company header/footer exactly like admit card -->
+        <div t-call="web.basic_layout">
+
+          <style>
+            * { box-sizing: border-box; }
+            body { font-family: DejaVu Sans, Arial, sans-serif; color:#222; font-size:12px; line-height:1.45; }
+            .page { padding:2%; }
+            .borders{ border:1px solid #000; }
+            .margins{ margin-top:1%; }
+            .signature{ border:0; border-bottom:1px solid #000; }
+            .muted { color:#666; }
+            .small { font-size:10.5px; }
+            .xs { font-size:10px; }
+            .mt-2 { margin-top:8px; }
+            .mt-4 { margin-top:14px; }
+
+            /* status pills — BLUE ONLY */
+            .pill { display:inline-block; padding:2px 8px; border:1px solid #c7d2fe; border-radius:12px; font-weight:700; font-size:10px; text-transform:uppercase; }
+            .pill.draft { background:#f5f7fa; color:#6b7280; border-color:#cfd6df; }
+            .pill.submitted, .pill.approved { background:#e8f0fe; color:#1e3a8a; border-color:#c7d2fe; }
+            .pill.rejected { background:#f3e8ff; color:#6b21a8; border-color:#e9d5ff; }
+
+            /* section headings — BLUE */
+            .sec { margin:16px 0 12px 0; page-break-inside: avoid; }
+            .sec-h { background:#0b2f55; color:#fff; padding:7px 10px; border-radius:4px; font-size:14px; letter-spacing:.3px; text-transform:uppercase; }
+            .sub-h { border-left:4px solid #0b2f55; background:#f3f6fa; padding:6px 10px; border-radius:4px; margin:10px 0 8px 0; font-weight:700; color:#0b2f55; }
+
+            /* info cards (table-based for wkhtml) */
+            .card-table { width:100%; border-collapse:separate; border-spacing:0 6px; }
+            .card-cell { border:1px solid #e2e8f0; border-radius:6px; padding:0; overflow:hidden; }
+            .card-head { background:#eef3f8; padding:6px 10px; font-weight:700; color:#0b2f55; border-bottom:1px solid #e2e8f0; }
+            .info-grid { width:100%; border-collapse:collapse; }
+            .info-grid td.label { width:38%; background:#f7fafc; padding:7px 10px; font-weight:700; color:#4b5563; border:1px solid #e5e7eb; border-right:none; vertical-align:top; }
+            .info-grid td.val { width:62%; padding:7px 10px; border:1px solid #e5e7eb; background:#fff; vertical-align:top; }
+
+            /* data table */
+            table.data { width:100%; border-collapse:collapse; }
+            table.data th { background:#0b2f55; color:#fff; text-transform:uppercase; letter-spacing:.3px; font-size:10px; text-align:left; padding:8px 7px; border:1px solid #0b2f55; }
+            table.data td { padding:8px 7px; border:1px solid #dfe5ec; vertical-align:top; }
+            table.data tr:nth-child(even) td { background:#f7fafc; }
+
+            /* financial summary — BLUE */
+            .fin-wrap { border:1px solid #0b2f55; border-radius:8px; padding:10px; background:#f6f9fc; }
+            .fin-title { text-align:center; font-weight:800; font-size:13px; color:#0b2f55; margin-bottom:8px; }
+            .fin-grid { width:100%; border-collapse:collapse; }
+            .fin-grid td.l { width:60%; background:#f7fafc; padding:8px 10px; font-weight:700; border:1px solid #e5e7eb; border-right:none; }
+            .fin-grid td.r { width:40%; padding:8px 10px; text-align:right; font-weight:700; border:1px solid #e5e7eb; }
+            .fin-row-total td { background:#0b2f55; color:#fff; font-weight:800; }
+            .fin-row-net td { background:#134a8a; color:#fff; font-weight:800; }
+
+            /* statements */
+            .statement { border:1px solid #e5e7eb; border-radius:6px; background:#f8fafc; padding:12px; min-height:110px; }
+
+            /* signatures (2 cols only; Finance Review removed) */
+            .sig-grid { width:100%; border-collapse:separate; border-spacing:12px 0; margin-top:18px; }
+            .sig-cell { width:50%; border-top:1px solid #9aa6b2; padding-top:6px; text-align:center; }
+            .sig-note { font-size:10px; color:#6b7280; }
+
+            .avoid-break { page-break-inside: avoid; }
+          </style>
+
+          <!-- BODY starts -->
+          <div class="page">
+            <header>
+            <!-- /odoocms_admission_portal/static/img/ubas_white_logo.png -->
+            <!-- /odoocms_admission_portal/static/img/maju_white_logo.png -->
+            <!-- /odoocms_admission_portal/static/img/cust_white_logo.png -->
+                            <div class="row">
+                                <div class="col-12 mt-3" style="text-align: center">
+                                    <!-- White logo needs a dark background (theme blue) to be visible -->
+                                    <div style="background-color: #0b2f55; display: inline-block; padding: 10px; border-radius: 8px;">
+                                        <img t-att-src="nbs.get_white_logo_uri()" style="max-width: 120px; height: 100px;" alt="logo"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center">
+                                    <h5>
+                                        <b>
+                                        <!-- change -->
+                                            <t t-out="nbs.company_id.name"/>
+                                        </b>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center">
+                                    <h6>
+                                        <b>
+                                        <!-- change -->
+                                            <t t-out="nbs.company_id.city"/>
+                                        </b>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center; font-size: 13px;">
+                                    <span>
+                                        <b>
+                                        <!-- change -->
+                                            <t t-out="nbs.company_id.website"/>
+                                        </b>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center; font-size: 13px;">
+                                    <span>
+                                        <p>
+                                        <!-- change -->
+                                            <t t-out="nbs.company_id.street"/>
+,                                           <t t-out="nbs.company_id.street2"/>
+,                                           <t t-out="nbs.company_id.city"/>
+.                                           <t t-out="nbs.company_id.admission_phone"/>
+.                                           <t t-out="nbs.company_id.email"/>
+                                        </p>
+                                    </span>
+                                </div>
+                            </div>
+            </header>
+            <!-- === header strip IN BODY (same pattern as admit card) === -->
+            <div class="row">
+              <div class="col col-12">
+                <div class="row">
+                  <div class="col col-10" style="text-align:center;">
+                    <h4 style="text-align:center;">Need Based Scholarship Application Report</h4>
+                    <h5 style="text-align:center;">Application ID: <span t-field="nbs.id"/></h5>
+                  </div>
+                </div>
+                <div class="row margins">
+                  <div class="col col-4 borders">Registration</div>
+                  <div class="col col-8 borders">
+                    <span t-field="nbs.registration_number"/>
+                    &#160;&#160;|&#160;&#160;Date:
+                    <t t-set="now" t-value="context_timestamp(datetime.datetime.now())"/>
+                    <t t-out="now.strftime('%B %d, %Y')"/>
+                    &#160;&#160;|&#160;&#160;Status:
+                    <span class="pill" t-attf-class="pill #{(nbs.state or 'draft').lower()}"><t t-out="nbs.state or 'Draft'"/></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 1) Student Information -->
+            <div class="sec avoid-break">
+              <div class="sec-h">1) Student Information</div>
+              <table class="card-table mt-2">
+                <tr>
+                  <td class="card-cell">
+                    <div class="card-head">Profile</div>
+                    <table class="info-grid">
+                      <tr><td class="label">Full Name</td><td class="val"><span t-field="nbs.full_name"/></td></tr>
+                      <tr><td class="label">Registration No.</td><td class="val"><span t-field="nbs.registration_number"/></td></tr>
+                      <tr><td class="label">Degree Program</td><td class="val"><span t-field="nbs.degree_program"/></td></tr>
+                      <tr><td class="label">Academic Year</td><td class="val"><span t-field="nbs.program_year"/></td></tr>
+                      <tr><td class="label">Contact Number</td><td class="val"><span t-field="nbs.contact_number"/></td></tr>
+                      <tr><td class="label">Email</td><td class="val"><span t-field="nbs.email"/></td></tr>
+                      <tr>
+                        <td class="label">Previous Scholarship</td>
+                        <td class="val">
+                          <span t-field="nbs.prev_scholarship"/>
+                          <t t-if="nbs.prev_scholarship == 'yes'"><br/><span class="xs muted" t-field="nbs.prev_scholarship_details"/></t>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- 2) Household Information -->
+            <div class="sec">
+              <div class="sec-h">2) Household Information</div>
+
+              <div class="sub-h">Parents / Guardians</div>
+              <table class="card-table">
+                <tr>
+                  <td class="card-cell">
+                    <div class="card-head">Father</div>
+                    <table class="info-grid">
+                      <tr><td class="label">Name</td><td class="val"><span t-field="nbs.father_name"/></td></tr>
+                      <tr><td class="label">Occupation</td><td class="val"><span t-field="nbs.father_occupation"/></td></tr>
+                      <t t-if="nbs.father_occupation in ['employed', 'self_employed']">
+                        <tr><td class="label">Employer / Business</td><td class="val"><span t-field="nbs.father_employer_name"/></td></tr>
+                        <tr><td class="label">Designation / Type</td><td class="val"><span t-field="nbs.father_designation"/></td></tr>
+                      </t>
+                      <t t-if="nbs.father_occupation == 'unemployed'">
+                        <tr><td class="label">Reason (Unemployed)</td><td class="val"><span t-field="nbs.father_unemployed_reason"/></td></tr>
+                      </t>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="card-cell">
+                    <div class="card-head">Mother</div>
+                    <table class="info-grid">
+                      <tr><td class="label">Name</td><td class="val"><span t-field="nbs.mother_name"/></td></tr>
+                      <tr><td class="label">Occupation</td><td class="val"><span t-field="nbs.mother_occupation"/></td></tr>
+                      <t t-if="nbs.mother_occupation in ['employed', 'self_employed']">
+                        <tr><td class="label">Employer / Business</td><td class="val"><span t-field="nbs.mother_employer_name"/></td></tr>
+                        <tr><td class="label">Designation / Type</td><td class="val"><span t-field="nbs.mother_designation"/></td></tr>
+                      </t>
+                      <t t-if="nbs.mother_occupation == 'unemployed'">
+                        <tr><td class="label">Reason (Unemployed)</td><td class="val"><span t-field="nbs.mother_unemployed_reason"/></td></tr>
+                      </t>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <t t-if="nbs.household_member_ids">
+                <div class="sub-h">Other Household Members</div>
+                <table class="data avoid-break">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Relation</th>
+                      <th>Occupation</th>
+                      <th>Employer / Institute</th>
+                      <th>Designation / Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <t t-foreach="nbs.household_member_ids" t-as="member">
+                      <tr>
+                        <td><span t-field="member.name"/></td>
+                        <td><span t-field="member.relation"/></td>
+                        <td><span t-field="member.occupation"/></td>
+                        <td><span t-field="member.employer_or_institute"/></td>
+                        <td><span t-field="member.designation_or_type"/></td>
+                      </tr>
+                    </t>
+                  </tbody>
+                </table>
+              </t>
+            </div>
+
+            <!-- 3) Financial Information -->
+            <div class="sec">
+              <div class="sec-h">3) Financial Information</div>
+
+              <div class="sub-h">Monthly Income Sources</div>
+              <div class="fin-wrap avoid-break">
+                <div class="fin-title">Income Summary</div>
+                <table class="fin-grid">
+                  <tr><td class="l">Father's Monthly Income</td><td class="r">PKR <span t-field="nbs.father_monthly_income" options="{'widget':'monetary'}"/></td></tr>
+                  <tr><td class="l">Mother's Monthly Income</td><td class="r">PKR <span t-field="nbs.mother_monthly_income" options="{'widget':'monetary'}"/></td></tr>
+                  <t t-if="nbs.income_rental"><tr><td class="l">Rental Income</td><td class="r">PKR <span t-field="nbs.income_rental_amount" options="{'widget':'monetary'}"/></td></tr></t>
+                  <t t-if="nbs.income_pension"><tr><td class="l">Pension</td><td class="r">PKR <span t-field="nbs.income_pension_amount" options="{'widget':'monetary'}"/></td></tr></t>
+                  <t t-if="nbs.income_zakat"><tr><td class="l">Zakat Received</td><td class="r">PKR <span t-field="nbs.income_zakat_amount" options="{'widget':'monetary'}"/></td></tr></t>
+                  <t t-if="nbs.income_remittance"><tr><td class="l">Remittances</td><td class="r">PKR <span t-field="nbs.income_remittance_amount" options="{'widget':'monetary'}"/></td></tr></t>
+                  <t t-if="nbs.income_self"><tr><td class="l">Self Income</td><td class="r">PKR <span t-field="nbs.income_self_amount" options="{'widget':'monetary'}"/></td></tr></t>
+                  <t t-if="nbs.other_income_ids">
+                    <t t-foreach="nbs.other_income_ids" t-as="income">
+                      <tr>
+                        <td class="l"><span t-field="income.name"/> (<span t-field="income.relation"/>)</td>
+                        <td class="r">PKR <span t-field="income.monthly_income" options="{'widget':'monetary'}"/></td>
+                      </tr>
+                    </t>
+                  </t>
+                  <tr class="fin-row-total"><td class="l">TOTAL MONTHLY INCOME</td><td class="r">PKR <span t-field="nbs.total_monthly_income" options="{'widget':'monetary'}"/></td></tr>
+                </table>
+              </div>
+
+              <div class="sub-h mt-4">Monthly Expenses</div>
+              <div class="fin-wrap avoid-break">
+                <div class="fin-title">Expense Summary</div>
+                <table class="fin-grid">
+                  <t t-if="nbs.has_sibling_education_expense">
+                    <t t-foreach="nbs.sibling_expense_ids" t-as="expense">
+                      <tr><td class="l"><span t-field="expense.sibling_name"/> Education</td><td class="r">PKR <span t-field="expense.monthly_expense" options="{'widget':'monetary'}"/></td></tr>
+                    </t>
+                  </t>
+                  <t t-if="nbs.is_living_on_rent"><tr><td class="l">Monthly Rent</td><td class="r">PKR <span t-field="nbs.monthly_rent" options="{'widget':'monetary'}"/></td></tr></t>
+                  <tr><td class="l">Gas Bill</td><td class="r">PKR <span t-field="nbs.gas_bill_amount" options="{'widget':'monetary'}"/></td></tr>
+                  <tr><td class="l">Electricity Bill</td><td class="r">PKR <span t-field="nbs.elec_bill_amount" options="{'widget':'monetary'}"/></td></tr>
+                  <tr><td class="l">Water Bill</td><td class="r">PKR <span t-field="nbs.water_bill_amount" options="{'widget':'monetary'}"/></td></tr>
+                  <tr><td class="l">Grocery / Living</td><td class="r">PKR <span t-field="nbs.monthly_grocery" options="{'widget':'monetary'}"/></td></tr>
+                  <t t-if="nbs.has_medical_expense"><tr><td class="l">Medical Expenses</td><td class="r">PKR <span t-field="nbs.medical_expense_amount" options="{'widget':'monetary'}"/></td></tr></t>
+                  <t t-if="nbs.has_other_recurring"><tr><td class="l">Other Recurring</td><td class="r">PKR <span t-field="nbs.other_recurring_amount" options="{'widget':'monetary'}"/></td></tr></t>
+                  <tr class="fin-row-total"><td class="l">TOTAL MONTHLY EXPENSES</td><td class="r">PKR <span t-field="nbs.total_monthly_expense" options="{'widget':'monetary'}"/></td></tr>
+                  <tr class="fin-row-net"><td class="l">NET MONTHLY INCOME</td><td class="r">PKR <span t-field="nbs.net_monthly_income" options="{'widget':'monetary'}"/></td></tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- 4) Assets & Liabilities -->
+            <div class="sec">
+              <div class="sec-h">4) Assets &amp; Liabilities</div>
+
+              <div class="sub-h">Assets Owned</div>
+              <table class="card-table">
+                <tr>
+                  <td class="card-cell">
+                    <table class="info-grid">
+                      <t t-if="nbs.asset_house">
+                        <tr>
+                          <td class="label">House (Self-owned)</td>
+                          <td class="val">Area: <span t-field="nbs.asset_house_area"/><br/>Value: PKR <span t-field="nbs.asset_house_value" options="{'widget':'monetary'}"/></td>
+                        </tr>
+                      </t>
+                      <t t-if="nbs.asset_land">
+                        <tr>
+                          <td class="label">Land / Property</td>
+                          <td class="val">Area: <span t-field="nbs.asset_land_area"/><br/>Value: PKR <span t-field="nbs.asset_land_value" options="{'widget':'monetary'}"/></td>
+                        </tr>
+                      </t>
+                      <t t-if="nbs.asset_business">
+                        <tr>
+                          <td class="label">Business Ownership</td>
+                          <td class="val">PKR <span t-field="nbs.asset_business_value" options="{'widget':'monetary'}"/></td>
+                        </tr>
+                      </t>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <t t-if="nbs.vehicle_ids">
+                <div class="sub-h">Vehicles</div>
+                <table class="data avoid-break">
+                  <thead><tr><th>Make &amp; Model</th><th>Estimated Value</th></tr></thead>
+                  <tbody>
+                    <t t-foreach="nbs.vehicle_ids" t-as="vehicle">
+                      <tr><td><span t-field="vehicle.make_model"/></td><td style="text-align:right;">PKR <span t-field="vehicle.estimated_value" options="{'widget':'monetary'}"/></td></tr>
+                    </t>
+                  </tbody>
+                </table>
+              </t>
+
+              <t t-if="nbs.has_loans and nbs.loan_ids">
+                <div class="sub-h">Outstanding Loans</div>
+                <table class="data avoid-break">
+                  <thead><tr><th>Purpose</th><th>Outstanding Amount</th></tr></thead>
+                  <tbody>
+                    <t t-foreach="nbs.loan_ids" t-as="loan">
+                      <tr><td><span t-field="loan.purpose"/></td><td style="text-align:right;">PKR <span t-field="loan.outstanding_amount" options="{'widget':'monetary'}"/></td></tr>
+                    </t>
+                  </tbody>
+                </table>
+              </t>
+
+              <div class="fin-wrap mt-4 avoid-break">
+                <div class="fin-title">Net Assets Summary</div>
+                <table class="fin-grid">
+                  <tr class="fin-row-net"><td class="l">TOTAL NET ASSETS</td><td class="r">PKR <span t-field="nbs.net_assets" options="{'widget':'monetary'}"/></td></tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- 5) Statements -->
+            <div class="sec">
+              <div class="sec-h">5) Statements</div>
+
+              <div class="sub-h">Statement of Purpose</div>
+              <div class="statement"><span t-field="nbs.sop"/></div>
+
+              <div class="sub-h mt-4">Continuation Plan</div>
+              <div class="statement"><span t-field="nbs.continuation_plan"/></div>
+            </div>
+
+            <!-- signatures (2 cols) -->
+            <table class="sig-grid avoid-break">
+              <tr>
+                <td class="sig-cell">
+                  Applicant Signature<br/><span class="sig-note">Name: <t t-out="nbs.full_name or ''"/></span>
+                </td>
+                <td class="sig-cell">
+                  Verifier / Counselor<br/><span class="sig-note">Stamp &amp; Sign</span>
+                </td>
+              </tr>
+            </table>
+
+            <!-- footer text INSIDE body; company footer from basic_layout remains -->
+            <div class="small muted mt-4" style="text-align:center;">
+              This is computer-generated document downloaded on
+              <t t-set="now2" t-value="context_timestamp(datetime.datetime.now())"/>
+              <t t-out="now2.strftime('%B %d, %Y at %I:%M %p')"/>.
+            </div>
+          </div>
+          <!-- BODY ends -->
+
+        </div>
+      </t>
+
+    </t>
+  </template>
+
+  <record id="action_nbs_pdf_report" model="ir.actions.report">
+    <field name="name">Need Based Scholarship Report</field>
+    <field name="model">need.based.scholarship</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">need_based_scholarship.nbs_pdf_report</field>
+    <field name="report_file">need_based_scholarship.nbs_pdf_report</field>
+  </record>
+</odoo>

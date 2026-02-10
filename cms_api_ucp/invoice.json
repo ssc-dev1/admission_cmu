@@ -1,0 +1,248 @@
+{
+  "info": {
+    "description": "\nInvoice Services\nAccess to the order services is only allowed to authenticated users.\nIf you are not authenticated go to <a href='/web/login'>Login</a>\n",
+    "title": "Invoice REST services",
+    "version": ""
+  },
+  "servers": [{"url": "https://horizon.ucp.edu.pk/rest/public/invoice"}],
+  "paths": {
+    "/{id}/get": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "400": {"description": "One of the given parameter is not valid"},
+          "401": {
+            "description": "The user is not authorized. Authentication is required"
+          },
+          "404": {"description": "Requested resource not found"},
+          "403": {
+            "description": "You don't have the permission to access the requested resource."
+          },
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["consumer_number", "id", "name", "amount_total"],
+                  "properties": {
+                    "name": {"type": "string"},
+                    "consumer_number": {"type": "string"},
+                    "amount_total": {"type": "float"},
+                    "id": {"type": "integer"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "description": "\nGet Invoice's information\n",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {"type": "integer", "format": "int32"}
+        }
+      ]
+    },
+    "/{id}": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "400": {"description": "One of the given parameter is not valid"},
+          "401": {
+            "description": "The user is not authorized. Authentication is required"
+          },
+          "404": {"description": "Requested resource not found"},
+          "403": {
+            "description": "You don't have the permission to access the requested resource."
+          },
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["consumer_number", "id", "name", "street", "zip"],
+                  "properties": {
+                    "consumer_number": {"type": "string"},
+                    "street": {"type": "string"},
+                    "street2": {"nullable": true, "type": "string"},
+                    "zip": {"type": "string"},
+                    "city": {"type": "string"},
+                    "phone": {"nullable": true, "type": "string"},
+                    "id": {"type": "integer"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "description": "\nUpdate Invoice information\n",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {"type": "integer", "format": "int32"}
+        }
+      ],
+      "put": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "consumer_number": {"type": "string"},
+                  "street": {"type": "string"},
+                  "street2": {"nullable": true, "type": "string"},
+                  "zip": {"type": "string"},
+                  "city": {"type": "string"},
+                  "phone": {"nullable": true, "type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "400": {"description": "One of the given parameter is not valid"},
+          "401": {
+            "description": "The user is not authorized. Authentication is required"
+          },
+          "404": {"description": "Requested resource not found"},
+          "403": {
+            "description": "You don't have the permission to access the requested resource."
+          },
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["consumer_number", "id", "name", "street", "zip"],
+                  "properties": {
+                    "consumer_number": {"type": "string"},
+                    "street": {"type": "string"},
+                    "street2": {"nullable": true, "type": "string"},
+                    "zip": {"type": "string"},
+                    "city": {"type": "string"},
+                    "phone": {"nullable": true, "type": "string"},
+                    "id": {"type": "integer"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/inquiry": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["consumer_number", "bank_mnemonic", "reserved"],
+                "properties": {
+                  "consumer_number": {"type": "string"},
+                  "bank_mnemonic": {"type": "string"},
+                  "reserved": {"nullable": true, "type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "400": {"description": "One of the given parameter is not valid"},
+          "401": {
+            "description": "The user is not authorized. Authentication is required"
+          },
+          "404": {"description": "Requested resource not found"},
+          "403": {
+            "description": "You don't have the permission to access the requested resource."
+          },
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["response_Code", "consumer_Detail", "bill_status", "due_date","amount_within_dueDate","amount_after_dueDate","billing_month","date_paid","amount_paid","tran_auth_Id","reserved"],
+                  "properties": {
+                    "response_Code": {"type": "string"},
+                    "consumer_Detail": {"type": "string"},
+                    "bill_status": {"type": "string"},
+                    "due_date": {"type": "string"},
+                    "amount_within_dueDate": {"type": "string"},
+                    "amount_after_dueDate": {"type": "string"},
+                    "billing_month": {"type": "string"},
+                    "date_paid": {"type": "string"},
+                    "amount_paid": {"type": "string"},
+                    "tran_auth_Id": {"type": "string"},
+                    "reserved": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "description": "\nSearch Invoice by Consumer Number\n"
+    },
+    "/payment": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["consumer_number", "tran_auth_id", "transaction_amount","tran_date","tran_time","bank_mnemonic","reserved"],
+                "properties": {
+                  "consumer_number": {"type": "string"},
+                  "tran_auth_id": {"type": "string"},
+                  "transaction_amount": {"type": "string"},
+                  "tran_date": {"type": "string"},
+                  "tran_time": {"type": "string"},
+                  "bank_mnemonic": {"type": "string"},
+                  "reserved": {"nullable": true, "type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "400": {"description": "One of the given parameter is not valid"},
+          "401": {
+            "description": "The user is not authorized. Authentication is required"
+          },
+          "404": {"description": "Requested resource not found"},
+          "403": {
+            "description": "You don't have the permission to access the requested resource."
+          },
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["response_Code", "identification_parameter", "reserved"],
+                  "properties": {
+                    "response_Code": {"type": "string"},
+                    "identification_parameter": {"type": "string"},
+                    "reserved": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "description": "\nUpdate Invoice Payment\n"
+    }
+  },
+  "openapi": "3.0.2"
+}

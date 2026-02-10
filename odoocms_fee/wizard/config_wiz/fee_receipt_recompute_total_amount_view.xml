@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_fee_receipt_recompute_total_amount" model="ir.ui.view">
+            <field name="name">fee.receipt.recompute.total.amount</field>
+            <field name="model">fee.receipt.recompute.total.amount</field>
+            <field name="arch" type="xml">
+                <form string="Fee Receipt Recompute Total Amount">
+                    <group>
+                        <field name="invoice_id" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_recompute_total_amount" string="Recompute Total" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="act_fee_receipt_recompute_total_amount" model="ir.actions.act_window">
+            <field name="name">recompute Total Amount</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fee.receipt.recompute.total.amount</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="groups_id" eval="[(4, ref('odoocms_fee.group_fee_super_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

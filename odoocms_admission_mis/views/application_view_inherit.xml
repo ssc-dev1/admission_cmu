@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_odoocms_application_form_welcome_letter_fix" model="ir.ui.view">
+        <field name="name">odoocms.application.form.welcome.letter.fix</field>
+        <field name="model">odoocms.application</field>
+        <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='signup_mail']" position="after">
+                <button name="generate_welcome_letter_from_application"  
+                        type="object"   
+                        string="Welcome Letter"   
+                        class="oe_highlight"
+                        groups="base.group_user"
+                        help="Generate Welcome Letter and open the form."
+                />
+            </xpath>
+            <xpath expr="//page[@name='need_base_scholarship']/h3" position="after">
+                <group>
+                    <field name="need_based_scholarship_applied" string="Applied for Need Based Scholarship"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--***** Form *****-->
+    <record id="invoice_list_view_form" model="ir.ui.view">
+        <field name="name">invoice_list_view_form</field>
+        <field name="model">invoice.list</field>
+        <field name="arch" type="xml">
+            <form string="Invoice List" delete="false" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="applicant_id" readonly="1"/>
+                            <field name="merit_id" readonly="1"/>
+                            <field name="program_id" readonly="1"/>
+                            <field name="generate_invoice_id" readonly="1"/>
+                            <field name="invoice_id" string="Main Challan" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="fee_voucher" readonly="1"/>
+                            <field name="document_state" readonly="1"/>
+                            <field name="date_generated" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--***** Tree *****-->
+    <record id="invoice_list_view_tree" model="ir.ui.view">
+        <field name="name">invoice_list_view_tree</field>
+        <field name="model">invoice.list</field>
+        <field name="arch" type="xml">
+            <tree delete="false" create="false" edit="false" decoration-danger="fee_voucher != 'verify'" decoration-info="document_state == 'Not Verified'">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="merit_id"/>
+                <field name="program_id"/>
+                <field name="applicant_id"/>
+                <field name="document_state"/>
+                <field name="fee_voucher"/>
+                <field name="date_generated"/>
+                <field name="invoice_id"/>
+                <field name="company_id" optional="hide" groups="base.group_multi_company"/>
+                <field name="create_uid" string="Created By" optional="show" widget="many2one_avatar_user"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--***** Search  *****-->
+    <record id="view_invoice_list_search" model="ir.ui.view">
+        <field name="name">Invoice List</field>
+        <field name="model">invoice.list</field>
+        <field name="arch" type="xml">
+            <search string="Search Invoice State">
+                <field name="applicant_id" required="1"/>
+                <field name="document_state"/>
+                <field name="fee_voucher"/>
+                <group expand='0' string='Group by...'>
+                    <separator/>
+                    <filter name="applicant_id" string='Application' icon="fa-user" domain="[]" context="{'group_by' : 'applicant_id'}"/>
+                    <separator/>
+                    <filter name="document_state" string='Document State' icon="fa-user" domain="[]" context="{'group_by' : 'document_state'}"/>
+                    <separator/>
+                    <filter name="group_by_merit" string='Merit List' icon="fa-user" domain="[]" context="{'group_by' : 'merit_id'}"/>
+                    <separator/>
+                    <filter name="group_by_program" string='Program' icon="fa-user" domain="[]" context="{'group_by' : 'program_id'}"/>
+                    <separator/>
+                    <filter name="company_id" string="Company" domain="[]" context="{'group_by':'company_id'}"/>
+                    <separator/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!--***** Action *****-->
+    <record id="invoice_list_action" model="ir.actions.act_window">
+        <field name="name">Invoice List</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">invoice.list</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!--***** Menu *****-->
+    <menuitem
+            name="Invoice List"
+            id="invoice_list_menu"
+            action="invoice_list_action"
+            parent="odoocms_admission_fee.menu_odoocms_admission_finance_main"
+            sequence="30"
+    />
+</odoo>

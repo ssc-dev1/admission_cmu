@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_scholarship_charged_report_form" model="ir.ui.view">
+            <field name="name">scholarship.charged.report.form</field>
+            <field name="model">scholarship.charged.report</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Scholarship Charged Report">
+                    <p>
+                        This Wizard will generate Scholarship Charged Report.
+                    </p>
+                    <group>
+                        <group>
+                            <field name="term_id" options="{'no_create':True}" required="1"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="institute_ids" widget="many2many_tags" options="{'no_create':True}"/>
+                    </group>
+                    <group>
+                        <field name="campus_ids" widget="many2many_tags" options="{'no_create':True}"/>
+                    </group>
+                    <footer>
+                        <button name="make_excel" string="Generate Report" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_scholarship_charged_report" model="ir.actions.act_window">
+            <field name="name">Scholarship Charged Report</field>
+            <field name="res_model">scholarship.charged.report</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                id="menu_scholarship_charged_report"
+                name="Scholarship Charged Report"
+                action="action_scholarship_charged_report"
+                parent="odoocms_fee.menu_scholarship_fee_reports"
+                groups="odoocms_fee.group_fee_user,odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_pgp_director_reports_user"
+                sequence="10"/>
+    </data>
+</odoo>

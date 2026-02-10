@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="odoocms_challan_tree" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.tree</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="arch" type="xml">
+                <tree create="false" delete="false"
+                      decoration-success="state == 'paid'" decoration-warning="state == 'draft'"
+                      decoration-danger="show_on_portal == False" multi_edit="1" string="Fee Challans">
+                    <field name="name" readonly="1"/>
+                    <field name="student_id" readonly="1"/>   <!--  widget="many2one_avatar_user" -->
+                    <field name="tag_ids" widget="many2many_tags" optional="hide" readonly="1"/>
+                    <field name="term_id" readonly="1"/>
+                    <field name="date" string="Invoice Date" optional="show" readonly="1"/>
+                    <field name="date_due" optional="show" widget="remaining_days" options="{'allow_order': '1'}"/>
+                    <field name="date_payment" optional="show" readonly="1"/>
+                    <field name="date_post" optional="show" readonly="1"/>
+                    <field name="payment_id" optional="hide" readonly="1"/>
+
+                    <field name="gross_amount" sum="Gross Amount" optional="hide" readonly="1"/>
+<!--                    <field name="waiver_amount" sum="Waiver Amount" optional="hide" readonly="1"/>-->
+                    <field name="amount" sum="Total Amount" readonly="1"/>
+                    <field name="amount_residual" sum="Residual Amount" readonly="1"/>
+                    <field name="amount_paid" sum="Paid Amount" readonly="1" optional="show"/>
+                    <field name="adjusted_fee" sum="Adjusted Fee" readonly="1" optional="show"/>
+                    <field name="adjusted_amount" sum="Adjusted" readonly="1" optional="hide"/>
+
+                    <field name="gross_tuition_fee" sum="Tuition Fee" optional="hide" readonly="1"/>
+                    <field name="tuition_fee" sum="Tuition Fee" optional="hide" readonly="1"/>
+                    <field name="admission_fee" sum="Admission Fee" optional="hide" readonly="1"/>
+                    <field name="prospectus_fee" sum="Prospectus Fee" optional="hide" readonly="1"/>
+                    <field name="entry_test_fee" sum="Entry Fee" optional="hide" readonly="1"/>
+                    <field name="graduation_fee" sum="Graduation Fee" optional="hide" readonly="1"/>
+
+                    <field name="hostel_fee" sum="Hostel Fee" optional="hide" readonly="1"/>
+                    <field name="hostel_security" sum="Hostel Security" optional="hide" readonly="1"/>
+                    <field name="degree_fee" sum="Degree Fee" optional="hide" readonly="1"/>
+                    <field name="sports_fee" sum="Sports Fee" optional="hide" readonly="1"/>
+                    <field name="library_card_fee" sum="Library Card" optional="hide" readonly="1"/>
+                    <field name="transport_fee" sum="Transport Fee" optional="hide" readonly="1"/>
+                    <field name="misc_fee" sum="Misc Fee" optional="hide" readonly="1"/>
+
+                    <field name="fine_amount" sum="Fine Amount" optional="hide" readonly="1"/>
+                    <field name="tax_amount" sum="Tax Amount" optional="hide" readonly="1"/>
+                    <field name="fine_policy_line_id" optional="hide"/>
+                    <field name="late_fine" sum="Late Fine" optional="show" attrs="{'readonly': [('state','!=','draft')]}"/>
+                    <field name="discount" sum="Payment Discount" optional="hide"/>
+                    <field name="waiver_percentage" optional="hide" readonly="1"/>
+                    <field name="waiver_ids" widget="many2many_tags" optional="hide" readonly="1"/>
+                    <field name="label_id" string="Challan Type" optional="hide" readonly="1"/>
+                    <field name="journal_id" optional="hide" readonly="1"/>
+                    <field name="show_on_portal" widget="boolean_toggle"/>
+                    <field name="state" string="Invoice Status" readonly="1"/>
+
+                    <field name="campus_id" optional="hide" readonly="1"/>
+                    <field name="session_id" optional="hide" readonly="1"/>
+                    <field name="career_id" optional="hide" readonly="1"/>
+                    <field name="institute_id" optional="hide" readonly="1"/>
+                    <field name="discipline_id" optional="hide" readonly="1"/>
+
+                    <button name="print_challan" string="Print" icon="fa-print" class="btn btn-link" type="object"
+                            attrs="{'invisible':[('state','=','cancel')]}"/>
+                    <button name="action_challan_installment" string="Installment" icon="fa-cut" class="btn btn-link" type="object"
+                            attrs="{'invisible':[('state','!=', 'draft')]}"/>
+                    <!-- name=" % (action_report_term_fee_challan) d" -->
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="odoocms_challan_form" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.form</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="arch" type="xml">
+                <form create="false" delete="false" string="Fee Challans">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,paid"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="student_id" readonly="1"/>
+                                <field name="tag_ids" widget="many2many_tags" optional="hide" readonly="1"/>
+                                <field name="term_id" readonly="1"/>
+                                <field name="label_id" string="Challan Type" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="date" string="Invoice Date" readonly="1"/>
+                                <field name="date_due" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="date_payment" readonly="1"/>
+                                <field name="date_post" readonly="1"/>
+                                <field name="payment_id" readonly="1"/>
+                                <field name="journal_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="amount" readonly="1"/>
+                                <field name="amount_residual" readonly="1"/>
+                                <field name="fine_policy_line_id" readonly="1"/>
+                                <field name="late_fine" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="discount" readonly="1"/>
+                                <field name="amount_paid" string="Paid Amount" readonly="1"/>
+                                <field name="adjusted_fee" string="Adjusted Fee" readonly="1"/>
+                                <field name="waiver_ids" widget="many2many_tags" readonly="1"/>
+                                <field name="waiver_percentage" readonly="1"/>
+                            </group>
+                            <group name="academic">
+                                <field name="campus_id" readonly="1"/>
+                                <field name="institute_id" readonly="1"/>
+                                <field name="career_id" readonly="1"/>
+                                <field name="session_id" readonly="1"/>
+                                <field name="discipline_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="show_on_portal" widget="boolean_toggle"  attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="lines" string="Lines">
+                                <field name="line_ids" nolabel="1" default_order="id" mode="tree">
+                                <tree edit="false" create="false" delete="false" limit="10" no_open="1" default_order='date desc'
+                                      decoration-success="reconciled == True">
+                                    <field name="challan_no"/>
+                                    <field name="name"/>
+                                    <field name="date" string="Invoice Date"/>
+                                    <field name="date_maturity"/>
+                                    <field name="term_id"/>
+
+                                    <field name="balance" string="Amount"/>
+                                    <field name="label_id"/>
+                                    <field name="payment_date"/>
+                                    <field name="amount_residual"/>
+                                    <field name="matching_number"/>
+                                    <field name="reconciled" optional="hide"/>
+                                </tree>
+                            </field>
+                            </page>
+                            <page name="detail" string="Fee Detail">
+                                <group>
+                                    <group>
+                                        <field name="gross_amount" readonly="1"/>
+<!--                                        <field name="waiver_amount" readonly="1"/>-->
+                                        <field name="amount" readonly="1"/>
+                                        <field name="amount_residual" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="gross_tuition_fee" readonly="1"/>
+                                        <field name="tuition_fee" readonly="1"/>
+                                        <field name="admission_fee" readonly="1"/>
+                                         <field name="admission_gross" readonly="1"/>
+                                        <field name="admission_discount" readonly="1"/>
+                                        <field name="prospectus_fee" readonly="1"/>
+                                        <field name="entry_test_fee" readonly="1"/>
+                                        <field name="graduation_fee" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="hostel_fee" readonly="1"/>
+                                        <field name="hostel_security" readonly="1"/>
+                                        <field name="degree_fee" readonly="1"/>
+                                        <field name="sports_fee" readonly="1"/>
+
+                                    </group>
+                                    <group>
+                                        <field name="library_card_fee" readonly="1"/>
+                                        <field name="transport_fee" readonly="1"/>
+                                        <field name="misc_fee" readonly="1"/>
+                                        <field name="fine_amount" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="odoocms_challan_filter" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.select</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="arch" type="xml">
+                <search string="Search Challans">
+                    <field name="student_id"/>
+                    <field name="name" string="Challan Ref"/>
+                    <field name="tag_ids"/>
+                    <separator/>
+                    <field name="program_id" string="Program"/>
+                    <field name="term_id" string="Term"/>
+                    <separator/>
+                    <field name="date" string="Invoice Date"/>
+                    <field name="date_due" string="Invoice Due Date"/>
+                    <field name="date_payment" string="Payment Date"/>
+                    <field name="date_post" string="Post Date"/>
+                    <separator/>
+
+                    <filter name="unpaid" string="Unpaid" domain="[('state','=','draft')]"/>
+                    <filter name="paid" string="Paid" domain="[('state', '=', 'paid')]"/>
+                    <filter name="late" string="Overdue"
+                            domain="['&amp;', ('date_due', '&lt;', time.strftime('%%Y-%%m-%%d')), ('state', '=', 'draft')]"
+                            help="Overdue invoices, maturity date passed"/>
+                    <filter name="filter_payment_date" string="Payment Date" date="date_payment"/>
+
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_academic_term" string="Academic Term" context="{'group_by':'term_id'}"/>
+                        <separator/>
+                        <filter name="group_by_campus" string="Campus" context="{'group_by':'campus_id'}"/>
+                        <filter name="group_by_institute" string="Institute" context="{'group_by':'institute_id'}"/>
+                        <filter name="group_by_session" string="Session" context="{'group_by':'session_id'}"/>
+                        <filter name="group_by_career" string="Career" context="{'group_by':'career_id'}"/>
+                        <filter name="group_by_discipline" string="Discipline" context="{'group_by':'discipline_id'}"/>
+                        <filter name="group_by_student" string="Student" context="{'group_by':'student_id'}"/>
+                        <filter name="group_by_invoice_status" string="Status" context="{'group_by':'state'}"/>
+                        <separator/>
+                        <filter name="group_by_invoice_date" string="Receipt Date" context="{'group_by':'date'}"/>
+                        <filter name="group_by_due_date" string="Due Date" context="{'group_by':'date_due'}"/>
+                        <filter name="group_by_payment_date" string="Payment Date" context="{'group_by':'date_payment'}"/>
+                        <filter name="group_by_post_date" string="Post Date" context="{'group_by':'date_post'}"/>
+                        <separator/>
+                        <filter name="group_by_tag_ids" string="Tags" context="{'group_by':'tag_ids'}"/>
+                        <filter name="group_by_waiver_ids" string="Waiver Type" context="{'group_by':'waiver_ids'}"/>
+                        <filter name="group_by_waiver_percentage" string="Waiver Percentage" context="{'group_by':'waiver_percentage'}"/>
+                        <filter name="group_by_label_id" string="Challan Type" context="{'group_by':'label_id'}"/>
+                        <filter name="group_by_journal_id" string="Bank/Journal" context="{'group_by':'journal_id'}"/>
+                        <filter name="group_by_fine_policy_line_id" string="Fine Policy" context="{'group_by':'fine_policy_line_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="odoocms_challan_pivot" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.pivot</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="arch" type="xml">
+                <pivot string="Challans" display_quantity="true">
+                    <field name="institute_id" type="row"/>
+                    <field name="state" type="col"/>
+                    <field name="career_id" type="col"/>
+                    <field name="amount" string='Amount' type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="odoocms_challan_graph" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.graph</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="arch" type="xml">
+                <graph string="Challans">
+                    <field name="institute_id"/>
+                    <field name="amount" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="odoocms_challan_calendar" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.calendar</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="arch" type="xml">
+                <calendar string="Challans" date_start="date"> <!-- color="journal_id" -->
+                    <field name="institute_id"/>
+                    <field name="amount"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="odoocms_challan_cohort" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.cohort</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="arch" type="xml">
+                <cohort string="Challans" date_start="date" date_stop="date_payment" interval="week" mode="churn" sample="1"/>
+            </field>
+        </record>
+
+        <record id="odoocms_challan_dashboard" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.dashboard</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <dashboard sample="1">
+                    <view type="graph" ref="odoocms_fee.odoocms_challan_graph"/>
+                    <group>
+                        <group>
+                            <aggregate name="challans" string="Challans" group_operator="count_distinct" field="id" measure="__count__"/>
+                            <aggregate name="expected_revenue" string="Expected Revenue" field="amount" group_operator="sum" widget="monetary"/>
+                            <aggregate name="received_revenue" string="Received Revenue" field="amount" domain="[('state','=','paid')]" group_operator="sum" widget="monetary"/>
+                            <aggregate name="paid" string="Paid" field="id" domain="[('state','=','paid')]" group_operator="count" invisible="1"/>
+<!--                            <aggregate name="days_to_convert" string="Days To Opportunity" group_operator="avg" field="days_to_convert"/>-->
+<!--                            <aggregate name="days_to_assign" string="Days to Assign" field="day_open" group_operator="avg" value_label="days"/>-->
+                            <formula name="paid_percent" string="% Paid" value="record.paid / record.challans" widget="percentage"/>
+
+<!--                            <aggregate name="prorated_revenue" string="Prorated Revenue" field="prorated_revenue" group_operator="sum" widget="monetary"/>-->
+<!--                            <aggregate name="day_close" string="Days to Close" field="day_close" group_operator="avg" value_label="days"/>-->
+
+                            <aggregate name="main" string="Main Challan" field="amount" domain="[('label_id.type','=','main')]" group_operator="sum"/>
+                            <aggregate name="second" string="2nd Challan" field="amount" domain="[('label_id.type','=','installment')]" group_operator="sum"/>
+                        </group>
+                        <group>
+                            <widget name="pie_chart" title="Waiver Percentage" attrs="{'groupby': 'waiver_percentage'}"/>
+                            <widget name="pie_chart" title="Payment Status" attrs="{'groupby': 'state'}"/>
+                            <widget name="pie_chart" title="Installment" attrs="{'groupby': 'label_id'}"/>
+                        </group>
+                    </group>
+                    <view type="pivot" ref="odoocms_fee.odoocms_challan_pivot"/>
+                    <view type="cohort" ref="odoocms_fee.odoocms_challan_cohort"/>
+                </dashboard>
+            </field>
+        </record>
+
+        <record id="action_odoocms_challan" model="ir.actions.act_window">
+            <field name="name">Fee Challans</field>
+            <field name="res_model">odoocms.fee.barcode</field>
+            <field name="view_mode">dashboard,tree,form,pivot,graph,cohort</field> <!-- calendar, -->
+        </record>
+
+        <menuitem
+                id="menu_student_fee_challan"
+                parent="menu_odoocms_fee_receipts_main"
+                name="Fee Challans"
+                action="action_odoocms_challan"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+                sequence="10"/>
+
+
+        <record id="odoocms_challan_merge_tree" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.merge.tree</field>
+            <field name="model">odoocms.fee.barcode.merge</field>
+            <field name="arch" type="xml">
+                <tree delete="false" string="Fee Challans Merge">
+                    <field name="name" readonly="1"/>
+                    <field name="student_id" readonly="1"/>   <!--  widget="many2one_avatar_user" -->
+                    <field name="date"/>
+                    <field name="challan_id"/>
+                    <field name="challan_id2"/>
+                    <field name="registration_id"/>
+                    <field name="state" string="Invoice Status" readonly="1"/>
+
+<!--                    <field name="career_id" optional="1" readonly="1"/>-->
+<!--                    <field name="institute_id" optional="1" readonly="1"/>-->
+<!--                    <field name="discipline_id" optional="1" readonly="1"/>-->
+<!--                    <field name="campus_id" optional="1" readonly="1"/>-->
+<!--                    <field name="session_id" optional="1" readonly="1"/>-->
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="odoocms_challan_merge_form" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.marge.form</field>
+            <field name="model">odoocms.fee.barcode.merge</field>
+            <field name="arch" type="xml">
+                <form delete="false" string="Fee Challans Marge">
+                    <header>
+                        <button string="Post" name="post_merge" type="object" class="oe_highlight" states="draft"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,post"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="student_id" attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="date" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="challan_id" domain="[('student_id','=',student_id),'|',('date_payment','=',False),('amount_residual','&gt;', 0)]"
+                                   attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="challan_id2" domain="[('student_id','=',student_id),('date_payment','=',False),('id','!=',challan_id)]"
+                                    attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="registration_id" domain="[('student_id','=',student_id),('state','=','submit')]"
+                                    attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="note"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="odoocms_challan_merge_filter" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.merge.select</field>
+            <field name="model">odoocms.fee.barcode.merge</field>
+            <field name="arch" type="xml">
+                <search string="Search Challans Marge">
+                    <field name="student_id"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_student" string="Student" context="{'group_by':'student_id'}"/>
+                        <filter name="group_by_invoice_status" string="Status" context="{'group_by':'state'}"/>
+                        <filter name="group_by_date" string="Date" context="{'group_by':'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_odoocms_challan_merge" model="ir.actions.act_window">
+            <field name="name">Fee Challans - Merge</field>
+            <field name="res_model">odoocms.fee.barcode.merge</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_student_fee_challan_merge"
+                parent="menu_odoocms_fee_receipts_main"
+                name="Fee Challans - Merge"
+                action="action_odoocms_challan_merge"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+                sequence="20"/>
+
+        <record id="odoocms_challan_unregister_tree" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.unregister.tree</field>
+            <field name="model">odoocms.fee.barcode.unregister</field>
+            <field name="arch" type="xml">
+                <tree delete="false" string="Fee Challans Unregister">
+                    <field name="name" readonly="1"/>
+                    <field name="student_id" readonly="1"/>   <!--  widget="many2one_avatar_user" -->
+                    <field name="date"/>
+                    <field name="challan_id"/>
+                    <field name="registration_id"/>
+                    <field name="state" string="Invoice Status" readonly="1"/>
+
+<!--                    <field name="career_id" optional="1" readonly="1"/>-->
+<!--                    <field name="institute_id" optional="1" readonly="1"/>-->
+<!--                    <field name="discipline_id" optional="1" readonly="1"/>-->
+<!--                    <field name="campus_id" optional="1" readonly="1"/>-->
+<!--                    <field name="session_id" optional="1" readonly="1"/>-->
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="odoocms_challan_unregister_form" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.unregister.form</field>
+            <field name="model">odoocms.fee.barcode.unregister</field>
+            <field name="arch" type="xml">
+                <form delete="false" string="Fee Challans Unregister">
+                    <header>
+                        <button string="Unregister" name="unregister_payment" type="object" class="oe_highlight" states="draft"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="student_id" attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="date" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="challan_id" domain="[('student_id','=',student_id),('date_payment','!=',False)]"
+                                   attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="registration_id" domain="[('student_id','=',student_id),('state','in',('approved','part_approved'))]"
+                                    attrs="{'readonly':[('state', '!=', 'draft')]}"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="amount"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="note"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="odoocms_challan_unregister_filter" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.unregister.select</field>
+            <field name="model">odoocms.fee.barcode.unregister</field>
+            <field name="arch" type="xml">
+                <search string="Search Challans Unregister">
+                    <field name="student_id"/>
+                    <field name="challan_id"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_student" string="Student" context="{'group_by':'student_id'}"/>
+                        <filter name="group_by_invoice_status" string="Status" context="{'group_by':'state'}"/>
+                        <filter name="group_by_date" string="Date" context="{'group_by':'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_odoocms_challan_unregister" model="ir.actions.act_window">
+            <field name="name">Fee Challans - Unregister</field>
+            <field name="res_model">odoocms.fee.barcode.unregister</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_student_fee_challan_unregister"
+                parent="menu_odoocms_fee_receipts_main"
+                name="Fee Challans - Unregister"
+                action="action_odoocms_challan_unregister"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+                sequence="30"/>
+
+    </data>
+</odoo>
+

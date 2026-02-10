@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_application_scholarship_form_inherit" model="ir.ui.view">
+            <field name="name">view.odoocms.application.scholarship.form.inherit</field>
+            <field name="model">odoocms.application</field>
+            <field name="inherit_id" ref="odoocms_admission_ucp.view_odoocms_application_scholarship_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='prefered_program']" position="after">
+                    <field name="verification_status" string="Doc Verification Status" readonly="1"/>
+                    <field name="scholarshio_allocate_by" readonly="1"/>
+                    <field name="scholarship_allocation_date" readonly="1"/>
+
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_application_scholarship_tree_ext_a" model="ir.ui.view">
+            <field name="name">odoocms.application.scholarship.tree</field>
+            <field name="model">odoocms.application</field>
+            <field name="arch" type="xml">
+                <tree string="Application Scholarships">
+                    <field name="register_id" invisible="1"/>
+                    <field name="application_no"/>
+                    <field name="name"/>
+                    <field name="gender"/>
+                    <field name="date_of_birth" optional="show"/>
+                    <field name="email" optional="hide"/>
+                    <field name="mobile" optional="hide"/>
+                    <field name="cnic" optional="show"/>
+                    <field name="fee_voucher_state" optional="show"/>
+                    <field name="prefered_program" optional="hide"/>
+                    <field name="verification_status"/>
+                    <field name="degree"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <!--    <record id="view_odoocms_application_pwwf_tree_ext_a" model="ir.ui.view">-->
+        <!--        <field name="name">odoocms.application.scholarship.tree</field>-->
+        <!--        <field name="model">odoocms.application</field>-->
+        <!--        <field name="arch" type="xml">-->
+        <!--            <tree string="PWWF Scholarship Allocation">-->
+        <!--                <field name="register_id" invisible="1"/>-->
+        <!--                <field name="application_no"/>-->
+        <!--                <field name="name"/>-->
+        <!--                <field name="gender"/>-->
+        <!--                <field name="date_of_birth" optional="show"/>-->
+        <!--                <field name="email" optional="hide"/>-->
+        <!--                <field name="mobile" optional="hide"/>-->
+        <!--                <field name="cnic" optional="show"/>-->
+        <!--                <field name="fee_voucher_state" optional="show"/>-->
+        <!--                <field name="prefered_program" optional="hide"/>-->
+        <!--                <field name="verification_status"/>-->
+        <!--                <field name="degree"/>-->
+        <!--                <field name="state"/>-->
+        <!--            </tree>-->
+        <!--        </field>-->
+        <!--    </record>-->
+
+        <record id="action_odoocms_application_scholarship_ext_a" model="ir.actions.act_window">
+            <field name="name">Application Scholarship</field>
+            <field name="res_model">odoocms.application</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>    <!--  -->
+            <field name="view_ids" eval="[(5, 0, 0),
+    (0, 0, {'view_mode': 'tree', 'view_id': ref('view_odoocms_application_scholarship_tree_ext_a')}),
+    (0, 0, {'view_mode': 'form', 'view_id': ref('odoocms_admission_ucp.view_odoocms_application_scholarship_form')})]"/>
+            <field name="search_view_id" ref="odoocms_admission_ucp.view_odoocms_application_sholarship_search"/>
+            <field name="context">{}</field>
+            <field name="domain">[('fee_voucher_state', '=', 'verify'), ('state', '=', 'submit')]</field>
+
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create the First Application Scholarship here.
+                </p>
+            </field>
+        </record>
+
+        <!--    <record id="action_odoocms_application_pwwf_scholarship" model="ir.actions.act_window">-->
+        <!--        <field name="name">Application Scholarship</field>-->
+        <!--        <field name="res_model">odoocms.application</field>-->
+        <!--        <field name="type">ir.actions.act_window</field>-->
+        <!--        <field name="view_mode">tree,form</field>    &lt;!&ndash;  &ndash;&gt;-->
+        <!--        <field name="view_ids" eval="[(5, 0, 0),-->
+        <!--    (0, 0, {'view_mode': 'tree', 'view_id': ref('view_odoocms_application_pwwf_tree_ext_a')}),-->
+        <!--    (0, 0, {'view_mode': 'form', 'view_id': ref('odoocms_admission_ucp.view_odoocms_application_scholarship_form')})]"/>-->
+        <!--        <field name="search_view_id" ref="odoocms_admission_ucp.view_odoocms_application_sholarship_search"/>-->
+        <!--        <field name="context">{}</field>-->
+        <!--        <field name="domain">[('pwwf_scholarship', '=', True)]-->
+        <!--        </field>-->
+        <!--        <field name="help" type="html">-->
+        <!--            <p class="oe_view_nocontent_create">-->
+        <!--                Create the First Application Scholarship here.-->
+        <!--            </p>-->
+        <!--        </field>-->
+        <!--    </record>-->
+
+
+        <menuitem
+                id="odoocms_admission_ucp.menu_odoocms_application_scholarship"
+                name="Allocate Scholarship"
+                parent="odoocms_admission.admission_applicant_menu"
+                action="action_odoocms_application_scholarship_ext_a"
+                groups="odoocms_admission.group_admission_user"
+                sequence="25"/>
+
+        <!--    <menuitem-->
+        <!--            id="menu_odoocms_application_pwwf_scholarship"-->
+        <!--            name="PWWF Scholarship"-->
+        <!--            parent="odoocms_admission.admission_applicant_menu"-->
+        <!--            action="action_odoocms_application_pwwf_scholarship"-->
+        <!--            groups="odoocms_admission.group_admission_user"-->
+        <!--            sequence="26"/>-->
+    </data>
+</odoo>
+
+
+
+

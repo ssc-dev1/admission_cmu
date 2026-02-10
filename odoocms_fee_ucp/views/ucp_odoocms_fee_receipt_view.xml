@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="odoocms_challan_tree_ucp" model="ir.ui.view">
+        <field name="name">odoocms.fee.barcode.tree.ucp</field>
+        <field name="model">odoocms.fee.barcode</field>
+        <field name="inherit_id" ref="odoocms_fee.odoocms_challan_tree"/>
+        <field name="arch" type="xml">
+            <field name="discipline_id" position="after">
+                <field name="sync_challan" optional="hide" readonly="1"/>
+                <field name="synced_challan" optional="hide" readonly="1"/>
+                <field name="sql_id" optional="hide" readonly="1"/>
+                <field name="date_sync" optional="hide" readonly="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="odoocms_challan_form_ucp" model="ir.ui.view">
+        <field name="name">odoocms.fee.barcode.form.ucp</field>
+        <field name="model">odoocms.fee.barcode</field>
+        <field name="inherit_id" ref="odoocms_fee.odoocms_challan_form"/>
+        <field name="arch" type="xml">
+            <group name="academic" position="after">
+                <group>
+                    <field name="sync_challan" readonly="1"/>
+                    <field name="synced_challan" readonly="1"/>
+                    <field name="sql_id" readonly="1"/>
+                    <field name="date_sync" readonly="1"/>
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <record id="odoocms_challan_filter_ucp" model="ir.ui.view">
+        <field name="name">odoocms.fee.barcode.select.ucp</field>
+        <field name="model">odoocms.fee.barcode</field>
+        <field name="inherit_id" ref="odoocms_fee.odoocms_challan_filter"/>
+        <field name="arch" type="xml">
+            <field name="date_post" position="after">
+                <field name="date_sync" string="Sync Date"/>
+            </field>
+            <filter name="paid" position="after">
+                <filter name="sync_challan" string="Syncable" domain="[('sync_challan', '=', True)]"/>
+                <filter name="synced_challan" string="Synced" domain="[('synced_challan', '=', True)]"/>
+            </filter>
+            <filter name="group_by_post_date" string="Post Date" context="{'group_by':'date_post'}">
+                <filter name="group_by_sync_date" string="Sync Date" context="{'group_by':'date_sync'}"/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="ucp_inherited_odoocms_receipt_tree_view" model="ir.ui.view">
+        <field name="name">ucp.inherited.odoocms.receipt.tree.view</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="odoocms_fee.odoocms_receipt_tree"/>
+        <field name="arch" type="xml">
+            <field name="payment_state" position="after">
+                <field name="misc_charges_type" string="Charges Type" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <!--***** Prospectus Receipts Action *****-->
+    <record id="odoocms_fee.action_odoocms_prospectus_fee_receipt" model="ir.actions.act_window">
+        <field name="domain">[('move_type','=','out_invoice'), ('challan_type', '=', 'prospectus_challan')]</field>
+    </record>
+
+    <!--***** Hostel Fee Action *****-->
+    <record id="odoocms_fee.action_odoocms_hostel_fee_receipt" model="ir.actions.act_window">
+        <field name="domain">[('move_type','=','out_invoice'), ('challan_type', '=', 'hostel_fee')]</field>
+    </record>
+
+
+    <!--***** Misc Challans *****-->
+    <record id="action_odoocms_misc_fee_receipt" model="ir.actions.act_window">
+        <field name="name">Misc Fee Receipts</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field eval="False" name="view_id"/>
+        <field name="domain">[('move_type','=','out_invoice'), ('challan_type', '=', 'misc_challan')]</field>
+        <field name="context">{'move_type':'out_invoice', 'journal_type': 'sale', 'search_default_current':1,}</field>
+        <field name="search_view_id" ref="odoocms_fee.view_fee_receipts_filter"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            </p>
+        </field>
+    </record>
+
+    <record id="action_odoocms_misc_receipt_view1" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="odoocms_fee.odoocms_receipt_tree"/>
+        <field name="act_window_id" ref="action_odoocms_misc_fee_receipt"/>
+    </record>
+
+    <record id="action_odoocms_misc_receipt_view2" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="odoocms_fee.odoocms_receipt_form"/>
+        <field name="act_window_id" ref="action_odoocms_misc_fee_receipt"/>
+    </record>
+
+    <record id="action_odoocms_misc_receipt_view3" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="odoocms_fee.odoocms_receipt_pivot"/>
+        <field name="act_window_id" ref="action_odoocms_misc_fee_receipt"/>
+    </record>
+
+    <menuitem
+            id="menu_student_misc_fee_receipt"
+            parent="odoocms_fee.menu_odoocms_fee_receipts_main"
+            name="Misc Fee Receipts"
+            action="action_odoocms_misc_fee_receipt"
+            groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+            sequence="210"/>
+
+</odoo>

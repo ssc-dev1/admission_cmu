@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_syncing_configuration,odoo.sn.aarsol.cms.con,model_syncing_configuration,base.group_user,1,1,1,1
+access_admission_sync,admission.sync,model_admission_sync,base.group_user,1,1,1,1

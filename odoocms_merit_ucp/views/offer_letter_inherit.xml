@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="ucp_offer_letter_in_form">
+            <field name="name">ucp.offer.letter.form</field>
+            <field name="model">ucp.offer.letter</field>
+            <field name="inherit_id" ref="odoocms_admission_ucp.ucp_offer_letter_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[last()]" position="after">
+                    <notebook>
+                        <page name="offer_letter" string="Offer Letter">
+                            <field name="offer_letter" />
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

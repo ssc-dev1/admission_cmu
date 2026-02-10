@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_odoocms_campus_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.campus.tree.client</field>
+            <field name="model">odoocms.campus</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_campus_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_campus_form_client" model="ir.ui.view">
+            <field name="name">odoocms.campus.form.client</field>
+            <field name="model">odoocms.campus</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_campus_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_institute_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.institute.tree.client</field>
+            <field name="model">odoocms.institute</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_institute_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_institute_form_client" model="ir.ui.view">
+            <field name="name">odoocms.institute.form.client</field>
+            <field name="model">odoocms.institute</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_institute_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_odoocms_department_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.department.tree.client</field>
+            <field name="model">odoocms.department</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_department_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_department_form_client" model="ir.ui.view">
+            <field name="name">odoocms.department.form.client</field>
+            <field name="model">odoocms.department</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_career_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.career.tree.client</field>
+            <field name="model">odoocms.career</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_career_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_career_form_client" model="ir.ui.view">
+            <field name="name">odoocms.career.form.client</field>
+            <field name="model">odoocms.career</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_career_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_program_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.program.tree.client</field>
+            <field name="model">odoocms.program</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_program_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_program_form_client" model="ir.ui.view">
+            <field name="name">odoocms.program.form.client</field>
+            <field name="model">odoocms.program</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_program_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_academic_session_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.academic.session.tree.client</field>
+            <field name="model">odoocms.academic.session</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_academic_session_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_academic_session_form_client" model="ir.ui.view">
+            <field name="name">odoocms.academic.session.form.client</field>
+            <field name="model">odoocms.academic.session</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_academic_session_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_academic_term_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.academic.term.tree.client</field>
+            <field name="model">odoocms.academic.term</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_academic_term_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_academic_term_form_client" model="ir.ui.view">
+            <field name="name">odoocms.academic.term.form.client</field>
+            <field name="model">odoocms.academic.term</field>
+            <field name="inherit_id" ref="odoocms_base.view_odoocms_academic_term_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_batch_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.batch.tree.client</field>
+            <field name="model">odoocms.batch</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_batch_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_batch_form_client" model="ir.ui.view">
+            <field name="name">odoocms.batch.form.client</field>
+            <field name="model">odoocms.batch</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_batch_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_type_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.course.type.tree.client</field>
+            <field name="model">odoocms.course.type</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_course_type_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_type_form_client" model="ir.ui.view">
+            <field name="name">odoocms.course.type.form.client</field>
+            <field name="model">odoocms.course.type</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_course_type_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.course.tree.client</field>
+            <field name="model">odoocms.course</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_course_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_form_client" model="ir.ui.view">
+            <field name="name">odoocms.course.form.client</field>
+            <field name="model">odoocms.course</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_course_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.course.tree.client</field>
+            <field name="model">odoocms.course</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_course_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_form_client" model="ir.ui.view">
+            <field name="name">odoocms.course.form.client</field>
+            <field name="model">odoocms.course</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_course_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+<!--        <record id="view_odoocms_semester_tree_client" model="ir.ui.view">-->
+<!--            <field name="name">odoocms.semester.tree.client</field>-->
+<!--            <field name="model">odoocms.semester</field>-->
+<!--            <field name="inherit_id" ref="odoocms.view_odoocms_semester_tree"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//tree" position="attributes">-->
+<!--                    <attribute name="create">0</attribute>-->
+<!--                    <attribute name="edit">0</attribute>-->
+<!--                    <attribute name="delete">0</attribute>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <record id="view_odoocms_semester_form_client" model="ir.ui.view">-->
+<!--            <field name="name">odoocms.semester.form.client</field>-->
+<!--            <field name="model">odoocms.semester</field>-->
+<!--            <field name="inherit_id" ref="odoocms.view_odoocms_semester_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//form" position="attributes">-->
+<!--                    <attribute name="create">0</attribute>-->
+<!--                    <attribute name="edit">0</attribute>-->
+<!--                    <attribute name="delete">0</attribute>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="view_odoocms_study_scheme_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.study.scheme.tree.client</field>
+            <field name="model">odoocms.study.scheme</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_study_scheme_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_study_scheme_form_client" model="ir.ui.view">
+            <field name="name">odoocms.study.scheme.form.client</field>
+            <field name="model">odoocms.study.scheme</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_study_scheme_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_study_scheme_line_tree_client" model="ir.ui.view">
+            <field name="name">odoocms.study.scheme.line.tree.client</field>
+            <field name="model">odoocms.study.scheme.line</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_study_scheme_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_odoocms_study_scheme_line_form_client" model="ir.ui.view">
+            <field name="name">odoocms.study.scheme.line.form.client</field>
+            <field name="model">odoocms.study.scheme.line</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_study_scheme_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                    <attribute name="edit">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

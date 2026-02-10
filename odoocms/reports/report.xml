@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+		<record id="action_report_student_provisional_certificate" model="ir.actions.report">
+			<field name="name">Student Provisional Certificate</field>
+			<field name="model">odoocms.student</field>
+			<field name="report_type">qweb-html</field>
+			<field name="report_name">odoocms.report_student_provisional_certificate</field>
+			<field name="report_file">odoocms.report_student_provisional_certificate</field>
+<!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+			<field name="binding_model_id" ref="model_odoocms_student"/>
+			<field name="binding_type">report</field>
+		</record>
+
+		<record id="action_student_data" model="ir.actions.report">
+			<field name="name">Students Data</field>
+			<field name="model">odoocms.student</field>
+			<field name="report_type">qweb-html</field>
+			<field name="report_name">odoocms.report_student_data</field>
+			<field name="report_file">odoocms.report_student_data</field>
+<!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+			<field name="binding_model_id" ref="model_odoocms_student"/>
+			<field name="binding_type">report</field>
+		</record>
+
+		<record id="action_student_id_card" model="ir.actions.report">
+			<field name="name">Student ID Card</field>
+			<field name="model">odoocms.student</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="report_name">odoocms.report_student_id_card</field>
+			<field name="report_file">odoocms.report_student_id_card</field>
+<!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+			<field name="binding_model_id" ref="model_odoocms_student"/>
+			<field name="binding_type">report</field>
+		</record>
+
+		<record id="action_faculty_id_card" model="ir.actions.report">
+			<field name="name">Faculty ID Card</field>
+			<field name="model">odoocms.faculty.staff</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="report_name">odoocms.report_faculty_id_card</field>
+			<field name="report_file">odoocms.report_faculty_id_card</field>
+<!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+			<field name="binding_model_id" ref="model_odoocms_faculty_staff"/>
+			<field name="binding_type">report</field>
+		</record>
+
+
+
+
+<!--        <report-->
+<!--            id="action_student_id_card"-->
+<!--            model="odoocms.student"-->
+<!--            string="Student ID Card"-->
+<!--            report_type="qweb-pdf"-->
+<!--            name="odoocms.report_student_id_card"-->
+<!--            file="odoocms.report_student_id_card"-->
+<!--        />-->
+<!--		-->
+<!--		<report-->
+<!--			id="action_report_student_provisional_certificate"-->
+<!--			string="Student Provisional Certificate"-->
+<!--			model="odoocms.student"-->
+<!--			report_type="qweb-html"-->
+<!--			name="odoocms.report_student_provisional_certificate"-->
+<!--			file="odoocms.report_student_provisional_certificate"-->
+<!--			menu="True"-->
+<!--		/>-->
+<!--		-->
+<!--		<report-->
+<!--            id="action_student_data"-->
+<!--            model="odoocms.student"-->
+<!--            string="Students Data"-->
+<!--            report_type="qweb-html"-->
+<!--            name="odoocms.report_student_data"-->
+<!--            file="odoocms.report_student_data"-->
+<!--        />-->
+
+<!--        <report-->
+<!--            id="action_faculty_id_card"-->
+<!--            model="odoocms.faculty.staff"-->
+<!--            string="Faculty ID Card"-->
+<!--            report_type="qweb-pdf"-->
+<!--            name="odoocms.report_faculty_id_card"-->
+<!--            file="odoocms.report_faculty_id_card"-->
+<!--        />-->
+
+<!--        <record id="paperformat_student_application" model="report.paperformat">-->
+<!--            <field name="name">Student Application A4</field>-->
+<!--            <field name="default" eval="True" />-->
+<!--            <field name="format">A4</field>-->
+<!--            <field name="page_height">0</field>-->
+<!--            <field name="page_width">0</field>-->
+<!--            <field name="orientation">Portrait</field>-->
+<!--            <field name="margin_top">70</field>-->
+<!--            <field name="margin_bottom">28</field>-->
+<!--            <field name="margin_left">7</field>-->
+<!--            <field name="margin_right">7</field>-->
+<!--            <field name="header_line" eval="False" />-->
+<!--            <field name="header_spacing">50</field>-->
+<!--            <field name="dpi">90</field>-->
+<!--        </record>-->
+
+<!--        <report-->
+<!--            id="action_student_application_report"-->
+<!--            model="odoocms.application"-->
+<!--            string="Student Application"-->
+<!--            report_type="qweb-pdf"-->
+<!--            paperformat="odoocms.paperformat_student_application"-->
+<!--            name="odoocms.report_student_application"-->
+<!--            file="odoocms.report_student_application"-->
+<!--        />-->
+
+    </data>
+</odoo>

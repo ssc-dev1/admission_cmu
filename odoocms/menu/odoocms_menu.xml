@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+            id="menu_odoocms_students_root"
+            name="Students"
+            groups="group_cms_user"
+            parent="odoocms_base.menu_odoocms_root"
+            sequence="10"/>
+
+    <menuitem
+            id="menu_odoocms_faculty_root"
+            name="Faculty"
+            groups="group_cms_user"
+            parent="odoocms_base.menu_odoocms_root"
+            sequence="15"/>
+
+
+    <menuitem
+            id="menu_odoocms_academic_structure"
+            name="Academic Structure"
+            parent="odoocms_base.menu_odoocms_organization"
+            sequence="20"/>
+
+    <menuitem
+            id="menu_odoocms_organization_infrastructure"
+            name="Organization Infra-Structure"
+            parent="odoocms_base.menu_odoocms_organization"
+            sequence="30"/>
+
+    <menuitem
+            id="menu_odoocms_report"
+            name="Reports"
+            parent="odoocms_base.menu_odoocms_root"
+            groups="group_cms_user"
+            sequence="80"/>
+
+
+</odoo>

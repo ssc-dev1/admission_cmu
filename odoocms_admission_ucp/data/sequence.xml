@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_application_steps" model="ir.sequence">
+        <field name="name">Application Main Steps</field>
+        <field name="code">entry.test</field>
+        <field name="prefix"></field>
+        <field name="padding">3</field>
+    </record>
+</odoo>

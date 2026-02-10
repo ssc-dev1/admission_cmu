@@ -1,0 +1,41 @@
+<odoo>
+    <record id="registration_stat_detail_report_view" model="ir.ui.view">
+        <field name="name">registration.stat.detail.report.view</field>
+        <field name="model">registration.stat.detail.report</field>
+        <field name="arch" type="xml">
+            <form string="Registration Stat Detail Report">
+                <group>
+                    <group>
+                        <field name="term_id" required="1" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+                <notebook>
+                    <page name="institute_ids" string="Select Faculties">
+                        <field name="institute_ids" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    </page>
+                </notebook>
+                <footer>
+                    <button name="make_excel" string="Generate Excel Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_registration_stat_detail_report" model="ir.actions.act_window">
+        <field name="name">Registration Stat Detail Report</field>
+        <field name="res_model">registration.stat.detail.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem
+            id="menu_registration_stat_detail_report"
+            name="Registration Stat Detail Report"
+            action="action_registration_stat_detail_report"
+            parent="menu_odoocms_registration_report"
+            sequence="12"/>
+</odoo>

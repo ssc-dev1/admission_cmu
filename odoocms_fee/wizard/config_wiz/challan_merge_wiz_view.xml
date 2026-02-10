@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_challan_merge_wiz" model="ir.ui.view">
+            <field name="name">challan.merge.wiz.view</field>
+            <field name="model">challan.merge.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Challan Merge">
+                    <group>
+                        <group>
+                            <field name="auto_delete"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Challans">
+                            <group>
+                                <field name="challan_ids" colspan="4" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="action_challan_merge" string="Challan Merge" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="act_challan_merge_wiz" model="ir.actions.act_window">
+            <field name="name">Challan Merge</field>
+            <field name="res_model">challan.merge.wiz</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_challan_merge_wiz"/>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="model_odoocms_fee_barcode"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="groups_id" eval="[(4,ref('odoocms_fee.group_fee_super_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

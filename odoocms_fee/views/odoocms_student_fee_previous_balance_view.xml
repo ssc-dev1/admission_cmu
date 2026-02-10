@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_odoocms_student_fee_previous_balance_tree" model="ir.ui.view">
+        <field name="name">odoocms.student.fee.previous.balance.tree</field>
+        <field name="model">odoocms.student.fee.previous.balance</field>
+        <field name="arch" type="xml">
+            <tree string="Fee Previous Balance" create="false" delete="false" duplicate="false">
+                <field name="student_id"/>
+                <field name="student_tags"/>
+                <field name="amount"/>
+                <field name="ledger_id"/>
+                <field name="status"/>
+                <field name="date"/>
+                <field name="institute_code"/>
+                <field name="to_be"/>
+                <field name="included_invoice"/>
+                <field name="notes" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_student_fee_previous_balance_form" model="ir.ui.view">
+        <field name="name">odoocms.student.fee.previous.balance.form</field>
+        <field name="model">odoocms.student.fee.previous.balance</field>
+        <field name="arch" type="xml">
+            <form string="Fee Previous Balance" create="false" duplicate="false">
+                <header>
+                    <button name="update_arrears_ledger_amount"
+                            type="object"
+                            class="oe_highlight"
+                            string="Update Amount"
+                            groups="odoocms_fee.group_fee_manager"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="student_id" readonly="1"/>
+                            <field name="student_tags" readonly="1"/>
+                            <field name="amount" readonly="0"/>
+                            <field name="ledger_id" readonly="1"/>
+                            <field name="institute_code"/>
+                        </group>
+                        <group>
+                            <field name="date" readonly="1"/>
+                            <field name="status" readonly="1"/>
+                            <field name="notes"/>
+                            <field name="to_be" readonly="1"/>
+                            <field name="included_invoice" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_odoocms_student_fee_previous_balance_fitler" model="ir.ui.view">
+        <field name="name">odoocms.student.fee.previous.balance.filter</field>
+        <field name="model">odoocms.student.fee.previous.balance</field>
+        <field name="arch" type="xml">
+            <search string="Fee Previous Balance">
+                <field name="student_id"/>
+                <field name="institute_code"/>
+                <field name="amount"/>
+                <field name="ledger_id"/>
+                <field name="date"/>
+                <field name="to_be"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_institute_code" string="Institute" context="{'group_by':'institute_code'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_odoocms_student_fee_previous_balance" model="ir.actions.act_window">
+        <field name="name">Student Fee Previous Balance</field>
+        <field name="res_model">odoocms.student.fee.previous.balance</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+            </p>
+        </field>
+    </record>
+    <menuitem
+            id="menu_odoocms_student_fee_previous_balance"
+            name="Student Fee Previous Balance"
+            action="action_odoocms_student_fee_previous_balance"
+            parent="odoocms_fee.menu_odoocms_student_fee_student_main"
+            groups="odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user,odoocms_fee.group_fee_user,odoocms_fee.group_fee_coordinator"
+            sequence="80"/>
+</odoo>

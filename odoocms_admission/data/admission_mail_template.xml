@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mail_template_voucher_verified" model="mail.template">
+            <field name="name">Admission Application Fee Verified</field>
+            <field name="email_from">admissions@cust.edu.pk</field>
+            <field name="subject">Fee Voucher</field>
+            <field name="email_to">{{object.email}}</field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_application" />
+            <field eval="True" name="auto_delete" />
+            <field name="body_html" type="html">
+
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%"
+                    style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:40px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <td width="370px" style="height:100%;width:280px;">
+                                <table height="100%" width="280" border="0"
+                                    style="box-sizing:border-box;border-collapse:collapse;background-color:#102b4c">
+                                    <tbody>
+                                        <tr height="50%">
+                                            <td style="vertical-align:top; text-align:center">
+                                                <img data-imagetype="External"
+                                                    src="/web/image/1173-f7f6d124/UCP%20logo%20w-01.png?access_token=7c1e9ee1-55fe-4943-bf06-d699f8781c52"
+                                                    style="border-style:none;box-sizing:border-box;vertical-align:middle;margin-top: 2em; width: 200px; height: 200px;"
+                                                    width="200px" height="200" />
+                                            </td>
+                                        </tr>
+                                        <tr height="50%" style="text-align:center; color:#fff">
+                                            <td valign="bottom" style="font-size: 16px;">
+                                                <a t-attf-href="{{request.env.company.website}}"
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff">
+                                                    <t t-out="request.env.company.website" />
+                                                    <br />
+                                                </a>
+                                                <a
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                    t-attf-href="mailto:{{request.env.company.admission_mail}}"
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    data-auth="NotApplicable" class="x_m-0"
+                                                    data-linkindex="1">
+                                                    <t t-out="request.env.company.admission_mail" />
+                                                </a>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.admission_phone" />
+                                                </p>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.street" /> , <br />
+                                                    <t t-out="request.env.company.street2" /> ,
+                                                    Pakistan.</p>
+                                                <!-- <div style="text-align: center;">
+                                                    <div style="display: inline-block;">
+                                                        <a style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                t-attf-href="{{request.env.company.social_facebook}}"
+                                                target="_blank" rel="noopener noreferrer"
+                                                data-auth="NotApplicable" data-linkindex="2">
+                                                            <img data-imagetype="External"
+                                                src="/web/image/1174-95dfc774/ic_fb.png?access_token=567bb2c5-9311-41cb-a1e7-59780072ab72"
+                                                width="25px"
+                                                style="border-style:none;box-sizing:border-box;vertical-align:middle;width:
+                                                25px; height: 25px;" height="25"/>
+                                                        </a>
+                                                        <a style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                t-attf-href="{{request.env.company.social_instagram}}"
+                                                target="_blank" rel="noopener noreferrer"
+                                                data-auth="NotApplicable" data-linkindex="3">
+                                                            <img data-imagetype="External"
+                                                src="/web/image/1175-ecb087c5/ic_insta.png?access_token=5520166d-61c8-42fc-8d2d-85a99ab835e7"
+                                                width="25px"
+                                                style="border-style:none;box-sizing:border-box;vertical-align:middle;width:
+                                                25px; height: 25px;" height="25"/>
+                                                        </a>
+                                                    </div>
+                                                </div> -->
+                                                <!-- <div style="display:
+                                                inline-block;vertical-align: middle;font-weight:700;
+                                                font-size:24px;">Cust OFFICIAL</div> -->
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;font-size:20px;vertical-align:middle; display:inline-block;">
+                                                    &amp;nbsp;</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="90%" style="padding:0 20px">
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%"
+                                    height="100%"
+                                    style="box-sizing:border-box;background-repeat-y:no-repeat;background-repeat-x:no-repeat;background-position-y:bottom;background-position-x:right;border-collapse:collapse;background-size:200px;background-position: right bottom;background-repeat: no-repeat;">
+                                    <tbody style="margin:0; padding:0">
+                                        <!-- <tr style="vertical-align:top">
+                                            <td>
+                                                <div style="font-family:arial;font-size: 40px;color:#102b4c;font-weight:400">FALL ADMISSIONS</div>
+                                                <div style="font-family:arial;font-size: 60px;color:#102b4c;font-weight:400">
+                                                    <strong style="box-sizing:border-box;font-weight:700;">2023</strong>
+                                                </div>
+                                            </td>
+                                        </tr> -->
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div
+                                                    style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100">
+                                                    &amp;nbsp;</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%" valign="top">
+                                                <div
+                                                    style="font-family:arial;font-size:18px;line-height:1.6;">
+                                                    <!--CONTENT
+                                                    OF EMAIL WILL START HERE-->
+                                                    <span
+                                                        style="font-weight:700;">Dear Applicant,</span>
+                                                    &amp;nbsp;<br />
+                                                <br /> Your request for admission has been processed. Please log-in with your user name and password and download the Test Letter attached there.  <br /> Good Luck! <br />
+                                                    Admission Office: <br />
+                                                <t t-out="request.env.company.name" />
+                                                <br />
+                                                <t t-out="request.env.company.street" /> , <t t-out="request.env.company.street2" />
+                                                <t t-out="request.env.company.city" /> . <br />
+                                                <t t-out="request.env.company.admission_phone" />
+                                                    (9:00 am to 5:00 pm) <br />
+                                                <t t-out="request.env.company.admission_mail" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </field>
+
+        </record>
+        <!--<record
+        id="mail_template_voucher_verified2" model="mail.template">
+            <field name="name">Admission Voucher Verified For overseas</field>
+            <field name="email_from">"${object.company_id.name|safe}" &lt;${(object.company_id.admission_mail
+        or user.email)|safe}&gt;</field>
+            <field name="subject">Fee Voucher</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_application"/>
+            <field eval="True" name="auto_delete"/>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color:
+        #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%;
+        border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px;
+        background-color: white; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    &lt;!&ndash; CONTENT &ndash;&gt;
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px;
+        background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            Dear ${object.name},
+                                                            <br/>
+                                                            <br/>
+                                                            Your registration fee USD 100/- has been verified by the
+                                                            Bank and ${object.company_id.short_name|safe} Treasurer
+                                                            Office. Kindly login to your account on
+                                                            ${object.company_id.short_name|safe} Admission portal and
+                                                            proceed further
+                                                            to complete remaining steps for the submission of your
+                                                            application successfully.
+                                                            <br/>
+                                                            Regards,
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">
+                                                        <hr width="100%" style="background-color:rgb(204,204,204);border:medium
+        none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px
+        16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    &lt;!&ndash; FOOTER &ndash;&gt;
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px;
+        background-color: white; font-size: 11px; padding: 0px 8px 0px 8px;
+        border-collapse:separate;">
+                                                <tr>
+                                                    <td>
+                                                        Admission Office
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left">
+                                                        ${object.company_id.name}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left" style="opacity: 0.7;">
+                                                        ${object.company_id.admission_phone}
+                                                        % if object.company_id.admission_mail
+                                                        |
+                                                        <a href="'mailto:%s' % ${object.company_id.admission_mail}" style="text-decoration:none; color:
+        #454748;">
+                                                            ${object.company_id.admission_mail}
+                                                        </a>
+                                                        % endif
+                                                        % if object.company_id.website
+                                                        |
+                                                        <a href="'%s' % ${object.company_id.website}" style="text-decoration:none; color: #454748;">
+                                                            ${object.company_id.website}
+                                                        </a>
+                                                        % endif
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    &lt;!&ndash; POWERED BY &ndash;&gt;
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px;
+        background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                                &lt;!&ndash;<tr>
+                                    <td style="text-align: center; font-size: 13px;">
+                                        Powered by
+                                        <a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color:
+        #875A7B;">Odoo</a>
+                                    </td>
+                                </tr>&ndash;&gt;
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+        </record>-->
+        <record id="mail_template_voucher_un_verified" model="mail.template">
+            <field name="name">Admission Voucher UnVerified</field>
+            <field name="email_from">admissions@cust.edu.pk</field>
+            <field name="subject">Fee Voucher Rejected</field>
+            <field name="email_to">{{object.email}}</field>
+
+            <field name="model_id" ref="odoocms_admission.model_odoocms_application" />
+            <field eval="True" name="auto_delete" />
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%"
+                    style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:40px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <td width="370px" style="height:100%;width:280px;">
+                                <table height="100%" width="280" border="0"
+                                    style="box-sizing:border-box;border-collapse:collapse;background-color:#102b4c">
+                                    <tbody>
+                                        <tr height="50%">
+                                            <td style="vertical-align:top; text-align:center">
+                                                <img data-imagetype="External"
+                                                    src="/web/image/1173-f7f6d124/UCP%20logo%20w-01.png?access_token=7c1e9ee1-55fe-4943-bf06-d699f8781c52"
+                                                    style="border-style:none;box-sizing:border-box;vertical-align:middle;margin-top: 2em; width: 200px; height: 200px;"
+                                                    width="200px" height="200" />
+                                            </td>
+                                        </tr>
+                                        <tr height="50%" style="text-align:center; color:#fff">
+                                            <td valign="bottom" style="font-size: 16px;">
+                                                <a t-attf-href="{{request.env.company.website}}"
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff">
+                                                    <t t-out="request.env.company.website" />
+                                                    <br />
+                                                </a>
+                                                <a
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                    t-attf-href="mailto:{{request.env.company.admission_mail}}"
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    data-auth="NotApplicable" class="x_m-0"
+                                                    data-linkindex="1">
+                                                    <t t-out="request.env.company.admission_mail" />
+                                                </a>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.admission_phone" />
+                                                </p>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.street" /> , <br />
+                                                <t t-out="request.env.company.street2" /> ,
+                                                    Pakistan.</p>
+                                                <div style="text-align: center;">
+                                                    <div style="display: inline-block;">
+                                                        <a
+                                                            style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                            t-attf-href="{{request.env.company.social_facebook}}"
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            data-auth="NotApplicable"
+                                                            data-linkindex="2">
+                                                            <img data-imagetype="External"
+                                                                src="/web/image/1174-95dfc774/ic_fb.png?access_token=567bb2c5-9311-41cb-a1e7-59780072ab72"
+                                                                width="25px"
+                                                                style="border-style:none;box-sizing:border-box;vertical-align:middle;width: 25px; height: 25px;"
+                                                                height="25" />
+                                                        </a>
+                                                        <a
+                                                            style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                            t-attf-href="{{request.env.company.social_instagram}}"
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            data-auth="NotApplicable"
+                                                            data-linkindex="3">
+                                                            <img data-imagetype="External"
+                                                                src="/web/image/1175-ecb087c5/ic_insta.png?access_token=5520166d-61c8-42fc-8d2d-85a99ab835e7"
+                                                                width="25px"
+                                                                style="border-style:none;box-sizing:border-box;vertical-align:middle;width: 25px; height: 25px;"
+                                                                height="25" />
+                                                        </a>
+                                                    </div>
+                                                    <!-- <div style="display:
+                                                    inline-block;vertical-align:
+                                                    middle;font-weight:700; font-size:24px;">Cust
+                                                    OFFICIAL</div> -->
+                                                </div>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;font-size:20px;vertical-align:middle; display:inline-block;">
+                                                    &amp;nbsp;</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="90%" style="padding:0 20px">
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%"
+                                    height="100%"
+                                    style="box-sizing:border-box;background-repeat-y:no-repeat;background-repeat-x:no-repeat;background-position-y:bottom;background-position-x:right;border-collapse:collapse;background-size:200px;background-position: right bottom;background-repeat: no-repeat;">
+                                    <tbody style="margin:0; padding:0">
+                                        <!-- <tr style="vertical-align:top">
+                                        <td>
+                                            <div style="font-family:arial;font-size: 40px;color:#102b4c;font-weight:400">FALL ADMISSIONS</div>
+                                            <div style="font-family:arial;font-size: 60px;color:#102b4c;font-weight:400">
+                                                <strong style="box-sizing:border-box;font-weight:700;">2023</strong>
+                                            </div>
+                                        </td>
+                                    </tr> -->
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div
+                                                    style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100">
+                                                    &amp;nbsp;</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%" valign="top">
+                                                <div
+                                                    style="font-family:arial;font-size:18px;line-height:1.6;">
+                                                    <!--CONTENT
+                                                    OF EMAIL WILL START HERE-->
+                                                <span
+                                                        style="font-weight:700;">Dear Applicant,</span>
+                                                    &amp;nbsp;<br />
+                                            <br /> Your application fee have
+                                                    been verified. </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </field>
+
+        </record>
+
+        <record id="mail_template_account_created" model="mail.template">
+            <field name="name">Account Created</field>
+            <field name="model_id" ref="base.model_res_users" />
+            <field name="subject">Welcome to {{ctx.get('company_name')}}</field>
+            <field name="email_from">admissions@cust.edu.pk</field>
+            <field name="email_to">{{ctx.get('email')}}</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%"
+                    style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:40px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <t t-set="request.env.company" t-value="request.env.company" />
+                            <td width="370px" style="height:100%;width:280px;">
+                                <table height="100%" width="280" border="0"
+                                    style="box-sizing:border-box;border-collapse:collapse;background-color:#102b4c">
+                                    <tbody>
+                                        <tr height="50%">
+                                            <td style="vertical-align:top; text-align:center">
+                                                <img data-imagetype="External"
+                                                    src="/web/image/1173-f7f6d124/UCP%20logo%20w-01.png?access_token=7c1e9ee1-55fe-4943-bf06-d699f8781c52"
+                                                    style="border-style:none;box-sizing:border-box;vertical-align:middle;margin-top: 2em; width: 200px; height: 200px;"
+                                                    width="200px" height="200" />
+                                            </td>
+                                        </tr>
+                                        <tr height="50%" style="text-align:center; color:#fff">
+                                            <td valign="bottom" style="font-size: 16px;">
+                                                <a t-attf-href="{{request.env.company.website}}"
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff">
+                                                    <t t-out="request.env.company.website" />
+                                                    <br />
+                                                </a>
+                                                <a
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                    t-attf-href="mailto:{{request.env.company.admission_mail}}"
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    data-auth="NotApplicable" class="x_m-0"
+                                                    data-linkindex="1">
+                                                    <t t-out="request.env.company.admission_mail" />
+                                                </a>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.admission_phone" />
+                                                </p>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.street" /> , <br />
+                                            <t t-out="request.env.company.street2" /> ,
+                                                    Pakistan.</p>
+                                                <!-- <div style="text-align: center;">
+                                            <div style="display: inline-block;">
+                                                <a style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                t-attf-href="{{request.env.company.social_facebook}}"
+                                                target="_blank" rel="noopener noreferrer"
+                                                data-auth="NotApplicable" data-linkindex="2">
+                                                    <img data-imagetype="External"
+                                                src="/web/image/1174-95dfc774/ic_fb.png?access_token=567bb2c5-9311-41cb-a1e7-59780072ab72"
+                                                width="25px"
+                                                style="border-style:none;box-sizing:border-box;vertical-align:middle;width:
+                                                25px; height: 25px;" height="25"/>
+                                                </a>
+                                                <a style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                t-attf-href="{{request.env.company.social_instagram}}"
+                                                target="_blank" rel="noopener noreferrer"
+                                                data-auth="NotApplicable" data-linkindex="3">
+                                                    <img data-imagetype="External"
+                                                src="/web/image/1175-ecb087c5/ic_insta.png?access_token=5520166d-61c8-42fc-8d2d-85a99ab835e7"
+                                                width="25px"
+                                                style="border-style:none;box-sizing:border-box;vertical-align:middle;width:
+                                                25px; height: 25px;" height="25"/>
+                                                </a>
+                                            </div>
+                                        </div> -->
+                                                <!-- <div style="display:
+                                                inline-block;vertical-align: middle;font-weight:700;
+                                                font-size:24px;">Cust OFFICIAL</div> -->
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;font-size:20px;vertical-align:middle; display:inline-block;">
+                                                    &amp;nbsp;</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="90%" style="padding:0 20px">
+                                <!--
+                                style="box-sizing:border-box;background-repeat-y:no-repeat;background-repeat-x:no-repeat;background-position-y:bottom;background-position-x:right;border-collapse:collapse;background-size:200px;background-position:
+                                right bottom;background-repeat: no-repeat;" -->
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%"
+                                    height="100%">
+                                    <tbody style="margin:0; padding:0">
+                                        <tr style="vertical-align:top">
+                                            <!-- <td>
+                                        <div style="font-family:arial;font-size: 40px;color:#102b4c;font-weight:400">FALL ADMISSIONS</div>
+                                        <div style="font-family:arial;font-size: 60px;color:#102b4c;font-weight:400">
+                                            <strong style="box-sizing:border-box;font-weight:700;">2023</strong>
+                                        </div>
+                                    </td> -->
+                                        </tr>
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div
+                                                    style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100">
+                                                    &amp;nbsp;</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%;font-size:16px !important;"
+                                                valign="top"> Dear <t t-out="ctx.get('applicant_name')" /> , Thank you
+                                                for your interest in <t t-out="request.env.company.name" /> . You have
+                                                successfully created your online account. Please go
+                                                to admissions.cust.edu.pk and enter the following
+                                                username and password to log-in to your online
+                                                account; <br />
+                                <b>Username:<t t-out="ctx.get('login')" />
+                                                </b>
+                                <br />
+                                <b>
+                                                Password: <t t-out="ctx.get('password')" />
+                                                </b>
+                                <br />
+                                                After form completion and final submission, the
+                                                button for challan of processing fee of Rs <t t-out="ctx.get('processing_fee')" /> /- will be
+                                                activated. Please download the challan, take a print
+                                                out and pay at the nearest branch of the Bank of
+                                                Punjab or through any of the online payment options. <br />
+                                                In case you need help at any point, please call our
+                                                helpline at <t t-out="request.env.company.admission_phone" />
+                                                for assistance or email us at <t t-out="request.env.company.admission_mail" /> . <br />
+                                                Good Luck! <hr />
+                    <br /> Admission Office <br />
+                    <t t-out="request.env.company.name" />
+                    <br />
+                    <t t-out="request.env.company.street" /> , <t t-out="request.env.company.street2" />
+                    <t t-out="request.env.company.city" /> . <br />
+                    <t t-out="request.env.company.admission_phone" />
+                                                (9:00 am to 5:00 pm) <br />
+                    <t t-out="request.env.company.admission_mail" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </field>
+            <field name="auto_delete" eval="True" />
+            <!--            <field name="user_signature" eval="False"/>-->
+        </record>
+        <record id="mail_template_admission_form_submit" model="mail.template">
+            <field name="name">Admission Application Form Submitted</field>
+            <field name="model_id" ref="base.model_res_users" />
+            <field name="subject">Welcome to CUST</field>
+            <field name="email_from">admissions@cust.edu.pk</field>
+            <field name="email_to">{{ctx.get('email')}}</field>
+            <!--<field
+            name="email_to">${ctx.get('email')}</field>-->
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%"
+                    style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:40px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <td width="370px" style="height:100%;width:280px;">
+                                <table height="100%" width="280" border="0"
+                                    style="box-sizing:border-box;border-collapse:collapse;background-color:#102b4c">
+                                    <tbody>
+                                        <tr height="50%">
+                                            <td style="vertical-align:top; text-align:center">
+                                                <img data-imagetype="External"
+                                                    src="/web/image/1173-f7f6d124/UCP%20logo%20w-01.png?access_token=7c1e9ee1-55fe-4943-bf06-d699f8781c52"
+                                                    style="border-style:none;box-sizing:border-box;vertical-align:middle;margin-top: 2em; width: 200px; height: 200px;"
+                                                    width="200px" height="200" />
+                                            </td>
+                                        </tr>
+                                        <tr height="50%" style="text-align:center; color:#fff">
+                                            <td valign="bottom" style="font-size: 16px;">
+                                                <a t-attf-href="{{ctx.get('company_website')}}"
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff">
+                                                    <t t-out="request.env.company.website" />
+                                                    <br />
+                                                </a>
+                                                <a
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                    t-attf-href="mailto:{{request.env.company.admission_mail}}"
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    data-auth="NotApplicable" class="x_m-0"
+                                                    data-linkindex="1">
+                                                    <t t-out="request.env.company.admission_mail" />
+                                                </a>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.admission_phone" />
+                                                </p>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.street" /> , <br />
+                        <t t-out="request.env.company.street2" /> ,
+                                                    Pakistan.</p>
+                                                <div style="text-align: center;">
+                                                    <!-- <div style="display: inline-block;">
+                                            <a style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                    t-attf-href="{{request.env.company.social_facebook}}"
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    data-auth="NotApplicable" data-linkindex="2">
+                                                <img data-imagetype="External"
+                                                    src="/web/image/1174-95dfc774/ic_fb.png?access_token=567bb2c5-9311-41cb-a1e7-59780072ab72"
+                                                    width="25px"
+                                                    style="border-style:none;box-sizing:border-box;vertical-align:middle;width:
+                                                    25px; height: 25px;" height="25"/>
+                                            </a>
+                                            <a style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                    t-attf-href="{{request.env.company.social_instagram}}"
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    data-auth="NotApplicable" data-linkindex="3">
+                                                <img data-imagetype="External"
+                                                    src="/web/image/1175-ecb087c5/ic_insta.png?access_token=5520166d-61c8-42fc-8d2d-85a99ab835e7"
+                                                    width="25px"
+                                                    style="border-style:none;box-sizing:border-box;vertical-align:middle;width:
+                                                    25px; height: 25px;" height="25"/>
+                                            </a>
+                                        </div> -->
+                                                    <!-- <div style="display:
+                                                    inline-block;vertical-align:
+                                                    middle;font-weight:700; font-size:24px;">Cust
+                                                    OFFICIAL</div> -->
+                                                </div>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;font-size:20px;vertical-align:middle; display:inline-block;">
+                                                    &amp;nbsp;</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="90%" style="padding:0 20px">
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%"
+                                    height="100%"
+                                    style="box-sizing:border-box;background-repeat-y:no-repeat;background-repeat-x:no-repeat;background-position-y:bottom;background-position-x:right;border-collapse:collapse;background-size:200px;background-position: right bottom;background-repeat: no-repeat;">
+                                    <tbody style="margin:0; padding:0">
+                                        <!-- <tr style="vertical-align:top">
+                                <td>
+                                    <div style="font-family:arial;font-size: 40px;color:#102b4c;font-weight:400">FALL ADMISSIONS</div>
+                                    <div style="font-family:arial;font-size: 60px;color:#102b4c;font-weight:400">
+                                        <strong style="box-sizing:border-box;font-weight:700;">2023</strong>
+                                    </div>
+                                </td>
+                            </tr> -->
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div
+                                                    style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100">
+                                                    &amp;nbsp;</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%" valign="top">
+                                                <div
+                                                    style="font-family:arial;font-size:18px;line-height:1.6;">
+                                                    <!--CONTENT
+                                                    OF EMAIL WILL START HERE-->
+                        <span
+                                                        style="font-weight:700;">Dear Applicant,</span>
+                                                    &amp;nbsp;<br />
+                    <br />
+                    <p> Thank you for applying
+                                                    for admission at <t t-out="request.env.company.name" /> .
+                                                    Your request for admission has been received. In
+                                                    order to complete your application process,
+                                                    please download the challan of Rs.<t t-out="ctx.get('processing_fee')" /> /-
+                                                    and pay at the nearest branch of The Bank of
+                                                    Punjab. You can also make the payment through
+                                                    various other options available in your online
+                                                    CUST account. In case of any query, please feel
+                                                    free to contact our helpline at <t t-out="request.env.company.admission_phone" />
+                                                    . <br /> Good Luck! </p>
+                                                    <!-- Thank you for submitting application form
+                                                    at the <t t-out="request.env.company.name"/> . -->
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </field>
+            <field name="auto_delete" eval="True" />
+            <!--            <field name="user_signature" eval="False"/>-->
+        </record>
+        <record id="mail_template_image_reject" model="mail.template">
+            <field name="name">Application Profile Image Reject </field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_application" />
+            <field name="subject">Profile Image Reject</field>
+            <field name="email_from">admissions@cust.edu.pk</field>
+            <field name="email_to">{{object.email}}</field>
+            <!--<field
+            name="email_to">${ctx.get('email')}</field>-->
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%"
+                    style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:40px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <td width="370px" style="height:100%;width:280px;">
+                                <table height="100%" width="280" border="0"
+                                    style="box-sizing:border-box;border-collapse:collapse;background-color:#102b4c">
+                                    <tbody>
+                                        <tr height="50%">
+                                            <td style="vertical-align:top; text-align:center">
+                                                <img data-imagetype="External"
+                                                    src="/web/image/1173-f7f6d124/UCP%20logo%20w-01.png?access_token=7c1e9ee1-55fe-4943-bf06-d699f8781c52"
+                                                    style="border-style:none;box-sizing:border-box;vertical-align:middle;margin-top: 2em; width: 200px; height: 200px;"
+                                                    width="200px" height="200" />
+                                            </td>
+                                        </tr>
+                                        <tr height="50%" style="text-align:center; color:#fff">
+                                            <td valign="bottom" style="font-size: 16px;">
+                                                <a t-attf-href="{{ctx.get('company_website')}}"
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff">
+                                                    <t t-out="request.env.company.website" />
+                                                    <br />
+                                                </a>
+                                                <a
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                    t-attf-href="mailto:{{request.env.company.admission_mail}}"
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    data-auth="NotApplicable" class="x_m-0"
+                                                    data-linkindex="1">
+                                                    <t t-out="request.env.company.admission_mail" />
+                                                </a>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.admission_phone" />
+                                                </p>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.street" /> , <br />
+                        <t t-out="request.env.company.street2" /> ,
+                                                    Pakistan.</p>
+                                                <div style="text-align: center;">
+                                                 
+                                                </div>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;font-size:20px;vertical-align:middle; display:inline-block;">
+                                                    &amp;nbsp;</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="90%" style="padding:0 20px">
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%"
+                                    height="100%"
+                                    style="box-sizing:border-box;background-repeat-y:no-repeat;background-repeat-x:no-repeat;background-position-y:bottom;background-position-x:right;border-collapse:collapse;background-size:200px;background-position: right bottom;background-repeat: no-repeat;">
+                                    <tbody style="margin:0; padding:0">
+                                        <!-- <tr style="vertical-align:top">
+                                <td>
+                                    <div style="font-family:arial;font-size: 40px;color:#102b4c;font-weight:400">FALL ADMISSIONS</div>
+                                    <div style="font-family:arial;font-size: 60px;color:#102b4c;font-weight:400">
+                                        <strong style="box-sizing:border-box;font-weight:700;">2023</strong>
+                                    </div>
+                                </td>
+                            </tr> -->
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div
+                                                    style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100">
+                                                    &amp;nbsp;</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%" valign="top">
+                                                <div
+                                                    style="font-family:arial;font-size:18px;line-height:1.6;">
+                                                    <!--CONTENT
+                                                    OF EMAIL WILL START HERE-->
+                        <span
+                                                        style="font-weight:700;">Dear Applicant,</span>
+                                                    &amp;nbsp;<br />
+                    <br />
+                    <p>
+
+                        We appreciate your cooperation in maintaining a professional profile. To ensure the best representation, please follow these guidelines when uploading your profile image:
+                        <br/>
+                        1. Image Format: Please upload a clear and high-resolution image. <br/>
+                        2. Image Content: Ensure the image is appropriate for professional settings.<br/>
+                        3. Image Size: Keep the file size reasonable for optimal upload speed.<br/>
+                        4. File Types: Upload images in common formats such as JPEG or PNG.<br/>
+                        
+                        If you encounter any issues or have questions, feel free to reach out for assistance.<br/>
+                        
+                        Best regards,<br/>
+                        <t t-out="request.env.company.name"/>
+                    </p>
+                        
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </field>
+            <field name="auto_delete" eval="True" />
+            <!--            <field name="user_signature" eval="False"/>-->
+        </record>
+
+
+        <record id="mail_template_reminder_email" model="mail.template">
+            <field name="name">Reminder Email</field>
+            <field name="email_from">{{ctx.get('admission_mail')}}</field>
+            <field name="subject">CUST Admission Application</field>
+            <field name="email_to">{{ctx.get('mail_to')}}</field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_admission_register" />
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:40px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <td width="370px" style="height:100%;width:280px;">
+                                <table height="100%" width="280" border="0" style="box-sizing:border-box;border-collapse:collapse;background-color:#102b4c">
+                                    <tbody>
+                                        <tr height="50%">
+                                            <td style="vertical-align:top; text-align:center">
+                                                <img data-imagetype="External" src="/web/image/1173-f7f6d124/UCP%20logo%20w-01.png?access_token=7c1e9ee1-55fe-4943-bf06-d699f8781c52" style="border-style:none;box-sizing:border-box;vertical-align:middle;margin-top: 2em; width: 200px; height: 200px;" width="200px" height="200"/>
+                                            </td>
+                                        </tr>
+                                        <tr height="50%" style="text-align:center; color:#fff">
+                                            <td valign="bottom" style="font-size: 16px;">
+                                                <a t-attf-href="{{request.env.company.website}}" style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"><t t-out="request.env.company.website"/><br/></a>
+                                                <a style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff" t-attf-href="mailto:{{request.env.company.admission_mail}}" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable" class="x_m-0" data-linkindex="1"><t t-out="request.env.company.admission_mail"/></a>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;"><t t-out="request.env.company.admission_phone"/></p>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;"><t t-out="request.env.company.street"/>,<br/> <t t-out="request.env.company.street2"/>, Pakistan.</p>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;font-size:20px;vertical-align:middle; display:inline-block;">&amp;nbsp;</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="90%" style="padding:0 20px">
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%" style="box-sizing:border-box;background-repeat-y:no-repeat;background-repeat-x:no-repeat;background-position-y:bottom;background-position-x:right;border-collapse:collapse;background-size:200px;background-position: right bottom;background-repeat: no-repeat;">
+                                    <tbody style="margin:0; padding:0">
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100">&amp;nbsp;</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%" valign="top">
+                                                <div style="font-family:arial;font-size:18px;line-height:1.6;">
+                                                    <!--CONTENT OF EMAIL WILL START HERE-->
+                                                    <span style="font-weight:700;">Dear <t t-out="ctx.get('applicant_name')"/>,</span>&amp;nbsp;<br/>
+                                                <br/>
+                                                Your application for Admission at CUST is pending. Please fill the online application Form and submit it for further processing. For scholarships and other details please visit the link mentioned below:
+                                                <br/>
+                                                <br/>
+                                                <a href='https://online-admissions.cust.edu.pk/'>https://online-admissions.cust.edu.pk/</a>
+                                                <br/>
+                                                <p style='color:red'>The process to complete application is as under:</p>
+                                                <ol>
+                                                    <li>Login with your username and password to admission portal  <br/> <a href='https://admission.cust.edu.pk/'>https://admission.cust.edu.pk/</a></li>
+                                                    <li>Fill up the online application Form</li>
+                                                    <li>Submit the application Form</li>
+                                                    <li>Download the processing fee challan &amp; pay processing fee (fee challan can be paid
+                                                        online or at the nearest branch of The Bank of Punjab)</li>
+                                                </ol>
+                                                <p style='color:red'>
+                                                    Should you require any assistance please don&quot;t hesitate to email us at <a href='admissions@cust.edu.pk'>admissions@cust.edu.pk</a>. 
+                                                </p>
+                                                <br/>
+                                                Thanks
+                                                <br/>
+                                                Admission Office:
+                                                <br/><t t-out="request.env.company.name"/>
+                                                <br/><t t-out="request.env.company.street"/>, <t t-out="request.env.company.street2"/> <t t-out="request.env.company.city"/>.
+                                                <br/><t t-out="request.env.company.admission_phone"/> (9:00 am to 5:00 pm)
+                                                <br/><t t-out="request.env.company.admission_mail"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </field>
+
+        </record>
+        <record id="mail_template_reminder_email2" model="mail.template">
+            <field name="name">Reminder Email 2</field>
+            <field name="email_from">{{ctx.get('admission_mail')}}</field>
+            <field name="subject">CUST Admission Application (Processing Fee)</field>
+            <field name="email_to">{{ctx.get('mail_to')}}</field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_admission_register" />
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:40px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <td width="370px" style="height:100%;width:280px;">
+                                <table height="100%" width="280" border="0" style="box-sizing:border-box;border-collapse:collapse;background-color:#102b4c">
+                                    <tbody>
+                                        <tr height="50%">
+                                            <td style="vertical-align:top; text-align:center">
+                                                <img data-imagetype="External" src="/web/image/1173-f7f6d124/UCP%20logo%20w-01.png?access_token=7c1e9ee1-55fe-4943-bf06-d699f8781c52" style="border-style:none;box-sizing:border-box;vertical-align:middle;margin-top: 2em; width: 200px; height: 200px;" width="200px" height="200"/>
+                                            </td>
+                                        </tr>
+                                        <tr height="50%" style="text-align:center; color:#fff">
+                                            <td valign="bottom" style="font-size: 16px;">
+                                                <a t-attf-href="{{request.env.company.website}}" style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"><t t-out="request.env.company.website"/><br/></a>
+                                                <a style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff" t-attf-href="mailto:{{request.env.company.admission_mail}}" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable" class="x_m-0" data-linkindex="1"><t t-out="request.env.company.admission_mail"/></a>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;"><t t-out="request.env.company.admission_phone"/></p>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;"><t t-out="request.env.company.street"/>,<br/> <t t-out="request.env.company.street2"/>, Pakistan.</p>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;font-size:20px;vertical-align:middle; display:inline-block;">&amp;nbsp;</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="90%" style="padding:0 20px">
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%" style="box-sizing:border-box;background-repeat-y:no-repeat;background-repeat-x:no-repeat;background-position-y:bottom;background-position-x:right;border-collapse:collapse;background-size:200px;background-position: right bottom;background-repeat: no-repeat;">
+                                    <tbody style="margin:0; padding:0">
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100">&amp;nbsp;</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%" valign="top">
+                                                <div style="font-family:arial;font-size:18px;line-height:1.6;">
+                                                    <!--CONTENT OF EMAIL WILL START HERE-->
+                                                    <span style="font-weight:700;">Dear <t t-out="ctx.get('applicant_name')"/>,</span>&amp;nbsp;<br/>
+                                                <br/>
+                                                You have applied online for the admission at CUST but thereafter, you did not complete the
+                                                admission process
+                                                <br/>
+                                                <!-- <a href='https://online-admissions.cust.edu.pk/'>https://online-admissions.cust.edu.pk/</a> -->
+                                                <br/>
+                                                <p style='color:red'>To complete application process, you need to:</p>
+                                                <ol>
+                                                    <li>Login with your username and password to admission portal  <br/> <a href='https://admission.cust.edu.pk/'>https://admission.cust.edu.pk/</a></li>
+                                                    <li>Download the processing fee challan.</li>
+                                                    <li>Pay the processing fee online or at the nearest branch of The Bank of Punjab</li>
+                                                </ol>
+                                                The admission test letter will be attached to your admission portal once the processing fee is paid.
+                                                <br/> Should you require any assistance please don’t hesitate to email us at admissions@cust.edu.pk.<br/>
+                                                Thanks
+                                                <br/>
+                                                Admission Office:
+                                                <br/><t t-out="request.env.company.name"/>
+                                                <br/><t t-out="request.env.company.street"/>, <t t-out="request.env.company.street2"/> <t t-out="request.env.company.city"/>.
+                                                <br/><t t-out="request.env.company.admission_phone"/> (9:00 am to 5:00 pm)
+                                                <br/><t t-out="request.env.company.admission_mail"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </field>
+
+        </record>
+
+
+    </data>
+</odoo>

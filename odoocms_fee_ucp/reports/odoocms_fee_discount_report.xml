@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="odoocms_fee_discount_report_view" model="ir.ui.view">
+        <field name="name">odoocms.fee.discount.report.view</field>
+        <field name="model">odoocms.fee.discount.report</field>
+        <field name="arch" type="xml">
+            <form string="Fee Discount Report">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="term_id" options="{'no_quick_create':True,'no_create_edit':True,'no_create':True}" required="1"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create':True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Faculties" name="institute_ids">
+                            <field name="institute_ids">
+                                <tree>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="campus_id"/>
+                                    <field name="phone"/>
+                                    <field name="email"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Programs" name="program_ids">
+                            <field name="program_ids">
+                                <tree>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="career_id"/>
+                                    <field name="department_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Discounts" name="discount_ids">
+                            <field name="discount_ids"/>
+                        </page>
+                        <page string="Banks" name="bank_ids">
+                            <field name="bank_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="make_excel" string="Generate Excel Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_odoocms_fee_discount_report" model="ir.actions.act_window">
+        <field name="name">Fee Discount Report</field>
+        <field name="res_model">odoocms.fee.discount.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem
+            id="menu_odoocms_fee_discount_report"
+            name="Fee Discount Report"
+            action="action_odoocms_fee_discount_report"
+            parent="odoocms_fee.menu_fee_reports"
+            groups="odoocms_fee.group_fee_user,odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager"
+            sequence="520"/>
+
+</odoo>
+
+

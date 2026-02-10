@@ -1,0 +1,272 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="admission_student_dashboard" name="Admission Dashboard">
+        <div t-attf-style="--bg-col:{{color_scheme}}">
+            <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/bootstrap/css/bootstrap.min.css"/>
+            <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/fontawesome/css/all.css"/>
+            <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery.min.js"/>
+            <script type="text/javascript" src="/odoocms_admission_portal/static/js/popper.min.js"/>
+            <script type="text/javascript" src="/odoocms_admission_portal/static/bootstrap/js/bootstrap.min.js"/>
+            <script type="text/javascript" src="/odoocms_admission_portal/static/js/dashboard.js"/>
+            <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/css/dashboard.css"/>
+            <nav t-attf-style=' box-shadow: {{color_scheme}} 0px 25px 20px -20px;' class="navbar sticky-top bg-light">
+                <div class="container-fluid">
+                    <a t-attf-style='color:{{color_scheme}}' class="navbar-brand" href="#">
+                        <img t-att-src="image_data_uri(company.logo)" alt="Logo" width="30" height="24" class="d-inline-block align-text-top"/>
+                        <t t-esc="company.name"/>
+                    </a>
+                    <div class='d-flex'>
+                        <span>Hi &#160; </span>
+                        <span class='ml-4' t-attf-style='color:{{color_scheme}}'>
+                            <t t-esc="user.name"/>&#160;</span>
+                        <a id='logout_button_dashboard' >
+                            <div class='float-right px-2 py-1 rounded shadow'>
+                                <i class="fa-sharp fa-solid fa-power-off "/>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            <br/>
+            <!-- merit -->
+            <t t-if="merit_student">
+                <div class="card container text-center my-3">
+                    <div class="card-header mt-2 ">
+                        <blockquote class="blockquote mb-0">
+                        Merit </blockquote>
+                    </div>
+                    <div class="card-body text-center">
+                        <table class="table table-info">
+                            <thead>
+                                <tr>
+                                    <th class='col-auto' scope="col">Merit No.</th>
+                                    <th class='col-auto' scope="col">program</th>
+                                    <th class='col-auto' scope="col">Aggregte</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="merit_student" t-as="m">
+                                    <tr >
+                                        <td class='col-auto'>
+                                            <input type="text" readonly='1' class="form-control" t-att-value="m.merit_no"/>
+                                        </td>
+                                        <td class='col-auto'>
+                                            <input type="text" readonly='1' class="form-control" t-att-value="m.program_id.name if merit_student.program_id else ''"/>
+                                        </td>
+                                        <td class='col-auto'>
+                                            <input type="text" readonly='1' class="form-control" t-att-value="m.aggregate"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+            <div class="card container text-center my-3">
+                <div class="card-header mt-2">
+                    <blockquote class="blockquote mb-0">
+              Application </blockquote>
+                </div>
+                <div class="card-body text-center">
+                    <!-- <t t-if="applicaiton_id.state =='draft'"> -->
+
+                    <!-- </t> -->
+                    <t t-if="application_id.state=='draft'">
+
+                        <!-- Click Application Form Button To Complete Application -->
+                    </t>
+                    <blockquote class="blockquote mb-0">
+                        <br/>
+                        <t t-if="application_id.state=='draft'">
+                            Your Application State : <t t-esc="str(application_id.state).upper()"/>
+                        <br/>
+                    </t>
+                    <!-- <p>A well-known quote, contained in a blockquote element.</p> -->
+                    <!-- <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite>
+                    </footer> -->
+                </blockquote>
+            </div>
+            <div class="text-center my-3">
+                <a href='/admission/application' class='mr-3' style='text-decoration: none;'>
+                    <button type="button" class="btn btn-primary">Application Form</button>
+                </a>
+                <button t-attf-style="{{'pointer-events:none' if application_id.state =='draft' else ''}}" type="button" id='download_application' class="btn btn-primary">Download </button>
+            </div>
+        </div>
+        <!-- Admission Invoice -->
+        <div class="card container text-center my-3">
+            <div class="card-header mt-2">
+                <blockquote class="blockquote mb-0">
+                Payment </blockquote>
+            </div>
+            <div class="card-body text-center">
+                <!-- Click Application Form to start your application -->
+                <blockquote class="blockquote mb-0">
+                    <!-- <p>A well-known quote, contained in a blockquote element.</p> -->
+                </blockquote>
+            </div>
+            <div class="text-center my-3">
+                <a href='/download/invoice/admission/' target="_blank" tabindex="-5 " class='mr-3' t-attf-style="text-decoration: none;{{'pointer-events:none' if application_id.state !='submit' else ''}}">
+                    <button tabindex="-1" type="button" class="btn btn-primary">Application Processing Fee</button>
+                </a>
+                <a href='' tabindex='-1' class='mr-3' t-attf-style="text-decoration: none;{{'pointer-events:none' if application_id.state !='submit' else ''}}">
+                    <button tabindex="-2" type="button" class="btn btn-primary">Pay Online</button>
+                </a>
+                <!-- <button type="button" class="btn btn-primary">Download </button> -->
+            </div>
+            <!-- <div t-if="application_id.meritlist_id and application_id.need_based_scholarship_applied" style="background-color: #2498cb;" class=" col-12  px-5 mt-1 py-3 rounded ">
+                        <a style="color:white;text-decoration:none;" href="/nbs/application/">
+                            <i></i>
+                            <h4> Student Need Based Scholarship</h4>
+                        </a>
+                    </div> -->
+        </div>
+        <div class="card container text-center my-3 ">
+            <div class="card-header mt-2">
+                <blockquote class="blockquote mb-0">
+                Letter </blockquote>
+            </div>
+            <div class="card-body text-center">
+                <!-- Click Application Form to start your application -->
+                <blockquote class="blockquote mb-0">
+                    <!-- <p>A well-known quote, contained in a blockquote element.</p> -->
+
+                </blockquote>
+            </div>
+            <div class="text-center my-3">
+                <div class="row mx-2 my-2">
+                    <div class="col-4 border p-2">
+                        <div class='mb-2'>Letter for Admission Test/Interview</div>
+                        <!-- <t t-esc="admit_card.slot_type"/> -->
+
+                        <t t-if="admit_card and admit_card.slot_type=='test'">
+                            <a t-attf-href="/download/admit/{{'test'}}" tabindex="-5" class='mr-3' style='text-decoration: none;'>
+                                <button tabindex="-3" type="button" class="btn btn-primary">Test Letter</button>
+                            </a>
+                        </t>
+                        <t t-elif="admit_card and admit_card.slot_type=='interview'">
+                            <a t-attf-href="/download/admit/{{'interview'}}" tabindex="-5" class='mr-3' style='text-decoration: none;'>
+                                <button tabindex="-3" type="button" class="btn btn-primary">Test Letter</button>
+                            </a>
+                        </t>
+                        <t t-elif="admit_card and admit_card.slot_type=='both'">
+                            <a target='_blank' t-attf-href="/download/admit/test" onclick="window.open('/download/admit/interview');" tabindex="-5" class='mr-3' style='text-decoration: none;'>
+                                <button tabindex="-3" type="button" class="btn btn-primary">Interview/Test Letter</button>
+                            </a>
+                        </t>
+                        <t t-elif="not admit_card">
+                            <a tabindex="-5" class='mr-3' t-attf-style="text-decoration: none;pointer-events:none;">
+                                <button tabindex="-3" type="button" class="btn btn-primary">Interview/Test Letter</button>
+                            </a>
+                        </t>
+                    </div>
+                    <div class="col-4 border p-2">
+                        <div class='mb-2'>Admission Offer Letter</div>
+                        <a href='/download/offer/letter/' tabindex="-5" class='mr-3' t-attf-style="text-decoration: none;{{'pointer-events:none' if not merit_student  else ''}}">
+                            <button tabindex="-4" type="button" class="btn btn-primary">Offer Letter</button>
+                        </a>
+                    </div>
+                    <div class="col-4 border p-2">
+                        <div class='mb-2'>Candidate Bank Challan</div>
+                        <a href='/download/fee/invoice/' target='_blank' tabindex="-5" class='mr-3' t-attf-style="text-decoration: none;{{'pointer-events:none' if not fee_invoice or fee_invoice.payment_state not in ['unpaid','open','not_paid']  else ''}}">
+                            <button tabindex="-5" type="button" class="btn btn-primary">Candidate Fee Challan</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div t-attf-style="{{'display:none;' if application_id.state == 'draft' else '' }}" class="card container text-center my-3 ">
+            <div class="card-header mt-2">
+                <blockquote class="blockquote mb-0">
+                Program Transfer Request </blockquote>
+            </div>
+            <div class="card-body text-center">
+                <!-- Click Application Form to start your application -->
+                <blockquote class="blockquote mb-0">
+                    <!-- <p>A well-known quote, contained in a blockquote element.</p> -->
+
+                </blockquote>
+            </div>
+
+
+            <div class="text-center my-3">
+
+                <t t-if="last_request">
+                    <blockquote>
+                        <b >Your Last Request is <t t-esc="str(last_request.state).capitalize()"/>
+                        </b>
+                    </blockquote>
+                    <t t-if="last_request.state=='approve'">
+                        <t t-if="application_id.fee_voucher_state != 'verify'">
+                            <p t-attf-style='color:{{color_scheme}}'>Please Download Latest Application Processing Fee Challan
+                            </p>
+                        </t>
+                    </t>
+                </t>
+                <t t-if="not pending_request">
+
+                    <div class="row mx-2 my-2">
+                        <div class="col-6 border p-2">
+                            <div class='mb-2'>Program Transferred From</div>
+                            <input class="form-control inputText" type="text" t-att-program="application_id.preference_ids[0].program_id.id if application_id.preference_ids else ''" t-att-value="application_id.preference_ids[0].program_id.name  if application_id.preference_ids else ''" name="program_transfer_from" id="program_transfer_from"/>
+                            <!-- <input type="text" class="form-control" id="program_transfer_to" placeholder="Program Transfer To" /> -->
+                        </div>
+                        <div class="col-6 border p-2">
+                            <div class='mb-2'>Program Transferred To</div>
+                            <select id='program_transfer_to' class="form-select form-select mb-3" aria-label=".form-select-lg example">
+                                <option selected='1' value=''>Select New Program</option>
+                                <t t-foreach="application_id.preference_ids" t-as="pref">
+                                    <t t-if="pref.preference != 1">
+
+                                        <option t-att-program_pretest="pref.program_id.pre_test.name if pref.program_id.pre_test else 'no'" t-att-program_pretest_id='pref.program_id.pre_test.id' t-att-value='pref.program_id.id'>
+                                            <t t-esc="pref.program_id.name"/>
+                                        </option>
+                                    </t>
+                                </t>
+                            </select>
+                        </div>
+                        <!-- <div class='mb-2 float-left'>Pre Test Marks</div> -->
+                        <div id='pretest_dashboard_div' class="col-6 border p-2 ">
+
+                            <blockquote class="blockquote mb-0 ">Pre Test </blockquote>
+                            <hr/>
+
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <input class="form-control inputText" readonly='1' type="text" name="pretest_name_d" id="pretest_name_d"/>
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control inputText" type="number" placeholder='Marks' name="pre_test_marks_d" id="pre_test_marks_d"/>
+                                </div>
+                            </div>
+                            <label for="pre_test_attachment" class="form-label">Upload Result Card*</label>
+                            <input class="form-control" type="file" id="pre_test_attachment_transfer" accept="image/*" name="pre_test_attachment_transfer"/>
+
+                        </div>
+                    </div>
+                </t>
+                <t t-else="">
+                    <div class='mb-2'>
+
+                        <blockquote class="blockquote mb-0">Your Request Is In Draft</blockquote>
+                    </div>
+                </t>
+            </div>
+
+            <div class="text-end mb-3">
+                <!-- <a href='' tabindex="-5" class='mr-3' style='text-decoration: none;'> -->
+                <button t-if='not pending_request' tabindex="-1" id='program_transfer_request' type="button" class="btn btn-primary">Request</button>
+                <!-- </a> -->
+            </div>
+
+
+        </div>
+        <br/>
+    </div>
+</template>
+</odoo>

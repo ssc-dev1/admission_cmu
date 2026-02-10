@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_odoocms_application_tree" model="ir.ui.view">
+        <field name="name">odoocms.application.tree</field>
+        <field name="model">odoocms.application</field>
+        <field name="arch" type="xml">
+            <tree string="Student Application">
+                <field name="register_id" invisible="1"/>
+                <!--                <field name="entry_registration"/>-->
+                <field name="application_no"/>
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="date_of_birth" optional="show"/>
+                <field name="email" optional="hide"/>
+                <field name="mobile" optional="hide"/>
+                <field name="cnic" optional="show"/>
+                <field name="application_submit_date" optional="show"/>
+                <field name="fee_voucher_state" optional="show"/>
+                <field name="prefered_program" optional="hide"/>
+                <field name="degree"/>
+                <!--                <field name="manual_score" optional="hide"/>-->
+                <!--                <field name="merit_number" optional="hide"/>-->
+                <!--                <field name="preference_cnt" optional="hide"/>-->
+                <!--                <field name="first_preference" optional="hide"/>-->
+                <field name="state"/>
+                <field name="migration_state" optional="show"/>
+                <field name="step_no" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_application_form" model="ir.ui.view">
+        <field name="name">odoocms.application.form</field>
+        <field name="model">odoocms.application</field>
+        <field name="arch" type="xml">
+            <form string="Student Application">
+                <header>
+                    <button name="send_to_verify" type="object" class="oe_highlight"
+                            string="Send for Verification" groups="base.group_user" attrs="{'invisible': True}"
+                            help="Click to Send the Application for Verification purpose"
+                            states="draft"/>
+                    <button name="reject_profile_image" attrs="{'invisible':[('image', '=', False)]}" type="object" string="Reject Profile Image"/>
+<!--                    <button name="verify_voucher" type="object" class="oe_highlight"-->
+<!--                            string="Verify Fee Voucher" groups="base.group_user"-->
+<!--                            attrs="{'invisible': [('fee_voucher_state', '=','verify')]}"-->
+<!--                            help="Click to verify the Voucher if it is valid"-->
+
+<!--                    />-->
+<!--                    <button name="univerify_voucher" type="object" class="oe_highlight"-->
+<!--                        string="Unverify Fee Voucher" groups="odoocms_admission.group_admission_manager"-->
+<!--                        help="Click to Unverify the Voucher if it is not valid"-->
+<!--                        attrs="{'invisible': [('fee_voucher_state', '!=','verify')]}"-->
+<!--                />-->
+                    <button name="signup_mail" type="object" class="oe_highlight"
+                            string="SignUp Mail"
+
+                    />
+                    <button name="approve_migration_request" type="object" class="oe_highlight"
+                            string="Appove Migration Request/Application"  attrs="{'invisible': [('migration_state', '!=','draft')]}"
+
+                    />
+                     <button name="reject_migration_request" type="object" class="oe_highlight"
+                            string="Reject Migration Request/Application"  attrs="{'invisible': [('migration_state', '!=','draft')]}"
+
+                    />
+                    <field name="program_migration" invisible="True"/>
+                    <!--<button name="univerify_voucher" type="object" class="oe_highlight"
+                            string="Unverify Fee Voucher" groups="base.group_user"
+                            help="Click to Unverify the Voucher if it is not valid"
+                            attrs="{'invisible': [('fee_voucher_state', '!=','upload')]}"
+                    />-->
+                    <!--                    <button name="send_email" type="object" class="oe_highlight"-->
+                    <!--                            string="Send Email For Re Test" groups="base.group_user"-->
+                    <!--                            attrs="{'invisible': ['|',('schedule_second_test', '!=',True), ('send_mail', '=',True)]}"-->
+                    <!--                    />-->
+                    <!--                    <button name="create_student" string="Create Student"-->
+                    <!--                            type="object" class="oe_highlight"-->
+                    <!--                            help="Click to create Student"-->
+                    <!--                            states="approve"/>-->
+                    <!--                     <button name="( odoocms_reject_application ) d" string="Reject"-->
+                    <!--                                type="action"-->
+                    <!--                                context="{'default_application_id': active_id}"-->
+                    <!--                                states="approve"/>-->
+                   <!-- <div class="oe_button_box" name="button_box">
+                        <button type="object"
+                                name="action_view_documents"
+                                class="oe_stat_button"
+                                icon="fa-slideshare"> &lt;!&ndash;attrs="{'invisible':[('picking_ids','=',[])]}&ndash;&gt;
+                            <field name="doc_count" widget="statinfo" string="Documents" help="Applicant Documents"/>
+                            &lt;!&ndash;<field name="picking_ids" invisible="1"/>&ndash;&gt;
+                        </button>
+
+                    </div>-->
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,verify,approve,done"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                                                <button class="oe_stat_button" name="action_view_documents" type="object" icon="fa-list-ol">
+                                                    <field string="Documents" name="doc_count" widget="statinfo"/>
+                                                </button>
+
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>
+
+                    <div class="oe_title">
+                        <h3>
+                            <field name="application_no"/>
+                        </h3>
+                        <label for="first_name" class="oe_edit_only" string="Candidate Name"/>
+                        <h2>
+                            <table>
+                                <tr>
+                                    <td style="padding-right:10px;">
+                                        <field style="width:inherit;" name="first_name" required="1"
+                                               placeholder="First Name"/>
+                                    </td>
+                                    <td style="padding-right:10px;">
+                                        <field style="width:inherit;" name="last_name" placeholder="Last Name"/>
+                                    </td>
+                                    <td style="padding-right:10px;">
+                                        <field style="width:inherit;" name="middle_name" placeholder="Middle Name"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </h2>
+                    </div>
+                    <separator/>
+
+                    <group string="Admission Details">
+                        <group>
+                            <field name="register_id" domain="[('state', 'in', ['application','admission'])]"
+                                   widget="selection"/>
+                            <field name="academic_session_id"/>
+                            <field name="user_id" readonly="1"/>
+                            <field name="statement_purpose"  />
+                            <!--                            <field name="student_id" readonly="1"/>-->
+                        </group>
+                        <group>
+                            <field name="entry_registration"/>
+                            <field name="applicant_type"/>
+                            <field name="application_date"/>
+                            <field name="degree"/>
+                            <field name="prefered_program"/>
+                            <field name="prefered_program_id"/>
+                            <field name="transfer_program_id"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <separator/>
+                    <group string="Migration Details" attrs="{'invisible':  [('program_migration', '=',False)]}">
+                        <group>
+                            <field name="migration_type"/>
+                            <field name="migration_university"/>
+                            <field name="current_registration_no"/>
+
+                            <!--                            <field name="student_id" readonly="1"/>-->
+                        </group>
+                        <group>
+                             <field name="last_studied_semester"/>
+                            <field name="last_obtained_cgpa"/>
+                            <field name="migration_state"/>
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name='personal' string="Personal Details">
+                            <group>
+                                <group>
+                                    <field name="father_name"/>
+                                    <field name="date_of_birth"/>
+                                    <field name="gender"/>
+                                    <field name="religion_id"/>
+                                    <field name="blood_group"/>
+                                    <!--<field name="advertisement"/>-->
+                                </group>
+                                <group>
+                                    <field name="cnic"/>
+                                    <field name="passport"/>
+                                    <field name="nationality"/>
+                                    <field name="province_id"/>
+                                    <field name="domicile_id"/>
+                                </group>
+                            </group>
+
+                            <separator string="Contact Details"/>
+                            <group name="contact_info">
+                                <group>
+                                    <field name="email"/>
+                                </group>
+                                <group>
+                                    <field name="mobile" required="1"/>
+                                    <field name="phone"/>
+                                    <field name="last_institute_other"/>
+                                </group>
+                            </group>
+                            <group name="present_permanent_address">
+                                <group>
+                                    <label for="street" string="Present Address"/>
+                                    <div name="div_address">
+                                        <field name="street"  placeholder="Street..."/>
+                                        <field name="street2" placeholder="Street2"/>
+                                        <div class="address_format">
+                                            <field name="city" placeholder="City" style="width: 40%%"/>
+                                            <field name="state_id" class="oe_no_button" placeholder="State"
+                                                   style="width: 37%%" options='{"no_open": True}'/>
+                                            <field name="zip" placeholder="ZIP" style="width: 20%%"/>
+                                        </div>
+                                        <field name="country_id" placeholder="Country" class="oe_no_button"
+                                               options='{"no_open": True}'/>
+                                    </div>
+                                    <field name="is_same_address" string="Is Same Address"/>
+                                </group>
+
+                                <group name="permanent_address" attrs="{'invisible': [('is_same_address','=', True)]}">
+                                    <label for="per_street" string="Permanent Address"/>
+                                    <div name="div_address">
+                                        <field name="per_street" placeholder="Street..."/>
+                                        <field name="per_street2" placeholder="Street2..."/>
+                                        <div class="address_format">
+                                            <field name="per_city" placeholder="City" style="width: 40%%"/>
+                                            <field name="per_state_id" class="oe_no_button" placeholder="State"
+                                                   style="width: 37%%" options='{"no_open": True}'/>
+                                            <field name="per_zip" placeholder="ZIP" style="width: 20%%"/>
+                                        </div>
+                                        <field name="per_country_id" placeholder="Country" string="Country"
+                                               class="oe_no_button" options='{"no_open": True}'/>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page name='parent' string="Parental Info">
+                            <group>
+                                <group>
+                                    <field name="father_name"/>
+                                    <field name="father_cnic"/>
+                                    <field name="father_status"/>
+                                    <field name="father_cell"
+                                           attrs="{'invisible': [('father_status','=','deceased')]}"/>
+                                    <field name="father_education"
+                                           attrs="{'invisible': [('father_status','=','deceased')]}"/>
+                                    <field name="father_profession"
+                                           attrs="{'invisible': [('father_status','=','deceased')]}"/>
+                                </group>
+                                <group>
+                                    <field name="mother_name"/>
+                                    <field name="mother_cnic"/>
+                                    <field name="mother_status"/>
+                                    <field name="mother_cell"
+                                           attrs="{'invisible': [('mother_status','=','deceased')]}"/>
+                                    <field name="mother_education"
+                                           attrs="{'invisible': [('mother_status','=','deceased')]}"/>
+                                    <field name="mother_profession"
+                                           attrs="{'invisible': [('mother_status','=','deceased')]}"/>
+                                </group>
+                            </group>
+
+                            <separator string="Guardian Info"/>
+                            <group>
+                                <group>
+                                    <field name="guardian_name"/>
+                                    <field name="guardian_relation"/>
+                                    <field name="guardian_cnic"/>
+                                    <field name="guardian_cell"/>
+                                </group>
+                                <group>
+                                    <field name="guardian_education"/>
+                                    <field name="guardian_profession"/>
+                                    <field name="guardian_income"/>
+                                    <field name="guardian_address"/>
+                                </group>
+                            </group>
+
+                            <group>
+                                <group>
+                                    <field name="brothers"/>
+                                    <field name="sisters"/>
+                                </group>
+                                <group></group>
+                            </group>
+
+                        </page>
+                        <page name="academic_info_page" string="Academic Details">
+                            <field name="applicant_academic_ids">
+                                <tree string="Academic Details" editable="bottom">
+                                    <field name="roll_no"/>
+                                    <field name="sec_year_roll_no"/>
+                                    <field name="degree_name"/>
+                                    <field name="degree_level_id"/>
+                                    <field name="board"/>
+                                    <field name="institute"/>
+                                    <field name="group_specialization"/>
+                                    <field name="total_marks"/>
+                                    <field name="obt_marks"/>
+                                    <field name="obtained_cgpa"/>
+                                    <field name="percentage"/>
+                                    <field name="cgpa_percentage" optional='hide'/>
+                                    <field name="year"/>
+                                    <field name="attachment"/>
+                                    <field name="doc_state"/>
+                                    <field name="result_status"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Preferences" name="preferences">
+                            <field name="preference_ids">
+                                <tree string="Preferences"
+                                      editable="bottom"> <!-- create="false" delete="false" edit="false" -->
+                                    <field name="preference" required="1"/>
+                                    <field name="program_id" required="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="voucher_details" string="Voucher Details">
+                            <group>
+                                <group>
+                                    <field name="voucher_number" attrs="{'readonly': [('fee_voucher_state', '=','verify')]}"/>
+                                    <field name="voucher_date" attrs="{'readonly': [('fee_voucher_state', '=','verify')]}"/>
+                                    <field name="voucher_verified_date" attrs="{'readonly': [('fee_voucher_state', '=','verify')]}"/>
+                                    <field name="voucher_issued_date" attrs="{'readonly': [('fee_voucher_state', '=','verify')]}"/>
+                                    <field name="fee_voucher_state" attrs="{'readonly': [('fee_voucher_state', '=','verify')]}"/>
+                                    <field name="fee_voucher_verify_by" />
+                                    <field name="fee_voucher_verify_source" />
+                                    <field name="amount" attrs="{'readonly': [('fee_voucher_state', '=','verify')]}"/>
+                                </group>
+                                <group>
+                                    <field name="voucher_image" widget='image' class="oe_avatar"
+                                           options='{"preview_image":"voucher_image"}'/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="pre_test_name" string="Pre Test">
+                            <group>
+                                <group>
+                                    <field name="pre_test_id"/>
+                                    <field name="pre_test_attachment"/>
+                                    <field name="pre_test_total_marks" invisible="1"/>
+                                </group>
+                                <group>
+                                    <field name="pre_test_marks"/>
+                                </group>
+                            </group>
+                        </page>
+                        <!--                        <page name="test_center" string="Test Center">-->
+                        <!--                            <group>-->
+                        <!--                                <group>-->
+                        <!--&lt;!&ndash;                                    <field name="center_id"/>&ndash;&gt;-->
+                        <!--                                </group>-->
+                        <!--                                <group>-->
+                        <!--&lt;!&ndash;                                    <field name="slot_ids" widget="many2many_tags"/>&ndash;&gt;-->
+                        <!--                                </group>-->
+                        <!--                                <group>-->
+                        <!--                                    <field name="confirm_test_center"/>-->
+                        <!--                                </group>-->
+                        <!--                                <group>-->
+                        <!--                                    <field name="schedule_second_test"/>-->
+                        <!--                                </group>-->
+                        <!--                            </group>-->
+                        <!--                        </page>-->
+                        <page string="Fee Payer">
+                            <group>
+                                <group>
+                                    <field name="fee_payer_name"/>
+                                </group>
+                                <group>
+                                    <field name="fee_payer_cnic"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Courses" name="first_semester_courses">
+                            <field name="first_semester_courses" readonly="1">
+                                <tree>
+                                    <field name="course_id" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    <field name="semester_no"/>
+                                    <field name="credit_hours"/>
+                                    <field name="per_credit_hour_fee"/>
+                                    <field name="course_fee"/>
+                                    <field name="study_scheme_id" optional="hide"
+                                           options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    <field name="study_scheme_line_id" optional="hide"
+                                           options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="view_odoocms_application_graph" model="ir.ui.view">
+        <field name="name">odoocms.application.graph</field>
+        <field name="model">odoocms.application</field>
+        <field name="arch" type="xml">
+            <graph string="Application">
+                <field name="application_date"/>
+                <field name="register_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_odoocms_application_pivot" model="ir.ui.view">
+        <field name="name">odoocms.application.pivot</field>
+        <field name="model">odoocms.application</field>
+        <field name="arch" type="xml">
+            <pivot string="Application">
+                <field type="measure" name="prefered_program_id" />
+                <field name="application_date" interval="month" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_odoocms_application_search" model="ir.ui.view">
+        <field name="name">Student Application</field>
+        <field name="model">odoocms.application</field>
+        <field name="arch" type="xml">
+            <search string="Search Application">
+                <field name="application_no"/>
+                <field name="register_id"/>
+                <field name="name"/>
+                <field name="cnic"/>
+                <field name="email"/>
+                <field name="entry_registration"/>
+                <field name="gender"/>
+                <field name="religion_id"/>
+
+                <!-- <filter string="New Application" name="new_application"
+                        domain="[('register_id.state','=','application')]"/> -->
+                <filter string="Application Date" name="filter_by_application_date" domain="[]"/>
+                <filter string="Done" name="done" domain="[('state','=','done')]"/>
+
+
+                <filter string="In Merit" name="merit" domain="[('state','in',('approve','open'))]"/>
+                <filter string="Rejected" name="rejected" domain="[('state','=','reject')]"/>
+                <group expand='0' string='Group by...'>
+
+                    <filter name="group_by_application_date" string='Group by Application Date' domain="[]"
+                    context="{'group_by' : 'application_date'}"/>
+                    <filter name="academic_session_id" string='Academic Session' icon="fa-user" domain="[]"
+                            context="{'group_by' : 'academic_session_id'}"/>
+                    <filter name="gender" string='Gender' icon="fa-genderless" domain="[]"
+                            context="{'group_by' : 'gender'}"/>
+                    <filter name="religion_id" string='Religion' icon="fa-pencil-square-o" domain="[]"
+                            context="{'group_by' : 'religion_id'}"/>
+                    <filter name="state" string='Status' icon="fa-pencil-square-o" domain="[]"
+                            context="{'group_by' : 'state'}"/>
+                    <filter name="degree" string='Last Degree' icon="fa-pencil-square-o" domain="[]"
+                            context="{'group_by' : 'degree'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_odoocms_application" model="ir.actions.act_window">
+        <field name="name">Student Application</field>
+        <field name="res_model">odoocms.application</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form,graph,pivot</field>    <!--  -->
+        <field name="search_view_id" ref="view_odoocms_application_search"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Student Application here.
+            </p>
+        </field>
+    </record>
+    <record id='view_odoocms_application_documents_form' model='ir.ui.view'>
+        <field name="name">odoocms.application.documents.form</field>
+        <field name="model">odoocms.application.documents</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="student_id"/>
+                            <field name="application_id"/>
+                        </group>
+                        <group>
+
+                        </group>
+
+                        <group name="group_academic_docs">
+                            <table class="table table-image">
+                                <tr name="first_row">
+                                    <th colspan="4">Documents</th>
+                                </tr>
+
+                                <tr name="second_row">
+                                    <td name="matric_heading">Matric</td>
+                                    <td class="w-25" name="matric_image">
+                                        <field name="matric_scaned_copy" widget='image' nolabel="1"
+                                               class="rounded float-left"/>
+                                    </td>
+                                    <td name="domicile_heading">Domicile</td>
+                                    <td class="w-25" name="domicile_image">
+                                        <field name="domicile_scaned_copy" widget='image' nolabel="1"
+                                               class="rounded float-left"/>
+                                    </td>
+                                </tr>
+
+                                <tr name="second_row2">
+                                    <td></td>
+                                    <td class="w-25">
+                                    </td>
+                                    <td name="PRC">PRC</td>
+                                    <td class="w-25" name="prc_scaned_copy">
+                                        <field name="prc_scaned_copy" widget='image' nolabel="1"
+                                               class="rounded float-left"/>
+                                    </td>
+                                </tr>
+
+                                <tr name="third_row">
+                                    <td name="inter_heading">Intermediate</td>
+                                    <td class="w-25" name="">
+                                        <field name="inter_scaned_copy" widget='image' nolabel="1"
+                                               class="rounded float-left"/>
+                                    </td>
+                                    <td name="cnic_heading">CNIC</td>
+                                    <td class="w-25" name="cnic_image">
+                                        <field name="cnic_scanned_copy" widget='image' nolabel="1"
+                                               class="rounded float-left"/>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_odoocms_application_documents_tree" model="ir.ui.view">
+        <field name="name">odoocms.application.documents.tree</field>
+        <field name="model">odoocms.application.documents</field>
+        <field name="arch" type="xml">
+            <tree string="Student Documents">
+                <field name="application_id"/>
+                <field name="student_id"/>
+                <field name="matric_scaned_copy_name" string="Matric"/>
+                <field name="inter_scaned_copy_name" string="Inter"/>
+                <field name="test_certificate" string="Test"/>
+                <field name="domicile_scaned_copy_name" string="Domicile"/>
+                <field name="salary_slip_scaned_copy_name" string="Salary Slip"/>
+                <field name="cnic_scanned_copy" string="CNIC"/>
+                <field name="prc_scaned_copy_name" invisible="1"/>
+                <field name="hafiz_scaned_copy_name" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_application_documents_search" model="ir.ui.view">
+        <field name="name">Applicant Documents</field>
+        <field name="model">odoocms.application.documents</field>
+        <field name="arch" type="xml">
+            <search string="Search Applicant">
+                <field name="student_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_odoocms_application_documents" model="ir.actions.act_window">
+        <field name="name">Documents</field>
+        <field name="res_model">odoocms.application.documents</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your First Document Type here.
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem
+            id="menu_admission_configuration"
+            parent="menu_odoocms_admission_root"
+            name="Configuration"
+            groups="odoocms_admission.group_admission_manager"
+            sequence="40"/>
+
+    <menuitem
+            id="admission_applicant_menu"
+            name="Applicant"
+            parent="menu_odoocms_admission_root"
+            groups="odoocms_admission.group_admission_manager"
+            sequence="30"/>
+
+
+    <menuitem
+            id="menu_odoocms_application"
+            name="Application"
+            parent="admission_applicant_menu"
+            action="action_odoocms_application"
+            groups="odoocms_admission.group_admission_user"
+            sequence="10"/>
+
+    <!--<menuitem
+            id="menu_odoocms_student_documents"
+            name="Student Documents"
+            parent="odoocms_admission.admission_applicant_menu"
+            action="action_odoocms_application_documents"
+            groups="odoocms_admission.group_admission_user"
+            sequence="50"/>-->
+
+
+</odoo>

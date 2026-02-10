@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ***** Student Scholarship Block ***** -->
+        <record id="view_odoocms_student_scholarship_block_form" model="ir.ui.view">
+            <field name="name">odoocms.student.scholarship.block.form.view</field>
+            <field name="model">odoocms.student.scholarship.block</field>
+            <field name="arch" type="xml">
+                <form string="Student Scholarship Block" delete="false">
+                    <header>
+                        <button name="action_block" type="object" class="oe_highlight" string="Block" states="unblock,draft"/>
+                        <button name="action_unblock" type="object" class="oe_highlight" string="Unblock" states="block"/>
+                        <button name="action_turn_to_draft" type="object" class="oe_highlight" string="Turn To Draft" states="block,unblock"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="student_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="program_id" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+
+                            </group>
+                            <group>
+                                <field name="term_id" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="remarks" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_student_scholarship_block_tree" model="ir.ui.view">
+            <field name="name">odoocms.student.scholarship.block.tree.view</field>
+            <field name="model">odoocms.student.scholarship.block</field>
+            <field name="arch" type="xml">
+                <tree string="Student Scholarship Block" delete="false" decoration-info="state=='draft'" decoration-danger="state=='block'" decoration-success="state=='unblock'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="student_id"/>
+                    <field name="program_id"/>
+                    <field name="term_id"/>
+                    <field name="create_uid" string="Created By" optional="show" widget="many2one_avatar_user"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-danger="state=='block'" decoration-success="state=='unblock'"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_odoocms_student_scholarship_block_search" model="ir.ui.view">
+            <field name="name">odoocms.student.scholarship.block.search</field>
+            <field name="model">odoocms.student.scholarship.block</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Student Scholarship Block">
+                    <field name="student_id"/>
+                    <field name="program_id"/>
+                    <field name="term_id"/>
+                    <field name="state"/>
+                    <separator/>
+
+                    <group expand="0" string="Group By...">
+                        <filter string="Term" name="group_by_term_id" domain="[]" context="{'group_by':'term_id'}"/>
+                        <separator/>
+                        <filter string="Student" name="group_by_student_id" domain="[]" context="{'group_by':'student_id'}"/>
+                        <separator/>
+                        <filter string="Program" name="group_by_program_id" domain="[]" context="{'group_by':'program_id'}"/>
+                        <separator/>
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_student_scholarship_block" model="ir.actions.act_window">
+            <field name="name">Student Scholarship Block</field>
+            <field name="res_model">odoocms.student.scholarship.block</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem
+                id="menu_odoocms_student_scholarships_block"
+                name="Block Scholarships"
+                sequence='100'
+                parent="menu_student_fee_scholarship_main"
+                groups="odoocms_fee.group_fee_manager"
+        />
+
+        <menuitem
+                id="menu_odoocms_student_scholarship_block"
+                name="Block Student Scholarship"
+                sequence='10'
+                parent="menu_odoocms_student_scholarships_block"
+                action="action_odoocms_student_scholarship_block"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+        />
+
+
+        <!-- ***** Course Scholarship Block ***** -->
+        <record id="view_odoocms_course_scholarship_block_form" model="ir.ui.view">
+            <field name="name">odoocms.course.scholarship.block.form.view</field>
+            <field name="model">odoocms.course.scholarship.block</field>
+            <field name="arch" type="xml">
+                <form string="Course Scholarship Block" delete="false">
+                    <header>
+                        <button name="action_block" type="object" class="oe_highlight" string="Block" states="unblock,draft"/>
+                        <button name="action_unblock" type="object" class="oe_highlight" string="Unblock" states="block"/>
+                        <button name="action_turn_to_draft" type="object" class="oe_highlight" string="Turn To Draft" states="block,unblock"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="course_id" attrs="{'readonly':[('state','!=','draft')]}" required="1"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="course_code"/>
+                            </group>
+                            <group>
+                                <field name="course_credits"/>
+                                <field name="career_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="remarks" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_scholarship_block_tree" model="ir.ui.view">
+            <field name="name">odoocms.course.scholarship.block.tree.view</field>
+            <field name="model">odoocms.course.scholarship.block</field>
+            <field name="arch" type="xml">
+                <tree string="Course Scholarship Block" delete="false" decoration-info="state=='draft'" decoration-danger="state=='block'" decoration-success="state=='unblock'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="course_code"/>
+                    <field name="course_name"/>
+                    <field name="course_credits"/>
+                    <field name="career_id"/>
+                    <field name="create_uid" string="Created By" optional="show" widget="many2one_avatar_user"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-danger="state=='block'" decoration-success="state=='unblock'"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_odoocms_course_scholarship_block_search" model="ir.ui.view">
+            <field name="name">odoocms.course.scholarship.block.search</field>
+            <field name="model">odoocms.course.scholarship.block</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Course Scholarship Block">
+                    <field name="course_code"/>
+                    <field name="course_name"/>
+                    <field name="course_credits"/>
+                    <field name="career_id"/>
+                    <field name="state"/>
+                    <separator/>
+
+                    <group expand="0" string="Group By...">
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                        <separator/>
+                        <filter string="Career" name="group_by_career_id" domain="[]" context="{'group_by':'career_id'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_course_scholarship_block" model="ir.actions.act_window">
+            <field name="name">Course Scholarship Block</field>
+            <field name="res_model">odoocms.course.scholarship.block</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_course_scholarship_block"
+                name="Block Course Scholarship"
+                sequence='20'
+                parent="menu_odoocms_student_scholarships_block"
+                action="action_odoocms_course_scholarship_block"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+        />
+
+    </data>
+</odoo>

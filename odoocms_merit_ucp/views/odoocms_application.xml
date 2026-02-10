@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="odoocms_application_form">
+            <field name="name">odoocms.application.form</field>
+            <field name="model">odoocms.application</field>
+            <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='image']" position="before">
+                    <widget name="web_ribbon" title="Merit Rejected" bg_color="bg-danger" attrs="{'invisible': [('merit_rejected', '=', False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='application_date']" position="after">
+                    <field name="merit_rejected"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

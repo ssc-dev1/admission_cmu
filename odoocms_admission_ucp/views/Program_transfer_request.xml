@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+
+    <record id="program_transfer_view_form" model="ir.ui.view">
+        <field name="name">program_transfer_view_form</field>
+        <field name="model">odoocms.program.transfer.request</field>
+        <field name="arch" type="xml">
+            <form string="program_transfer_form">
+                <header>
+                    <button type="object" name="approve" string="Approve" class="oe_highlight" attrs="{'invisible':['|',('re_test','==' ,False),('state', '!=', 'draft')]}"/>
+
+                    <button type="object" name="reject" string="Reject" class="oe_highlight" attrs="{'invisible':['|',('re_test','==' ,False),('state', '!=', 'draft')]}"/>
+
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Program Transfer Request" bg_color="bg-success"/>
+                    <h3 style="text-align: center;">Program Transfer Request</h3>
+                    <group>
+                        <group>
+                            <field name="applicant_id" attrs="{'readonly':[('state', '==', 'approve')]}"/>
+                        </group>
+                        <group>
+                            <field name="pre_test_marks" attrs="{'readonly':[('state', '==', 'approve')]}"/>
+                            <field name="pretest_card" attrs="{'readonly':[('state', '==', 'approve')]}"/>
+                            <field name="pretest_id" attrs="{'readonly':[('state', '==', 'approve')]}"/>
+                            <!-- <field name="prog_req" invisible="1"/> -->
+                        </group>
+                        <group>
+                            <field name="current_program" attrs="{'readonly':[('state', '==', 'approve')]}"/>
+                            <field name="shift" widget="dynamic_shift_selection" attrs="{'invisible': [('program_enable_shifts', '=', False)],'required': [('program_enable_shifts', '=', True)]}" />
+                            <field name="program_enable_shifts" invisible="1"/>
+                            <field name ='term'/>
+                            <field name='transfer_date'/>
+                        </group>
+                        <group>
+                            <field name="program_previous" readonly="1"/>
+                        </group>
+                        <group>
+                            <field readonly="1" name="entry_test_id"/>
+                        </group>
+                        <group>
+                            <field name="re_test" required="1" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="program_transfer_view_tree" model="ir.ui.view">
+        <field name="name">program_transfer_view_tree</field>
+        <field name="model">odoocms.program.transfer.request</field>
+        <field name="arch" type="xml">
+            <tree string="program_transfer_tree">
+                <field name="applicant_id"/>
+                <field name="program_previous"/>
+                <field name="current_program"/>
+
+            </tree>
+        </field>
+    </record>
+    <record id="program_transfer_action" model="ir.actions.act_window">
+        <field name="name">Program Transfer Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.program.transfer.request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_program_transfer_request" name="Program Transfer Request" parent="odoocms_admission.admission_applicant_menu" action="program_transfer_action" groups="odoocms_admission.group_admission_user" sequence="30"/>
+
+
+
+
+
+
+    <record id="cbt_test_program_view_form" model="ir.ui.view">
+        <field name="name">cbt.test.program.view.form</field>
+        <field name="model">cbt.test.program</field>
+        <field name="arch" type="xml">
+            <form string="" edit="false" create="false">
+                <sheet>
+                    <group>
+                        <field name="name"></field>
+                        <field name="test_program_ids"  ></field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cbt_test_program_view_tree" model="ir.ui.view">
+        <field name="name">cbt.test.program.view.tree</field>
+        <field name="model">cbt.test.program</field>
+        <field name="arch" type="xml">
+            <tree string="" edit="false" create="false">
+                <field name="name"></field>
+                <field name="test_program_ids"></field>
+            </tree>
+        </field>
+    </record>
+
+    <record id="cbt_test_program_action" model="ir.actions.act_window">
+        <field name="name">CBT</field>
+        <field name="res_model">cbt.test.program</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="cbt_test_program_menu" name="CBT" parent="odoocms_admission.admission_applicant_menu" action='odoocms_admission_ucp.cbt_test_program_action' sequence="10"/>
+
+
+</odoo>

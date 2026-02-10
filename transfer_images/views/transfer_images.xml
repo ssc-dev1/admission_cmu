@@ -1,0 +1,100 @@
+<odoo>
+    <data>
+
+        <!-- Tree View -->
+        <record id="view_transfer_images_tree" model="ir.ui.view">
+            <field name="name">transfer_images.transfer_images.tree</field>
+            <field name="model">transfer_images.transfer_images</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <!--				<field name="code"></field>-->
+                    <!--				<field name="sequence"></field>-->
+                    <!--				<field name="color"></field>-->
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_transfer_images_form" model="ir.ui.view">
+            <field name="name">Transfer Images</field>
+            <field name="model">transfer_images.transfer_images</field>
+            <field name="arch" type="xml">
+                <form style="background-color:#E6E6FA">
+                    <header>
+                        <button name="copy_images" string="Copy Images" type="object" class="btn-primary"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <group>
+                                <center>
+                                    <h3>Source</h3>
+                                </center>
+                            </group>
+                            <group>
+                                <center>
+                                    <h3>Target</h3>
+                                </center>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group>
+
+                                <group>
+                                    <field name="source_host"/>
+                                </group>
+                                <group>
+                                    <field name="source_port"/>
+                                </group>
+                                <group>
+                                    <field name="source_dbname"/>
+                                </group>
+                                <group>
+                                    <field name="source_user"/>
+                                </group>
+                                <group>
+                                    <field name="source_password" password="True"/>
+                                </group>
+                            </group>
+                            <group>
+
+                                <group>
+                                    <field name="target_host"/>
+                                </group>
+                                <group>
+                                    <field name="target_port"/>
+                                </group>
+                                <group>
+                                    <field name="target_dbname"/>
+                                </group>
+                                <group>
+                                    <field name="target_user"/>
+                                </group>
+                                <group>
+                                    <field name="target_password" password="True"/>
+                                </group>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="act_transfer_images" model="ir.actions.act_window">
+            <field name="name">Transfer Images</field>
+            <field name="res_model">transfer_images.transfer_images</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_transfer_images_config_general"
+                name="Transfer Images"
+                parent="menu_transfer_images_configuration"
+                action="act_transfer_images"
+                sequence="15"/>
+
+    </data>
+</odoo>

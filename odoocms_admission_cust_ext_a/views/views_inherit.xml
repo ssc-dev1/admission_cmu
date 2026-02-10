@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_odoocms_academic_term_form_inherit" model="ir.ui.view">
+        <field name="name">odoocms.academic.term.form.odoocms.inherit</field>
+        <field name="model">odoocms.academic.term</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_academic_term_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/field[@name='name']" position="after">
+                <field name="admission_start_date"/>
+            </xpath >
+        </field>
+    </record>
+</odoo>

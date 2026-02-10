@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_fee_payment_paid_date_form" model="ir.ui.view">
+            <field name="name">fee.payment.paid.date.form</field>
+            <field name="model">fee.payment.paid.date</field>
+            <field name="arch" type="xml">
+                <form string="Change Payment Date">
+                    <group>
+                        <group>
+                            <field name="new_paid_date" required="1"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <group string="Payments">
+                        <field name="payment_ids" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="change_payment_date" string="Change Payment Date" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="act_fee_payment_paid_date" model="ir.actions.act_window">
+            <field name="name">Change Payment Date</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fee.payment.paid.date</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="model_odoocms_fee_payment"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="groups_id" eval="[(4, ref('odoocms.group_cms_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

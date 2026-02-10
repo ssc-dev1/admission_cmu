@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="mail_template_offer_letter" model="mail.template">
+            <field name="name">Offer Letter</field>
+            <field name="model_id" ref="odoocms_admission_ucp.model_ucp_offer_letter" />
+            <field name="subject"> Congratulations! Selected for Admission at CUST</field>
+            <field name="email_from">admissions@cust.edu.pk</field>
+            <field name="email_to">{{object.applicant_id.email}}</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%"
+                    style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:40px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <t t-set="request.env.company" t-value="request.env.company" />
+                            <td width="370px" style="height:100%;width:280px;">
+                                <table height="100%" width="280" border="0"
+                                    style="box-sizing:border-box;border-collapse:collapse;background-color:#102b4c">
+                                    <tbody>
+                                        <tr height="50%">
+                                            <td style="vertical-align:top; text-align:center">
+                                                <img data-imagetype="External"
+                                                    src="/web/image/1173-f7f6d124/UCP%20logo%20w-01.png?access_token=7c1e9ee1-55fe-4943-bf06-d699f8781c52"
+                                                    style="border-style:none;box-sizing:border-box;vertical-align:middle;margin-top: 2em; width: 200px; height: 200px;"
+                                                    width="200px" height="200" />
+                                            </td>
+                                        </tr>
+                                        <tr height="50%" style="text-align:center; color:#fff">
+                                            <td valign="bottom" style="font-size: 16px;">
+                                                <a t-attf-href="{{request.env.company.website}}"
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff">
+                                                    <t t-out="request.env.company.website" />
+                                                    <br />
+                                                </a>
+                                                <a
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                    t-attf-href="mailto:{{request.env.company.admission_mail}}"
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    data-auth="NotApplicable" class="x_m-0"
+                                                    data-linkindex="1">
+                                                    <t t-out="request.env.company.admission_mail" />
+                                                </a>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.admission_phone" />
+                                                </p>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="request.env.company.street" /> , <br />
+                                                    <t
+                                                        t-out="request.env.company.street2" /> ,
+                                                    Pakistan.</p>
+
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;font-size:20px;vertical-align:middle; display:inline-block;">
+                                                    &amp;nbsp;</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="90%" style="padding:0 20px">
+                                <!--
+                                style="box-sizing:border-box;background-repeat-y:no-repeat;background-repeat-x:no-repeat;background-position-y:bottom;background-position-x:right;border-collapse:collapse;background-size:200px;background-position:
+                                right bottom;background-repeat: no-repeat;" -->
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%"
+                                    height="100%">
+                                    <tbody style="margin:0; padding:0">
+                                        <tr style="vertical-align:top">
+                                        </tr>
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div
+                                                    style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100">
+                                                    &amp;nbsp;</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%;font-size:16px !important;"
+                                                valign="top"> Dear <t t-out="object.applicant_id.name" />,
+                                                <br /> You have been selected for the <t t-out="object.program_id.name" />. Please download the admission offer letter by logging in to your online admission portal and submit your documents in admission office as mentioned in your offer letter. 
+                                                    We look forward to have you with us as a valuable addition to our selected student body. Should you require any assistance please don’t hesitate to email us at <t t-out="request.env.company.admission_mail"/> or call us at <t t-out="request.env.company.admission_phone"/>. Thanks<hr />
+                                                <br />
+                                                Admission Office <br />
+                                            <t
+                                                    t-out="request.env.company.name" />
+                                            <br />
+                                            <t
+                                                    t-out="request.env.company.street" /> , <t
+                                                    t-out="request.env.company.street2" />
+                                            <t
+                                                    t-out="request.env.company.city" /> . <br />
+                                            <t
+                                                    t-out="request.env.company.admission_phone" />
+                                                (9:00 am to 5:00 pm) <br />
+                                        <t
+                                                    t-out="request.env.company.admission_mail" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </field>
+            <field name="auto_delete" eval="True" />
+            <!--            <field name="user_signature" eval="False"/>-->
+        </record>
+
+    </data>
+
+</odoo>

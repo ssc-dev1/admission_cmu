@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Program Wise Financial Report Summary -->
+        <record id="action_report_program_financial_summary" model="ir.actions.report">
+            <field name="name">Program Financial Report Summary</field>
+            <field name="model">program.wise.fin.summary.wiz</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.program_wise_fin_summary_report</field>
+            <field name="report_file">odoocms_fee.program_wise_fin_summary_report</field>
+            <!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+            <!--			<field name="binding_model_id" ref="model_odoocms_student"/>-->
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Student Warning Letter for Outstanding Views -->
+        <record id="action_report_student_dues_warning_letter" model="ir.actions.report">
+            <field name="name">Student Outstanding Dues Warning</field>
+            <field name="model">program.wise.fin.summary.wiz</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.student_dues_warning_letter_report</field>
+            <field name="report_file">odoocms_fee.student_dues_warning_letter_report</field>
+            <!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+            <!--			<field name="binding_model_id" ref="model_odoocms_student"/>-->
+            <field name="binding_type">report</field>
+        </record>
+
+
+        <!-- Receipt Received Detail -->
+        <record id="action_report_student_dues_warning_letter" model="ir.actions.report">
+            <field name="name"></field>
+            <field name="model"></field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name"></field>
+            <field name="report_file"></field>
+            <!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+            <!--			<field name="binding_model_id" ref="model_odoocms_student"/>-->
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="odoocms_fee.action_report_receipt_received_detail" model="ir.actions.report">
+            <field name="name">Receipt Received Detail Report</field>
+            <field name="model">receipt.received.detail.wiz</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.receipt_received_detail_report</field>
+            <field name="report_file">odoocms_fee.receipt_received_detail_report</field>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Receipt Received Summary -->
+        <record id="action_report_receipt_received_summary" model="ir.actions.report">
+            <field name="name">Receipt Received Summary Report</field>
+            <field name="model">receipt.received.summary.wiz</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.receipt_received_summary_report</field>
+            <field name="report_file">odoocms_fee.receipt_received_summary_report</field>
+            <!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+            <!--			<field name="binding_model_id" ref="model_odoocms_student"/>-->
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Student Financial Report Summary -->
+        <record id="action_report_student_fin_report_summary" model="ir.actions.report">
+            <field name="name">Student Financial Report Summary</field>
+            <field name="model">student.fin.report.summary.wiz</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.student_fin_report_summary_report</field>
+            <field name="report_file">odoocms_fee.student_fin_report_summary_report</field>
+            <!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+            <!--			<field name="binding_model_id" ref="model_odoocms_student"/>-->
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="paperformat_student_invoice" model="report.paperformat">
+            <field name="name">Student Invoice</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">2</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="paperformat_student_invoice_landscape" model="report.paperformat">
+            <field name="name">Student Landscape Invoice</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <!-- Student Fee Invoice Landscape-->
+        <record id="action_report_student_invoice_landscape" model="ir.actions.report">
+            <field name="name">Student Fee Receipt</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.student_invoice_landscape</field>
+            <field name="report_file">odoocms_fee.student_invoice_landscape</field>
+            <field name="paperformat_id" ref="odoocms_fee.paperformat_student_invoice_landscape"/>
+            <field name="print_report_name">"Fee Challan of - %s of %s" % (object.student_id.name, object.term_id.name)</field>
+            <field name="binding_model_id" ref="model_account_move"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+        <record id="report_fee_payment_register" model="ir.actions.report">
+            <field name="name">Bank Scroll</field>
+            <field name="model">odoocms.fee.payment.register</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.fee_payment_register_report</field>
+            <field name="report_file">odoocms_fee.fee_payment_register_report</field>
+            <!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+            <!--			<field name="binding_model_id" ref="model_odoocms_student"/>-->
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_student_tax_certificate_report" model="ir.actions.report">
+            <field name="name">Tax Certificate</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.student_tax_certificate_report</field>
+            <field name="report_file">odoocms_fee.student_tax_certificate_report</field>
+            <!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+            <!--			<field name="binding_model_id" ref="model_odoocms_student"/>-->
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_head_wise_fee_received_summary_report" model="ir.actions.report">
+            <field name="name">Head Wise Fee Received Summary</field>
+            <field name="model">head.wise.fee.received.summary.rep.wiz</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.head_wise_fee_received_summary_report</field>
+            <field name="report_file">odoocms_fee.head_wise_fee_received_summary_report</field>
+            <!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+            <!--			<field name="binding_model_id" ref="model_odoocms_student"/>-->
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_head_wise_fee_charged_summary_report" model="ir.actions.report">
+            <field name="name">Head Wise Fee Charged Summary</field>
+            <field name="model">head.wise.fee.charged.summary.rep.wiz</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.head_wise_fee_charged_summary_report</field>
+            <field name="report_file">odoocms_fee.head_wise_fee_charged_summary_report</field>
+            <!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+            <!--			<field name="binding_model_id" ref="model_odoocms_student"/>-->
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_monthly_head_wise_fee_charged_summary_report" model="ir.actions.report">
+            <field name="name">Monthly Head Wise Fee Charged Summary</field>
+            <field name="model">monthly.head.wise.fee.charged.summary.rep.wiz</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.monthly_head_wise_fee_charged_summary_report</field>
+            <field name="report_file">odoocms_fee.monthly_head_wise_fee_charged_summary_report</field>
+            <!--			<field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+            <!--			<field name="binding_model_id" ref="model_odoocms_student"/>-->
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_student_ledger_report" model="ir.actions.report">
+            <field name="name">Student Ledger</field>
+            <field name="model">odoocms.student</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee.student_ledger_report</field>
+            <field name="report_file">odoocms_fee.student_ledger_report</field>
+<!--            <field name="print_report_name">'Print Badge - %s' % (object.name).replace('/', '')</field>-->
+            <field name="binding_model_id" ref="model_odoocms_student"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>
