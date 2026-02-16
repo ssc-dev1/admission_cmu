@@ -119,3 +119,8 @@ def update_applicant_entry_test_form(self):
 #         new_application_no = self.env['ir.sequence'].next_by_code('odoocms.application') or _('New')
 #         vals['application_no'] = f'{term_id.code}{new_application_no}'
 #     return super(OdooCMSAdmissionApplication, self).create(vals)
+
+
+
+
+# test
