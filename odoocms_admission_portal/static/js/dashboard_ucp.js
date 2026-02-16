@@ -1,98 +1,127 @@
 $(document).ready(function () {
-    $('#logout_button_dashboard').on('click', function () {
-        let confirmAction = confirm("Are you sure to Logout?");
+    $('#logout_button_dashboard').on('click', function (e) {
+        e.preventDefault();
+        let confirmAction = confirm("Are you sure you want to logout?");
         if (confirmAction) {
-            lca = '/web/session/logout?redirect=/web/signin/';
-            window.location.replace(lca)
+            let redirectUrl = '/web/session/logout?redirect=/web/signin/';
+            window.location.replace(redirectUrl);
         }
-    })
-
-    $('#password,#password2').on('keyup', function(){
-            if ($('#password').val()==$('#password2').val() ){
-                    $('#change_pass_form').removeAttr('disabled');
-            }else{
-                $('#change_pass_form').attr('disabled', '1');;
-            }
-    })  
-
-    $('#change_password_form').on('submit', function(){
-        pass=$('#change_password_form').find('#password').val()
-        pass2=$('#change_password_form').find('#password2').val()
-        data={
-            'password':pass,
-            'password2':pass2,
-        }
-        if(pass==pass2 ){
-            $.post("/change/password", data,
-            function (data, textStatus) {
-                data=JSON.parse(data);
-                if (data.status=='noerror'){
-                    alert(data.msg);
-                    window.location.replace('/web/signin')
-                }else{
-                    console.error(data.msg);
-                }
-                
-            },
-            
-            );
-        }
-        
     });
 
+    $('#password, #password2').on('keyup', function () {
+        let password = $('#password').val();
+        let password2 = $('#password2').val();
 
-    $('#pretest_dashboard_div').hide()
+        if (password === password2 && password.length >= 6) {
+            $('#change_pass_form').removeAttr('disabled');
+        } else {
+            $('#change_pass_form').attr('disabled', 'disabled');
+        }
+    });
+
+    $('#change_password_form').on('submit', function (e) {
+        e.preventDefault();
+
+        let password = $('#change_password_form').find('#password').val();
+        let password2 = $('#change_password_form').find('#password2').val();
+
+        if (password !== password2) {
+            alert('Passwords do not match');
+            return false;
+        }
+
+        if (password.length < 6) {
+            alert('Password must be at least 6 characters');
+            return false;
+        }
+
+        let data = {
+            'password': password,
+            'password2': password2,
+        };
+
+        $.post("/change/password", data, function (response) {
+            try {
+                let data = JSON.parse(response);
+                if (data.status === 'noerror') {
+                    alert(data.msg);
+                    window.location.replace('/web/signin');
+                } else {
+                    console.error('Error:', data.msg);
+                    alert('Error: ' + data.msg);
+                }
+            } catch (e) {
+                console.error('Invalid response:', response);
+                alert('An error occurred');
+            }
+        }).fail(function (error) {
+            console.error('Request failed:', error);
+            alert('Request failed. Please try again.');
+        });
+    });
+
+    $('#pretest_dashboard_div').hide();
+
     $('#program_transfer_to').on('change', function () {
-        if ($('#program_transfer_to option:selected').attr('program_pretest') != 'no' && $('#program_transfer_to option:selected').attr('program_pretest') != undefined && $('#program_transfer_to option:selected').attr('program_pretest') != '') {
-            $('#pretest_name_d').val($('#program_transfer_to option:selected').attr('program_pretest'))
-            $('#pretest_name_d').attr('pretest_id', $('#program_transfer_to option:selected').attr('program_pretest_id'))
-            $('#pretest_dashboard_div').show();
+        let selectedOption = $('#program_transfer_to option:selected');
+        let programPretest = selectedOption.attr('program_pretest');
+        let pretestId = selectedOption.attr('program_pretest_id');
 
+        if (programPretest !== 'no' && programPretest !== undefined && programPretest !== '') {
+            $('#pretest_name_d').val(programPretest);
+            $('#pretest_name_d').attr('pretest_id', pretestId);
+            $('#pretest_dashboard_div').show();
         } else {
             $('#pretest_dashboard_div').hide();
-            $('#pretest_name_d').val('')
+            $('#pretest_name_d').val('');
             $('#pretest_name_d').removeAttr('pretest_id');
-
         }
-    })
-    $('#program_transfer_request').on('click', function () {
+    });
+
+    $('#program_transfer_request').on('click', function (e) {
+        e.preventDefault();
 
         if ($('#pretest_dashboard_div').is(":visible")) {
-            if ($('#pre_test_marks_d').val() == '' || $('#pre_test_marks_d').val() < 0) {
-                alert('Please Input Valid Marks For Pre Test')
+            let preTestMarks = $('#pre_test_marks_d').val();
+            if (preTestMarks === '' || isNaN(preTestMarks) || parseFloat(preTestMarks) < 0) {
+                alert('Please enter valid marks for Pre Test');
                 return false;
             }
         }
 
         if ($('#pre_test_attachment_transfer').is(":visible")) {
-            if ($('#pre_test_attachment_transfer').val() == '') {
-                alert('Please Upload Result Card')
+            if ($('#pre_test_attachment_transfer').val() === '') {
+                alert('Please upload the Result Card');
                 return false;
             }
         }
 
-        program_transfer_from = $('#program_transfer_from').attr('program')
-        program_transfer_to = $('#program_transfer_to').val()
+        let programTransferFrom = $('#program_transfer_from').attr('program');
+        let programTransferTo = $('#program_transfer_to').val();
 
-        if (program_transfer_from == '' || program_transfer_from == undefined) {
-            alert('Please Fill Required Fields')
-            return false
+        if (!programTransferFrom || programTransferFrom === '' || programTransferFrom === undefined) {
+            alert('Please select a program to transfer from');
+            return false;
         }
-        if (program_transfer_to == '' || program_transfer_to == undefined) {
-            alert('Please Fill Required Fields')
-            return false
+
+        if (!programTransferTo || programTransferTo === '' || programTransferTo === undefined) {
+            alert('Please select a program to transfer to');
+            return false;
         }
-        var formData = new FormData();
-        formData.append('program_transfer_from', program_transfer_from)
-        formData.append('program_transfer_to', program_transfer_to)
+
+        let formData = new FormData();
+        formData.append('program_transfer_from', programTransferFrom);
+        formData.append('program_transfer_to', programTransferTo);
+
         if ($('#pretest_dashboard_div').is(":visible")) {
-            var image = document.getElementById('pre_test_attachment_transfer')
-            pre_test_card = image.files[0];
-            pretest_id = $('#pretest_name_d').attr('pretest_id')
-            formData.append('pre_test_marks', $('#pre_test_marks_d').val())
-            formData.append('pre_test_card', pre_test_card)
-            formData.append('pretest_id', pretest_id)
+            let preTestFile = document.getElementById('pre_test_attachment_transfer');
+            if (preTestFile && preTestFile.files.length > 0) {
+                formData.append('pre_test_card', preTestFile.files[0]);
+            }
+            formData.append('pre_test_marks', $('#pre_test_marks_d').val());
+            formData.append('pretest_id', $('#pretest_name_d').attr('pretest_id'));
         }
+
         $.ajax({
             url: '/program/transfer/',
             type: 'POST',
@@ -100,20 +129,30 @@ $(document).ready(function () {
             processData: false,
             data: formData,
             success: function (response) {
-                data = JSON.parse(response)
-                if (data['status'] == 'noerror') {
-                    alert('Request Submitted')
-                    window.location.reload()
-                }
-                if (data['status'] == 'error') {
-                    console.error(data['msg'])
+                try {
+                    let data = JSON.parse(response);
+                    if (data.status === 'noerror') {
+                        alert('Request submitted successfully');
+                        window.location.reload();
+                    } else if (data.status === 'error') {
+                        console.error('Error:', data.msg);
+                        alert('Error: ' + data.msg);
+                    }
+                } catch (e) {
+                    console.error('Invalid response:', response);
+                    alert('An error occurred');
                 }
             },
-            error: function (response) {
-                data = JSON.parse(response)
-                alert(data['msg'])
+            error: function (error) {
+                try {
+                    let data = JSON.parse(error.responseText);
+                    console.error('Request error:', data.msg);
+                    alert('Error: ' + data.msg);
+                } catch (e) {
+                    console.error('Request failed:', error);
+                    alert('Request failed. Please try again.');
+                }
             }
         });
-
-    })
+    });
 });
