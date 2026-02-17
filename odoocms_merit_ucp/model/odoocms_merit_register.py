@@ -23,7 +23,8 @@ class OdooCmsMeritRegister(models.Model):
 
     name = fields.Char(string='Name')
     register_id = fields.Many2one('odoocms.admission.register', string='Register')
-    program_id = fields.Many2one('odoocms.program', string='Program')
+    register_program_ids = fields.Many2many('odoocms.program', related='register_id.program_ids', string='Allowed Programs')
+    program_id = fields.Many2one('odoocms.program', string='Program', domain="[('id', 'in', register_program_ids)]")
     merit_lines = fields.One2many('odoocms.merit.register.line', 'merit_reg_id')
 
     ssc_aggregate_percent = fields.Float(string='SSC Aggregate Percent', default=0)

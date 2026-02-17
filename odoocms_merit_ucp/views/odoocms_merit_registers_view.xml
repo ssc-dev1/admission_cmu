@@ -32,7 +32,7 @@
                             <field name="register_id" required="1" attrs="{'readonly':[('state', '==', 'done')]}"/>
                             <field name="hssc_aggregate_percent" attrs="{'readonly':[('state', '==', 'done')]}"/>
                             <field name="ms_aggregate_percent" attrs="{'readonly':[('state', '==', 'done')]}"/>
-
+                            <field name="register_program_ids" invisible="1"/>
                             <field name="program_id" attrs="{'readonly':[('state', '==', 'done')]}"/>
                             <field name="pre_test_aggregate_percent" invisible="1" attrs="{'readonly':[('state', '==', 'done')]}"/>
                             <field name="minimum_aggregate" required="1" />
