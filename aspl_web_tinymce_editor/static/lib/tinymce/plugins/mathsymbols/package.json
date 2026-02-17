@@ -1,0 +1,25 @@
+{
+  "name": "mathsymbols-tinymce-plugin",
+  "version": "0.0.3",
+  "description": "Add Math Font into your Tinymce | Plugin",
+  "main": "plugin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Axel186/mathsymbols-tinymce-plugin.git"
+  },
+  "keywords": [
+    "math",
+    "font",
+    "math-symbols",
+    "math-signs"
+  ],
+  "author": "Roman Axelrod",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Axel186/mathsymbols-tinymce-plugin/issues"
+  },
+  "homepage": "https://github.com/Axel186/mathsymbols-tinymce-plugin#readme"
+}

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_fee_data_import_wizard_form" model="ir.ui.view">
+            <field name="name">fee.data.import.form.view</field>
+            <field name="model">fee.data.import.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Fee Data Import">
+                    <group>
+                        <group>
+                            <field name="file" filename="name"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="action_import_fee_data" string="Import" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_fee_data_import_wizard" model="ir.actions.act_window">
+            <field name="name">Import Fee Data</field>
+            <field name="res_model">fee.data.import.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                id="menu_fee_data_import_wizard"
+                name="Import Fee Data"
+                action="action_fee_data_import_wizard"
+                parent="odoocms_fee.menu_fee_configuration_others"
+                sequence="500"/>
+
+
+        <!-- Fee Lines Data Processing -->
+        <record id="view_fee_lines_data_processing_tree" model="ir.ui.view">
+            <field name="name">fee.lines.data.processing.tree.view</field>
+            <field name="model">fee.lines.data.processing</field>
+            <field name="arch" type="xml">
+                <tree string="Fee Data Processing">
+                    <field name="name"  string="Challan No"/>
+                    <field name="course_name"/>
+                    <field name="registration_type" string="Per Credit Hour Fee"/>
+                    <field name="add_drop_no"  string="SECTION NAME"/>
+                    <field name="fee_head_id"/>
+                    <field name="credit_hours"/>
+                    <field name="amount" string="Net Amount"/>
+                    <field name="processed"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_fee_lines_data_processing" model="ir.actions.act_window">
+            <field name="name">Fee Lines Data Processing</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fee.lines.data.processing</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+        <menuitem
+                id="menu_fee_lines_data_processing"
+                name="Fee Lines DataProcessing"
+                action="action_fee_lines_data_processing"
+                parent="odoocms_fee.menu_fee_configuration_others"
+                groups="base.group_no_one"
+                sequence="510"/>
+    </data>
+</odoo>

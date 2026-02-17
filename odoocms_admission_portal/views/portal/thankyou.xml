@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="thankyou_signup_page" name="Thank You ">
+        <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/bootstrap/css/bs4.css"/>
+        <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/fontawesome/css/all.css"/>
+        <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/css/thankyou.css"/>
+        <link href="/odoocms_admission_portal/static/css/account_registration_ucp.css" rel="stylesheet" />
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery.min.js"/>
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery-mask.js"/>
+        <link rel="shortcut icon" type="image/x-icon" href="/odoocms_admission_portal/static/img/cust_white_logo.png"/>
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/first_cust_script.js"/>
+        
+
+
+        <div class="thankyou-page">
+            <div style="background-image: url('/odoocms_admission_portal/static/img/cust.jpg');"  class="_header">
+            </div>
+            <div class="_body"  >
+                <div class="_box">
+                    <h1 style='color:#991b1e;text-align:center'><b>Thank You!</b></h1>
+                    <h6>
+                        You will receive your Username and Password via SMS and email. Simply signin to start your application.
+                        <!-- <strong>Please check  email</strong> for further instructions on how to complete your Admission Procedure. -->
+                    </h6>
+
+                </div>
+            </div>
+            <div class="_footer">
+                <!-- <p>Having trouble? <a href="">Contact us</a>
+                </p> -->
+                <a class="btn" href="/">SIGNIN</a>
+            </div>
+        </div>
+
+
+<!--        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T8GBWCR" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>-->
+
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/dynamic_iframe_noscript.js"/>
+        <script type="text/javascript" src="/odoocms_admission_portal/static/bootstrap/js/bootstrap.min.js"/>
+
+    </template>
+
+
+</odoo>

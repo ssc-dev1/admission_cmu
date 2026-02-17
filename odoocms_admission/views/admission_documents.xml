@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="admission_documents_view_form" model="ir.ui.view">
+        <field name="name">applicant.academic.detail.view.form</field>
+        <field name="model">applicant.academic.detail</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button type="object" name="action_document_verified" string="Verify"
+                            groups="odoocms_admission.group_admission_user"
+                            class="oe_highlight" />
+
+                    <button type="object" name="action_document_unverified"
+                            string="UnVerify"
+                            groups="odoocms_admission.group_admission_user"
+                            class="oe_highlight" />
+
+                    <button type="object" name="registration_verified" string="Registration Office Verify"
+                            groups="odoocms_admission.group_registration_user"
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|', ('reg_verify', '=', True), ('doc_verify', '=', False)]}"/>
+
+                    <button type="object" name="registration_unverified"
+                            string="Registration Office UnVerify"
+                            groups="odoocms_admission.group_registration_user"
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|', ('reg_verify', '=', True), ('doc_verify', '=', False)]}"/>
+
+                    <!--<button type="object" name="action_document_rejected" string="Rejected"
+                            groups="odoocms_admission.group_admission_manager"
+                            class="oe_highlight" attrs="{'invisible': [('doc_verify', '=', True)]}"/>-->
+                    <button type="object" name="action_document_rejected" string="Rejected"
+                            groups="odoocms_admission.group_admission_manager"
+                            class="oe_highlight"/>
+
+                    <field name="doc_state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Documents Details" bg_color="bg-success"/>
+                    <h3 style="text-align: center;">Documents</h3>
+                    <group>
+                        <group>
+                            <field name="program_name"/>
+                            <field name="application_id"/>
+                            <field name="father_name"/>
+                            <field name="father_cnic"/>
+                            <field name="gender"/>
+                            <field name="domicile"/>
+                            <field name="domicile_attachment"/>
+                            <field name="passport"/>
+                            <field name="passport_attachment"/>
+                            <field name="doc_verify" invisible="1"/>
+                            <field name="reg_verify" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="cnic"/>
+                            <field name="cnic_attachment"/>
+                            <field name="mobile"/>
+                            <field name="nationality"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Academic Details">
+                            <group>
+                                <group>
+                                    <field name="degree_name"/>
+                                    <!-- <field name="degree_name"/> -->
+                                    <field name="board"/>
+                                    <field name="roll_no"/>
+                                    <field name="last_year_slip"/>
+                                    <field name="degree_level_id"/>
+                                    <field name="total_marks"/>
+                                    <field name="obt_marks"/>
+                                    <field name="percentage"/>
+                                    <field name="year"/>
+
+                                </group>
+                                <group>
+                                    <field name="group_specialization"/>
+                                    <field name="institute"/>
+                                    <field name="result_status"/>
+                                    <!--<field name="attachment" options="{&quot;zoom&quot;: true, &quot;&quot;:&quot;avatar_128&quot;}"
+                                           style="width: 120px; height: 120px;" widget="image"/>-->
+                                    <field name="attachment" options='{"zoom": true, "preview_image":"attachment", "zoom_delay": 1000}'
+                                           widget="image"/>
+                                    <field name="degree_attachment"/>
+                                    <field name="hope_certificate" style="width: 80px; height: 80px;"
+                                           options="{&quot;zoom&quot;: true, &quot;&quot;:&quot;hope_certificate&quot;}"
+                                           widget="image"/>
+                                    <field name="hope_certificate_attachment"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="applicant_subject_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="admission_documents_view_tree" model="ir.ui.view">
+        <field name="name">admission.documents.view.tree</field>
+        <field name="model">applicant.academic.detail</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="doc_state == 'yes'" decoration-danger="doc_state == 'rejected'" decoration-info="doc_state == 'no'" string="admission_documents_tree">
+                <!--<field name="application_id"/>-->
+                <field name="reference_no"/>
+                <field name="applicant"/>
+                <field name="degree_level_id"/>
+                <field name="program_name"  optional="show" />
+                <field name="cnic"  optional="show"/>
+                <field name="mobile"  optional="show"/>
+                <field name="nationality"  optional="hide"/>
+                <field name="gender"  optional="show"/>
+                <field name="domicile"  optional="show"/>
+                <field name="doc_state"  optional="show"/>
+                <!-- <field name="program_id"/> -->
+                <field name="fee_voucher_state" optional='show'/>
+                <field name="document_verified_date" optional='show'/>
+                <field name="user_verify_id" optional='show'/>
+                <field name="voucher_verified_date" optional="hide"/>
+                <field name="application_state"/>
+                <field name="application_submit_date" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_admission_documents_search" model="ir.ui.view">
+        <field name="name">admission.documents.view.search</field>
+        <field name="model">applicant.academic.detail</field>
+        <field name="priority" eval="8"/>
+        <field name="arch" type="xml">
+            <search string="Reference Number">
+                <field name="reference_no"/>
+                <field name="program_id"/>
+                <field name="institute_id"/>
+                <newline/>
+                <group expand="0" string="Group By...">
+                    <filter string="Status" name="group_by_doc_state"
+                            domain="[]" context="{'group_by':'doc_state'}"/>
+                </group>
+                <group expand="0" string="Group By...">
+                    <filter string="Reference Number" name="group_by_reference_number"
+                            domain="[]" context="{'group_by':'reference_no'}"/>
+                </group>
+                <group expand="0" string="Group By...">
+                    <filter string="Program" name="group_by_program"
+                            domain="[]" context="{'group_by':'program_name'}"/>
+                </group>
+                <group expand="0" string="Group By...">
+                    <filter string="Institute/Faculty" name="group_by_instute_id"
+                            domain="[]" context="{'group_by':'institute_id'}"/>
+                </group>
+            </search>
+
+        </field>
+    </record>
+
+    <record id="admission_documents_action" model="ir.actions.act_window">
+        <field name="name">Academic Documents</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">applicant.academic.detail</field>
+        <field name="view_mode">tree,form</field>
+        <!--<field name="domain">[('fee_voucher_state', '=', 'verify')]</field>-->
+        <field name="search_view_id" ref="view_admission_documents_search"/>
+        <field name="context">{
+            'search_default_program':1,
+            }
+        </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create Your Academic Details here.
+            </p>
+        </field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem
+            id="menu_odoocms_academic_setup"
+            name="Academic Setup's"
+            parent="menu_admission_configuration"
+            sequence="120"/>
+
+    <menuitem
+            id="admission_documents_menu"
+            name="Student Academic Documents"
+            parent="admission_applicant_menu"
+            action="admission_documents_action"
+            groups="odoocms_admission.group_admission_manager"
+            sequence="40"/>
+</odoo>

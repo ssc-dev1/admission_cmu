@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Server Action for Export Profile Pictures -->
+    <record id="action_export_pictures" model="ir.actions.server">
+        <field name="name">Export Profile Pictures</field>
+        <field name="model_id" ref="model_odoocms_application"/>
+        <field name="state">code</field>
+        <field name="code">record_ids = env.context.get('active_ids') or (env.context.get('active_id') and [env.context.get('active_id')] or []); action = env['odoocms.application'].browse(record_ids).action_export_pictures(); action</field>
+    </record>
+
+    <!-- Action Button for Export Profile Pictures -->
+    <record id="odoocms_application_action_button" model="ir.actions.server">
+        <field name="name">Export Profile Pictures</field>
+        <field name="model_id" ref="model_odoocms_application"/>
+        <field name="binding_model_id" ref="model_odoocms_application"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">record_ids = env.context.get('active_ids') or (env.context.get('active_id') and [env.context.get('active_id')] or []); action = env['odoocms.application'].browse(record_ids).action_export_pictures(); action</field>
+    </record>
+
+    <!-- Server Action for Export All Documents -->
+    <record id="action_export_all_docs" model="ir.actions.server">
+        <field name="name">Export All Documents</field>
+        <field name="model_id" ref="model_odoocms_application"/>
+        <field name="state">code</field>
+        <field name="code">record_ids = env.context.get('active_ids') or (env.context.get('active_id') and [env.context.get('active_id')] or []); action = env['odoocms.application'].browse(record_ids).action_export_all_docs(); action</field>
+    </record>
+
+    <!-- Action Button for Export All Documents -->
+    <record id="odoocms_application_export_all_docs_button" model="ir.actions.server">
+        <field name="name">Export All Documents</field>
+        <field name="model_id" ref="model_odoocms_application"/>
+        <field name="binding_model_id" ref="model_odoocms_application"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">record_ids = env.context.get('active_ids') or (env.context.get('active_id') and [env.context.get('active_id')] or []); action = env['odoocms.application'].browse(record_ids).action_export_all_docs(); action</field>
+    </record>
+</odoo>

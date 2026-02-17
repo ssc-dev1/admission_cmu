@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_term_fee_challan" model="report.paperformat">
+            <field name="name">Student Invoice</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">2</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="paperformat_term_fee_challan_landscape" model="report.paperformat">
+            <field name="name">Student Landscape Invoice</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="odoocms_fee_ext.action_report_term_fee_challan" model="ir.actions.report">
+            <field name="name">Student Fee Challan</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odoocms_fee_ext.term_fee_challan_template</field>
+            <field name="report_file">odoocms_fee_ext.term_fee_challan_template</field>
+            <field name="print_report_name">"%s - %s - %s" %(object.student_id.code, object.term_id.name, object.label_id.name)</field>
+            <field name="binding_model_id" ref="odoocms_fee.model_odoocms_fee_barcode"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="odoocms_fee_ext.paperformat_term_fee_challan_landscape"/>
+        </record>
+
+        <record id="odoocms_fee_ext.action_misc_fee_challan_report" model="ir.actions.report">
+            <field name="name">Misc Challan</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odoocms_fee_ext.misc_fee_challan_template</field>
+            <field name="report_file">odoocms_fee_ext.misc_fee_challan_template</field>
+            <field name="print_report_name">"%s - %s" %(object.student_id.code, object.date_due and object.date_due.strftime("%d-%b-%Y"))</field>
+            <field name="binding_model_id" ref="odoocms_fee.model_odoocms_fee_barcode"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="odoocms_fee_ext.paperformat_term_fee_challan_landscape"/>
+        </record>
+
+        <record id="odoocms_fee_ext.action_report_admission_fee_challan" model="ir.actions.report">
+            <field name="name">Admission Fee Challan</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odoocms_fee_ext.admission_fee_challan_template</field>
+            <field name="report_file">odoocms_fee_ext.admission_fee_challan_template</field>
+            <field name="print_report_name">"%s - %s" %(object.student_id.code, object.date_due and object.date_due.strftime("%d-%b-%Y"))</field>
+<!--            <field name="print_report_name">"%s - %s Admission Challan" %(object.student_id.application_no, object.application_id.name)</field>-->
+            <field name="binding_model_id" ref="odoocms_fee.model_odoocms_fee_barcode"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="odoocms_fee_ext.paperformat_term_fee_challan_landscape"/>
+        </record>
+
+        <!--***** Fee Defaulter Students Reports ******-->
+        <record id="action_odocoms_fee_defaulter_student_report" model="ir.actions.report">
+            <field name="name">Print Report</field>
+            <field name="model">odoocms.fee.defaulter.student</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">odoocms_fee_ext.odoocms_fee_defaulter_student_report</field>
+            <field name="report_file">odoocms_fee_ext.odoocms_fee_defaulter_student_report</field>
+            <field name="binding_model_id" ref="odoocms_fee_ext.model_odoocms_fee_defaulter_student"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

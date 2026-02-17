@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="odoocms_fee_ext.admission_fee_challan_template">
+            <t t-call="web.basic_layout">
+                <t t-if="not company">
+                    <t t-if="company_id">
+                        <t t-set="company" t-value="company_id"/>
+                    </t>
+                    <t t-elif="o and 'company_id' in o">
+                        <t t-set="company" t-value="o.company_id.sudo()"/>
+                    </t>
+                    <t t-else="else">
+                        <t t-set="company" t-value="res_company"/>
+                    </t>
+                </t>
+                <style>
+                    #invoice-info {
+                        font-family: Times New Roman,Times,serif, Arial, Helvetica, sans-serif;
+                        border-collapse: collapse;
+                        width: 100%;
+                        margin: 0%;
+                    }
+                    #invoice-info td, #invoice-info th {
+                        border: 1px solid #ddd;
+                        padding: 1px, 3px, 1px, 3px;
+                    }
+                    #invoice-info th {
+                        text-align: left;
+                        width:60%;
+                        font-weight:normal;
+                    }
+                    #invoice-info td {
+                        text-align: right;
+                        width:40%;
+                    }
+                    #invoice-report {
+                        font-family: Times New Roman,Times,serif, Arial, Helvetica, sans-serif;
+                        border-collapse: collapse;
+                        width: 98%;
+                        margin: 1.5%;
+                    }
+                    #invoice-report td, #invoice-report th {
+                        border: 1px solid #ddd;
+                        padding: 2px;
+                    }
+                    #invoice-report th {
+                        text-align: left;
+                        width:60%;
+                        font-weight:normal;
+                    }
+                    #invoice-report td {
+                        text-align: right;
+                        width:40%;
+                    }
+                    #invoice-report-student-info {
+                        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                        border-collapse: collapse;
+                        width: 98%;
+                        margin: 1.5%;
+                    }
+                    #invoice-report-student-info td, #invoice-report-student-info th {
+                        border: 1px solid #ddd;
+                        padding: 3px;
+                    }
+                    #invoice-report-student-info th {
+                        text-align: left;
+                        width:40%;
+                        font-weight:bold;
+                    }
+                    #invoice-report-student-info td {
+                        text-align: right;
+                        width:60%;
+                    }
+                    .bottom-center {
+                        position: absolute;
+                        left: 25%;
+                        bottom: 0;
+                    }
+                    .watermark {
+                        position: absolute;
+                        top: 20%;
+                        left: 40%;
+                        transform: translate(-50%, -50%);
+                        font-size: 100px;
+                        color: #ccc;
+                        opacity: 0.1;
+                        z-index: -1;
+                        transform:rotate(200deg);
+                        -webkit-transform:rotate(320deg);
+                    }
+                </style>
+
+                <t t-foreach="docs.sudo()" t-as="doc">
+                    <div class="page" style="font-size: 10px; padding:0px ">
+                        <t t-call="odoocms_fee_ext.admission_receipt_copies_container"/>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!--***** Challan Leaf *****-->
+        <template id="odoocms_fee_ext.admission_receipt_copies_container">
+            <div class="row" style="width:100%;">
+                <div style="width:32%; border:1px solid; margin-right:5px">
+                    <t t-call="odoocms_fee_ext.admission_receipt_copy">
+                        <t t-set="copy_name">Bank Copy</t>
+                    </t>
+                </div>
+                <div style="width:32%; border:1px solid; margin-right:5px">
+                    <t t-call="odoocms_fee_ext.admission_receipt_copy">
+                        <t t-set="copy_name">University Copy</t>
+                    </t>
+                </div>
+                <div style="width:32%; border:1px solid; margin-right:5px">
+                    <t t-call="odoocms_fee_ext.admission_receipt_copy">
+                        <t t-set="copy_name">Student Copy</t>
+                    </t>
+                </div>
+            </div>
+        </template>
+
+        <template id="odoocms_fee_ext.admission_receipt_copy">
+            <!--***** Department Name + Installment Label *****-->
+            <div class="row">
+                <div class="col col-12">
+                    <table id="invoice-info" style="margin-top:10px;">
+                        <tr style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;">
+<!--                            <td style="border: 1px solid #ddd; text-align:center; font-size:12px; font-weight:bold; color: black;padding-top:1px;">-->
+<!--                                <span t-field="doc.company_id.name"/>-->
+<!--                            </td>-->
+                            <td style="border: 1px solid #ddd; text-align:center; font-size:12px; font-weight:bold;">
+                                <span t-esc="copy_name"/>
+                            </td>
+                        </tr>
+
+<!--                        <tr style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;">-->
+<!--                            <td style="border: 1px solid #ddd; text-align:center; font-size:12px; color: black;padding-top:1px;">-->
+<!--                                <t t-if="doc.sudo().program_id.department_id">-->
+<!--                                    (<span t-field="doc.sudo().program_id.institute_id.name"/>)-->
+<!--                                </t>-->
+<!--                            </td>-->
+
+<!--                            <td style="border: 1px solid #ddd; text-align:center; font-size:12px; font-weight:bold;">-->
+<!--                                First Installment (New)-->
+<!--                            </td>-->
+<!--                        </tr>-->
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-12"
+                     style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;border: 0px solid #ddd; text-align:center; font-size:15px;font-weight:bold; color: black;padding-top:1px;">
+                    <span>Payable at Any Branch of The Bank of Punjab</span>
+                    <br/>
+                    <span>Through PGC Cash Management System</span>
+                </div>
+            </div>
+
+<!--            <div class="row" style="margin-top:10px;" width="100%">-->
+<!--                <div class="col col-2"-->
+<!--                     style="margin-left:2px;font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; font-size:12px;font-weight:bold; color: black;">-->
+<!--                    <nobr>Ref #.</nobr>-->
+<!--                </div>-->
+<!--                <div class="col col-4"-->
+<!--                     style="text-decoration: underline;font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; font-size:12px; font-weight:bold;color: black;text-align:left;">-->
+<!--                    <nobr>-->
+<!--                        <span style="text-align:left;" t-esc="doc.sudo().application_id and doc.sudo().application_id.application_no or ''"/>-->
+<!--                    </nobr>-->
+<!--                </div>-->
+
+<!--                <div class="col col-2"-->
+<!--                     style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; text-align:left; font-size:12px;font-weight:bold; color: black;">-->
+<!--                    <nobr>Challan #</nobr>-->
+<!--                </div>-->
+<!--                <div class="col col-4"-->
+<!--                     style="text-decoration: underline;font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; text-align:left;font-weight:bold; font-size:12px; color: black;">-->
+<!--                    <nobr>-->
+<!--                        <span style="text-align:left;margin-left:15px;" t-esc="doc.sudo().old_challan_no"/>-->
+<!--                    </nobr>-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+<!--            <div class="row" style="margin-top:2px;" width="100%">-->
+<!--                <div class="col col-2"-->
+<!--                     style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; text-align:left; font-size:12px; font-weight:bold; color: black">-->
+<!--                    <nobr>Program</nobr>-->
+<!--                </div>-->
+<!--                <div class="col col-4"-->
+<!--                     style="text-decoration: underline;font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; text-align:left;font-weight:bold; font-size:12px; color: black">-->
+<!--                    <nobr>-->
+<!--                        <span style="text-align:left;" t-esc="doc.sudo().program_id.code"/>-->
+<!--                    </nobr>-->
+<!--                </div>-->
+<!--                <div class="col col-2"-->
+<!--                     style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; text-align:left; font-size:12px; font-weight:bold; color: black">-->
+<!--                    <nobr>Term</nobr>-->
+<!--                </div>-->
+<!--                <div class="col col-4"-->
+<!--                     style="text-decoration: underline;font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; text-align:left;font-weight:bold; font-size:12px; color: black">-->
+<!--                    <nobr>-->
+<!--                        <span style="text-align:left;margin-left:15px;" t-esc="doc.sudo().term_id.name"/>-->
+<!--                    </nobr>-->
+<!--                </div>-->
+
+<!--            </div>-->
+
+
+<!--            <div class="row" width="100%">-->
+<!--                <div class="col col-1"-->
+<!--                     style="margin-left:2px;font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; font-size:12px;font-weight:bold; color: black;">-->
+<!--                    <nobr>Name</nobr>-->
+<!--                </div>-->
+<!--                <div class="col col-10"-->
+<!--                     style="text-decoration: underline;font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; font-size:12px;font-weight:bold; color: black;text-align:left;text-transform: uppercase;">-->
+<!--                    <span style="text-align:left;" t-esc="doc.sudo().application_id.name"/>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <!-- Move Lines Table -->
+<!--            <div class="row" style="margin-top:5px;">-->
+<!--                <div class="col col-12">-->
+<!--                    <table id="invoice-report" style="margin-top:10px;">-->
+<!--                        <t t-set="adm_fee" t-value="0"/>-->
+<!--                        <tr style="border:1px solid black;background-color:#7AE7F0">-->
+<!--                            <td style="font-weight:bold;text-align:center;border:1px solid black;width:15%;">-->
+<!--                                <span>Course Code</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-weight:bold;text-align:center;border:1px solid black;width:15%;">-->
+<!--                                <span>CH</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-weight:bold;text-align:center;width:60%;border:1px solid black;">-->
+<!--                                <span>Course Title</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-weight:bold;text-align:center;border:1px solid black;width:15%;">-->
+<!--                                <span>Fee</span>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        &lt;!&ndash;***** Admission Line Amount *****&ndash;&gt;-->
+<!--                        <t t-foreach="doc.invoice_line_ids.filtered(lambda a: a.name=='Admission Fee')" t-as="adm_line">-->
+<!--                            <t t-set="adm_fee" t-value="adm_line.sudo().course_gross_fee"/>-->
+<!--                        </t>-->
+
+<!--                        &lt;!&ndash;*****  Invoice Lines *****&ndash;&gt;-->
+<!--                        <t t-foreach="doc.invoice_line_ids.filtered(lambda a: not a.name=='Admission Fee')" t-as="line">-->
+<!--                            <t t-if="line.price_subtotal > 0">-->
+<!--                                <tr style="border:1px solid black;">-->
+
+<!--                                    &lt;!&ndash;***** Course Code Line *****&ndash;&gt;-->
+<!--                                    <td style="text-align:left;padding-left:2px;border:1px solid black;width:20%;">-->
+<!--                                        <t t-if="line.sudo().course_id_new">-->
+<!--                                            <span t-esc="line.sudo().course_id_new.course_id.code"/>-->
+<!--                                        </t>-->
+<!--                                        <t t-if="line.sudo().study_scheme_line">-->
+<!--                                            <span t-esc="line.sudo().study_scheme_line.course_code"/>-->
+<!--                                        </t>-->
+<!--                                    </td>-->
+
+<!--                                    &lt;!&ndash;***** Course Credit Hours Line *****&ndash;&gt;-->
+<!--                                    <td style="text-align:center;padding-left:2px;border:1px solid black;width:6%;">-->
+<!--                                        <t t-if="line.sudo().course_id_new.course_id and int(line.sudo().course_id_new.course_id.credits) > 0">-->
+<!--                                            <span t-esc="int(line.sudo().course_id_new.course_id.credits)"/>-->
+<!--                                        </t>-->
+
+<!--                                        <t t-if="line.sudo().study_scheme_line and int(line.sudo().study_scheme_line.credits) > 0">-->
+<!--                                            <span t-esc="int(line.sudo().study_scheme_line.credits)"/>-->
+<!--                                        </t>-->
+
+<!--                                    </td>-->
+
+<!--                                    &lt;!&ndash;***** Course Name Line ***** &ndash;&gt;-->
+<!--                                    <td style="text-align:left;width:60%;padding-left:2px;border:1px solid black;">-->
+<!--                                        <t t-if="line.sudo().course_id_new.course_id">-->
+<!--                                            <span t-esc="line.sudo().course_id_new.course_id.name"/>-->
+<!--                                        </t>-->
+<!--                                        <t t-if="not line.sudo().course_id_new.course_id">-->
+<!--                                            <span t-esc="line.sudo().name"/>-->
+<!--                                        </t>-->
+<!--                                    </td>-->
+
+<!--                                    &lt;!&ndash;***** Course Gross Fee Line  *****&ndash;&gt;-->
+<!--                                    <td style="text-align:right;padding-right:2px;border:1px solid black;width:10%;">-->
+<!--                                        <t t-if="line.sudo().course_gross_fee > 0">-->
+<!--                                            <span t-esc="'{0:,.0f}'.format(line.sudo().course_gross_fee)"/>-->
+<!--                                        </t>-->
+<!--                                        <t t-elif="line.sudo().course_gross_fee == 0">-->
+<!--                                            <span t-esc="'{0:,.0f}'.format(line.sudo().price_subtotal)"/>-->
+<!--                                        </t>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                            </t>-->
+<!--                        </t>-->
+
+<!--                        &lt;!&ndash; *****   Gross Tuition Fee ***** &ndash;&gt;-->
+<!--                        <tr style="border:1px solid black;">-->
+<!--                            <td colspan="2" style="font-weight:bold;border:1px solid black;text-align:right;padding-right:5px;">-->
+<!--                                Gross Tuition Fee-->
+<!--                            </td>-->
+<!--                            <td colspan="2" style="font-weight:bold;border:1px solid black;padding-right:5px;background-color:#7AE7F0">-->
+<!--                                <span t-esc="'{0:,.0f}'.format(doc.semester_gross_fee - adm_fee)"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        &lt;!&ndash;*****  Admission Line *****&ndash;&gt;-->
+<!--                        <t t-if="adm_fee > 0">-->
+<!--                            <t t-foreach="doc.invoice_line_ids.filtered(lambda a: a.name=='Admission Fee')" t-as="line">-->
+<!--                                <t t-if="line.price_subtotal > 0">-->
+<!--                                    <tr style="border:1px solid black;">-->
+
+<!--                                        &lt;!&ndash;***** Course Code Line *****&ndash;&gt;-->
+<!--                                        <td style="text-align:left;padding-left:2px;border:1px solid black;width:20%;">-->
+<!--                                            <span t-esc="line.sudo().course_id_new.course_id.code"/>-->
+<!--                                        </td>-->
+
+<!--                                        &lt;!&ndash;***** Course Credit Hours Line *****&ndash;&gt;-->
+<!--                                        <td style="text-align:center;padding-left:2px;border:1px solid black;width:6%;">-->
+<!--                                            <t t-if="line.sudo().course_id_new.course_id and int(line.sudo().course_id_new.course_id.credits) > 0">-->
+<!--                                                <span t-esc="int(line.sudo().course_id_new.course_id.credits)"/>-->
+<!--                                            </t>-->
+
+<!--                                        </td>-->
+
+<!--                                        &lt;!&ndash;***** Course Name Line ***** &ndash;&gt;-->
+<!--                                        <td style="text-align:left;width:60%;padding-left:2px;border:1px solid black;">-->
+<!--                                            <t t-if="line.sudo().course_id_new.course_id">-->
+<!--                                                <span t-esc="line.sudo().course_id_new.course_id.name"/>-->
+<!--                                            </t>-->
+<!--                                            <t t-if="not line.sudo().course_id_new.course_id">-->
+<!--                                                <span t-esc="line.sudo().name"/>-->
+<!--                                            </t>-->
+<!--                                        </td>-->
+
+<!--                                        &lt;!&ndash;***** Course Gross Fee Line  *****&ndash;&gt;-->
+<!--                                        <td style="text-align:right;padding-right:2px;border:1px solid black;width:10%;">-->
+<!--                                            <t t-if="line.sudo().course_gross_fee > 0">-->
+<!--                                                <span t-esc="'{0:,.0f}'.format(line.sudo().course_gross_fee)"/>-->
+<!--                                            </t>-->
+<!--                                            <t t-elif="line.sudo().course_gross_fee == 0">-->
+<!--                                                <span t-esc="'{0:,.0f}'.format(line.sudo().price_subtotal)"/>-->
+<!--                                            </t>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+<!--                                </t>-->
+<!--                            </t>-->
+
+<!--                            &lt;!&ndash; ***** Total Due Fee Line ***** &ndash;&gt;-->
+<!--                            <tr style="border:1px solid black;">-->
+<!--                                <td colspan="2" style="font-weight:bold;border:1px solid black;text-align:right;padding-right:5px;">-->
+<!--                                    Total Due Fee-->
+<!--                                </td>-->
+<!--                                <td colspan="2" style="font-weight:bold;border:1px solid black;padding-right:5px;background-color:#7AE7F0">-->
+<!--                                    <span t-esc="'{0:,.0f}'.format(doc.semester_gross_fee)"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        </t>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="row">-->
+<!--                <div class="col col-12">-->
+<!--                    <table id="invoice-report">-->
+<!--                        &lt;!&ndash;***** Paid Water Mark *****&ndash;&gt;-->
+<!--                        <t t-if="doc.payment_state in ('in_payment','paid')">-->
+<!--                            <div class="watermark">Paid</div>-->
+<!--                        </t>-->
+
+<!--                        &lt;!&ndash; ***** Scholarship Name ***** &ndash;&gt;-->
+<!--                        <tr style="border:1px solid black;">-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Scholarship Type</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px;text-align:left;border:1px solid black;">-->
+<!--                                <t t-foreach="doc.sudo().waiver_ids" t-as="wavier">-->
+<!--                                    <span t-esc="wavier.sudo().scholarship_category_id and wavier.sudo().scholarship_category_id.name or ''"/>-->
+<!--                                    <t t-if="len(doc.sudo().waiver_ids) > 1">-->
+<!--                                        <span>,</span>-->
+<!--                                    </t>-->
+<!--                                </t>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        &lt;!&ndash;***** Scholarship Percentage *****&ndash;&gt;-->
+<!--                        <tr>-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>On Tuition Fee</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px;border:1px solid black;">-->
+<!--                                &lt;!&ndash;                                <span t-esc="doc.waiver_amount"/>&ndash;&gt;-->
+<!--                                <t t-if="doc.scholarship_continue_policy_line_id.value > 0">-->
+<!--                                    <span t-esc="'{0:,.0f}'.format(doc.scholarship_continue_policy_line_id.value)"/>%-->
+<!--                                </t>-->
+<!--                                <t t-elif="doc.sudo().waiver_ids and doc.sudo().waiver_ids[0].line_ids">-->
+<!--                                    <span t-esc="'{0:,.0f}'.format(doc.sudo().waiver_ids[0].line_ids[0].percentage)"/>%-->
+<!--                                </t>-->
+
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        &lt;!&ndash;***** Scholarship Amount *****&ndash;&gt;-->
+<!--                        <tr>-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Less Scholarship Amount</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px;border:1px solid black;">-->
+<!--                                <t t-if="doc.waiver_amount > 0">-->
+<!--                                    <span t-esc="'{0:,.0f}'.format(doc.waiver_amount)"/>-->
+<!--                                </t>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        &lt;!&ndash;***** Semester Total Fee *****&ndash;&gt;-->
+<!--                        <tr>-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Total Semester Fee</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px;border:1px solid black;">-->
+<!--                                <t t-if="doc.semester_gross_fee - doc.waiver_amount > 0">-->
+<!--                                    <span t-esc="'{0:,.0f}'.format(doc.semester_gross_fee - doc.waiver_amount)"/>-->
+<!--                                </t>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        &lt;!&ndash;***** OD *****&ndash;&gt;-->
+<!--                        <tr>-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Fee Adjustment</span>-->
+<!--                            </td>-->
+
+<!--                            <td style="font-size:10px;border:1px solid black;">-->
+<!--                                &lt;!&ndash; <span t-esc="'{0:,.0f}'.format(doc.get_previously_paid_invoice(doc.student_id))"/> &ndash;&gt;-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        &lt;!&ndash;***** Semester Gross Fee *****&ndash;&gt;-->
+<!--                        <tr>-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Total Payable Semester Fee</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px;border:1px solid black;">-->
+<!--                                <t t-if="doc.semester_gross_fee > 0">-->
+<!--                                    <span t-esc="'{0:,.0f}'.format(doc.semester_gross_fee)"/>-->
+<!--                                </t>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        &lt;!&ndash;***** Current Installment Amount  *****&ndash;&gt;-->
+<!--                        <tr style="border:1px solid black;">-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>First Installment</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px; border:1px solid black;">-->
+<!--                                <t t-if="doc.sudo().get_installment_amount() > 0">-->
+<!--                                    <span t-esc="'{0:,.0f}'.format(doc.sudo().get_installment_amount())"/>-->
+<!--                                </t>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        &lt;!&ndash;***** Remaining Fee *****&ndash;&gt;-->
+<!--                        <tr style="border:1px solid black;">-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Remaining Fee (with due date)</span>-->
+<!--                            </td>-->
+<!--                            <td style="border:1px solid black;">-->
+<!--                                <span t-esc="'{0:,.0f}'.format(doc.sudo().get_challan_remaining_amount())"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        &lt;!&ndash;***** Payable Fine *****&ndash;&gt;-->
+<!--                        <tr style="border:1px solid black;">-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Payable Fine</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px;text-align:right;border:1px solid black;">-->
+<!--                                <span t-esc="'{0:,.0f}'.format(doc.get_challan_fine_amount())"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        &lt;!&ndash;***** Total Semester Charges *****&ndash;&gt;-->
+<!--                        <tr style="border:1px solid black;">-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Total Semester Charges</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px;border:1px solid black;">-->
+<!--                                <span t-esc="'{0:,.0f}'.format(doc.semester_gross_fee - doc.waiver_amount)"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash;***** Instructions Div *****&ndash;&gt;-->
+<!--            <div class="row">-->
+<!--                <div class="col col-12">-->
+<!--                    <span style="padding-left:2px;text-decoration:underline;font-size:10px;font-weight:bold;margin-left:5px;">-->
+<!--                        Note:- -->
+<!--                    </span>-->
+<!--                    <br/>-->
+<!--                    <span style="padding-left:2px;margin-left:5px;">&#x2022; Deposit cash in any branch of <b>The Bank of Punjab</b> Only Cross Pakistan-->
+<!--                    </span>-->
+<!--                    <br/>-->
+<!--                    <span style="padding-left:2px;margin-left:5px;">&#x2022; Pay Online by visiting <a-->
+<!--                            style="font-size:13px;text-decoration: underline;" href="pay.cust.edu.pk">-->
+<!--                        https://pay.cust.edu.pk-->
+<!--                    </a> for following options.-->
+<!--                    </span>-->
+<!--                    <br/>-->
+<!--                    <span style="padding-left:2px;margin-left:5px;">-->
+<!--                        &#160;&#160;&#160;&#160; &#x2022; Credit &amp; Debit Card (Visa/Master)/ Easy Paisa-->
+<!--                    </span>-->
+<!--                    <br/>-->
+<!--                    <span style="padding-left:2px;margin-left:5px;">-->
+<!--                        &#160;&#160;&#160;&#160; &#x2022; Online (internet) Bank Payment /Mobile Banking/ATM-->
+<!--                    </span>-->
+<!--                    <br/>-->
+<!--                    <span style="padding-left:2px;margin-left:5px;">&#x2022; Deposited amount will not be refunded, under any circumstances.-->
+<!--                    </span>-->
+
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; ***** Stamp Container *****&ndash;&gt;-->
+<!--            <div class="row" width="100%" style="margin-top:2px;">-->
+<!--                <div class="col col-12">-->
+<!--                    <table id="invoice-report" style="margin-top:10px;">-->
+<!--                        <tr style="text-align:left;font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; font-size:12px;font-weight:bold; color: black;border:1px solid black;">-->
+<!--                            <td style="text-align:center;border:1px solid black;width:50%;">-->
+<!--                                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;'-->
+<!--                                                        % ('Code128',doc.sudo().old_challan_no, 500, 100)"-->
+<!--                                     style="width:250px;height:29px;"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        <tr style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; font-size:10px;font-weight:bold; color: black;border:1px solid black;">-->
+<!--                            <td style="text-align:center;border:1px solid black;width:50%;">-->
+<!--                                Payable On Or Before-->
+<!--                                <span t-esc="doc.sudo().invoice_date_due.strftime('%d-%b-%Y')"/>-->
+<!--                                &lt;!&ndash;                                <span t-esc="doc.sudo().first_due_date and doc.sudo().first_due_date.strftime('%d-%b-%Y') or ''"/>&ndash;&gt;-->
+<!--                                <p style="text-align:center;font-size:15px;margin:0px;">-->
+<!--                                    Rs.-->
+<!--                                    <t t-esc="doc.amount_total and '{0:,.0f}'.format(doc.sudo().amount_total)"/>/- -->
+<!--                                    <br/>-->
+<!--                                    <span style="font-size:8px;padding-top:0px;">(-->
+<!--                                        &lt;!&ndash; <t t-esc="doc.sudo().currency_id.amount_to_text(int(doc.sudo().amount_total - doc.sudo().get_challan_late_fine_amount()))"/>&ndash;&gt;-->
+<!--                                        <t t-esc="doc.sudo().currency_id.amount_to_text(int(doc.sudo().amount_total))"/>-->
+<!--                                        Only)-->
+<!--                                    </span>-->
+<!--                                </p>-->
+
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        <tr style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; font-size:12px;color: black;border:1px solid black;">-->
+<!--                            <td style="text-align:left;border:1px solid black;width:50%;">-->
+<!--                                Printed On: &#160;&#160;&#160;&#160;&#160;&#160;-->
+<!--                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%b-%Y %H:%M')"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+
+        </template>
+
+    </data>
+</odoo>

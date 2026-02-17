@@ -1,0 +1,321 @@
+<odoo>
+    <template id="odoocms_fee_ucp.student_fine_history_report">
+        <t t-call="web.html_container">
+            <div class="page" style="font-size: 16px; padding:10px ">
+                <t t-call="web.external_layout">
+                    <style>
+                        #invoice-report {
+                            font-family: Times New Roman;
+                            border-collapse: collapse;
+                            width: 100%;
+                        }
+                        #invoice-report td, #invoice-report th {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                        }
+                        #invoice-report tr:nth-child(even){
+                            background-color: #f2f2f2;
+                        }
+                        #invoice-report tr:hover {
+                            background-color: #ddd;
+                        }
+                        #invoice-report th {
+                            padding-top: 12px;
+                            padding-bottom: 12px;
+                            text-align: left;
+                            background-color: #17134e;
+                            color: white;
+                        }
+                    </style>
+
+                    <div class="row" style="font-size:25px; font-weight:bold;">
+                        <div class="col col-12" style="text-align:center;font-family: Times New Roman;">
+                            <span>Student Fine Details
+                                <t t-if="term">For Term:- <span t-esc="term.code"/></t>
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="row" style="margin-top:5px;">
+                        <div class="col-3"><strong>Registration No:</strong></div>
+                        <div class="col-3"><span t-esc="student_id.id_number"/></div>
+                        <div class="col-2"><strong>Student Name:</strong></div>
+                        <div class="col-4"><span t-esc="student_id.name"/></div>
+                    </div>
+                    <div class="row" style="margin-top:5px;">
+                        <div class="col-3"><strong>Academic Career:</strong></div>
+                        <div class="col-3"><span t-esc="student_id.career_id.name"/></div>
+                        <div class="col-2"><strong>Term:</strong></div>
+                        <div class="col-4"><span t-esc="term.name if term else ''"/></div>
+                    </div>
+
+                    <div class="row" style="margin-top:5px;">
+                        <div class="col-3"><strong>Campus:</strong></div>
+                        <div class="col-3"><span t-esc="student_id.campus_id.name"/></div>
+                        <div class="col-2"><strong>Program:</strong></div>
+                        <div class="col-4"><span t-esc="student_id.program_id.name"/></div>
+                    </div>
+
+                    <hr/>
+                    <!--***** Attendance Detail *****-->
+                    <t t-if="student_courses">
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-2" style=" font-family: Times New Roman;">
+                                <strong>Total Absents</strong><br/><t t-esc="'{0:,.0f}'.format(absent)"/>
+                            </div>
+                            <div class="col-2" style=" font-family: Times New Roman;">
+                                <strong>Total Leaves</strong><br/><t t-esc="'{0:,.0f}'.format(leave)"/>
+                            </div>
+                            <div class="col-2" style=" font-family: Times New Roman;">
+                                <strong>Total Fines</strong><br/><t t-esc="'{0:,.0f}'.format(fine_amt)"/>
+                            </div>
+                            <div class="col-2" style=" font-family: Times New Roman;">
+                                <strong>Total Discount</strong><br/><t t-esc="'{0:,.0f}'.format(discount_amt)"/>
+                            </div>
+<!--                            <div class="col-2" style=" font-family: Times New Roman;">-->
+<!--                                <strong>Total Paid</strong><br/><t t-esc="'{0:,.0f}'.format(paid_amt)"/>-->
+<!--                            </div>-->
+<!--                            <div class="col-2" style=" font-family: Times New Roman;">-->
+<!--                                <strong>Total Due</strong><br/><t t-esc="'{0:,.0f}'.format(due_amt)"/>-->
+<!--                            </div>-->
+                        </div>
+
+
+                        <table id="invoice-report" style="margin-top:20px;">
+                            <t t-foreach="student_courses" t-as="course_line">
+                                <!--***** Course Detail *****-->
+                                <tr style="font-size:20px;font-weight:bold; color: blue; font-family: Times New Roman;">
+                                    <td colspan="9">
+                                        [<span t-esc="course_line['code']"/>]
+                                        <span t-esc="course_line['name']"/>
+                                        (<span t-esc="course_line['section']"/>)
+                                        <t t-if="course_line['course_status'] == 'Withdrawn'">
+                                            - Withdraw
+                                            (<span t-esc="course_line['withdraw_reason']"/>)
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <!--***** Course Header *****-->
+                                <tr style="text-align:center; font-family: Times New Roman;">
+                                    <th style="text-align:center;">Sr#</th>
+                                    <th style="text-align:center;">Term</th>
+                                    <th style="text-align:center;">Absent Date</th>
+                                    <th style="text-align:center;">Status</th>
+                                    <th style="text-align:center;">Fine Amount</th>
+                                    <th style="text-align:center;">Discount</th>
+                                    <th style="text-align:center;">Remarks</th>
+                                </tr>
+
+                                <!--***** Course Lines *****-->
+                                <t t-foreach="course_line['lines']" t-as="line">
+                                    <tr style="font-family: Times New Roman;">
+                                        <td><t t-esc="line_index+1"/></td>
+                                        <td><t t-esc="line['term']"/></td>
+                                        <td><t t-esc="line['absent_date']" t-options='{"widget": "date"}'/></td>
+                                        <td>
+                                            <t t-if="line['present'] and not line['came_late']">P</t>
+                                            <t t-if="line['present'] and line['came_late']">Late</t>
+                                            <t t-elif="line['leave']">Leave</t>
+                                            <t t-if="not line['present'] and not line['leave']">Absent</t>
+                                        </td>
+
+                                        <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(line['line_fine'])"/></td>
+                                        <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(line['line_discount'])"/></td>
+                                        <td><t t-esc="line['remarks']"/></td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td colspan="4"/>
+                                    <td style="text-align:right;font-weight:bold;font-size:15px;">
+                                        <t t-esc="'{0:,.0f}'.format(course_line['course_fine'])"/>
+                                    </td>
+                                    <td style="text-align:right;font-weight:bold;font-size:15px;">
+                                        <t t-esc="'{0:,.0f}'.format(course_line['course_discount'])"/>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </t>
+                        </table>
+                    </t>
+
+                    <!--***** Other Fine Detail *****-->
+                    <t t-if="other_fines">
+                        <div class="row" style="margin-top:50px;border-bottom:1px solid black;">
+                            <div class="col col-12" style="text-align:center;font-family: Times New Roman;">
+                                <span><strong>Other Fine Details</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top:10px;border-bottom:1px solid #D0D3D4;">
+                            <div class="col-3" style=" font-family: Times New Roman;">
+                                <strong>Total Fines</strong>
+                                <br/>
+                                <t t-esc="'{0:,.0f}'.format(total_other_fine)"/>
+                            </div>
+                            <div class="col-3" style=" font-family: Times New Roman;">
+                                <strong>Total Discount</strong>
+                                <br/>
+                                <t t-esc="'{0:,.0f}'.format(total_other_fine_discount)"/>
+                            </div>
+                            <div class="col-3" style=" font-family: Times New Roman;">
+                                <strong>Total Paid</strong>
+                                <br/>
+                                <t t-esc="'{0:,.0f}'.format(total_other_fine_paid)"/>
+                            </div>
+                            <div class="col-3" style=" font-family: Times New Roman;">
+                                <strong>Total Due</strong>
+                                <br/>
+                                <t t-esc="'{0:,.0f}'.format(total_other_fine_due)"/>
+                            </div>
+                        </div>
+
+                        <table id="invoice-report" style="margin-top:20px;">
+                            <!--***** Other Fine Header *****-->
+                            <tr style="text-align:center; font-family: Times New Roman;">
+                                <th style="text-align:center;">Sr#</th>
+                                <th style="text-align:center;">Term</th>
+                                <th style="text-align:center;">Fine Date</th>
+                                <th style="text-align:center;">Fine Type</th>
+                                <th style="text-align:center;">Fine Amount</th>
+                                <th style="text-align:center;">Discount Amount</th>
+                                <th style="text-align:center;">Due Amount</th>
+                                <th style="text-align:center;">Paid Amount</th>
+                                <th style="text-align:center;">Remarks</th>
+                            </tr>
+                            <t t-foreach="other_fines" t-as="other_line">
+                                <tr style="font-family: Times New Roman;">
+                                    <td><t t-esc="other_line_index+1"/></td>
+                                    <td><t t-esc="other_line['term']"/></td>
+                                    <td><t t-esc="other_line['date']" t-options='{"widget": "date"}'/></td>
+                                    <td><t t-esc="other_line['type']"/></td>
+
+                                    <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(other_line['amount'])"/></td>
+                                    <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(other_line['discount'])"/></td>
+                                    <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(other_line['due'])"/></td>
+                                    <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(other_line['paid_amount'])"/></td>
+                                    <td><t t-esc="line['remarks']"/></td>
+                                </tr>
+                            </t>
+                        </table>
+                    </t>
+
+                    <!--***** Library Fine Detail *****-->
+                    <t t-if="library_fine_lines">
+                        <div class="row" style="margin-top:50px;border-bottom:1px solid black;">
+                            <div class="col col-12" style="text-align:center;font-family: Times New Roman;">
+                                <span><strong>Library Fine Details</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top:10px;border-bottom:1px solid #D0D3D4;">
+                            <div class="col-3" style=" font-family: Times New Roman;">
+                                <strong>Total Fines</strong>
+                                <br/>
+                                <t t-esc="'{0:,.0f}'.format(total_library_fine)"/>
+                            </div>
+                            <div class="col-3" style=" font-family: Times New Roman;">
+                                <strong>Total Discount</strong>
+                                <br/>
+                                <t t-esc="'{0:,.0f}'.format(total_library_fine_discount)"/>
+                            </div>
+                            <div class="col-3" style=" font-family: Times New Roman;">
+                                <strong>Total Paid</strong>
+                                <br/>
+                                <t t-esc="'{0:,.0f}'.format(total_library_fine_paid)"/>
+                            </div>
+                            <div class="col-3" style=" font-family: Times New Roman;">
+                                <strong>Total Due</strong>
+                                <br/>
+                                <t t-esc="'{0:,.0f}'.format(total_library_fine_due)"/>
+                            </div>
+                        </div>
+
+                        <table id="invoice-report" style="margin-top:20px;">
+                            <!--***** Library Fines Header *****-->
+                            <tr style="text-align:center; font-family: Times New Roman;">
+                                <th style="text-align:center;">Sr#</th>
+                                <th style="text-align:center;">Fine Date</th>
+                                <th style="text-align:center;">Fine Type</th>
+                                <th style="text-align:center;">Fine Amount</th>
+                                <th style="text-align:center;">Discount Amount</th>
+                                <th style="text-align:center;">Due Amount</th>
+                                <th style="text-align:center;">Paid Amount</th>
+                                <th style="text-align:center;">Remarks</th>
+                            </tr>
+                            <t t-foreach="library_fine_lines" t-as="library_line">
+                                <tr style="font-family: Times New Roman;">
+                                    <td><t t-esc="library_line_index+1"/></td>
+                                    <td><t t-esc="library_line['date']" t-options='{"widget": "date"}'/> </td>
+                                    <td><t t-esc="library_line['type']"/></td>
+
+                                    <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(library_line['amount'])"/></td>
+                                    <td style="text-align:right;"><t t-esc="library_line['discount']"/></td>
+                                    <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(library_line['due'])"/></td>
+                                    <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(library_line['paid_amount'])"/></td>
+                                    <td><t t-esc="library_line['remarks']"/></td>
+                                </tr>
+                            </t>
+                        </table>
+                    </t>
+
+                    <!--***** Cumulative Fine Detail *****-->
+                    <div class="row" style="margin-top:50px;border-bottom:1px solid black;">
+                        <div class="col col-12" style="text-align:center;font-family: Times New Roman;">
+                            <span><strong>Cumulative Fine Details</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:10px;border-bottom:1px solid black;">
+                        <div class="col-3" style=" font-family: Times New Roman;">
+                            <strong>Total Fines</strong>
+                            <br/>
+                            <t t-esc="'{0:,.0f}'.format(totals['fine'])"/>
+                        </div>
+<!--                        <div class="col-3" style=" font-family: Times New Roman;">-->
+<!--                            <strong>Total Discount</strong>-->
+<!--                            <br/>-->
+<!--                            <t t-esc="'{0:,.0f}'.format(totals['discount'])"/>-->
+<!--                        </div>-->
+<!--                        <div class="col-3" style=" font-family: Times New Roman;">-->
+<!--                            <strong>Total Paid</strong>-->
+<!--                            <br/>-->
+<!--                            <t t-esc="'{0:,.0f}'.format(totals['paid'])"/>-->
+<!--                        </div>-->
+<!--                        <div class="col-3" style=" font-family: Times New Roman;">-->
+<!--                            <strong>Total Due</strong>-->
+<!--                            <br/>-->
+<!--                            <t t-esc="'{0:,.0f}'.format(totals['due'])"/>-->
+<!--                        </div>-->
+                    </div>
+
+                    <!-- Print Date Time and User -->
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="row" style='padding:6px;margin-top:-5px;'>
+                        <div class="col col-3" style="font-weight:bold;font-size:15px;font-family: Times New Roman;">
+                            <span>Print Date:</span>
+                        </div>
+                        <div class="col col-3" style="text-align:left;font-family: Times New Roman;">
+                            <div style='font-size:15px;'>
+                                <span style="padding-left:5px;" t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y %H:%M')"/>
+                            </div>
+                        </div>
+                        <div class="col col-3" style="font-weight:bold;font-size:15px;font-family: Times New Roman;">
+                            <span>Print User:</span>
+                        </div>
+                        <div class="col col-3">
+                            <div style='font-size:15px;font-family: Times New Roman;'>
+                                <span style="padding-left:5px;" t-esc="request.env.user.name"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </t>
+            </div>
+        </t>
+    </template>
+
+</odoo>

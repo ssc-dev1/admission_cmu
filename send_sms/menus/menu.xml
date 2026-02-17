@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+            id="menu_send_sms_root"
+            name="SMS Gateway"
+            groups="send_sms.group_odoo_sms_user,send_sms.group_odoo_sms_manager"
+            web_icon="send_sms,static/description/icon.png"
+            sequence="100"/>
+
+    <menuitem
+            id="menu_send_sms_main"
+            name="Main"
+            groups="send_sms.group_odoo_sms_user,send_sms.group_odoo_sms_manager"
+            parent="menu_send_sms_root"
+            sequence="10"/>
+
+    <menuitem
+            id="menu_send_sms_history_main"
+            name="SMS History"
+            groups="send_sms.group_odoo_sms_user,send_sms.group_odoo_sms_manager"
+            parent="menu_send_sms_root"
+            sequence="20"/>
+
+    <menuitem
+            id="menu_send_sms_report"
+            name="Reports"
+            parent="menu_send_sms_root"
+            groups="send_sms.group_odoo_sms_user,send_sms.group_odoo_sms_manager"
+            sequence="80"/>
+
+    <menuitem
+            id="menu_send_sms_configuration"
+            parent="menu_send_sms_root"
+            name="Configuration"
+            groups="send_sms.group_odoo_sms_manager"
+            sequence="100"/>
+</odoo>

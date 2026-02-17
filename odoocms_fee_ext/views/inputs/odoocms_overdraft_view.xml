@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_overdraft_tree" model="ir.ui.view">
+            <field name="name">odoocms.overdraft.tree</field>
+            <field name="model">odoocms.overdraft</field>
+            <field name="arch" type="xml">
+                <tree string="Over Draft (OD)" decoration-success="state != 'cancel'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="session_id"/>
+                    <field name="career_id"/>
+                    <field name="term_id"/>
+                    <field name="institute_id" optional="1"/>
+                    <field name="campus_id" optional="1"/>
+                    <field name="date"/>
+                    <field name="amount" optional="show"/>
+                    <field name="company_id" optional="hide" groups="base.group_multi_company"/>
+                    <field name="state" widget="badge" decoration-primary="state=='draft'" decoration-success="state=='charged'" decoration-danger="state=='cancel'"/>
+                    <field name="create_uid" string="Created By" optional="hide" widget="many2one_avatar_user"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_overdraft_form" model="ir.ui.view">
+            <field name="name">odoocms.overdraft.form</field>
+            <field name="model">odoocms.overdraft</field>
+            <field name="arch" type="xml">
+                <form string="OverDraft (OD)">
+                    <header>
+<!--                        <button name="action_done" states="draft" string="Confirm" type="object" class="oe_highlight" groups="account.group_account_manager"/>-->
+                        <button name="action_cancel" states="draft" string="Cancel" type="object" class="oe_highlight" groups="account.group_account_manager"/>
+                        <button name="action_reset_to_draft" states="cancel" string="Reset To Draft" type="object" class="oe_highlight" groups="account.group_account_manager"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="student_id" required="1" attrs="{'readonly':[('state','!=', 'draft')]}"
+                                       options="{'no_quick_create':True,'no_create_edit':True,'no_create':True,}"/>
+                                <field name="campus_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="career_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="session_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="institute_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="program_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="batch_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="discipline_id" readonly="1" options="{'no_open':True,}"/>
+                            </group>
+                            <group>
+                                <field name="term_id" required="1" attrs="{'readonly':[('state','!=', 'draft')]}" options="{'no_quick_create':True,'no_create_edit':True,'no_create':True,}"/>
+                                <field name="date" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="amount" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="student_ledger_id" readonly="1" options="{'no_quick_create':True,'no_create_edit':True,'no_create':True,}"/>
+                                <field name="company_id" attrs="{'readonly': [('state','!=','draft')]}" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="notes" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_overdraft_search" model="ir.ui.view">
+            <field name="name">odoocms.overdraft.search</field>
+            <field name="model">odoocms.overdraft</field>
+            <field name="arch" type="xml">
+                <search string="OverDraft (OD)">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_by_status" string="Status" domain="[]" context="{'group_by':'state'}"/>
+                        <filter name="group_by_student" string="Student" domain="[]" context="{'group_by':'student_id'}"/>
+                        <filter name="group_by_session" string="Session" domain="[]" context="{'group_by':'session_id'}"/>
+                        <filter name="group_career" string="Career" domain="[]" context="{'group_by':'career_id'}"/>
+                        <filter name="group_term" string="Term" domain="[]" context="{'group_by':'term_id'}"/>
+                        <filter name="group_institute" string="Institute" domain="[]" context="{'group_by':'institute_id'}"/>
+                        <filter name="group_by_date" string="Date" domain="[]" context="{'group_by':'date'}"/>
+                        <filter name="group_by_company" string="Company" domain="[]" context="{'group_by':'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_odoocms_overdraft" model="ir.actions.act_window">
+            <field name="name">OverDraft (OD)</field>
+            <field name="res_model">odoocms.overdraft</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_overdraft"
+                name="OverDraft"
+                parent="odoocms_fee_ext.menu_fee_ad_hoc_charges_main"
+                action="action_odoocms_overdraft"
+                sequence="18"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+        />
+
+    </data>
+</odoo>

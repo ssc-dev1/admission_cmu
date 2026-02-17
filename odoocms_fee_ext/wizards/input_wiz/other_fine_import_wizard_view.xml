@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="other_fine_import_wiz_view" model="ir.ui.view">
+            <field name="name">wizard for import Other Fines From CSV Or Excel file</field>
+            <field name="model">other.fine.import.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Import Other Fine From Excel / CSV File">
+                    <group>
+                        <group>
+                            <field name="import_option" widget="radio"/>
+                            <field name="sequence_opt" invisible="1"/>
+                            <field name="file" filename="name"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="action_other_fine_import" string="Import File" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_other_fine_import_wiz" model="ir.actions.act_window">
+            <field name="name">Import Other Fines</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">other.fine.import.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                id="menu_other_fine_import_wizard"
+                name="Import Other Fine"
+                action="action_other_fine_import_wiz"
+                parent="odoocms_fee_ext.menu_fee_ad_hoc_charges_main"
+                groups="odoocms_fee.group_fee_manager,odoocms_fee.group_fee_coordinator"
+                sequence="30"/>
+    </data>
+</odoo>

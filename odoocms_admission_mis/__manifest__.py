@@ -1,0 +1,31 @@
+{
+    'name': "OdooCMS Admission MIS",
+    'version': '15.0',
+    'license': 'LGPL-3',
+    'category': 'OdooCMS',
+    'sequence': 4,
+    'summary': "OdooCMS Admission MIS",
+    'author': 'MIS',
+    'company': '',
+    'website': "",
+    'depends': ['odoocms_base', 'mail', 'odoocms_admission', 'odoocms_admission_ucp', 'odoocms_merit_ucp'],
+    'data': [
+    'security/ir.model.access.csv',
+    'data/mail_template.xml',
+    'data/report.xml',
+    'data/export_picture_action.xml',
+    'views/ucp_welcome_letter.xml',
+    "views/admission_register_welcome_tab_inherit.xml",
+    'views/application_view_inherit.xml',
+    'views/merit_register_inherit.xml',
+    'views/res_company_views.xml',
+    'views/admission_register_programs_inherit.xml',
+    # Program views - MUST be loaded last after model is available
+    'data/program_views.xml',
+
+    ],
+    'demo': [],
+    'installable': True,
+    'auto_install': False,
+    'application': True,
+}

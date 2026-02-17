@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_odoocms_student_registration_load_tree" model="ir.ui.view">
+            <field name="name">odoocms.student.registration.load.tree</field>
+            <field name="model">odoocms.student.registration.load</field>
+            <field name="arch" type="xml">
+                <tree string="Enrollment Load">
+                    <field name="sequence" widget="handle"/>
+                    <field name="type"/>
+                    <field name="min"/>
+                    <field name="max"/>
+                    <field name="max_courses"/>
+                    <field name="non" optional="show"/>
+                    <field name="repeat" optional="show"/>
+                    <field name="career_id" optional="show"
+                        options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    <field name="program_id" optional="show"
+                        options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    <field name="batch_id" optional="show"
+                        options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    <field name="student_id" optional="hide"
+                        options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    <field name="name" optional="hide"/>
+                    <field name="default_global" optional="show"/>
+                    <!--                    <field name="domain" widget="domaintree" options="{'model': 'odoocms.student', 'in_dialog': True}"/>-->
+                </tree>
+            </field>
+        </record>
+
+    <record id="view_odoocms_student_registration_load_form" model="ir.ui.view">
+            <field name="name">odoocms.student.registration.load.form</field>
+            <field name="model">odoocms.student.registration.load</field>
+            <field name="arch" type="xml">
+                <form string="Enrollment Load">
+                    <sheet>
+                        <field name="name"/>
+                        <group>
+                            <group>
+                                <field name="type" required="1"/>
+                                <field name="min"/>
+                                <field name="max"/>
+                                <field name="max_courses"/>
+                                <field name="non"/>
+                                <field name="repeat"/>
+                            </group>
+                            <group>
+                                <field name="default_global"/>
+                                <field name="career_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="program_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="batch_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="student_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+<!--                                <field name="tag_id"-->
+<!--                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>-->
+
+                            </group>
+                            <group>
+                                <field name="domain" widget="domain" options="{'model': 'odoocms.student', 'in_dialog': True}"/>
+                            </group>
+                        </group>
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+
+
+                </form>
+            </field>
+        </record>
+
+    <record id="view_odoocms_student_registration_load_search" model="ir.ui.view">
+        <field name="name">odoocms.student.registration.load.search</field>
+        <field name="model">odoocms.student.registration.load</field>
+        <field name="arch" type="xml">
+            <search string="Enrollment Load">
+                <field name="type"/>
+                <newline/>
+                <filter name='global' string="Global" domain="[('default_global','=',True)]"/>
+                <filter name='career' string="Career Level" domain="[('career_id','!=',False)]"/>
+                <filter name='batch' string="Batch Level" domain="[('batch_id','!=',False)]"/>
+                <filter name='program' string="Program Level" domain="[('program_id','!=',False)]"/>
+                <filter name='student' string="Student Level" domain="[('student_id','!=',False)]"/>
+                <filter name='tag' string="Student Tag" domain="[('tag_id','!=',False)]"/>
+                <newline/>
+                <group expand="0" string="Group By...">
+                    <filter name="type_group" string="Type" domain="[]" context="{'group_by':'type'}"/>
+                    <filter name="tag_group" string="Tag" domain="[]" context="{'group_by':'tag_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_odoocms_student_registration_load" model="ir.actions.act_window">
+        <field name="name">Student Enrollment Load</field>
+        <field name="res_model">odoocms.student.registration.load</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_group_by': 1,'default_default_global': 0}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Enrollment Load
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+                id="menu_odoocms_student_registration_load"
+                name="Student Enrollment Load"
+                action="action_odoocms_student_registration_load"
+                parent="menu_registration_configuration"
+                sequence="4"/>
+
+<!--    <record id="view_odoocms_program_form_registration_inherit" model="ir.ui.view">-->
+<!--        <field name="name">odoocms.program.form.reg.inherit</field>-->
+<!--        <field name="model">odoocms.program</field>-->
+<!--        <field name="inherit_id" ref="odoocms.view_odoocms_program_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//page[@name = 'users']" position="after">-->
+<!--                <page name="settings" string="Settings">-->
+<!--                    <group>-->
+<!--                        <field name="registration_domain" widget="domain" options="{'model': 'odoocms.class.primary', 'in_dialog': True}"/>-->
+<!--                        <field name="elec_registration_domain" widget="domain" options="{'model': 'odoocms.class.primary', 'in_dialog': True}"/>-->
+<!--                        <field name="additional_registration_domain" widget="domain" options="{'model': 'odoocms.class.primary', 'in_dialog': True}"/>-->
+<!--                        <field name="minor_registration_domain" widget="domain" options="{'model': 'odoocms.class.primary', 'in_dialog': True}"/>-->
+<!--                        <field name="repeat_registration_domain" widget="domain" options="{'model': 'odoocms.class.primary', 'in_dialog': True}"/>-->
+<!--                    </group>-->
+<!--                </page>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+</odoo>

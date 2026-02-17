@@ -1,0 +1,12 @@
+/* Styling to match provided screenshot (dark-blue accordion header, spacing) */
+.dunya_page_heading h1{font-size:32px;margin:20px 0;color:#111}
+.accordion-button{background:#0f3350;color:#fff;border-radius:2px}
+.accordion-button:not(.collapsed){background:#0f3350;color:#fff}
+.accordion-item{margin-bottom:12px}
+.accordion-body{background:#fff;padding:20px}
+.floating-label{position:relative;top:-32px;left:12px;font-size:12px;color:#fff}
+.form-control{border-radius:2px}
+.btn-primary{background:#0f6fb7;border:none}
+/* make headers match screenshot width and spacing */
+.dunya_page_heading{padding-top:18px;padding-bottom:8px}
+.container{max-width:1100px}

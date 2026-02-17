@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="fee_voucher_ucp" name="Fee Voucher UCP">
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/steps/invoice.js"></script>
+
+        <input type='hidden' id='fee_voucher_state_ucp' t-att-value='application_id.fee_voucher_state'></input>
+        <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" onclick="$('#fee_voucher_ucp_div').slideToggle(1000); $('#fee_voucher_dropdpown').toggleClass('fa-angle-down fa-angle-up');">
+            <a class="btn btn-link"><i style='color: white;font-size: 25px;' class="fa-solid fa-money-check-dollar float-left"></i><h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/></h2></a>
+            <a><i id='fee_voucher_dropdpown' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i></a>
+        </div>
+        <div id="fee_voucher_ucp_div" class="row container-fluid mt-3 collapse_div">
+            <div t-attf-style="{{'display:none' if application_id.state == 'no' else '' }}" class="mb-1 col-md-8">
+                <a href='/download/invoice/admission/' target='_blank' id='fee_button_ucp'>
+                    <button role='button' style='color:white' class="btn btn-outline-success float-right"><i class="fa fa-download"></i> Application Processing Fee Voucher</button>
+                </a>
+            </div>
+            <br/>
+            <t t-if="application_id.fee_voucher_state != 'verify'">
+                <div class='col-8' t-att-style="'display:none' if fee_voucher_state == 'no' else 'display:block'">
+                    <form id='fee_voucher_form_ucp' class="row g-3">
+                        <input type='hidden' name='step_name' value='fee_voucher'></input>
+                        <input type="hidden" id='step_no_voucher' name="step_no" t-att-value='counter_step' />
+                        <div class='row'>
+                            <div class="mb-1 mt-3 col-md-4 ">
+                                <img t-att-src="image_data_uri(application_id.voucher_image) if application_id.voucher_image else '/odoocms_admission_portal/static/img/upload2.jpg'" id='fee_voucher_preview' onclick="document.getElementById('fee_voucher_image').click()" class="img-thumbnail" alt="..."></img>
+                                <input style='display:None' id="fee_voucher_image" onChange='image_preview_func(this)' accept='image/*' type="file"></input>
+                                <label  class='form-label' for='fee_voucher_image'>Upload Invoice</label>
+                            </div>
+                            <br/>
+                            <div class="mb-1 col-md-7 mt-3">
+                                <div class="mb-5 col-md-12">
+                                    <input required="True" t-att-value='application_id.voucher_number' class="form-control" type="number" name="voucher_number" id="voucher_number"/>
+                                    <label for="voucher_number" class="floating-label">Receipt Number*</label>
+                                </div>
+
+                                <div class="mb-1 col-md-12">
+                                    <input class="form-control" t-att-value='application_id.voucher_date' type="date" name="deposit_date" id="deposit_date"/>
+                                    <span class='floating-label' for="deposit_date">Deposit Date</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 ">
+                            <input type="submit" style='display:none' class="btn btn-primary float-right"/>
+                        </div>
+                    </form>
+                    <button onclick="check_form_validation(this)" t-attf-style="border:none;{{'' if application_id.state == 'submit' else 'display:none1' }}" class="btn btn-primary ml-1 float-right">Update</button>
+                </div>
+            </t>
+            <t t-if="application_id.fee_voucher_state== 'verify'">
+                <p>Your Fee Verified! Please Skip This Step</p>
+                <div class='col-6'>
+                    <input type="hidden" id='step_no_voucher_skip' name="step_no" t-att-value='counter_step' />
+                    <button  id='fee_voucher_skip' style='background-color:#875A7B;border:None' class="btn btn-primary float-left">Skip</button>
+                </div>
+
+            </t>
+        </div>
+        <br/>
+    </template>
+</odoo>

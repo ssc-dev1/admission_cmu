@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_odoocms_merit_registers,access.odoocms.merit.registers,model_odoocms_merit_registers,,1,1,1,0
+access_odoocms_merit_register_line,access.odoocms.merit.register.line,model_odoocms_merit_register_line,,1,1,1,1
+access_odoocms_merit_test_aggregate,access.odoocms.merit.test.aggregate,model_odoocms_merit_test_aggregate,,1,1,1,1
+access_odoocms_merit_program,access.odoocms.merit.program,model_odoocms_merit_program,,1,1,1,1
+access_invoice_list,access.invoice.list,model_invoice_list,,1,1,1,1
+access_cbt_section_marks,access.cbt.section.marks,model_cbt_section_marks,,1,1,1,1
+access_cbt_test_aggregate,access.cbt.test.aggregate,model_cbt_test_aggregate,,1,1,1,1
+access_application_transfer_register,application.transfer.register,model_application_transfer_register,base.group_user,1,1,1,1
+access_application_transfer_register_line,application.transfer.register.line,model_application_transfer_register_line,base.group_user,1,1,1,1

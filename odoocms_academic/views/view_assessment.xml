@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <record id="odoocms_assessment_component_tree" model="ir.ui.view">
+            <field name="name">odoocms.assessment.component.tree</field>
+            <field name="model">odoocms.assessment.component</field>
+            <field name="arch" type="xml">
+                <tree create="false" delete="false">
+                    <field name="class_id" readonly="1"/>
+                    <field name="type_id" readonly="1"/>
+                    <field name="weightage" readonly="1"/>
+                    <field name="consideration_avg" readonly="1"/>
+                    <field name="consideration_top" readonly="1"/>
+                    <field name="best" readonly="1"/>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="odoocms_assessment_tree" model="ir.ui.view">
+            <field name="name">odoocms.assessment.tree</field>
+            <field name="model">odoocms.assessment</field>
+            <field name="arch" type="xml">
+                <tree create="false" delete="false">
+                    <field name="assessment_component_id" readonly="1"/>
+                    <field name="name" readonly="1"/>
+                    <field name="code" readonly="1" optional="hide"/>
+                    <field name="class_id" readonly="1"/>
+                    <field name="faculty_staff_id" readonly="1"/>
+                    <field name="date_submission" readonly="1"/>
+                    <field name="max_marks" readonly="1"/>
+                    <field name="average" readonly="1"/>
+                    <field name="is_visible" readonly="1" optional="show"/>
+                    <field name="lock_date" readonly="1" optional="hide"/>
+<!--                    <field name="remarks" required="1"/>-->
+                    <field name="term_id" optional="hide"/>
+                    <field name="state" invisible="1"/>
+                    <field name="is_approved" invisible="1"/>
+                    <field name="is_locked" invisible="1"/>
+                    <field name="state" invisible="1"/>
+                    <button string="Approve" name="action_approve" type="object"
+                        icon="fa-thumbs-up"
+                            attrs="{'invisible': ['|',('is_approved','=',True),('is_locked','=',False)]}"/>
+
+                    <button string="Refuse" name="action_refuse" type="object"
+                        icon="fa-times" attrs="{'invisible': ['|',('state','not in',('draft','current','lock')),('is_locked','=',False)]}" />  <!--  attrs="{'invisible': [('is_approved','=',False)]}" -->
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="odoocms_assessment_form" model="ir.ui.view">
+            <field name="name">odoocms.assessment.form</field>
+            <field name="model">odoocms.assessment</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="generate_sheet" type="object" class="oe_highlight"
+                            string="Generate Sheet" groups="odoocms.group_cms_manager"
+                            help="Click to Generate Sheet"
+                            attrs="{'invisible': [('assessment_lines', '!=',[])]}"
+                            />
+                        <field name="state" readonly="1" widget="statusbar" statusbar_visible="draft,current,submit,disposal,notify"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" placeholder="Eg: Quiz 1"/>
+                                <field name="code"/>
+                                <field name="assessment_component_id"
+                                    domain="[('class_id','=',class_id)]"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                            <group>
+                                <field name="class_id" readonly="1"/>
+                                <field name="term_id"/>
+                                <!--<field name="scheme_line_id"/>
+                                <field name="teacher_id"/>-->
+                            </group>
+                            <group name="marks">
+                                <field name="date_assessment"/>
+                                <field name="max_marks"
+                                    attrs="{'readonly': [('child_ids','!=',[])]}"/>
+                                <field name="weightage"/>
+                            </group>
+                            <group name="parent">
+                                <field name="parent_id"
+                                    attrs="{'invisible': [('child_ids','!=',[])]}"
+                                    domain="[('assessment_component_id','=',assessment_component_id),('id','!=',id),('parent_id','=',False)]"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="min"/>
+                                <field name="max"/>
+                                <field name="average"/>
+                                <field name="std"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Assessment Result">
+                                <field name="assessment_lines" nolabel="1">
+                                    <tree string="Assessment Result" editable="bottom" create="false" delete="false">
+                                        <field name="student_id" readonly="1"/>
+                                        <field name="max_marks"/>
+                                        <field name="obtained_marks"
+                                            attrs="{'readonly': [('can_edit','=',False)]}"/>
+                                        <field name="percentage"/>
+                                        <field name="can_edit" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Sub Assessments" attrs="{'invisible': [('child_ids','=',[])]}">
+                                <field name="child_ids">
+                                    <tree create="false" delete="false">
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="assessment_component_id" optional="hide"/>
+                                        <field name="term_id" optional="hide"/>
+                                        <field name="class_id" optional="hide"/>
+                                        <field name="date_assessment" optional="hide"/>
+                                        <field name="max_marks"/>
+<!--                                        <field name="weightage"/>-->
+                                        <field name="average"/>
+                                        <field name="state" invisible="1"/>
+                                        <field name="can_delete" invisible="1"/>
+                                        <button name="assessment_result" type="object" string="Result"/>
+                                    <button name="unlink" class="fa fa-trash-o" type="object" title="Unlink"
+                                        attrs="{'invisible': [('can_delete', '=', False)]}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="odoocms_assessment_search" model="ir.ui.view">
+            <field name="name">odoocms.assessment.search</field>
+            <field name="model">odoocms.assessment</field>
+            <field eval="14" name="priority"/>
+            <field name="arch" type="xml">
+                <search string="Assessments">
+                    <field name="assessment_component_id"/>
+                    <field name="name"/>
+                    <field name="class_id"/>
+                    <field name="faculty_staff_id"/>
+                    <field name="institute_id"/>
+                    <field name="department_id"/>
+                    <field name="program_id"/>
+                    <field name="batch_id"/>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter context="{'group_by':'assessment_component_id'}" domain="[]" name="grp_assessment_component_id" string="Assessment Type"/>
+                        <filter context="{'group_by':'class_id'}" domain="[]" name="grp_class" string="Class"/>
+                        <filter context="{'group_by':'faculty_staff_id'}" domain="[]" name="grp_teacher" string="Teacher"/>
+                        <filter context="{'group_by':'date_submission'}" domain="[]" name="grp_date_submission" string="Due Date"/>
+                        <filter context="{'group_by':'lock_date'}" domain="[]" name="grp_lock_dater" string="Lock/Submit Date"/>
+                        <newline/>
+                        <filter context="{'group_by':'institute_id'}" domain="[]" name="grp_institute" string="Faculty/Institute"/>
+                        <filter context="{'group_by':'department_id'}" domain="[]" name="grp_department" string="Department"/>
+                        <filter context="{'group_by':'program_id'}" domain="[]" name="grp_program" string="Program"/>
+                        <filter context="{'group_by':'batch_id'}" domain="[]" name="grp_batch" string="Batch"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="odoocms_assessment_line_tree" model="ir.ui.view">
+            <field name="name">odoocms.assessment.line.tree</field>
+            <field name="model">odoocms.assessment.line</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="student_id"/>
+                    <field name="assessment_id"/>
+                    <field name="max_marks"/>
+                    <field name="obtained_marks"/>
+                    <field name="percentage"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Assessment Summary -->
+        <record id="odoocms_assessment_summary_form" model="ir.ui.view">
+            <field name="name">odoocms.assessment.summary.form</field>
+            <field name="model">odoocms.assessment.summary</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false" delete="false">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="class_id" readonly="1"/>
+                                <field name="term_id"/>
+                            </group>
+                            <group>
+                                <field name="student_id" readonly="1"/>
+                                <field name="assessment_component_id" readonly="1"/>
+                                <field name="percentage"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <field name="assessment_lines" nolabel="1" readonly="1">
+                                <tree string="Assessment Result" edit="false" create="false" delete="false">
+                                    <field name="assessment_id"/>
+                                    <field name="student_id"/>
+                                    <field name="max_marks"/>
+                                    <field name="obtained_marks"/>
+                                    <field name="percentage"/>
+                                    <field name="weightage" optional="hide"/>
+                                    <field name="result" optional="hide"/>
+                                </tree>
+                                <form edit="false" create="false" delete="false">
+                                    <group>
+                                        <group>
+                                            <field name="student_id" readonly="1"/>
+                                            <field name="assessment_id" readonly="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="max_marks"/>
+                                            <field name="obtained_marks" readonly="1"/>
+                                            <field name="percentage"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="odoocms_assessment_summary_tree" model="ir.ui.view">
+            <field name="name">odoocms.assessment.summary.tree</field>
+            <field name="model">odoocms.assessment.summary</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="class_id"/>
+                    <field name="term_id"/>
+                    <field name="student_id"/>
+                    <field name="assessment_component_id"/>
+                    <field name="percentage"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_assessment_component" model="ir.actions.act_window">
+            <field name="name">Assessment Components</field>
+            <field name="res_model">odoocms.assessment.component</field>
+            <field name="view_mode">tree</field>
+            <field name="target">current</field>
+        </record>
+
+
+        <record id="action_odoocms_assessment" model="ir.actions.act_window">
+            <field name="name">Unapproved Assessments</field>
+            <field name="res_model">odoocms.assessment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="domain">[('is_locked','=',True),('is_approved','=',False)]</field>
+        </record>
+
+         <record id="action_odoocms_assessment_approved" model="ir.actions.act_window">
+            <field name="name">Approved Assessments</field>
+            <field name="res_model">odoocms.assessment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="domain">[('is_locked','=',True),('is_approved','=',True)]</field>
+        </record>
+
+        <record id="action_odoocms_assessment_new" model="ir.actions.act_window">
+            <field name="name">New Assessments</field>
+            <field name="res_model">odoocms.assessment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="domain">[('is_locked','=',False)]</field>
+        </record>
+
+        <record id="action_odoocms_assessment_line" model="ir.actions.act_window">
+            <field name="name">Assessment Line</field>
+            <field name="res_model">odoocms.assessment.line</field>
+            <field name="view_mode">tree</field>
+            <field name="target">current</field>
+        </record>
+
+        <record id="action_odoocms_assessment_summary" model="ir.actions.act_window">
+            <field name="name">Assessment</field>
+            <field name="res_model">odoocms.assessment.summary</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+
+       <menuitem
+            id="menu_odoocms_class_assessment_root"
+            name="Class Assessments"
+            parent="menu_odoocms_class_activities_root"
+            groups="odoocms_academic.group_academic_coordinator,odoocms.group_cms_manager"
+            sequence="10"/>
+
+    <menuitem
+            id="menu_odoocms_class_assessment"
+            name="Unapproved Assessments"
+            parent="menu_odoocms_class_assessment_root"
+            action="action_odoocms_assessment"
+            groups="odoocms_academic.group_academic_coordinator,odoocms.group_cms_manager"
+            sequence="10"/>
+
+    <menuitem
+            id="menu_odoocms_class_assessment_approved"
+            name="Approved Assessments"
+            parent="menu_odoocms_class_assessment_root"
+            action="action_odoocms_assessment_approved"
+            groups="odoocms_academic.group_academic_coordinator,odoocms.group_cms_manager"
+            sequence="20"/>
+
+    <menuitem
+            id="menu_odoocms_class_assessment_new"
+            name="New Assessments"
+            parent="menu_odoocms_class_assessment_root"
+            action="action_odoocms_assessment_new"
+            groups="odoocms_academic.group_academic_coordinator,odoocms.group_cms_manager"
+            sequence="20"/>
+
+    <menuitem
+            id="menu_odoocms_class_assessment_component"
+            name="Assessment Components"
+            parent="menu_odoocms_class_assessment_root"
+            action="action_odoocms_assessment_component"
+            groups="odoocms.group_cms_manager"
+            sequence="20"/>
+
+    <menuitem
+            id="menu_odoocms_class_assessment_line"
+            name="Assessment Lines"
+            parent="menu_odoocms_class_assessment_root"
+            action="action_odoocms_assessment_line"
+            sequence="40"/>
+
+</odoo>

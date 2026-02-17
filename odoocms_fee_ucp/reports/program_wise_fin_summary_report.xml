@@ -1,0 +1,169 @@
+<odoo>
+    <template id="odoocms_fee.program_wise_fin_summary_report">
+        <t t-call="web.html_container">
+            <div class="page" style="font-size: 16px; padding:10px ">
+                <t t-call="web.external_layout">
+                    <style>
+                        #invoice-report {
+                        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                        border-collapse: collapse;
+                        width: 100%;
+                        }
+
+                        #invoice-report td, #invoice-report th {
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                        }
+
+                        #invoice-report tr:nth-child(even){background-color: #f2f2f2;}
+
+                        #invoice-report tr:hover {background-color: #ddd;}
+
+                        #invoice-report th {
+                        padding-top: 12px;
+                        padding-bottom: 12px;
+                        text-align: left;
+                        background-color: #17134e;
+                        color: white;
+                        }
+                    </style>
+
+                    <div class="row" style="font-size:25px; font-weight:bold">
+                        <div class="col col-12" style="text-align:center">
+                            <span>Student Financial Report Summary (Program Wise)</span>
+                        </div>
+                    </div>
+
+                    <table id="invoice-report">
+                        <tr style="text-align:center;">
+                            <th>Sr#</th>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Faculty</th>
+                            <th>Program</th>
+                            <th>Term</th>
+                            <th>Type</th>
+                            <th>Admission</th>
+                            <th>Tuition</th>
+                            <th>Misc</th>
+                            <th>Hostel</th>
+                            <th>Fine</th>
+                            <th>Tax</th>
+                            <th style="text-align:center;">Amount</th>
+                        </tr>
+
+                        <t t-set="admission" t-value="0.0"/>
+                        <t t-set="tuition" t-value="0.0"/>
+                        <t t-set="misc" t-value="0.0"/>
+                        <t t-set="hostel" t-value="0.0"/>
+                        <t t-set="fine" t-value="0.0"/>
+                        <t t-set="tax" t-value="0.0"/>
+                        <t t-set="total_amount" t-value="0.0"/>
+
+                        <t t-foreach="invoice" t-as="inv">
+                            <tr style="font-size:12px;">
+                                <td>
+                                    <span t-esc="inv_index + 1 "/>
+                                </td>
+                                <td>
+                                    <span t-esc="inv.student_id.code"/>
+                                </td>
+                                <td>
+                                    <span t-esc="inv.student_id.name"/>
+                                </td>
+                                <td>
+                                    <span t-esc="inv.student_id.institute_id.code"/>
+                                </td>
+                                <td>
+                                    <span t-esc="inv.student_id.program_id.code"/>
+                                </td>
+                                <td>
+                                    <span t-esc="inv.term_id.code"/>
+                                </td>
+                                <td>
+                                    <t t-esc="dict(inv.fields_get(allfields=['challan_type'])['challan_type']['selection'])[inv.challan_type]"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="'{0:,.2f}'.format(inv.admission_fee)"/>
+                                    <t t-set="admission" t-value="admission + inv.admission_fee"/>
+                                </td>
+
+                                <td class="text-right">
+                                    <span t-esc="'{0:,.2f}'.format(inv.tuition_fee)"/>
+                                    <t t-set="tuition" t-value="tuition + inv.tuition_fee"/>
+                                </td>
+
+                                <td class="text-right">
+                                    <span t-esc="inv.misc_fee"/>
+                                    <t t-set="misc" t-value="misc + inv.misc_fee"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="'{0:,.2f}'.format(inv.hostel_fee)"/>
+                                    <t t-set="hostel" t-value="hostel + inv.hostel_fee"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="'{0:,.2f}'.format(inv.fine_amount)"/>
+                                    <t t-set="fine" t-value="fine + inv.fine_amount"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="'{0:,.2f}'.format(inv.tax_amount)"/>
+                                    <t t-set="tax" t-value="tax + inv.tax_amount"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="'{0:,.2f}'.format(inv.amount_residual)"/>
+                                    <t t-set="total_amount" t-value="total_amount + inv.amount_residual"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <tr>
+                            <td style="text-weight:bold" colspan="7">Total</td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(admission)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(tuition)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(misc)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(hostel)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(fine)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(tax)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="'{0:,.2f}'.format(total_amount)"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Print Date Time and User -->
+                    <br/>
+                    <div class="row" style='padding:6px;margin-top:-5px;'>
+                        <div class="col col-3" style="font-weight:bold;font-size:10px;">
+                            <span>Print Date:</span>
+                        </div>
+                        <div class="col col-3" style="text-align:left;">
+                            <div style='font-size:10px;'>
+                                <span style="padding-left:5px;" t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y %H:%M')"/>
+                            </div>
+                        </div>
+                        <div class="col col-3" style="font-weight:bold;font-size:9px;">
+                            <span>Print User:</span>
+                        </div>
+                        <div class="col col-3">
+                            <div style='font-size:10px;'>
+                                <span style="padding-left:5px;" t-esc="request.env.user.name"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+</odoo>

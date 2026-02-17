@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo noupdate='1'>
+    <data noupdate='1' >
+        <record id="secondry_education" model="odoocms.admission.education">
+            <field name="name">Secondary School Certificate</field>
+            <field name="code">ssc</field>
+        </record>
+        <record id="higher_education" model="odoocms.admission.education">
+            <field name="name">Higher Secondary School Education</field>
+            <field name="code">hssc</field>
+        </record>
+        <record id="graduate_education" model="odoocms.admission.education">
+            <field name="name">Graduate</field>
+            <field name="code">graduate</field>
+        </record>
+        <record id="ms_education" model="odoocms.admission.education">
+            <field name="name">Master</field>
+            <field name="code">master</field>
+        </record>
+    </data>
+
+</odoo>

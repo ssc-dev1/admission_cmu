@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_odoocms_auto_enrollment_form" model="ir.ui.view">
+            <field name="name">odoocms.auto.form</field>
+            <field name="model">odoocms.auto.enrollment</field>
+            <field name="arch" type="xml">
+                <form string="Auto Enrollment">
+                    <group>
+                        <field name="batch_id"
+                            options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        <field name="term_id"
+                            options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    </group>
+                    <footer>
+                        <button name="auto_enroll" string="Auto Enroll" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="act_odoocms_auto_enrollment" model="ir.actions.act_window">
+            <field name="name">Auto Enrollment</field>
+            <field name="res_model">odoocms.auto.enrollment</field>
+			<field name="binding_model_id" ref="model_odoocms_batch"/>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+<!--        <act_window-->
+<!--                id="act_odoocms_promote_students"-->
+<!--                name="Promote Students"-->
+<!--                binding_model="odoocms.batch"-->
+<!--                res_model="odoocms.promote.student"-->
+<!--                binding_views="form"-->
+<!--                view_mode="form"-->
+<!--                target="new"-->
+<!--                groups="odoocms.group_cms_user"/>-->
+
+
+    </data>
+</odoo>

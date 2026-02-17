@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_odoocms_department_tree" model="ir.ui.view">
+        <field name="name">odoocms.department.tree</field>
+        <field name="model">odoocms.department</field>
+        <field name="arch" type="xml">
+            <tree string="Department">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="institute_id"/>
+                <field name="campus_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_department_form" model="ir.ui.view">
+        <field name="name">odoocms.department.form</field>
+        <field name="model">odoocms.department</field>
+        <field name="arch" type="xml">
+            <form string="Department">
+                <sheet>
+                    <group string="Department">
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="effective_date"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group colspan="4">
+                        <field name="campus_id"/>
+                        <field name="institute_id" required="1"
+                            options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        <field name="parent_id"
+                                options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    </group>
+                    <notebook>
+                        <page name='programs' string="Programs">
+                            <field name="program_ids" context="{'default_department_id':id}">
+                                <tree>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="career_id"/>
+                                    <field name="effective_date"/>
+                                    <field name="active"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="childs" string="Sub Departments">
+                            <group colspan="4">
+                                <field name="child_ids" nolabel="1" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_odoocms_department_search" model="ir.ui.view">
+        <field name="name">odoocms.department.search</field>
+        <field name="model">odoocms.department</field>
+        <field name="arch" type="xml">
+            <search string="Department">
+                <field name="name"/>
+                <field name="code"/>
+                <newline/>
+                <group expand="0" string="Group By...">
+                    <filter string="Campus" domain="[]" name="campus_grp" context="{'group_by':'campus_id'}"/>
+                    <filter string="Institute" domain="[]" name="institute_grp" context="{'group_by':'institute_id'}"/>
+                </group>
+                <searchpanel>
+                    <field name="campus_id"/>
+                    <field name="institute_id"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="action_odoocms_department" model="ir.actions.act_window">
+        <field name="name">Department</field>
+        <field name="res_model">odoocms.department</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_odoocms_department_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the First Department here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_odoocms_department"
+            parent="menu_odoocms_organization_structure"
+            name="Departments"
+            action="action_odoocms_department"
+            sequence="30"/>
+
+</odoo>

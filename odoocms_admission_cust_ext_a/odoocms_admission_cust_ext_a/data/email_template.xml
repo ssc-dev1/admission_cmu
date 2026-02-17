@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="mail_template_pre_test_verification_confirm" model="mail.template">
+            <field name="name">Pre Test Verification</field>
+            <field name="model_id" ref="base.model_res_users" />
+            <field name="subject">Pre Test Verification</field>
+            <field name="email_from">{{ctx.get('email_from')}}</field>
+            <field name="email_to">{{ctx.get('email')}}</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%"
+                    style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:16px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <td width="370px" style="height:100%;width:280px;">
+                                <table height="100%" width="280" border="0"
+                                    style="box-sizing:border-box;border-collapse:collapse;background-color:#102b4c">
+                                    <tbody>
+                                        <tr height="50%">
+                                            <td style="vertical-align:top; text-align:center">
+                                                <img data-imagetype="External"
+                                                   t-attf-src="data:image/*;base64,{{ctx.get('logo')}}" t-att-alt="ctx.get('company_name')"
+                                                    style="border-style:none;box-sizing:border-box;vertical-align:middle;margin-top: 2em; width: 200px; height: 200px;"
+                                                    width="200px" height="200" />
+                                            </td>
+                                        </tr>
+                                        <tr height="50%" style="text-align:center; color:#fff">
+                                            <td valign="bottom" style="font-size: 16px;">
+                                                <a href="{{ctx.get('company_website')}}"
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff">
+                                                    <t t-out="ctx.get('company_website')" />
+                                                    <br />
+                                                </a>
+                                                <a href="mailto:{{ctx.get('company_email')}}"
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                    target="_blank" rel="noopener noreferrer">
+                                                     <t t-out="ctx.get('company_email')" />
+                                                </a>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                     <t t-out="ctx.get('company_phone')" />
+                                                </p>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                     <t t-out="ctx.get('company_address')" />
+                                                </p>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;font-size:20px;vertical-align:middle; display:inline-block;">
+                                                    &#160;
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="90%" style="padding:0 20px">
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
+                                    <tbody style="margin:0; padding:0">
+                                        <tr style="vertical-align:top"></tr>
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100">
+                                                    &#160;
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%;font-size:16px !important;" valign="top">
+                                                Dear <t t-out="ctx.get('applicant_name')" />
+                                                <br/><br/>
+                                                Your admission test has been exempted on the basis of your <t t-out="ctx.get('pre_test_name')" />-approved test claim.
+                                                <br/><br/>
+                                                Please be advised that you will have to provide a copy of the <t t-out="ctx.get('pre_test_name')" />-approved test result at the time of document submissions in the admission office.
+                                                <br/><br/>
+                                                Please wait for the merit list to be uploaded at <t t-out="ctx.get('company_name')" /> admission portal. Good Luck!
+                                                <br/><br/>
+                                                Should you have any queries, please feel free to email us at  <t t-out="ctx.get('company_email')" />
+                                                <br/><br/>
+                                                Admission Office
+                                                <br/>
+                                                 <t t-out="ctx.get('company_name')" />
+                                                <br/>
+                                                 <t t-out="ctx.get('company_address')" />
+                                                <br/>
+                                                 <t t-out="ctx.get('company_phone')" /> (9:00 am to 5:00 pm)
+                                                <br/>
+                                                 <t t-out="ctx.get('company_email')" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </field>
+            <field name="auto_delete" eval="True" />
+        </record>
+
+        <record id="mail_template_tuition_fee_verification_cust" model="mail.template">
+            <field name="name">Admission Fee Verification cust</field>
+            <field name="email_from">{{ ctx.get('company').admission_mail }}</field>
+            <field name="subject">Admission Fee Verification</field>
+            <field name="email_to">{{ ctx.get('email') }}</field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_admission_register" />
+            <field eval="True" name="auto_delete" />
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%"
+                    style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:14px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <td width="370px" style="height:100%;width:280px;">
+                                <table height="100%" width="280" border="0"
+                                    style="box-sizing:border-box;border-collapse:collapse;background-color:#102b4c">
+                                    <tbody>
+                                        <tr height="50%">
+                                            <td style="vertical-align:top; text-align:center">
+                                                <img data-imagetype="External" src="https://admission.cust.edu.pk/web/image/293-d0d1836c/logo%20%281%29.png?access_token=6a2dc003-beba-429a-9ac7-e759a915afb3" style="border-style: none; box-sizing: border-box; vertical-align: middle; margin-top: 2em; width: 200px; height: 200px; object-fit: cover;" width="200" height="200"/>
+                                            </td>
+                                        </tr>
+                                        <tr height="50%" style="text-align:center; color:#fff">
+                                            <td valign="bottom" style="font-size: 16px;">
+                                                <a t-attf-href="{{ ctx.get('company').website }}"
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff">
+                                                    <t t-out="ctx.get('company').website" />
+                                                    <br />
+                                                </a>
+                                                <a style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                    t-attf-href="mailto:{{ ctx.get('company').admission_mail }}"
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    data-auth="NotApplicable" class="x_m-0"
+                                                    data-linkindex="1">
+                                                    <t t-out="ctx.get('company').admission_mail" />
+                                                </a>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="ctx.get('company').admission_phone" />
+                                                </p>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="ctx.get('company').street" />, <br />
+                                                    <t t-out="ctx.get('company').street2" />, Pakistan.</p>
+                                                <p style="margin:0px 0 12px 0;box-sizing:border-box;font-size:20px;vertical-align:middle; display:inline-block;">
+                                                    &amp;nbsp;</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="90%" style="padding:0 20px">
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%"
+                                    style="box-sizing:border-box;background-repeat-y:no-repeat;background-repeat-x:no-repeat;background-position-y:bottom;background-position-x:right;border-collapse:collapse;background-size:200px;background-position: right bottom;background-repeat: no-repeat;">
+                                    <tbody style="margin:0; padding:0">
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100">
+                                                    &amp;nbsp;</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%" valign="top">
+                                                <div style="font-family:arial;font-size:18px;line-height:1.6;">
+                                                    <span style="font-weight:700;">Dear Applicant,</span>
+                                                    &amp;nbsp;<br /><br />
+                                                    Heartiest congratulations! You have been admitted to the <t t-out="ctx.get('company').name" />, for the Fall Semester 2024.<br /><br />
+                                                    Please be informed that the credentials for your student portal login and orientation schedule will be shared with you before your orientation session. The Fall semester will start on <t t-out="ctx.get('semester_start_date')" />. We wish you a very pleasant and rewarding academic stay at <t t-out="ctx.get('company').code" />.<br /><br />
+                                                    Should you have any queries, please email us at <t t-out="ctx.get('company').admission_mail" />.
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </field>
+        </record>
+        
+        <record id="mail_template_tuition_fee_verification_ubas" model="mail.template">
+            <field name="name">Admission Fee Verification ubas</field>
+            <field name="email_from">{{ ctx.get('company').admission_mail }}</field>
+            <field name="subject">Admission Fee Verification</field>
+            <field name="email_to">{{ctx.get('email')}}</field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_admission_register" />
+            <field eval="True" name="auto_delete" />
+            <field name="body_html" type="html">
+    
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%"
+                    style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:40px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <td width="370px" style="height:100%;width:280px;">
+                                <table height="100%" width="280" border="0"
+                                    style="box-sizing:border-box;border-collapse:collapse;background-color:#102b4c">
+                                    <tbody>
+                                        <tr height="50%">
+                                            <td style="vertical-align:top; text-align:center">
+                                                <img data-imagetype="External" src="https://res.cloudinary.com/dggg7h0u0/image/upload/v1712487080/Graduate/Logos/h9zckx7wh865no3k35ld.jpg" style="border-style: none; box-sizing: border-box; vertical-align: middle; margin-top: 2em; width: 200px; height: 200px; object-fit: cover;" width="200" height="200"/>
+                                            </td>
+                                        </tr>
+                                        <tr height="50%" style="text-align:center; color:#fff">
+                                            <td valign="bottom" style="font-size: 16px;">
+                                                <a t-attf-href="{{ctx.get('company').website}}"
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff">
+                                                    
+                                                    <t t-out="ctx.get('company').website" />
+                                                    <br />
+                                                </a>
+                                                <a
+                                                    style="box-sizing:border-box;background-color:transparent;text-decoration: none;color:#ffffff"
+                                                    t-attf-href="mailto:{{ctx.get('company').admission_mail}}"
+                                                    target="_blank" rel="noopener noreferrer"
+                                                    data-auth="NotApplicable" class="x_m-0"
+                                                    data-linkindex="1">
+                                                    <t t-out="ctx.get('company').admission_mail" />
+                                                </a>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="ctx.get('company').admission_phone" />
+                                                </p>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;">
+                                                    <t t-out="ctx.get('company').street" /> , <br />
+                                                    <t t-out="ctx.get('company').street2" /> ,
+                                                    Pakistan.</p>
+                                                <p
+                                                    style="margin:0px 0 12px 0;box-sizing:border-box;font-size:20px;vertical-align:middle; display:inline-block;">
+                                                    &amp;nbsp;</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="90%" style="padding:0 20px">
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%"
+                                    height="100%"
+                                    style="box-sizing:border-box;background-repeat-y:no-repeat;background-repeat-x:no-repeat;background-position-y:bottom;background-position-x:right;border-collapse:collapse;background-size:200px;background-position: right bottom;background-repeat: no-repeat;">
+                                    <tbody style="margin:0; padding:0">
+                                        <!-- <tr style="vertical-align:top">
+                                            <td>
+                                                <div style="font-family:arial;font-size: 40px;color:#102b4c;font-weight:400">FALL ADMISSIONS</div>
+                                                <div style="font-family:arial;font-size: 60px;color:#102b4c;font-weight:400">
+                                                    <strong style="box-sizing:border-box;font-weight:700;">2023</strong>
+                                                </div>
+                                            </td>
+                                        </tr> -->
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div
+                                                    style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%; valign:top;">
+                                                <div style="font-family:arial; font-size:18px; line-height:1.6; color:black !important;">
+                                                    <span style="font-weight:700;">Dear Applicant,</span>
+                                                    <br />
+                                                    <br /> Heartiest congratulations! You have been admitted to the <t t-out="ctx.get('company').name" />, for the Fall Semester 2024.<br />
+                                                    <br/>
+                                                    Please be informed that the credentials for your student portal login and orientation schedule will be shared with you before your orientation session. The Fall semester will start on <t t-out="ctx.get('semester_start_date')" />. We wish you a very pleasant and rewarding academic stay at <t t-out="ctx.get('company').code" />. 
+                                                    <br/>
+                                                    Should you have any queries, please email us at <t t-out="ctx.get('company').admission_mail" />.
+                                                    <br/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </field>
+    
+        </record>
+    
+    
+        <record id="mail_template_daily_outgoing_sms" model="mail.template">
+            <field name="name">Daily Outgoing SMS Reminder</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">Outgoing SMS Reminder</field>
+            <field name="email_from">{{ ctx.get('company').admission_mail }}</field>
+            <field name="email_to">abubakarsohail66@gmail.com</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%"
+                       style="box-sizing:border-box;border-collapse:collapse;font-family:arial;font-size:40px;line-height: 1.6;">
+                    <tbody>
+                        <tr>
+                            <td width="90%" style="padding:0 20px">
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%"
+                                       height="100%"
+                                       style="box-sizing:border-box;background-repeat-y:no-repeat;background-repeat-x:no-repeat;background-position-y:bottom;background-position-x:right;border-collapse:collapse;background-size:200px;background-position: right bottom;background-repeat: no-repeat;">
+                                    <tbody style="margin:0; padding:0">
+                                        <tr style="vertical-align:top">
+                                            <td>
+                                                <div
+                                                        style="font-family:arial;font-size:30px;color:#102b4c;font-weight:100">
+                                                    &amp;nbsp;
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height:100%" valign="top">
+                                                <div
+                                                        style="font-family:arial;font-size:18px;line-height:1.6;">
+                                                    <span
+                                                            style="font-weight:700;">Dear Concern,
+                                                    </span>
+                                                    &amp;nbsp;
+                                                    <br/>
+                                                    <br/>
+                                                    <p>Update on outgoing SMS status for today:
+                                                        <br/>
+                                                        Total SMS Sent:
+                                                        <t t-out="ctx.get('sms_sent')"/>
+                                                        <br/>
+                                                        SMS in Queue:
+                                                        <t t-out="ctx.get('sms_queue')"/>
+    
+                                                        <br/>
+                                                        Regards
+                                                    </p>
+    
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </field>
+        </record>
+    </data>
+</odoo>

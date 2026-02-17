@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_challan_fine_policy_tree" model="ir.ui.view">
+            <field name="name">odoocms.challan.fine.policy.tree</field>
+            <field name="model">odoocms.challan.fine.policy</field>
+            <field name="arch" type="xml">
+                <tree string="Challan Fine Policy" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="term_id"/>
+                    <field name="start_date"/>
+                    <field name="due_date"/>
+                    <field name="payment_term_id"/>
+                    <field name="label_id"/>
+                    <field name="create_uid" string="Created By" optional="hide" widget="many2one_avatar_user"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'"/>
+                    <field name="fine_amount"/>
+                    <field name="fine_amount" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_challan_fine_policy_form" model="ir.ui.view">
+            <field name="name">odoocms.chalan.fine.policy.form</field>
+            <field name="model">odoocms.challan.fine.policy</field>
+            <field name="arch" type="xml">
+                <form string="Challan Fine Policy">
+                    <header>
+                        <button name="action_confirm" type="object" class="oe_highlight" string="Confirm" states="draft"/>
+                        <button name="action_cancel" type="object" class="oe_highlight" string="Cancel" states="draft"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h3>
+                                <field name="name" readonly="1"/>
+                            </h3>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="term_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="start_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="due_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="payment_term_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                    options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="label_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                    options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="fine_amount" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="faculty_type" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="program_selection_type" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                             <group>
+                                <field name="company_id" readonly="1"/>
+                             </group>
+                        </group>
+
+                        <group>
+                            <field name="remarks" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+
+                        <notebook>
+                            <page string="Faculties" name="faculty_ids" attrs="{'invisible':[('faculty_type','=','All')]}">
+                                <field name="faculty_ids" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </page>
+
+                            <page string="Programs" name="program_ids" attrs="{'invisible':[('program_selection_type','=','All')]}">
+                                <field name="program_ids" domain="[('department_id','in',faculty_ids)]"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </page>
+
+                            <page string="Detail" name="line_detail">
+                                <field name="lines">
+                                    <tree editable="bottom" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="faculty_name" string="Faculty"/>
+                                        <field name="program_name" string="Program"/>
+                                        <field name="start_date" optional="show"/>
+                                        <field name="due_date" optional="show"/>
+                                        <field name="fine_amount" optional="show"/>
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_challan_fine_policy_search" model="ir.ui.view">
+            <field name="name">odoocms.challan.fine.policy.search</field>
+            <field name="model">odoocms.challan.fine.policy</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Challan Fine Policy">
+                    <field name="name"/>
+                    <field name="term_id"/>
+                    <field name="payment_term_id"/>
+                    <field name="label_id"/>
+                    <field name="due_date"/>
+                    <field name="state"/>
+
+                    <newline/>
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                    <filter name="confirm" string="Confirm" domain="[('state', '=','confirm')]"/>
+                    <filter name="cancel" string="Cancel" domain="[('state', '=','Cancel')]"/>
+                    <separator/>
+                    <filter name="start_date" string="Start Date" date="start_date"/>
+                    <separator/>
+                    <filter name="due_date" string="Due Date" date="due_date"/>
+
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Term" name="group_by_term_id" domain="[]" context="{'group_by':'term_id'}"/>
+                        <filter string="Start Date" name="group_by_start_date" domain="[]" context="{'group_by':'start_date'}"/>
+                        <filter string="Due Date" name="group_by_due_date" domain="[]" context="{'group_by':'due_date'}"/>
+                        <filter string="Payment Term" name="group_by_payment_term" domain="[]" context="{'group_by':'payment_term_id'}"/>
+                        <filter string="Label" name="group_by_label" domain="[]" context="{'group_by':'label_id'}"/>
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_odoocms_challan_fine_policy" model="ir.actions.act_window">
+            <field name="name">Challan Fine Policy</field>
+            <field name="res_model">odoocms.challan.fine.policy</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <record id="view_odoocms_challan_fine_policy_line_tree" model="ir.ui.view">
+            <field name="name">odoocms.challan.fine.policy.line.tree</field>
+            <field name="model">odoocms.challan.fine.policy.line</field>
+            <field name="arch" type="xml">
+                <tree string="Challan Fine Policy Detail" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="term_id"/>
+                    <field name="start_date"/>
+                    <field name="due_date"/>
+                    <field name="payment_term_id"/>
+                    <field name="label_id"/>
+                    <field name="faculty_name"/>
+                    <field name="program_name"/>
+                    <field name="fine_amount"/>
+                    <field name="create_uid" string="Created By" optional="hide" widget="many2one_avatar_user"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_challan_fine_policy_line_form" model="ir.ui.view">
+            <field name="name">odoocms.chalan.fine.policy.line.form</field>
+            <field name="model">odoocms.challan.fine.policy.line</field>
+            <field name="arch" type="xml">
+                <form string="Challan Fine Policy Detail">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="term_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="start_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="due_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="payment_term_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                    options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="label_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                    options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="fine_amount" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="faculty_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="program_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_challan_fine_policy_line_search" model="ir.ui.view">
+            <field name="name">odoocms.challan.fine.policy.line.search</field>
+            <field name="model">odoocms.challan.fine.policy.line</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Challan Fine Policy Detail">
+                    <field name="name"/>
+                    <field name="term_id"/>
+                    <field name="payment_term_id"/>
+                    <field name="label_id"/>
+                    <field name="due_date"/>
+                    <field name="state"/>
+
+                    <newline/>
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                    <filter name="confirm" string="Confirm" domain="[('state', '=','confirm')]"/>
+                    <filter name="cancel" string="Cancel" domain="[('state', '=','Cancel')]"/>
+                    <separator/>
+                    <filter name="start_date" string="Start Date" date="start_date"/>
+                    <separator/>
+                    <filter name="due_date" string="Due Date" date="due_date"/>
+
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Term" name="group_by_term_id" domain="[]" context="{'group_by':'term_id'}"/>
+                        <filter string="Start Date" name="group_by_start_date" domain="[]" context="{'group_by':'start_date'}"/>
+                        <filter string="Due Date" name="group_by_due_date" domain="[]" context="{'group_by':'due_date'}"/>
+                        <filter string="Payment Term" name="group_by_payment_term" domain="[]" context="{'group_by':'payment_term_id'}"/>
+                        <filter string="Label" name="group_by_label" domain="[]" context="{'group_by':'label_id'}"/>
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_challan_fine_line_policy" model="ir.actions.act_window">
+            <field name="name">Challan Fine Policy Line</field>
+            <field name="res_model">odoocms.challan.fine.policy.line</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_challan_fine_policy_main"
+                name="Challan Fine Policy"
+                sequence="20"
+                parent="odoocms_fee.menu_student_fee_policy_main"
+                groups="odoocms_fee.group_fee_manager"
+        />
+
+            <menuitem
+                    id="menu_odoocms_challan_fine_policy"
+                    name="Fine Policy"
+                    sequence="10"
+                    parent="menu_odoocms_challan_fine_policy_main"
+                    action="action_odoocms_challan_fine_policy"
+                    groups="odoocms_fee.group_fee_manager"
+            />
+
+            <menuitem
+                    id="menu_odoocms_challan_fine_policy_line"
+                    name="Fine Policy Detail"
+                    sequence="20"
+                    parent="menu_odoocms_challan_fine_policy_main"
+                    action="action_odoocms_challan_fine_line_policy"
+                    groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+            />
+
+    </data>
+</odoo>

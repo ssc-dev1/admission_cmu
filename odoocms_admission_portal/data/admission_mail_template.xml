@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="mail_template_user_signup_account_created" model="mail.template">
+            <field name="name">Account Created</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">Welcome to <t t-out="request.env.company.name"/>!</field>
+            <field name="email_from">{{object.company_id.admission_mail}}</field>
+            <field name="email_to">{{object.email_formatted | safe}}</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <!-- HEADER -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="middle">
+                                                        <span style="font-size: 10px;">Your Account</span>
+                                                        <br/>
+                                                        <span style="font-size: 20px; font-weight: bold;">
+                                                            ${object.name}
+                                                        </span>
+                                                    </td>
+                                                    <td valign="middle" align="right">
+                                                        <img t-if='request.env.company.logo' t-att-src="image_data_uri(request.env.company.logo)" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="<t t-out="request.env.company.name"/>"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="text-align:center;">
+                                                        <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            Dear <t t-out="object.name"/>,
+                                                            <br/>
+                                                            <br/>
+                                                            Thank you for signing up with <t t-out="object.company_id.name"/>, Admission portal. Your account has been created. For your reference, please save this email as it contains your account details.
+                                                            <br/>
+                                                            Login ID:
+                                                            <strong><t t-out="object.login"/></strong>
+                                                           <!-- <br/>
+                                                            https://admissions.nutech.edu.pk
+                                                            <br/>-->
+                                                            <br/>
+                                                            Please log in to your account and update your profile. For any query regarding the admission process, please email on ${object.company_id.admission_mail}
+                                                            or contact on telephone No. <t t-out="request.env.company.admission_phone"/> .
+                                                            <br/>
+                                                            We wish you the best of luck.
+                                                            <br/>
+                                                            Regards,
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">
+                                                        <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <!-- FOOTER -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td>
+                                                        Admission Office
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left">
+                                                        <t t-out="request.env.company.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left" style="opacity: 0.7;">
+                                                        <t t-out="request.env.company.admission_phone"/>
+                                                        % if object.company_id.admission_mail
+                                                        |
+                                                        <a href="'mailto:%s' % ${object.company_id.admission_mail}" style="text-decoration:none; color: #454748;">${object.company_id.admission_mail}</a>
+                                                        % endif
+                                                        % if object.company_id.website
+                                                        |
+                                                        <a href="'%s' % ${object.company_id.website}" style="text-decoration:none; color: #454748;">
+                                                            ${object.company_id.website}
+                                                        </a>
+                                                        % endif
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- POWERED BY -->
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                                <!--<tr>
+                                    <td style="text-align: center; font-size: 13px;">
+                                        Powered by
+                                        <a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo</a>
+                                    </td>
+                                </tr>-->
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+            <field name="auto_delete" eval="True"/>
+<!--            <field name="user_signature" eval="False"/>-->
+        </record>
+        <record id="email_template_admission_voucher_upload" model="mail.template">
+            <field name="name">Voucher Upload Mail template</field>
+            <field name="email_from">"${object.company_id.name|safe}" &lt;${(object.company_id.admission_mail or user.email)|safe}&gt;</field>
+            <field name="subject">Fee Voucher</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_application"/>
+            <field eval="True" name="auto_delete"/>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            Dear ${object.name},
+                                                            <br/>
+                                                            <br/>
+                                                            Your fee voucher has been uploaded on <t t-out="request.env.company.name or "/> Admission portal. You will be
+                                                            informed when it will be verified by concerned bank and <t t-out="request.env.company.name or "/> Treasurer Office
+                                                            which may take 1-2 working days. After verification of fee voucher, you will be able to
+                                                            proceed to next steps required for submission of application.
+                                                            <br/>
+                                                            Regards,
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">
+                                                        <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <!-- FOOTER -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td>
+                                                        Admission Office
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left">
+                                                        <t t-out="request.env.company.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left" style="opacity: 0.7;">
+                                                        <t t-out="request.env.company.admission_phone"/>
+                                                        % if object.company_id.admission_mail
+                                                        |
+                                                        <a href="'mailto:%s' % ${object.company_id.admission_mail}" style="text-decoration:none; color: #454748;">${object.company_id.admission_mail}</a>
+                                                        % endif
+                                                        % if object.company_id.website
+                                                        |
+                                                        <a href="'%s' % ${object.company_id.website}" style="text-decoration:none; color: #454748;">
+                                                            ${object.company_id.website}
+                                                        </a>
+                                                        % endif
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- POWERED BY -->
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                                <!--<tr>
+                                    <td style="text-align: center; font-size: 13px;">
+                                        Powered by
+                                        <a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo</a>
+                                    </td>
+                                </tr>-->
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+        </record>
+        <record id="mail_template_voucher_verified" model="mail.template">
+            <field name="name">Admission Voucher Verified for pakistani</field>
+            <field name="email_from">"${object.company_id.name|safe}" &lt;${(object.company_id.admission_mail or user.email)|safe}&gt;</field>
+            <field name="subject">Fee Voucher</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_application"/>
+            <field eval="True" name="auto_delete"/>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            Dear ${object.name},
+                                                            <br/>
+                                                            <br/>
+                                                            Your registration fee Rs.2000/- has been verified by the Bank and <t t-out="request.env.company.name or "/> Treasurer Office. Kindly login to your account on <t t-out="request.env.company.name or "/> Admission portal and proceed further to complete remaining steps for the submission of your application successfully.
+                                                            <br/>
+                                                            Regards,
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">
+                                                        <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <!-- FOOTER -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td>
+                                                        Admission Office
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left">
+                                                        <t t-out="request.env.company.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left" style="opacity: 0.7;">
+                                                        <t t-out="request.env.company.admission_phone"/>
+                                                        % if object.company_id.admission_mail
+                                                        |
+                                                        <a href="'mailto:%s' % ${object.company_id.admission_mail}" style="text-decoration:none; color: #454748;">${object.company_id.admission_mail}</a>
+                                                        % endif
+                                                        % if object.company_id.website
+                                                        |
+                                                        <a href="'%s' % ${object.company_id.website}" style="text-decoration:none; color: #454748;">
+                                                            ${object.company_id.website}
+                                                        </a>
+                                                        % endif
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- POWERED BY -->
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                                <!--<tr>
+                                    <td style="text-align: center; font-size: 13px;">
+                                        Powered by
+                                        <a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo</a>
+                                    </td>
+                                </tr>-->
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+
+        </record>
+        <record id="mail_template_voucher_verified2" model="mail.template">
+            <field name="name">Admission Voucher Verified For overseas</field>
+            <field name="email_from">"${object.company_id.name|safe}" &lt;${(object.company_id.admission_mail or user.email)|safe}&gt;</field>
+            <field name="subject">Fee Voucher</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_application"/>
+            <field eval="True" name="auto_delete"/>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            Dear ${object.name},
+                                                            <br/>
+                                                            <br/>
+                                                            Your registration fee USD 100/- has been verified by the Bank and <t t-out="request.env.company.name or "/> Treasurer
+                                                            Office. Kindly login to your account on <t t-out="request.env.company.name or "/> Admission portal and proceed further
+                                                            to complete remaining steps for the submission of your application successfully.
+                                                            <br/>
+                                                            Regards,
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">
+                                                        <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <!-- FOOTER -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td>
+                                                        Admission Office
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left">
+                                                        <t t-out="request.env.company.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left" style="opacity: 0.7;">
+                                                        <t t-out="request.env.company.admission_phone"/>
+                                                        % if object.company_id.admission_mail
+                                                        |
+                                                        <a href="'mailto:%s' % ${object.company_id.admission_mail}" style="text-decoration:none; color: #454748;">${object.company_id.admission_mail}</a>
+                                                        % endif
+                                                        % if object.company_id.website
+                                                        |
+                                                        <a href="'%s' % ${object.company_id.website}" style="text-decoration:none; color: #454748;">
+                                                            ${object.company_id.website}
+                                                        </a>
+                                                        % endif
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- POWERED BY -->
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                                <!--<tr>
+                                    <td style="text-align: center; font-size: 13px;">
+                                        Powered by
+                                        <a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo</a>
+                                    </td>
+                                </tr>-->
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+        </record>
+        <record id="mail_template_voucher_un_verified" model="mail.template">
+            <field name="name">Admission Voucher UnVerified</field>
+            <field name="email_from">"${object.company_id.name|safe}" &lt;${(object.company_id.admission_mail or user.email)|safe}&gt;</field>
+            <field name="subject">Fee Voucher Rejected</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_application"/>
+            <field eval="True" name="auto_delete"/>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            Dear ${object.name},
+                                                            <br/>
+                                                            <br/>
+                                                            Your application processing fee has not been verified by the bank and <t t-out="request.env.company.name or "/> Treasurer Office. Kindly upload your paid voucher so that can proceed further to complete remaining steps for the submission of your application successfully.
+                                                            <br/>
+                                                            Regards,
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">
+                                                        <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <!-- FOOTER -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td>
+                                                        Admission Office
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left">
+                                                        <t t-out="request.env.company.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left" style="opacity: 0.7;">
+                                                        <t t-out="request.env.company.admission_phone"/>
+                                                        % if object.company_id.admission_mail
+                                                        |
+                                                        <a href="'mailto:%s' % ${object.company_id.admission_mail}" style="text-decoration:none; color: #454748;">${object.company_id.admission_mail}</a>
+                                                        % endif
+                                                        % if object.company_id.website
+                                                        |
+                                                        <a href="'%s' % ${object.company_id.website}" style="text-decoration:none; color: #454748;">
+                                                            ${object.company_id.website}
+                                                        </a>
+                                                        % endif
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- POWERED BY -->
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                                <!--<tr>
+                                    <td style="text-align: center; font-size: 13px;">
+                                        Powered by
+                                        <a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo</a>
+                                    </td>
+                                </tr>-->
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+
+        </record>
+        <record id="mail_template_application_submit" model="mail.template">
+            <field name="name">Admission Application</field>
+            <field name="email_from">"${object.company_id.name|safe}" &lt;${(object.company_id.admission_mail or user.email)|safe}&gt;</field>
+            <field name="subject">Admission Application</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="odoocms_admission.model_odoocms_application"/>
+            <field eval="True" name="auto_delete"/>
+<!--            <field name="report_template" ref="odoocms_graduate_admission.admission_final_report"/>-->
+            <field name="report_name">Admission Final Report ${(object.name or '').replace('/','_')}</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            Dear ${object.name},
+                                                            <br/>
+                                                            <br/>
+                                                            We are pleased to confirm that your application has been submitted successfully.
+                                                            Please keep on visiting our website and your account for knowing about latest updates
+                                                            related to Admission process.
+                                                            <br/>
+                                                            Best of Luck.
+                                                            <br/>
+                                                            <br/>
+                                                            <br/>
+                                                            Regards,
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">
+                                                        <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <!-- FOOTER -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td>
+                                                        Admission Office
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left">
+                                                        <t t-out="request.env.company.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left" style="opacity: 0.7;">
+                                                        <t t-out="request.env.company.admission_phone"/>
+                                                        % if object.company_id.admission_mail
+                                                        |
+                                                        <a href="'mailto:%s' % ${object.company_id.admission_mail}" style="text-decoration:none; color: #454748;">${object.company_id.admission_mail}</a>
+                                                        % endif
+                                                        % if object.company_id.website
+                                                        |
+                                                        <a href="'%s' % ${object.company_id.website}" style="text-decoration:none; color: #454748;">
+                                                            ${object.company_id.website}
+                                                        </a>
+                                                        % endif
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- POWERED BY -->
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                                <!--<tr>
+                                    <td style="text-align: center; font-size: 13px;">
+                                        Powered by
+                                        <a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo</a>
+                                    </td>
+                                </tr>-->
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+        </record>
+        <record id="email_reference_graduate" model="mail.template">
+            <field name="name">Graduate Admissions nutech</field>
+            <field name="email_from">ctx.get('email_sender')</field>
+            <field name="subject">${ctx['student_name'] or ''} requesting for Reference for Graduate Admission</field>
+            <field name="email_to">ctx.get('ref_email')</field><!-- Set in the code  -->
+            <field name="model_id" ref="model_odoocms_application"/>
+            <field name="auto_delete" eval="False"/><!-- TODO JEM  change this as we are testing -->
+            <field name="body_html" type="html">
+                <div>
+                    % if ctx.get('ref_name'):
+                    <p>Dear ${ctx['ref_name'] or ''} ,</p>
+                    % else:
+                    <p>Hello,</p>
+                    % endif
+                    <p>
+                        Hope you are doing great.
+                    </p>
+                    <p>
+                        You have been requested to be the reference of student for admission in nutech .
+                    </p>
+
+                    % if ctx.get('message'):
+                    <p>${ctx['message']}</p>
+                    % endif
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

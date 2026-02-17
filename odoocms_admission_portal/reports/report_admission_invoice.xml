@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="odoocms_admission_portal.report_admission_invoice">
+        <t t-call="web.html_container">
+            <t t-set="registration_fee" t-value="registration_fee"/>
+            <t t-set="additional_fee" t-value="additional_fee"/>
+            <t t-set="total_fee" t-value="total_fee"/>
+            <t t-set="account_payable" t-value="account_payable"/>
+            <t t-set="today" t-value="today"/>
+            <t t-foreach="application_ids" t-as="o">
+                <t t-set="nationality" t-value="o.nationality"/>
+                <t t-call="odoocms_admission_portal.report_admission_invoice_document"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="odoocms_admission_portal.report_admission_invoice_document">
+        <t t-call="web.basic_layout">
+            <t t-if="not company">
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <style>
+                #invoice-report {
+                    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                    border-collapse: collapse;
+                    width: 98%; 
+                    margin: 1.5%;
+                }
+                #invoice-report td, #invoice-report th {
+                    border: 1px solid #ddd;
+                    padding: 2px;
+                }
+                #invoice-report th {
+                    text-align: left;
+                    width:60%;
+                    font-weight:normal;
+                }
+                #invoice-report td {
+                    text-align: right;
+                    width:40%;
+                }
+            </style>
+
+            <div class="page" style="font-size: 10px; padding:5px ">
+                <t t-if="company.admission_invoice == 3">
+                    <t t-call="odoocms_admission_portal.receipt_template_3"/>
+                </t>
+                <t t-if="company.admission_invoice == 4">
+                    <t t-call="odoocms_admission_portal.receipt_template_4"/>
+                </t>
+            </div>
+
+        </t>
+    </template>
+
+    <template id="odoocms_admission_portal.receipt_template_4">
+        <!--            <div class="page" style="font-size: 10px; padding:5px ">-->
+        <div class="row">
+            <div style="width:23%; border:1px solid; margin-right:5px; padding:0.4%">
+                <t t-call="odoocms_admission_portal.receipt_copy">
+                    <t t-set="copy_name">Bank Copy</t>
+                </t>
+            </div>
+            <div style="width:23%; border:1px solid; margin-right:5px; padding:0.4%">
+                <t t-call="odoocms_admission_portal.receipt_copy">
+                    <t t-set="copy_name">Treasurer Office Copy</t>
+                </t>
+            </div>
+            <div style="width:23%; border:1px solid; margin-right:5px; padding:0.4%">
+                <t t-call="odoocms_admission_portal.receipt_copy">
+                    <t t-set="copy_name">Admission Office Copy</t>
+                </t>
+            </div>
+            <div style="width:23%; border:1px solid;padding:0.4%">
+                <t t-call="odoocms_admission_portal.receipt_copy">
+                    <t t-set="copy_name">Student Copy</t>
+                </t>
+            </div>
+        </div>
+        <!--            </div>-->
+    </template>
+
+    <template id="odoocms_admission_portal.receipt_template_3">
+        <!--            <div class="page" style="font-size: 10px; padding:5px ">-->
+        <div class="row">
+            <div style="width:31%; border:1px solid; margin-right:5px; padding:0.4%">
+                <t t-call="odoocms_admission_portal.receipt_copy">
+                    <t t-set="copy_name">Bank Copy</t>
+                </t>
+            </div>
+
+            <div style="width:31%; border:1px solid; margin-right:5px; padding:0.4%">
+                <t t-call="odoocms_admission_portal.receipt_copy">
+                    <t t-set="copy_name">Admission Office Copy</t>
+                </t>
+            </div>
+            <div style="width:31%; border:1px solid;padding:0.4%">
+                <t t-call="odoocms_admission_portal.receipt_copy">
+                    <t t-set="copy_name">Student Copy</t>
+                </t>
+            </div>
+        </div>
+        <!--            </div>-->
+    </template>
+
+    <template id="odoocms_admission_portal.receipt_copy">
+        <div class="row">
+            <div class="col col-2">
+                <img alt="..." style="max-width:40px" t-att-src="image_data_uri(company.logo)" t-if="company.logo"/>
+                <img alt="..." style="max-width:40px" src="/web/static/src/img/user_menu_avatar.png" t-if=" not company.logo"/>
+            </div>
+            <div class="col col-10">
+                <div class="row">
+                    <div class="col col-12" style="text-align:center; font-weight:bold; text-decoration:underline">
+                        <span><t t-esc="company.name if company.name else ''"/> FEE Voucher</span>
+                        <br/>
+                        <span>Application Processing Fee - 3</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-12">
+                        <span style="font-weight:bold">Payable at:</span>
+                        <span t-esc="account_payable" t-if="account_payable"/> &amp;
+                        <t t-esc="account_payable2"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-12">
+                        <span style="font-weight:bold">Account Title:</span>
+                        <span t-esc="account_title" t-if="account_title"/>
+                        <br/>
+                        <t t-esc="account_title2"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-12">
+                        <span style="font-weight:bold">Account No:</span>
+                        <br/>
+                        <t t-esc="account_no" t-if="account_no"/><br/>
+                        <t t-esc="account_no2" t-if="account_no2"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-4" style="font-weight:bold">
+                <span>Voucher No</span>
+            </div>
+            <div class="col col-8" style="text-align:center">
+                <div style="border-bottom:1px solid #ddd;">
+                    <span t-esc="o.application_no"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-4" style="font-weight:bold">
+                <span>Issue Date</span>
+            </div>
+            <div class="col col-8" style="text-align:center">
+                <div style="border-bottom:1px solid #ddd;">
+                    <span t-esc="today"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-4" style="font-weight:bold">
+                <span>Session</span>
+            </div>
+            <div class="col col-8" style="text-align:center">
+                <div style="border-bottom:1px solid #ddd;">
+                    <span t-esc="o.register_id.term_id.name" t-if="o.register_id.term_id"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-4" style="font-weight:bold">
+                <span>Student Name</span>
+            </div>
+            <div class="col col-8" style="text-align:center">
+                <div style="border-bottom:1px solid #ddd;">
+                    <span t-esc="o.name"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-4" style="font-weight:bold">
+                <span>Father Name</span>
+            </div>
+            <div class="col col-8" style="text-align:center">
+                <div style="border-bottom:1px solid #ddd;">
+                    <span t-esc="o.father_name"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-4" style="font-weight:bold">
+                <span>CNIC</span>
+            </div>
+            <div class="col col-8" style="text-align:center">
+                <div style="border-bottom:1px solid #ddd;">
+                    <span t-esc="o.cnic"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-4" style="font-weight:bold">
+                <span>Program</span>
+            </div>
+            <div class="col col-8" style="text-align:center">
+                <div style="border-bottom:1px solid #ddd;">
+                    <span t-esc="o.register_id.career_id.name"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-12" style="text-align:center; font-weight:bold; padding:15px;">
+                <span>Application Processing Fee - 4</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-12">
+                <table id="invoice-report">
+                    <t t-if="not o.is_dual_nationality">
+                        <tr>
+                            <th>Application Processing Fee - 6</th>
+                            <td>
+                                <span t-esc="registration_fee"/>
+                                <span>PKR</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <td>
+                                <span t-esc="total_fee"/>
+                                <span>PKR</span>
+                            </td>
+                        </tr>
+                    </t>
+                    <t t-if="o.is_dual_nationality">
+                        <tr>
+                            <th>Application Processing Fee - 7</th>
+                            <td>
+                                <span t-esc="registration_fee_international"/>
+                                <span>$</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Amount to be paid</th>
+                            <td>
+                                <span t-esc="registration_fee_international"/>
+                                <span>$</span>
+                            </td>
+                        </tr>
+                    </t>
+                    <tr>
+                        <th>Amount in Words</th>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <t t-if="not o.is_dual_nationality">
+                            <th colspan="2"><t t-esc="o.amount_to_text(float(total_fee))"/> Rupees</th>
+                        </t>
+                        <t t-if="o.is_dual_nationality">
+                            <th colspan="2"><t t-esc="o.amount_to_text(float(registration_fee_international))"/>$</th>
+                        </t>
+                    </tr>
+                    <tr>
+                        <th>Mode of Payment</th>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Depositer's Name:</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Depositer's CNIC:</th>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col col-12">
+                <p style="font-weight:bold">Payment Terms.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-12">
+                <p>In case of any fee related issue please contact Admission Office.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-12">
+                <p>Note: This is computer generated document and need no signature.</p>
+            </div>
+        </div>
+        <div class="row" style="padding:10px;">
+            <div class="col col-12" style="text-align:center; font-weight:bold">
+                <span t-esc="copy_name"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-12">
+                <span>Payable at</span>&#160;<t t-esc="account_payable" t-if="account_payable"/> &amp; <t t-esc="account_payable2" t-if="account_payable2"/>
+            </div>
+        </div>
+    </template>
+    <!--<record id="action_report_admission_invoices" model="ir.actions.report">
+        <field name="name">Invoice Report</field>
+        <field name="model">odoocms.application</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">odoocms_admission_portal.report_admission_invoice</field>
+        <field name="report_file">odoocms_admission_portal.report_admission_invoice</field>
+        <field name="print_report_name">'%s' % object.name</field>
+        <field name="binding_type">report</field>
+    </record>-->
+</odoo>

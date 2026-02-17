@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_transfer_images_transfer_images,transfer_images.transfer_images,model_transfer_images_transfer_images,base.group_user,1,1,1,1
+access_transfer_images_transfer_images,transfer_images.transfer_images,model_transfer_images_transfer_images,base.group_system,1,1,1,1

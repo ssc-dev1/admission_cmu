@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="odoocms_fee_ext.admission_fee_challan_template">
+            <t t-call="web.basic_layout">
+                <t t-if="not company">
+                    <t t-if="company_id">
+                        <t t-set="company" t-value="company_id"/>
+                    </t>
+                    <t t-elif="o and 'company_id' in o">
+                        <t t-set="company" t-value="o.company_id.sudo()"/>
+                    </t>
+                    <t t-else="else">
+                        <t t-set="company" t-value="res_company"/>
+                    </t>
+                </t>
+
+                <style>
+                    #invoice-info {
+                        font-family: Times New Roman,Times,serif, Arial, Helvetica, sans-serif;
+                        border-collapse: collapse;
+                        width: 100%;
+                        margin: 0%;
+                    }
+                    #invoice-info td, #invoice-info th {
+                        border: 1px solid #ddd;
+                        padding: 1px, 3px, 1px, 3px;
+                    }
+                    #invoice-info th {
+                        text-align: left;
+                        width:60%;
+                        font-weight:normal;
+                    }
+                    #invoice-info td {
+                        text-align: right;
+                        width:40%;
+                    }
+                    #invoice-report {
+                        font-family: Times New Roman,Times,serif, Arial, Helvetica, sans-serif;
+                        border-collapse: collapse;
+                        width: 98%;
+                        margin: 1.5%;
+                    }
+                    #invoice-report td, #invoice-report th {
+                        border: 1px solid #ddd;
+                        padding: 2px;
+                    }
+                    #invoice-report th {
+                        text-align: left;
+                        width:60%;
+                        font-weight:normal;
+                    }
+                    #invoice-report td {
+                        text-align: right;
+                        width:40%;
+                    }
+                    #invoice-report-student-info {
+                        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                        border-collapse: collapse;
+                        width: 98%;
+                        margin: 1.5%;
+                    }
+                    #invoice-report-student-info td, #invoice-report-student-info th {
+                        border: 1px solid #ddd;
+                        padding: 3px;
+                    }
+                    #invoice-report-student-info th {
+                        text-align: left;
+                        width:40%;
+                        font-weight:bold;
+                    }
+                    #invoice-report-student-info td {
+                        text-align: right;
+                        width:60%;
+                    }
+                    .bottom-center {
+                        position: absolute;
+                        left: 25%;
+                        bottom: 0;
+                    }
+                    .watermark {
+                        position: absolute;
+                        top: 20%;
+                        left: 40%;
+                        transform: translate(-50%, -50%);
+                        font-size: 100px;
+                        color: #ccc;
+                        opacity: 0.1;
+                        z-index: -1;
+                        transform:rotate(200deg);
+                        -webkit-transform:rotate(320deg);
+                    }
+
+                </style>
+
+                <!-- invoice_rec -->
+                <t t-foreach="docs.sudo()" t-as="doc">
+                    <div class="page" style="font-size: 10px; padding:0px ">
+                        <t t-call="odoocms_fee_ext.admission_receipt_copies_container">
+                            <t t-set="move" t-value="doc.line_ids.mapped('move_id')"/>
+                            <t t-set="inv" t-value="move[0]"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <template id="odoocms_fee_ext.admission_receipt_copies_container">
+            <div class="row" style="width:100%;">
+
+                <div style="width:32%; border:1px solid; margin-right:5px">
+                    <t t-call="odoocms_fee_ext.admission_receipt_copy">
+                        <t t-set="copy_name">Bank Copy</t>
+                    </t>
+                </div>
+
+                <div style="width:32%; border:1px solid; margin-right:5px">
+                    <t t-call="odoocms_fee_ext.admission_receipt_copy">
+                        <t t-set="copy_name">University Copy</t>
+                    </t>
+                </div>
+
+                <div style="width:32%; border:1px solid; margin-right:5px">
+                    <t t-call="odoocms_fee_ext.admission_receipt_copy">
+                        <t t-set="copy_name">Student Copy</t>
+                    </t>
+                </div>
+            </div>
+        </template>
+
+        <template id="odoocms_fee_ext.admission_receipt_copy">
+            <div class="row">
+                <div class="col col-12">
+                    <table id="invoice-info" style="margin-top:10px;">
+                        <tr style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;">
+                            <td style="border: 1px solid #ddd; text-align:center; font-size:12px; font-weight:bold; color: black;padding-top:1px;">
+                                <span t-field="inv.company_id.name"/>
+                            </td>
+                            <td style="border: 1px solid #ddd; text-align:center; font-size:12px; font-weight:bold;">
+                                <span t-esc="copy_name"/>
+                            </td>
+                        </tr>
+
+                        <tr style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;">
+                            <td style="border: 1px solid #ddd; text-align:center; font-size:12px; color: black;padding-top:1px;">
+                                <t t-if="doc.student_id.program_id.department_id">
+                                    (<span t-field="doc.student_id.program_id.institute_id.name"/>)
+                                </t>
+                            </td>
+
+                            <td style="border: 1px solid #ddd; text-align:center; font-size:12px; font-weight:bold;">
+                                First Installment (New)
+                            </td>
+                        </tr>
+
+                        <tr style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;">
+                            <td colspan="2" style="text-align:center; font-size:12px; color: black;padding-top:1px;">
+                                <t t-esc="doc.student_id.campus_id.fee_banks"/>
+                            </td>
+                        </tr>
+
+                        <tr style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;">
+                            <td style="border: 1px solid #ddd; text-align:center; font-size:14px; font-weight:bold;color: black;padding-top:1px;">
+                                Challan No.
+                            </td>
+                            <td style="border: 1px solid #ddd; text-align:center; font-size:14px; font-weight:bold;">
+                                <span style="text-align:left;" t-esc="doc.name"/>
+                            </td>
+                        </tr>
+
+                        <tr style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;font-size:12px;">
+                            <td style="text-align:left;margin-left:2px;color: black;">
+                                <b>Ref #.</b>&#160;
+                                <t t-esc="doc.student_id.admission_no or ''"/>
+                            </td>
+
+                            <td style="text-align:left; font-size:12px; color: black;">
+                                <b>Term:</b>&#160;
+                                <t style="text-align:left;" t-esc="doc.term_id.name"/>
+                            </td>
+                        </tr>
+
+                        <tr style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;;font-size:12px;">
+                            <td style="text-align:left;margin-left:2px;color: black;">
+                                <b>Prog:</b>&#160;
+                                <t t-esc="doc.student_id.program_id.name"/>
+                            </td>
+
+                            <td style="text-align:left; font-size:10px; color: black;">
+                            </td>
+                        </tr>
+
+                        <tr style="font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;">
+                            <td colspan="2" style="text-align:left;margin-left:2px;font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif; font-size:12px; color: black;">
+                                <b>Name:</b>
+                                <t t-esc="doc.student_id.name"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Move Lines Table -->
+            <div class="row" style="margin-top:5px;">
+                <div class="col col-12">
+                    <table id="invoice-report" style="margin-top:10px;">
+                        <t t-set="adm_fee" t-value="0"/>
+                        <tr style="border:1px solid black;background-color:#7AE7F0">
+                            <td style="font-weight:bold;text-align:center;border:1px solid black;width:15%;">
+                                <span>Course Code</span>
+                            </td>
+                            <td style="font-weight:bold;text-align:center;border:1px solid black;width:15%;">
+                                <span>CH</span>
+                            </td>
+                            <td style="font-weight:bold;text-align:center;width:60%;border:1px solid black;">
+                                <span>Course Title</span>
+                            </td>
+                            <td style="font-weight:bold;text-align:center;border:1px solid black;width:15%;">
+                                <span>Fee</span>
+                            </td>
+                        </tr>
+
+                        <!--***** Admission Line Amount *****-->
+                        <t t-foreach="inv.invoice_line_ids.filtered(lambda a: a.name=='Admission Fee')" t-as="adm_line">
+                            <t t-set="adm_fee" t-value="adm_line.sudo().price_subtotal"/>
+                        </t>
+
+                        <!--*****  Invoice Lines *****-->
+                        <t t-set="waiver_amt" t-value="0"/>
+                        <t t-foreach="inv.invoice_line_ids.filtered(lambda a: not a.name=='Admission Fee')" t-as="line">
+                            <tr style="border:1px solid black;">
+
+                                    <!--***** Course Code Line *****-->
+                                    <td style="text-align:left;padding-left:2px;border:1px solid black;width:20%;">
+                                        <span t-esc="line.sudo().study_scheme_line.course_id.code"/>
+                                    </td>
+
+                                    <!--***** Course Credit Hours Line *****-->
+                                    <td style="text-align:center;padding-left:2px;border:1px solid black;width:6%;">
+                                        <t t-if="line.sudo().study_scheme_line.course_id and int(line.sudo().study_scheme_line.course_id.credits) > 0">
+                                            <span t-esc="int(line.sudo().study_scheme_line.course_id.credits)"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="int(line.sudo().course_credit_hours)"/>
+                                        </t>
+                                    </td>
+
+                                    <!--***** Course Name Line ***** -->
+                                    <td style="text-align:left;width:60%;padding-left:2px;border:1px solid black;">
+                                        <t t-if="line.sudo().study_scheme_line.course_id">
+                                            <span t-esc="line.sudo().study_scheme_line.course_id.name"/>
+                                        </t>
+                                        <t t-if="not line.sudo().study_scheme_line.course_id">
+                                            <span t-esc="line.sudo().name"/>
+                                        </t>
+                                    </td>
+
+                                    <!--***** Course Gross Fee Line  *****-->
+                                    <td style="text-align:right;padding-right:2px;border:1px solid black;width:10%;">
+                                        <t t-if="line.sudo().course_gross_fee > 0">
+                                            <span t-esc="'{0:,.0f}'.format(line.sudo().course_gross_fee)"/>
+                                        </t>
+                                        <t t-elif="line.sudo().course_gross_fee == 0">
+                                            <span t-esc="'{0:,.0f}'.format(line.sudo().price_subtotal)"/>
+                                        </t>
+                                    </td>
+                                    <t t-set="waiver_amt" t-value="waiver_amt + line.sudo().course_gross_fee - line.sudo().price_subtotal"/>
+                                </tr>
+                        </t>
+
+                        <!-- *****   Gross Tuition Fee ***** -->
+                        <tr style="border:1px solid black;">
+                            <td colspan="2" style="font-weight:bold;border:1px solid black;text-align:right;padding-right:5px;">
+                                Gross Tuition Fee.
+                            </td>
+                            <td colspan="2" style="font-weight:bold;border:1px solid black;padding-right:5px;background-color:#7AE7F0">
+                                <span t-esc="'{0:,.0f}'.format(inv.semester_gross_fee)"/>
+                            </td>
+                        </tr>
+
+                        <!--*****  Admission Line *****-->
+                        <t t-if="adm_fee > 0">
+                            <t t-foreach="inv.invoice_line_ids.filtered(lambda a: a.name=='Admission Fee')" t-as="line">
+                                <t t-if="line.price_subtotal > 0">
+                                    <tr style="border:1px solid black;">
+
+                                        <!--***** Course Name Line ***** -->
+                                        <td colspan="2"  style="font-weight:bold;border:1px solid black;text-align:right;padding-right:5px;">
+                                            <span t-esc="line.sudo().name"/>
+                                        </td>
+
+                                        <!--***** Course Gross Fee Line  *****-->
+                                        <td colspan="2" style="font-weight:bold;border:1px solid black;padding-right:5px;">
+                                            <span t-esc="'{0:,.0f}'.format(line.sudo().price_subtotal)"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+
+                            <!-- ***** Total Due Fee Line ***** -->
+                            <tr style="border:1px solid black;">
+                                <td colspan="2" style="font-weight:bold;border:1px solid black;text-align:right;padding-right:5px;">
+                                    Total Due Fee
+                                </td>
+                                <td colspan="2" style="font-weight:bold;border:1px solid black;padding-right:5px;background-color:#7AE7F0">
+                                    <span t-esc="'{0:,.0f}'.format(inv.semester_gross_fee + adm_fee)"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-12">
+                    <table id="invoice-report">
+
+                        <!--***** Paid Water Mark *****-->
+                        <t t-if="inv.payment_state in ('in_payment','paid')">
+                            <div class="watermark">Paid</div>
+                        </t>
+
+                        <!-- ***** Scholarship Name ***** -->
+                        <tr style="border:1px solid black;">
+                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">
+                                <span>Scholarship Type</span>
+                            </td>
+                            <td style="font-size:10px;text-align:left;border:1px solid black;">
+                                <t t-foreach="doc.waiver_ids" t-as="wavier">
+                                    <span t-esc="wavier.scholarship_category_id and wavier.scholarship_category_id.name or ''"/>
+                                    <t t-if="len(doc.waiver_ids) > 1">
+                                        <span>,</span>
+                                    </t>
+                                </t>
+                            </td>
+                        </tr>
+
+                        <!--***** Scholarship Percentage *****-->
+                        <tr>
+                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">
+                                <span>On Tuition Fee</span>
+                            </td>
+                            <td style="font-size:10px;border:1px solid black;">
+                                <!--                                <span t-esc="doc.waiver_amount"/>-->
+                                <t t-if="inv.scholarship_continue_policy_line_id.value > 0">
+                                    <span t-esc="'{0:,.0f}'.format(inv.scholarship_continue_policy_line_id.value)"/>%
+                                </t>
+                                <t t-elif="inv.waiver_ids and inv.waiver_ids[0].line_ids">
+                                    <span t-esc="'{0:,.0f}'.format(inv.waiver_ids[0].line_ids[0].percentage)"/>%
+                                </t>
+
+                            </td>
+                        </tr>
+
+                        <!--***** Scholarship Amount *****-->
+                        <tr>
+                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">
+                                <span>Less Scholarship Amount</span>
+                            </td>
+                            <td style="font-size:10px;border:1px solid black;">
+
+                                <span t-esc="'{0:,.0f}'.format(waiver_amt)"/>
+<!--                                <t t-if="inv.waiver_amount > 0">-->
+<!--                                    <span t-esc="'{0:,.0f}'.format(inv.waiver_amount)"/>-->
+<!--                                </t>-->
+                            </td>
+                        </tr>
+
+                        <!--***** Semester Total Fee *****-->
+                        <tr>
+                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">
+                                <span>Total Semester Fee</span>
+                            </td>
+                            <td style="font-size:10px;border:1px solid black;">
+                                <span t-esc="'{0:,.0f}'.format(inv.amount_total)"/>
+<!--                                <t t-if="inv.semester_gross_fee - inv.waiver_amount > 0">-->
+<!--                                    <span t-esc="'{0:,.0f}'.format(inv.semester_gross_fee + adm_fee - inv.waiver_amount)"/>-->
+<!--                                </t>-->
+                            </td>
+                        </tr>
+
+                        <!--***** OD *****-->
+<!--                        <tr>-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Less Previously Paid (over draft)</span>-->
+<!--                            </td>-->
+
+<!--                            <td style="font-size:10px;border:1px solid black;">-->
+<!--                                &lt;!&ndash; <span t-esc="'{0:,.0f}'.format(doc.get_previously_paid_invoice(doc.student_id))"/> &ndash;&gt;-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+                        <!--***** Semester Gross Fee *****-->
+<!--                        <tr>-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Total Payable Semester Fee</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px;border:1px solid black;">-->
+<!--                                <t t-if="inv.semester_gross_fee > 0">-->
+<!--                                    <span t-esc="'{0:,.0f}'.format(inv.semester_gross_fee)"/>-->
+<!--                                </t>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+                        <!--***** Current Installment Amount  *****-->
+<!--                        <tr style="border:1px solid black;">-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>First Installment</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px; border:1px solid black;">-->
+<!--                                <t t-if="inv.sudo().get_installment_amount() > 0">-->
+<!--                                    <span t-esc="'{0:,.0f}'.format(inv.sudo().get_installment_amount())"/>-->
+<!--                                </t>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+                        <!--***** Remaining Fee *****-->
+                        <tr style="border:1px solid black;">
+                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">
+                                <span>Remaining Fee (
+                                    <span t-if="doc.invoice_remaining_amount > 0" t-esc="doc.invoice_remaining_due_date"/>
+                                    )
+                                </span>
+<!--                                <span>Remaining Fee (with due date)</span>-->
+                            </td>
+                            <td style="border:1px solid black;">
+                                <t t-if="doc.invoice_remaining_amount > 0">
+                                    <span t-esc="'{0:,.0f}'.format(doc.invoice_remaining_amount)"/>
+                                </t>
+<!--                                <span t-esc="'{0:,.0f}'.format(inv.sudo().get_challan_remaining_amount())"/>-->
+                            </td>
+                        </tr>
+
+                        <!--***** Payable Fine *****-->
+<!--                        <tr style="border:1px solid black;">-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Payable Fine</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px;text-align:right;border:1px solid black;">-->
+<!--                                <span t-esc="'{0:,.0f}'.format(inv.get_challan_fine_amount())"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+                        <!--***** Tax *****-->
+<!--                        <tr style="border:1px solid black;">-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Tax</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px;border:1px solid black;">-->
+<!--                                <span t-esc="'{0:,.0f}'.format(inv.get_challan_tax_amount())"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        <tr  t-if="doc.student_id.session_id.id != 198" style="border:1px solid black;">-->
+<!--                            <td style="font-size:10px;text-align:left;width:70%;border:1px solid black;">-->
+<!--                                <span>Total Semester Charges</span>-->
+<!--                            </td>-->
+<!--                            <td style="font-size:10px;border:1px solid black;">-->
+<!--                                <span t-esc="'{0:,.0f}'.format(inv.semester_gross_fee - inv.waiver_amount)"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+                    </table>
+
+                </div>
+            </div>
+
+            <!--***** Instructions Div *****-->
+            <div class="row">
+                <div class="col col-12">
+                    <t t-raw="doc.student_id.campus_id.fee_instructions_admission"/>
+                </div>
+            </div>
+
+            <!--***** Payable Amount *****-->
+            <t t-call="odoocms_fee_ext.receipt_footer"/>
+
+        </template>
+
+    </data>
+</odoo>

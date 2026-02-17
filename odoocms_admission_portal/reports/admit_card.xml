@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="student_admit_card_download">
+        <div t-call="web.html_container">
+            
+            <t t-foreach="docs" t-as="app">
+                <div t-call="web.basic_layout">
+                    <style>
+                        .borders{
+                        border: 1px solid black;
+                        }
+                        .margins{
+                        margin-top: 1%;
+                        }
+                        .signature {
+                        border: 0;
+                        border-bottom: 1px solid #000;
+                        }
+                    </style>
+                    <div>
+                        <div class="page">
+                            <div class="row" style="padding:2%;">
+                                <div class="col col-12">
+                                    <div class="row">
+                                        <div class="col col-2" style="text-align:left;">
+                                            <!--                                                <img style="width:120px;height:120px;"-->
+                                            <!--                                                     t-att-src="image_data_uri(company_id.logo)"-->
+                                            <!--                                                     t-if="company_id.logo"/>-->
+                                            <img src="/odoocms_admission_ucp/static/src/img/ucp.png" width="80px" height="80px" alt="Logo"/>
+                                        </div>
+                                        <div class="col col-10" style="text-align:center;">
+                                            <h3><t t-out="request.env.company.name"/></h3>
+                                            <h4 style="text-align: center;">(Entrance Test Admit Card)</h4>
+                                            <h5 style="text-align: center;">Session -
+                                                <span t-esc="applicant.academic_session_id.name"/>
+                                            </h5>
+                                            <h5>Admit Card</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row margins">
+                                        <div class="col col-8" style="text-align:left;">
+                                            <div class="row">
+                                                <div class="col col-4 borders" style="text-align:left;">
+                                                    Test Center
+                                                </div>
+                                                <div class="col col-8 borders" style="text-align:left;">
+                                                    <t t-esc="app.room"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col col-4 borders" style="text-align:left;">
+                                                    Name
+                                                </div>
+                                                <div class="col col-8 borders" style="text-align:left;">
+                                                    <t t-esc="applicant.name"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col col-4 borders" style="text-align:left;">
+                                                    SA No.
+                                                </div>
+                                                <div class="col col-8 borders" style="text-align:left;">
+                                                    <t t-esc="applicant.application_no"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col col-4 borders" style="text-align:left;">
+                                                    Login ID
+                                                </div>
+                                                <div class="col col-8 borders" style="text-align:left;">
+                                                    <t t-esc="applicant.cnic"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col col-4 borders" style="text-align:left;">
+                                                    Password
+                                                </div>
+                                                <div class="col col-8 borders" style="text-align:left;">
+                                                    <t t-esc="app.cbt_password"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col col-4 borders" style="text-align:left;">
+                                                    Program
+                                                </div>
+                                                <div class="col col-8 borders" style="text-align:left;">
+                                                    <t t-foreach="applicant.preference_ids" t-as="pref">
+                                                        <t t-esc="pref.program_id.name"/>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col col-4 borders" style="text-align:left;">
+                                                    Entry Test Date/Time
+                                                </div>
+                                                <div class="col col-8 borders" style="text-align:left;">
+                                                    <t t-esc="app.date"/>-
+                                                    <t t-esc="app.slots"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col col-1"/>
+                                        <div class="col col-3 " style="text-align:center;">
+                                            <t t-if="applicant.image">
+                                                <img id="profile_image"
+                                                     t-att-src="'data:image/png;base64,%s' % to_text(applicant.image)"
+                                                     width="200px" height="200px"/>
+                                            </t>
+                                            <t t-if="not applicant.image ">Passport Size Photograph</t>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-12 margins">
+                                            <h4>Timings</h4>
+                                            <ul>
+                                                <li>Candidates are requested to report at test center one hour
+                                                    before
+                                                    start of Exam.
+                                                </li>
+                                                <li>Entry to the exam center will be closed one hour before the
+                                                    start of
+                                                    test.
+                                                </li>
+                                                <!--<li><b>Timings are:</b> <br/>
+                                                    Morning Session: 0900 - 1200<br/>
+                                                    Evening Session: 1500 - 1800</li>-->
+                                                <li>No candidate will be allowed to leave the hall before completion
+                                                    of
+                                                    exam.
+                                                </li>
+                                                <li>Candidates are required to leave the campus immediately after
+                                                    completing test.
+                                                </li>
+                                                <li>Mobile phones/calculators and any other electronic gadget are
+                                                    not
+                                                    allowed in exam center.
+                                                </li>
+                                            </ul>
+    
+                                            <h4>Pre Requisite for Entry.</h4>
+                                            <p>
+                                                Candidates are required to print their admit cards and bring the
+                                                same to
+                                                the test center along with original CNIC/ Form-B/ NICOP or a
+                                                document
+                                                with Photo ID such as Passport, original Matric/FSc certificate
+                                                bearing
+                                                photograph, etc.
+                                            </p>
+    
+                                            <h4>Prohibited Material</h4>
+                                            <ul>
+                                                <li>Use of unfair means is strictly prohibited.</li>
+                                                <li>If any candidate is found in possession of any restricted
+                                                    gadgets or
+                                                    items,
+                                                    his/her test will be cancelled immediately.
+                                                </li>
+                                            </ul>
+    
+                                            <h4>COVID-19 Instructions</h4>
+                                            <ul>
+                                                <li>Mask, Gloves and Hand Sanitizer is mandatory requirement for all
+                                                    the
+                                                    candidates.
+                                                </li>
+                                                <li>Candidate’s Body Temperature would be checked at gate and in
+                                                    case of
+                                                    high temperature/ fever
+                                                    symptoms the candidate would not be allowed to appear in the
+                                                    test
+                                                </li>
+                                                <li>Always maintain Social Distance while moving towards test
+                                                    centre.
+                                                </li>
+                                                <li>Mask gathering is not allowed and the movement in premises is
+                                                    restricted to not more than two
+                                                    personnel side by side with six feet of distance with face mask
+                                                    ON.
+                                                </li>
+                                            </ul>
+    
+                                            <h4>Misc</h4>
+                                            <ul>
+                                                <li>Parking inside the campus is not allowed. Please make pick and
+                                                    drop
+                                                    arrangements,
+                                                    accordingly
+                                                </li>
+                                            </ul>
+    
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-8 margins"/>
+                                        <div class="col col-4 margins" style="text-align:right;">
+                                            <span>
+                                                <input type="text" class="signature"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-8 margins"/>
+                                        <div class="col col-4 margins" style="text-align:right;">
+                                            <span style="font-weight:bold">Candidate Signature</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-12 margins" style="text-align:center;">
+                                            This is computer generated document downloaded on
+                                            <t t-esc="pak_time"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      
+                    </div>
+    
+                </div>
+            </t>
+        </div>
+    </template>
+    <record id="action_student_admit_card_download" model="ir.actions.report">
+        <field name="name">Student Admit Card</field>
+        <field name="model">applicant.entry.test</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">odoocms_admission_portal.student_admit_card_download</field>
+        <field name="report_file">odoocms_admission_portal.student_admit_card_download</field>
+        <!-- <field name="binding_model_id" ref="model_applicant_entry_test"/> -->
+    </record>
+</odoo>

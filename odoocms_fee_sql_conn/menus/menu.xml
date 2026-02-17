@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+            id="menu_odoo_fee_sql_connector_root"
+            name="Fee Integration"
+            groups="group_odoo_fee_sql_connector_user"
+            web_icon="odoocms_fee_sql_conn,static/description/odoo_connector.png"
+            sequence="100"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_main"
+            name="Main"
+            groups="group_odoo_fee_sql_connector_user"
+            parent="menu_odoo_fee_sql_connector_root"
+            sequence="10"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_main2"
+            name="Connection Pool"
+            groups="group_odoo_fee_sql_connector_user"
+            parent="menu_odoo_fee_sql_connector_main"
+            sequence="10"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_sync_pool_main"
+            name="Data Sync Pool"
+            groups="group_odoo_fee_sql_connector_user"
+            parent="menu_odoo_fee_sql_connector_main"
+            sequence="20"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_push_main"
+            name="Pushing"
+            groups="group_odoo_fee_sql_connector_user"
+            parent="menu_odoo_fee_sql_connector_main"
+            sequence="50"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_report"
+            name="Reports"
+            parent="menu_odoo_fee_sql_connector_root"
+            groups="group_odoo_fee_sql_connector_user"
+            sequence="80"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_configuration"
+            parent="menu_odoo_fee_sql_connector_root"
+            name="Configuration"
+            groups="group_odoo_fee_sql_connector_user"
+            sequence="100"/>
+
+
+</odoo>

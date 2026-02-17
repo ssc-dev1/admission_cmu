@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="ucp_offer_letter_view_form" model="ir.ui.view">
+        <field name="name">ucp_offer_letter_view_form</field>
+        <field name="model">ucp.offer.letter</field>
+        <field name="arch" type="xml">
+            <form string="UCP Offer Letter">
+                <header>
+                    <button name="send_mail" attrs="{'invisible':[('is_blacklisted', '=', True)]}" type="object" string="Send Mail" class='btn btn-primary'/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Offer Letter" bg_color="bg-success"/>
+                    <widget name="web_ribbon" title="BlackList" attrs="{'invisible':[('is_blacklisted', '=', False)]}" bg_color="bg-danger"/>
+                    <h3 style="text-align: center;">Offer Letter</h3>
+                    <group>
+                        <group>
+                            <field name="applicant_id" required="1"/>
+                            <field name="reference_no" invisible="1"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="is_blacklisted"/>
+                            <field name="program_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="ucp_offer_letter_view_tree" model="ir.ui.view">
+        <field name="name">ucp_offer_letter_view_tree</field>
+        <field name="model">ucp.offer.letter</field>
+        <field name="arch" type="xml">
+            <tree string="UCP Offer Letter" decoration-warning='is_blacklisted'>
+                <field name="is_blacklisted" />
+                <field name="applicant_id" required="1"/>
+                <field name="reference_no"/>
+                <field name="program_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ucp_offer_letter_search" model="ir.ui.view">
+        <field name="name">ucp.offer.letter.search</field>
+        <field name="model">ucp.offer.letter</field>
+        <field name="arch" type="xml">
+            <search >
+                <field name="reference_no"/>
+                <field name="applicant_id" required="1"/>
+                <field name="is_blacklisted" />
+                <field name="program_id"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="ucp_offer_letter_action" model="ir.actions.act_window">
+        <field name="name">Offer Letter</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ucp.offer.letter</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+    <menuitem
+            id="ucp_offer_menu"
+            name="Letters"
+            sequence="36"
+            parent="odoocms_admission.menu_odoocms_admission_root"
+    />
+    <menuitem
+            id="ucp_offer_letter_menu"
+            name="Offer Letter"
+            action="ucp_offer_letter_action"
+            sequence="10"
+            parent="ucp_offer_menu"
+    />
+</odoo>

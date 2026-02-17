@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="admission_application_carousel" name="Carousel">
+        <br/>
+        <div class="container mb-3  ">
+            <div class="owl-carousel slide-one-item ">
+                <div class="d-sm-flex testimony-29101 align-items-stretch">
+                    <div class="image" style="background-image: url('/odoocms_admission_portal/static/img/c.jpg');"></div>
+                    <div class="text">
+                        <blockquote>
+                            <p style='color:#875A7B;'> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, at! Atque totam obcaecati veniam eius vero, similique quibusdam! Sunt sequi, nemo. Quam consequuntur ipsum suscipit repellat molestiae laboriosam, incidunt!</p>
+                            <div style='color:#875A7B;' class="author"> Craig Stephen</div>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="d-sm-flex testimony-29101 align-items-stretch">
+                    <div class="image" style="background-image: url('/odoocms_admission_portal/static/img/display.jpg');"></div>
+                    <div class="text">
+                        <blockquote>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, at! Atque totam obcaecati veniam eius vero, similique quibusdam! Sunt sequi, nemo. Quam consequuntur ipsum suscipit repellat molestiae laboriosam, incidunt!</p>
+
+                            <div class="author"> Craig Stephen</div>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_student_faculty_wise_challan_form" model="ir.ui.view">
+            <field name="name">odoocms.student.faculty.wise.challan.form</field>
+            <field name="model">odoocms.student.faculty.wise.challan</field>
+            <field name="arch" type="xml">
+                <form string="Student Callans">
+                    <header>
+                        <button name="action_detail_generate" states="Draft" string="Generate Detail" type="object" class="oe_highlight" groups="account.group_account_manager"/>
+                        <button name="generate_challan" states="Generate" string="Generate Challan" type="object" class="oe_highlight" groups="account.group_account_manager"/>
+
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="type" required="1" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                <field name="program_selection_type" required="1" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                <field name="term_id" required="1" attrs="{'readonly':[('state','!=','Draft')]}" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="receipt_type_ids" attrs="{'readonly':[('state','!=','Draft')]}" required="1" widget="many2many_tags" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                            <group>
+                                <field name="date" string="Creation Date" required="1" attrs="{'readonly':[('state','!=','Draft')]}"/>
+
+                                <field name="invoice_payment_term_id" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="adddrop_payment_term_id" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="second_payment_term_id" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="office_payment_term_ids" widget="many2many_tags"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="student_payment_term_ids" widget="many2many_tags"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Faculties" name="faculty_ids" attrs="{'invisible':[('type','=','All')]}">
+                                <field name="faculty_ids" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </page>
+                            <page string="Excluded Faculties" name="excluded_faculty_ids">
+                                <field name="excluded_faculty_ids" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </page>
+
+                            <page string="Programs" name="program_ids" attrs="{'invisible':[('program_selection_type','=','All')]}">
+                                <field name="program_ids" domain="[('department_id','in',faculty_ids)]"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </page>
+                            <page string="Excluded Programs" name="excluded_program_ids">
+                                <field name="excluded_program_ids" domain="[('department_id','in',faculty_ids)]"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </page>
+
+                            <page string="Detail" name="line_detail">
+                                <field name="lines" readonly="1">
+                                    <tree decoration-danger="not_generated_cnt > 0" decoration-success="not_generated_cnt == 0">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="faculty_name" string="Faculty"/>
+                                        <field name="faculty_id" optional="hide"/>
+                                        <field name="program_id" optional="show"/>
+                                        <field name="career_name"/>
+                                        <field name="session_id"/>
+                                        <field name="batch_id" invisible="1"/>
+                                        <field name="batch_name" string="Batch"/>
+                                        <field name="total_students" sum="sum_total_students"/>
+                                        <field name="generated_cnt" sum="sum_generated_cnt"/>
+                                        <field name="not_generated_cnt" sum="sum_not_generated_cnt"/>
+                                        <field name="to_be" optional="hide"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_student_faculty_wise_challan_tree" model="ir.ui.view">
+            <field name="name">odoocms.student.faculty.wise.challan.tree</field>
+            <field name="model">odoocms.student.faculty.wise.challan</field>
+            <field name="arch" type="xml">
+                <tree string="Student Callans"
+                      decoration-danger="state == 'Cancel'"
+                      decoration-primary="state == 'Draft'"
+                      decoration-info="state == 'Generated'"
+                      decoration-success="state == 'Generate'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="type"/>
+                    <field name="program_selection_type"/>
+                    <field name="invoice_payment_term_id"/>
+                    <field name="adddrop_payment_term_id"/>
+                    <field name="term_id"/>
+                    <field name="receipt_type_ids" widget="many2many_tags"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'Cancel'"
+                           decoration-primary="state == 'Draft'"
+                           decoration-info="state == 'Generated'"
+                           decoration-success="state == 'Generate'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_student_faculty_wise_challan_search" model="ir.ui.view">
+            <field name="name">odoocms.student.faculty.wise.challan.search</field>
+            <field name="model">odoocms.student.faculty.wise.challan</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Student Challans">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="type"/>
+
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'Draft')]"/>
+                    <filter name="generating" string="Generating..." domain="[('state', '=','Generate')]"/>
+                    <filter name="generated" string="Generated" domain="[('state', '=','Generated')]"/>
+                    <filter name="cancel" string="Cancel" domain="[('state', '=','Cancel')]"/>
+                    <separator/>
+                    <filter name="date" string="Date" date="date"/>
+
+                    <group expand="0" string="Group By...">
+                        <separator/>
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                        <separator/>
+                        <filter string="Type" name="group_by_type" domain="[]" context="{'group_by':'type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_student_faculty_wise_challan" model="ir.actions.act_window">
+            <field name="name">Faculty Wise Student Challan</field>
+            <field name="res_model">odoocms.student.faculty.wise.challan</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_student_faculty_wise_challan"
+                name="Faculty Wise Student Challan"
+                parent="odoocms_fee.menu_student_fee_policy_main"
+                action="action_odoocms_student_faculty_wise_challan"
+                sequence="30"
+                groups="odoocms_fee.group_fee_coordinator"
+        />
+
+    </data>
+</odoo>

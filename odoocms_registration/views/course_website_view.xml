@@ -1,0 +1,329 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+
+    <!-- course website complete course catalog -->
+    <template id="complete_course_catalog_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="class_id">
+                <t t-call="web.basic_layout">
+                <t t-set="report_title" t-value="'Complete Course Catalog'"/>
+                    
+                <t t-call="odoocms_assets.custom_header_report"/>
+                    
+                    <div class="page">
+                        <div class='container mt-2'>
+                            <div class="uk-overflow-container">
+                                <p>
+                                    <b style='color:Blue;' >Course Requirement: </b>
+                                    <hr/>
+                                    <span t-esc="class_id.course_requirements"/>
+                                </p>
+                                <p>
+                                    <b  style='color:Blue;'>Course Objectives: </b>
+                                    <hr/>
+                                    <span t-esc="class_id.course_objectives"/>
+                                </p>
+                                <p>
+                                    <b  style='color:Blue;'>Methodology: </b>
+                                    <hr/>
+                                    <t t-esc="class_id.methodology"/>
+                                </p>
+                                <p>
+                                    <b  style='color:Blue;'>Learning Outcome:</b>
+                                    <hr/>
+                                    <t t-esc="class_id.learning_outcome"/>
+                                </p>
+
+                                <h5  style='color:Blue;'>More Information:</h5>
+                                <br/>
+                                <t t-foreach="class_id.additional_info_ids" t-as="rec">
+                                    <p>
+                                        <b>Title: </b>
+                                        <t t-out="rec.subject"/>
+                                    </p>
+                                    <p>
+                                        <b>Description: </b>
+                                        <span style="white-space: normal;"><t t-out="rec.description"/></span>
+                                    </p>
+                                </t>
+                                <br/>
+                                <h5  style='color:Blue;'>Recommended Text Books:</h5>
+                                <table class="table  table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-1">Sr No.</th>
+                                            <th class="col-1">Title</th>
+                                            <th class="col-1">Authors</th>
+                                            <th class="col-2">Edition</th>
+                                            <th class="col-2">Publisher</th>
+                                            <th class="col-2">Year</th>
+                                            <th class="col-3">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="text_books" t-value="class_id.suggested_book_ids.filtered(lambda l: l.book_type == 'text')"/>
+                                        <t t-if="len(text_books) > 0">
+                                            <t t-foreach="text_books" t-as="rec">
+                                                <tr class="table-child-row">
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-esc="rec_index + 1"/>
+                                                    </td>
+                                                    <!--                                                                                <td class="uk-width-1-10 md-color-grey-800">-->
+                                                    <!--                                                                                    <t t-esc="dict(rec.fields_get(allfields=['book_type'])['book_type']['selection'])[rec.book_type]"/>-->
+                                                    <!--                                                                                </td>-->
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.title"/>
+                                                    </td>
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.authors"/>
+                                                    </td>
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.edition"/>
+                                                    </td>
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.publisher"/>
+                                                    </td>
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.year"/>
+                                                    </td>
+                                                    <td style="white-space: normal;" class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.description"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-if="not len(text_books) > 0">
+                                            <tr>
+                                                <td colspan="3">No Suggested Text Book</td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                                <h5  style='color:Blue;'>Recommended Reference Books:</h5>
+                                <table class="uk-table uk-table-nowrap uk-table-align-vertical table_tree  table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="table">Sr No.</th>
+                                            <!--                                                                        <th class="uk-width-1-10 md-color-grey-800">Book Type</th>-->
+                                            <th class="col-1">Title</th>
+                                            <th class="col-2">Authors</th>
+                                            <th class="col-1">Edition</th>
+                                            <th class="col-2">Publisher</th>
+                                            <th class="col-1">Year</th>
+                                            <th class="col-4">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="ref_books" t-value="class_id.suggested_book_ids.filtered(lambda l: l.book_type == 'reference')"/>
+                                        <t t-if="len(ref_books) > 0">
+                                            <t t-foreach="ref_books" t-as="rec">
+                                                <tr class="table-child-row">
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-esc="rec_index + 1"/>
+                                                    </td>
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.title"/>
+                                                    </td>
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.authors"/>
+                                                    </td>
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.edition"/>
+                                                    </td>
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.publisher"/>
+                                                    </td>
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.year"/>
+                                                    </td>
+                                                    <td style="white-space: normal;" class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.description"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-if="not len(ref_books) > 0">
+                                            <tr>
+                                                <td colspan="3">No Suggested Reference Book</td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+
+                                <h5  style='color:Blue;'>Recommended Web Resources:</h5>
+                                <table class="table  table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-1">Sr No.</th>
+                                            <th class="col-3">URL</th>
+                                            <th class="col-5">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="web_resources" t-value="class_id.web_resource_ids"/>
+                                        <t t-if="len(web_resources) > 0">
+                                            <t t-foreach="web_resources" t-as="rec">
+                                                <tr class="table-child-row">
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-esc="rec_index + 1"/>
+                                                    </td>
+                                                    <td class="uk-width-1-10 md-color-grey-800">
+                                                        <t t-out="rec.url"/>
+                                                    </td>
+                                                    <td class="uk-width-1-10 md-color-grey-800" style="white-space: normal;">
+                                                        <t t-out="rec.description"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-if="not len(web_resources) > 0">
+                                            <tr>
+                                                <td colspan="3">No Suggested Web Resource</td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+
+                                <h5  style='color:Blue;'>Grade Points:</h5>
+                                <table class="table  table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-3">Assessment Type</th>
+                                            <th class="col-3">Weightage %</th>
+                                            <!-- <th class="col-3">Consider Top</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="assessment_components" t-value="class_id.assessment_component_ids"/>
+                                        <t t-if="len(assessment_components) > 0">
+                                            <t t-foreach="assessment_components" t-as="rec">
+                                                <t t-if="float(rec.weightage)>0">
+                                                    
+                                                    <tr class="table-child-row">
+                                                        <td class="md-color-grey-800">
+                                                            <t t-esc="rec.type_id.name"/>
+                                                        </td>
+                                                        <td class="md-color-grey-800">
+                                                            <t t-esc="rec.weightage"/>
+                                                        </td>
+                                                            <!-- <td class="md-color-grey-800">
+                                                                <t t-esc="rec.best"/>
+                                                            </td> -->
+                                                    </tr>
+                                                </t>
+                                            </t>
+                                        </t>
+                                        <t t-if="not len(assessment_components) > 0">
+                                            <tr>
+                                                <td colspan="3">Not defined yet</td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+
+                                <h5  style='color:Blue;'>Calendar of Activities:</h5>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-1">Week No</th>
+                                            <th class="col-5">Week Contents</th>
+                                            <th class="col-2">Activity</th>
+                                            <th class="col-2">Files</th>
+                                            <!-- <th class="uk-width-1-10 md-color-grey-800">Download</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="break_ids" t-value="class_id.break_ids"/>
+                                        <t t-if="len(break_ids) > 0">
+                                            <t t-foreach="break_ids" t-as="rec">
+                                                <tr class="table-child-row">
+                                                    <td class="md-color-grey-800">
+                                                        <t t-esc="rec.name"/>
+                                                    </td>
+                                                    <td class="uk-width-6-10 md-color-grey-800" style="white-space: normal;">
+                                                        <t t-out="rec.contents"/>
+                                                    </td>
+                                                    <td class="md-color-grey-800">
+                                                        <t t-out="rec.assessment"/>
+                                                    </td>
+                                                    <td class="md-color-grey-800">
+                                                        <t t-if="rec.attachment_ids">
+                                                            <t t-esc="len(rec.attachment_ids)"/> <span>files</span> 
+                                                        </t>
+                                                        <t t-else="">
+                                                            No File
+                                                        </t>
+                                                    </td>
+                                                    <!-- <td>
+                                                        <a t-if='rec.attachment_ids' target='_blank'  id='downlaod_student_breakkdown' t-attf-href='/student/breakdown/download/{{rec.id}}'>
+                                                            <i class="md-icon material-icons">&#xE2C0;</i>
+                                                        </a>
+                                                    </td> -->
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-if="not len(break_ids) > 0">
+                                            <tr>
+                                                <td colspan="3">Not defined yet</td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                                <h5  style='color:Blue;'>Plagiarism and Intellectual Property Policy:</h5>
+                                <br/>
+
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="complete_course_catalog_action" model="ir.actions.report">
+        <field name="name">Complete Course Catalog</field>
+        <field name="model">odoocms.class</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">odoocms_registration.complete_course_catalog_template</field>
+        <field name="report_file">odoocms_registration.complete_course_catalog_template</field>
+    </record>
+
+    
+
+    <record id="course_website_report_tree" model="ir.ui.view">
+        <field name="name">Course Website Report</field>
+        <field name="model">odoocms.class</field>
+        <field name="priority">33</field>
+        <field name="arch" type="xml">
+            <tree string="Course Website Report Action" duplicate="false" create="false" edit="false" delete="false">
+                <field name="state" invisible="1" />
+                <field name="faculty_staff_id" />
+                <field name="code"/>
+                <field name="name"/>
+                <field name="section_id"/>
+                <field name="description" string='Course Info'/>
+                <field name="week_cnt" string='Weeks' />
+                <field name="book_cnt" string='Books' />
+                <field name="webresource_cnt" string='Web Resources' />
+<!--                <field name="activities_sum" string='Grade Points %' />-->
+                <button type="object" name='course_website_catalog' string="View" icon="fa-url"/>
+              </tree>
+        </field>
+    </record>
+    <record id="course_website_report_action" model="ir.actions.act_window">
+        <field name="name">Course Website Report</field>
+        <field name="res_model">odoocms.class</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+        <record id="course_website_report_action2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="course_website_report_tree"/>
+            <field name="act_window_id" ref="course_website_report_action"/>
+        </record>
+    <menuitem id="course_website_report_menu" name="Course Website Report" action="course_website_report_action" parent="odoocms_academic.menu_odoocms_academic_main" />
+
+</odoo>

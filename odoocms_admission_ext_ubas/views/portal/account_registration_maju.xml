@@ -1,0 +1,401 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <template id="account_registration_maju" name="Account Registration">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/bootstrap/css/bs4.css"/>
+    <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/fontawesome/css/all.css"/>
+    <link href="/odoocms_admission_portal/static/css/account_registration_ucp.css" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="/odoocms_admission_portal/static/img/cust_white_logo.png"/>
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/signin_cust_script.js"></script>
+
+    <script type="text/javascript">
+  function allowOnlyEnglish(e) {
+    const char = String.fromCharCode(e.which);
+    const isEnglish = /^[a-zA-Z ]$/.test(char);
+    if (!isEnglish) {
+      alert("Write English characters only A-Z and a-z.");
+      e.preventDefault();
+      return false;
+    }
+    return true;
+  }
+    </script>
+
+    <!-- navbar -->
+    <div class="container-fluid">
+      <nav style='zoom:85%;margin-bottom:13px' class="navbar py-0 ">
+        <a class="navbar-brand d-flex " href="/">
+          <img src="/odoocms_admission_portal/static/img/maju_white_logo.png" width="90" height="90" class="d-inline-block align-top m-0 p-0" alt=""/>
+          <!-- <img t-att-src="image_data_uri(company.logo) if company.logo else ''" width="90" height="90" class="d-inline-block align-top m-0 p-0" alt=""/> -->
+          <span class="align-self-center mx-2 navbar_custom d-none d-lg-block">
+            <t t-esc="company.name"/>
+            <!-- <p class="py-0 mt-1 my-0 moto">Your Journey Awaits</p> -->
+          </span>
+        </a>
+        <h1 class="navbar-text mr-5">
+          <b id='title_sign'>Admission Sign-Up</b>
+          <img src="/odoocms_admission_portal/static/img/flare.png" class="d-inline-block align-top m-0 p-0 flare" alt=""/>
+        </h1>
+      </nav>
+      <div id="signup_image">
+        <!--        <img style='height:59%;width:100%;3px solid ' src="/odoocms_admission_portal/static/img/cust.jpg" class="img-fluid" alt="..."/>-->
+        <img style='height:59%;width:100%;3px solid ' t-att-src="image_data_uri(company.admission_banner) if company.admission_banner else ''" class="img-fluid" alt="..."/>
+      </div>
+      <div id="signin_image">
+        <img style='height:59%;width:100%;border:3px solid ' t-att-src="image_data_uri(company.admission_banner) if company.admission_banner else ''" class='img-fluid' alt="..."/>
+      </div>
+
+
+      <div class="container-fluid">
+
+        <!-- ############################signup form######################## -->
+        <div style='display:none;' id='signup_div' class="row">
+          <div class="col-8 mt-1">
+            <form action="/web/admission/signup" autocomplete='off' method='POST' class="signin-form mb-2" id="signup_form" onsubmit="this.action = this.action + location.hash">
+              <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+              <div style="font-family: Galano Grotesque;" class="form-row">
+                <div class="form-group col-md-4">
+                  <label class="my-0" for="first_name"> First Name</label>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text p-0 m-2">
+                      <i class="fas fa-user"/>
+                    </span>
+                    <input type="text" name="first_name" class="form-control py-0" tabindex="1" required="1" onkeypress="return allowOnlyEnglish(event)" />
+                  </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label class="my-0" for="last_name">Last Name</label>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text p-0 m-2">
+                      <i class="fas fa-user"/>
+                    </span>
+                    <input type="text" name="last_name" class="form-control py-0" tabindex="2" required="1" onkeypress="return allowOnlyEnglish(event)" />
+                  </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label class="my-0" for="email">Email</label>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text p-0 m-2">
+                      <i class="fas fa-envelope"/>
+                    </span>
+                    <input type="email" name='email' class="form-control py-0" tabindex="3" required="1" />
+                  </div>
+                </div>
+              </div>
+              <div style="font-family: Galano Grotesque;" class="form-row">
+                <div class="form-group col-md-4">
+                  <label class="my-0" for="international_student">International Student</label>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text p-0 m-2">
+                      <i class="fas fa-globe-americas"/>
+                    </span>
+                    <select class='form-control py-0' tabindex="4" id='international_student' name='international_student' required="1">
+                      <option class="hidden" value='' selected='1' disabled='1'/>
+                      <option value='national'>No</option>
+                      <option value='international'>Yes</option>
+                    </select>
+                  </div>
+                </div>
+                <div id='cnic_div' class="form-group col-md-4">
+                  <label class="my-0" for="cnic">CNIC</label>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text p-0 m-2">
+                      <i class="fas fa-id-card"/>
+                    </span>
+                    <input type="text" class='form-control' id='cnic' data-inputmask-clearincomplete="true" data-inputmask="'mask': '99999-9999999-9'" name='cnic' tabindex="5" />
+                  </div>
+
+                </div>
+                <div style='display:none' id='country_div' class="form-group col-md-4">
+                  <label class="my-0" for="cnic">Country</label>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text p-0 m-2">
+                      <i class="fas fa-globe-americas"/>
+                    </span>
+                    <select class='form-control' name='country_id_signup' tabindex="4" id='country_id_signup' >
+                      <option class="hidden" value='' selected='1' disabled='1'>Country</option>
+                      <t t-foreach="country_id" t-as="country">
+                        <t t-if="country.id != 177">
+                          <option t-att-phone_code='country.phone_code' t-att-value='country.id' t-att-selected='country.id == 177 '>
+                            <t t-esc="country.name"/>
+                          </option>
+                        </t>
+                      </t>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="my-0" for="mobile">Mobile</label>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text p-0 m-2">
+                      <i class="fas fa-mobile-android-alt"/>
+                    </span>
+                    <input type="text" class="form-control" data-inputmask-clearincomplete="true" data-inputmask="'mask': '0399-9{7,7}'" id='phone_signup' name='phone_signup' tabindex="6" />
+                    <input type="text" class="form-control" data-inputmask-clearincomplete="true" data-inputmask="'mask': '09{4,}'" name='phone_signup_international' id='phone_signup_international' style='display:none;' tabindex="6" />
+                  </div>
+                </div>
+                <div style="font-family: Galano Grotesque;" class="form-row m-0">
+                  <div class="form-group-2">
+                    <label for="math_captcha">Please solve:
+                      <t t-esc="num1"/>
+                      <t t-esc="operation"/>
+                      <t t-esc="num2"/>
+                        =
+                    </label>
+                    <input type="text" name="math_captcha_answer" required="1" placeholder="Your Answer"/>
+                    <input type="hidden" name="num1" t-att-value="num1"/>
+                    <input type="hidden" name="num2" t-att-value="num2"/>
+                    <input type="hidden" name="operation" t-att-value="operation"/>
+                  </div>
+                </div>
+              </div>
+              <div style="font-family: Galano Grotesque;" class="form-row m-0">
+                <div class="form-group col-md-4">
+                  <div style='color:#999'>
+                    <div class="form-check form-check-inline">
+                      <input tabindex='7' class="form-check-input" checked='1' type="radio" name="gender" id="male_radio" value="m"/>
+                      <label class="form-check-label" for="male_radio">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input tabindex='8' class="form-check-input" type="radio" name="gender" id="female_radio" value="f"/>
+                      <label class="form-check-label" for="female_radio">Female</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input tabindex='9' class="form-check-input" type="radio" name="gender" id="other_radio" value="o" />
+                      <label class="form-check-label" for="other_radio">Other</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <input style="background-color: brown;border: none;" type="submit" name="submit" id="signup_submit" class="btn btn-primary py-1 px-5 container-fluid" value="Sign Up" />
+                </div>
+                <div class="form-group col-md-4">
+                  <!-- <br> -->
+                  <a role='button' id='signup_switch' style="font-size: 18px;color: white;" class="mt-0 container-fluid btn">
+                    <u>Already Have an Account?</u>
+                  </a>
+                </div>
+              </div>
+
+
+            </form>
+
+          </div>
+          <div class="col-4 ">
+            <div class="container row p-0">
+              <div style="font-size: 14;" class="col-12 m-0 p-0 d-none d-lg-block">
+                <ul class=" m-0 p-3" style="list-style-type: none;">
+                  <li class='d-flex '>
+                    <i style='color:white' class="fas fa-map-marker-alt mr-2"/>
+                    <span>
+                      <t t-esc="company.name"/>
+                      <br />
+                      <t t-esc="company.street"/>
+,                      <t t-esc="company.street2"/>
+,                      <t t-esc="company.city"/>
+.</span>
+                  </li>
+                  <li>
+                    <i style='color:white' class="fas fa-phone-alt mr-2"/>
+                    <t t-esc="company.admission_phone"/>
+                  </li>
+                  <li>
+                    <i style='color:white' class="fas fa-envelope mr-2"/>
+                    <t t-esc="company.admission_mail"/>
+                  </li>
+                  <!-- <li><i style='color:white' class="fas fa-globe-americas mr-2"/> <t t-esc="company.website"/></li> -->
+                  <li class='ml-1'>
+                    <b>Follow Us On Social Media</b>
+                  </li>
+                  <li>
+                    <a t-attf-href='{{company.social_facebook}}'>
+                      <img height='25px' width='25px' class='mr-2 mt-1 p-0' src="/odoocms_admission_portal/static/img/icon/fb.png" alt="" />
+                    </a>
+
+                    <a t-attf-href='{{company.social_instagram}}'>
+                      <img height='25px' width='25px' class='mr-2 mt-1 p-0' src="/odoocms_admission_portal/static/img/icon/insta.png" alt="" />
+                    </a>
+
+                    <a t-attf-href='{{company.social_twitter}}'>
+                      <img height='25px' width='25px' class='mr-2 mt-1 p-0' src="/odoocms_admission_portal/static/img/icon/twitter.png" alt="" />
+                    </a>
+
+                    <a t-attf-href='{{company.social_linkedin}}'>
+                      <img height='25px' width='25px' class='mr-2 mt-1 p-0' src="/odoocms_admission_portal/static/img/icon/li.png" alt="" />
+                    </a>
+
+                    <a t-attf-href='{{company.social_youtube}}'>
+                      <img height='25px' width='25px' class='mr-2 mt-1 p-0' src="/odoocms_admission_portal/static/img/icon/yt.ico" alt="" />
+                    </a>
+
+                  </li>
+                </ul>
+              </div>
+              <!--            <div class="col-5 ">-->
+              <!--              <img class="tower-white" src="/odoocms_admission_portal/static/img/tower.png" alt="" />-->
+              <!--            </div>-->
+
+            </div>
+          </div>
+        </div>
+        <!-- #####################################end signup############## -->
+
+
+        <!-- ############################signin form######################## -->
+        <div id='signin_div' class="row">
+          <div class="col-8 mt-1">
+            <form action="/web/login/admission/" autocomplete='off' method='POST' class="signin-form" id="signin_form" onsubmit="this.action = this.action + location.hash">
+              <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+              <div style="font-family: Galano Grotesque;" class="form-row">
+                <div class="form-group col-md-4">
+                  <label class="my-0" for="login">Login</label>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text p-0 m-2">
+                      <i class="fas fa-user"></i>
+                    </span>
+                    <input type="text" name='login' class="form-control py-0" tabindex="1" required="1" />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="my-0" for="last_name">Password</label>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text p-0 m-2">
+                      <i class="fas fa-key"></i>
+                    </span>
+                    <input type="password" name='password' class="form-control py-0" tabindex="2" required="1" />
+                  </div>
+                  <a style='color:white' href='/web/reset_password'>
+                    <span>Forgot Password?</span>
+                  </a>
+                </div>
+                <div class="form-group col-md-12">
+                  <div t-if="error" id='msg_alert' class="alert alert-warning ">
+                    <a role='button' id='msg_btn' class="close" data-dismiss="alert" aria-label="close">❌</a>
+                    <strong>Error!</strong>
+                    <t t-esc="error"/>
+.
+                  </div>
+                  <div style='display:none;' id='msg_alert' class="alert alert-success ">
+                    <a role='button' id='msg_btn' class="close" data-dismiss="alert" aria-label="close">❎</a>
+                    <strong>Success!</strong>
+                    <text id='msg_alert_text'></text>.
+                  </div>
+                </div>
+
+              </div>
+
+              <div style="font-family: Galano Grotesque;" class="form-row m-0">
+                <div class="form-group col-md-4">
+                  <input style="background-color: brown;border: none;" type="submit" name="submit" id="signin_submit" class="btn btn-primary py-1 px-5 container-fluid" value="Sign In" />
+                </div>
+                <div class="form-group col-md-4">
+                    <!-- Sign-up link or Admissions Closed based on company.allow_signups -->
+                    <t t-if="company.allow_signups">
+                        <a role="button"
+                          id="signin_switch"
+                          style="font-size: 20px; color: white; text-decoration: none;"
+                          class="mt-0 container-fluid btn">
+                            <span>New Here? Sign-Up</span>
+                        </a>
+                    </t>
+                    <t t-else="">
+                        <h3 style="font-size: 20px; color: white; text-align: center; margin-top: 6px;">
+                            Admissions Closed
+                        </h3>
+                    </t>
+                </div>
+              </div>
+
+            </form>
+
+          </div>
+          <div class="col-4 ">
+            <div class="row p-0  d-none d-lg-block">
+
+              <div style="font-size: 14;" class="col-12 m-0 p-0">
+                <ul class=" m-0 p-3" style="list-style-type: none;">
+                  <li class='d-flex '>
+                    <i style='color:white' class="fas fa-map-marker-alt mr-2"></i>
+                    <span>
+                      <t t-esc="company.name"></t>
+                      <br />
+                      <t t-esc="company.street"/>
+                      <t t-esc="company.street2"/>
+,                      <t t-esc="company.city"/>
+.</span>
+                  </li>
+                  <li>
+                    <i style='color:white' class="fas fa-phone-alt mr-2"></i>
+                    <t t-esc="company.admission_phone"/>
+                  </li>
+                  <li>
+                    <i style='color:white' class="fas fa-envelope mr-2"></i>
+                    <t t-esc="company.admission_mail"/>
+                  </li>
+                  <!-- <li><i style='color:white' class="fas fa-globe-americas mr-2"></i> <t t-esc="company.website"/></li> -->
+                  <li class='ml-1'>
+                    <b>Follow Us On Social Media</b>
+                  </li>
+                  <li>
+                    <a t-attf-href='{{company.social_facebook}}'>
+                      <img height='25px' width='25px' class='mr-2 mt-1 p-0' src="/odoocms_admission_portal/static/img/icon/fb.png" alt="" />
+                    </a>
+
+                    <a t-attf-href='{{company.social_instagram}}'>
+                      <img height='25px' width='25px' class='mr-2 mt-1 p-0' src="/odoocms_admission_portal/static/img/icon/insta.png" alt="" />
+                    </a>
+
+                    <a t-attf-href='{{company.social_twitter}}'>
+                      <img height='25px' width='25px' class='mr-2 mt-1 p-0' src="/odoocms_admission_portal/static/img/icon/twitter.png" alt="" />
+                    </a>
+
+                    <a t-attf-href='{{company.social_linkedin}}'>
+                      <img height='25px' width='25px' class='mr-2 mt-1 p-0' src="/odoocms_admission_portal/static/img/icon/li.png" alt="" />
+                    </a>
+
+                    <a t-attf-href='{{company.social_youtube}}'>
+                      <img height='25px' width='25px' class='mr-2 mt-1 p-0' src="/odoocms_admission_portal/static/img/icon/yt.ico" alt="" />
+                    </a>
+
+                  </li>
+                </ul>
+              </div>
+              <!--            <div class="col-5 ">-->
+              <!--              <img class="tower-white" src="/odoocms_admission_portal/static/img/tower.png" alt="" />-->
+              <!--            </div>-->
+
+            </div>
+          </div>
+        </div>
+        <!-- #####################################end signup############## -->
+      </div>
+    </div>
+
+
+    <!--
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T8GBWCR" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+-->
+
+
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/dynamic_iframe_noscript.js"></script>
+
+
+    <script type="text/javascript" src="/odoocms_admission_portal/static/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery-mask.js"></script>
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/account_registration_ucp.js"></script>
+
+    <script>
+            $(":input").inputmask();
+
+    </script>
+  </template>
+
+
+</odoo>

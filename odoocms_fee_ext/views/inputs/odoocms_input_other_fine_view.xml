@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_odoocms_input_other_fine_tree" model="ir.ui.view">
+            <field name="name">odoocms.input.other.fine.tree</field>
+            <field name="model">odoocms.input.other.fine</field>
+            <field name="arch" type="xml">
+                <tree string="Other Fines" decoration-success="state != 'cancel'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="type"/>
+                    <field name="session_id"/>
+                    <field name="career_id"/>
+                    <field name="term_id"/>
+                    <field name="semester_id" optional="1"/>
+                    <field name="institute_id" optional="1"/>
+                    <field name="discipline_id" optional="1"/>
+                    <field name="campus_id" optional="1"/>
+                    <field name="date"/>
+                    <field name="amount" optional="show"/>
+                    <field name="discount_amount" optional="show"/>
+                    <field name="net_amount" optional="show"/>
+                    <field name="receipt_id"/>
+                    <field name="company_id" optional="hide" groups="base.group_multi_company"/>
+                    <field name="state" widget="badge" decoration-primary="state=='draft'" decoration-success="state=='charged'" decoration-danger="state=='cancel'"/>
+                    <field name="create_uid" string="Created By" optional="hide" widget="many2one_avatar_user"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_input_other_fine_form" model="ir.ui.view">
+            <field name="name">odoocms.input.other.fine.form</field>
+            <field name="model">odoocms.input.other.fine</field>
+            <field name="arch" type="xml">
+                <form string="Other Fine">
+                    <header>
+                        <button name="action_cancel" states="draft" string="Cancel" type="object" class="oe_highlight" groups="account.group_account_manager"/>
+                        <button name="action_reset_to_draft" states="cancel" string="Reset To Draft" type="object" class="oe_highlight" groups="account.group_account_manager"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="student_id" required="1" attrs="{'readonly':[('state','!=', 'draft')]}"
+                                       options="{'no_quick_create':True,'no_create_edit':True,'no_create':True,}"/>
+                               <field name="campus_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="career_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="session_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="institute_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="program_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="batch_id" readonly="1" options="{'no_open':True,}"/>
+                                <field name="discipline_id" readonly="1" options="{'no_open':True,}"/>
+
+
+                            </group>
+                            <group>
+                                <field name="term_id" required="0" attrs="{'readonly':[('state','!=', 'draft')]}"
+                                       options="{'no_quick_create':True,'no_create_edit':True,'no_create':True,}"/>
+                                <field name="semester_id" attrs="{'readonly':[('state','!=', 'draft')]}"
+                                       options="{'no_quick_create':True,'no_create_edit':True,'no_create':True,}"/>
+                                <field name="type" attrs="{'readonly':[('state','!=', 'draft')]}" required="1"
+                                       options="{'no_quick_create':True,'no_create_edit':True,'no_create':True,}"/>
+                                <field name="amount" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="discount_amount" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="net_amount"/>
+                                <field name="date" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="receipt_id" readonly="1"
+                                       options="{'no_quick_create':True,'no_create_edit':True,'no_create':True,}"/>
+                                <field name="company_id" attrs="{'readonly': [('state','!=','draft')]}"
+                                       groups="base.group_multi_company" options="{'no_create': True}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="notes" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_input_other_fine_search" model="ir.ui.view">
+            <field name="name">odoocms.input.other.fine.search</field>
+            <field name="model">odoocms.input.other.fine</field>
+            <field name="arch" type="xml">
+                <search string="Other Fines">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="type"/>
+                    <field name="session_id"/>
+                    <field name="career_id"/>
+                    <field name="term_id"/>
+                    <field name="semester_id"/>
+                    <field name="institute_id"/>
+                    <field name="discipline_id"/>
+                    <field name="campus_id"/>
+                    <field name="date"/>
+                    <field name="amount"/>
+                    <field name="receipt_id"/>
+                    <field name="state"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_by_status" string="Status" domain="[]" context="{'group_by':'state'}"/>
+                        <filter name="group_by_additional_type" string="Type" domain="[]" context="{'group_by':'type'}"/>
+                        <filter name="group_by_student" string="Student" domain="[]" context="{'group_by':'student_id'}"/>
+                        <filter name="group_by_session" string="Session" domain="[]" context="{'group_by':'session_id'}"/>
+                        <filter name="group_career" string="Career" domain="[]" context="{'group_by':'career_id'}"/>
+                        <filter name="group_term" string="Term" domain="[]" context="{'group_by':'term_id'}"/>
+                        <filter name="group_semester" string="Semester" domain="[]" context="{'group_by':'semester_id'}"/>
+                        <filter name="group_institute" string="Institute" domain="[]" context="{'group_by':'institute_id'}"/>
+                        <filter name="group_by_date" string="Date" domain="[]" context="{'group_by':'date'}"/>
+                        <filter name="group_by_type" string="Charges Type" domain="[]" context="{'group_by':'type'}"/>
+                        <filter name="group_by_company" string="Company" domain="[]" context="{'group_by':'company_id'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="type" icon="fa-users"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_odoocms_input_other_fine_pivot" model="ir.ui.view">
+            <field name="name">odoocms.input.other.fine.pivot</field>
+            <field name="model">odoocms.input.other.fine</field>
+            <field name="arch" type="xml">
+                <pivot string="Other Fine Analysis">
+                    <field name="session_id" type="row"/>
+                    <field name="type" type="col"/>
+                    <field name="date" interval="month" type="col"/>
+                    <field name="amount" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_odoocms_input_other_fine_graph" model="ir.ui.view">
+            <field name="name">odoocms.input.other.fine.graph</field>
+            <field name="model">odoocms.input.other.fine</field>
+            <field name="arch" type="xml">
+                <graph string="Other Fines Analysis">
+                    <field name="session_id" type="row"/>
+                    <field name="type" type="col"/>
+                    <field name="date" interval="month" type="col"/>
+                    <field name="amount" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="action_odoocms_input_other_fine" model="ir.actions.act_window">
+            <field name="name">Other Fines</field>
+            <field name="res_model">odoocms.input.other.fine</field>
+            <field name="view_mode">tree,form,pivot,graph</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_input_other_fine"
+                name="Input Other Fine"
+                parent="odoocms_fee_ext.menu_fee_ad_hoc_charges_main"
+                action="action_odoocms_input_other_fine"
+                sequence="15"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+        />
+
+        <record id="view_odoocms_input_other_fine_type_tree" model="ir.ui.view">
+            <field name="name">odoocms.input.other.fine.type.tree</field>
+            <field name="model">odoocms.input.other.fine.type</field>
+            <field name="arch" type="xml">
+                <tree string="Other Fine Types" decoration-primary="state=='draft'" decoration-success="state=='lock'">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="fee_head_id"/>
+                    <field name="company_id" optional="hide" groups="base.group_multi_company"/>
+                    <field name="state" widget="badge" decoration-primary="state=='draft'" decoration-success="state=='lock'"/>
+                    <field name="create_uid" string="Created By" optional="show" widget="many2one_avatar_user"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_input_other_fine_type_form" model="ir.ui.view">
+            <field name="name">odoocms.input.other.fine.type.form</field>
+            <field name="model">odoocms.input.other.fine.type</field>
+            <field name="arch" type="xml">
+                <form string="Other Fine Type">
+                    <header>
+                        <button name="action_lock" type="object" class="oe_highlight" string="Lock" states="draft"/>
+                        <button name="action_unlock" type="object" class="oe_highlight" string="UnLock" states="lock"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="code" required="0" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="fee_head_id" required="1" attrs="{'readonly': [('state','!=','draft')]}"
+                                       options="{'no_quick_create':True,'no_create_edit':True,'no_create':True}"/>
+                                <field name="company_id" attrs="{'readonly': [('state','!=','draft')]}"
+                                       groups="base.group_multi_company" options="{'no_create': True}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_input_other_fine_type_search" model="ir.ui.view">
+            <field name="name">odoocms.input.other.fine.type.search</field>
+            <field name="model">odoocms.input.other.fine.type</field>
+            <field name="arch" type="xml">
+                <search string="Other Fine Types">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Company" name="group_by_company" domain="[]" context="{'group_by':'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_odoocms_input_other_fine_type_view" model="ir.actions.act_window">
+            <field name="name">Other Fine Type</field>
+            <field name="res_model">odoocms.input.other.fine.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                name="Other Fine Types"
+                id="odoocms_input_other_fine_type_menu"
+                parent="odoocms_fee.menu_fee_configuration_others"
+                action="action_odoocms_input_other_fine_type_view"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager"
+                sequence="35"
+        />
+
+    </data>
+</odoo>

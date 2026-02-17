@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_generate_bulk_misc_challan_wiz" model="ir.ui.view">
+            <field name="name">generate.bulk.misc.challan.wiz.view</field>
+            <field name="model">generate.bulk.misc.challan.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Generate Misc Challans Wizard">
+                    <notebook>
+                        <page string="Misc Charges">
+                            <field name="misc_charges" colspan="4" nolabel="1"/>
+                        </page>
+                    </notebook>
+
+                    <footer>
+                        <button name="action_generate_bulk_misc_challan" string="Generate Misc Challan" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_generate_bulk_misc_challan_wiz" model="ir.actions.act_window">
+            <field name="name">Generate Misc Challan</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">generate.bulk.misc.challan.wiz</field>
+            <field name="view_mode">form,list</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="odoocms_fee_ext.model_odoocms_fee_additional_charges"/>
+            <field name="binding_view_types">list,form</field>
+        </record>
+
+
+    </data>
+</odoo>

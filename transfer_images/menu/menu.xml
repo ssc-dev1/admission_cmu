@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+	<menuitem
+		id="menu_transfer_images_root"
+		name="Transfer Images"
+		web_icon="odoocms_base,static/description/cms.jpg"
+		sequence="5"/>
+
+	<menuitem
+		id="menu_transfer_images_configuration"
+		name="Transfer Images"
+		parent="menu_transfer_images_root"
+		sequence="10"/>
+
+</odoo>

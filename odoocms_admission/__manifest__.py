@@ -1,0 +1,58 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "OdooCMS Admission",
+    'version': '15.0',
+    'license': 'LGPL-3',
+    'category': 'OdooCMS',
+    'sequence': 3,
+    'summary': "Admission Module of Educational""",
+    'author': 'AARSOL',
+    'company': 'AARSOL',
+    'website': "http://www.aarsol.com/",
+    'depends': ['odoocms_base', 'mail', 'odoocms', 'odoocms_assets'],
+    'data': [
+        'security/odoocms_admission_security.xml',
+        'security/company_rules.xml',
+        'security/ir.model.access.csv',
+        'data/cron.xml',
+
+        'data/admission_mail_template.xml',
+        # 'data/data.xml',
+        'menus/odoocms_admission_menu.xml',
+        'views/sequence.xml',
+        'views/admission_register_view.xml',
+	'views/company.xml',
+        'views/odoocms_application_view.xml',
+        'views/application_processing_fee.xml',
+        # 'views/odoocms_merit_list.xml',
+        'views/odoocms_admission_common.xml',
+        'views/test_schedule.xml',
+        'views/test_series.xml',
+        'views/register_candidate_view.xml',
+        'views/odoocms_admission_education.xml',
+        'views/admission_documents.xml',
+        'views/odoocms_admission_degree.xml',
+        'views/odoocms_admission_specialization.xml',
+        'views/degree_subject_detail.xml',
+        'views/pre_test_view.xml',
+        'views/blacklist_application.xml',
+        'views/mail_template.xml',
+
+        # 'views/odoocms_overall_result.xml',
+        'reports/application_invoice_report.xml',
+        'reports/admission_application_report.xml',
+        'reports/interview_letter.xml',
+        'reports/report.xml',
+
+
+        'wizard/success_message_wizard_view.xml',
+        'wizard/allocate_slot.xml',
+
+    ],
+    'demo': [
+        # 'demo/admission_demo.xml',
+    ],
+    'installable': True,
+    'auto_install': False,
+    'application': True,
+}

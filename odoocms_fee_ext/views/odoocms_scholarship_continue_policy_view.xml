@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_scholarship_continue_policy_form" model="ir.ui.view">
+            <field name="name">odoocms.scholarship.continue.policy.form.view</field>
+            <field name="model">odoocms.scholarship.continue.policy</field>
+            <field name="arch" type="xml">
+                <form string="Scholarship Continue Policy" delete="false">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="start_term" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="end_term" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="current" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="policy_lines" string="Policy Detail">
+                                <field name="policy_lines" options="{'readonly':[('state','!=','draft')]}">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="scholarship_id" required="1"
+                                               options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                        <field name="credit_hours" required="1"/>
+                                        <field name="course_count" required="1"/>
+                                        <field name="cgpa" required="1"/>
+                                        <field name="sgpa"/>
+                                        <field name="current_credit_hours"/>
+                                        <field name="current_course_count"/>
+                                        <field name="value" required="1"/>
+                                        <field name="program_id" required="1" optional="hide"
+                                               options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                        <field name="program_code" optional="show"/>
+                                        <field name="program_name" optional="hide"/>
+                                        <field name="merge_policy_line" optional="show"/>
+                                    </tree>
+
+                                    <form>
+                                        <header>
+                                            <field name="state" widget="statusbar"/>
+                                        </header>
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="scholarship_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                                           options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                                    <field name="credit_hours" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    <field name="cgpa" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    <field name="course_count" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    <field name="value" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                </group>
+                                                <group>
+                                                    <field name="program_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                                           options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                                    <field name="policy_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                                           options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                                    <field name="merge_policy_line" string="Merge Line" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
+
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_scholarship_continue_policy_tree" model="ir.ui.view">
+            <field name="name">odoocms.scholarship.continue.policy.tree.view</field>
+            <field name="model">odoocms.scholarship.continue.policy</field>
+            <field name="arch" type="xml">
+                <tree string="Scholarship Continue Policy" delete="false"
+                      decoration-info="state=='draft'" decoration-success="state=='lock'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="start_term"/>
+                    <field name="end_term"/>
+                    <field name="current"/>
+                    <field name="create_uid" string="Created By" optional="show" widget="many2one_avatar_user"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-success="state=='lock'"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_odoocms_scholarship_continue_policy_search" model="ir.ui.view">
+            <field name="name">odoocms.scholarship.continue.policy.search</field>
+            <field name="model">odoocms.scholarship.continue.policy</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Scholarship Continue Policy">
+                    <field name="name"/>
+                    <field name="start_term"/>
+                    <field name="end_term"/>
+                    <separator/>
+
+                    <group expand="0" string="Group By...">
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_scholarship_continue_policy" model="ir.actions.act_window">
+            <field name="name">Scholarship Continue Policy</field>
+            <field name="res_model">odoocms.scholarship.continue.policy</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_scholarship_continue_policy"
+                name="Scholarship Continue Policy"
+                sequence='10'
+                parent="menu_student_fee_scholarship_main"
+                action="action_odoocms_scholarship_continue_policy"
+                groups="odoocms_fee.group_fee_manager"
+        />
+
+    </data>
+</odoo>

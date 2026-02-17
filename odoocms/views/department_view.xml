@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_odoocms_department_form" model="ir.ui.view">
+        <field name="name">odoocms.department.form</field>
+        <field name="model">odoocms.department</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_department_form"/>
+        <field name="arch" type="xml">
+            <field name="effective_date" position="before">
+                <field name="hod_id"
+                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+            </field>
+            <page name='programs' position="before">
+                <page name="faculty" string="Faculty">
+                    <field name="faculty_ids" colspan="4">
+                        <tree editable="bottom">
+                            <field name="employee_id"/>
+                            <field name="employee_tag_id" widget="many2many_tags"/>
+                            <field name="employee_name"/>
+                            <field name="employee_work_phone"/>
+                            <field name="employee_work_email"/>
+                            <field name="employee_department_id"/>
+                            <field name="employee_job_id"/>
+                            <field name="employee_parent_id"/>
+                        </tree>
+                        <form>
+                            <group>
+                                <group>
+                                    <field name="employee_id"/>
+                                    <field name="employee_name"/>
+                                </group>
+                                <group>
+                                    <field name="employee_work_phone"/>
+                                    <field name="employee_work_email"/>
+                                </group>
+                                <group>
+                                    <field name="employee_department_id"/>
+                                    <field name="employee_job_id"/>
+                                    <field name="employee_parent_id"/>
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+            </page>
+        </field>
+    </record>
+
+</odoo>

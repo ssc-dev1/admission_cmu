@@ -1,0 +1,142 @@
+<odoo>
+     <template id="teacher_course_load_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+<!--                <style>-->
+<!--                    td {-->
+<!--                        padding:2px !important;-->
+<!--                    }-->
+<!--                </style>-->
+                <t t-set="report_title" t-value="'Teacher Course Load'"/>
+<!--                <t t-call="odoocms_assets.custom_header_report"/>-->
+
+                <header>
+                    <div class="row">
+                        <div class="col-3">
+                            <img t-att-src="image_data_uri(request.env.company.logo)" height="80px" width="80px"/>
+                        </div>
+                        <div class="col-6 text-center" style="white-space: nowrap; vertical-align: middle;">
+                            <h5 t-out="request.env.company.name"/>
+                            <h4 class="text-center" t-out="report_title"/>
+                        </div>
+                    </div>
+                </header>
+                <hr class="border border-dark"/>
+                <div class="row">
+                    <div class="col-6"> Term: <span><t t-esc="term.name"/></span></div>
+                    <div class="col-6 text-right"> Print Date: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/></div>
+                </div>
+                <table class="table table-bordered"> <!--  -->
+                    <thead>
+                      <tr style='font-size:11px;padding:1px'>
+                        <th >Sr#</th>
+                        <th >Teacher Name</th>
+                        <th >Faculty</th>
+                        <th >Dept</th>
+<!--                        <th >Type</th>-->
+<!--                        <th >C L</th>-->
+                        <th >Cr</th>
+                        <th >Code</th>
+                        <th >Title</th>
+                        <th >CF</th>
+                        <th >Sec</th>
+                        <th >Str</th>
+                        <th >Prog</th>
+<!--                        <th >Dept</th>-->
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="permanent" t-value="0"/>
+                        <t t-set="visiting" t-value="0"/>
+                        <t t-set="contract" t-value="0"/>
+                        <t t-set="sections" t-value="0"/>
+
+                        <t t-foreach="docs" t-as="f">
+                            <t t-if="str(f.employee_id.employment_nature)[0]== 'p' ">
+                                <t t-set="permanent" t-value="permanent +1 "/>
+                            </t>
+                            <t t-elif="str(f.employee_id.employment_nature)[0]== 'v' ">
+                                <t t-set="visiting" t-value="visiting + 1"/>
+                            </t>
+                            <t t-elif="str(f.employee_id.employment_nature)[0]== 'c' ">
+                                <t t-set="contract" t-value="contract + 1"/>
+                            </t>
+                            <!-- .filtered(lambda l: not l.class_id.primary_class_id.parent_id) -->
+                            <t t-if="cross_faculty" t-set="current_term_classes" t-value="f.class_ids.filtered(lambda x: x.term_id.id==term.id)"/>
+                            <t t-if="not cross_faculty" t-set="current_term_classes" t-value="f.class_ids.filtered(
+                                lambda x: x.term_id.id==term.id and x.class_id.primary_class_id.institute_id.id == institute_id)"/>
+
+                            <t t-set="classes_cnt" t-value="len(current_term_classes) or 1"/>
+                            <tr style='font-size:11px;padding:1px'>
+                                <td class='text-center' t-attf-rowspan="{{classes_cnt}}"><t t-esc="f_index+1"/></td>
+                                <td t-attf-rowspan="{{classes_cnt}}"><t t-esc="f.name"/></td>
+                                <td t-attf-rowspan="{{classes_cnt}}"><t t-esc="f.institute and f.institute.code or f.department_id.code"/></td>
+                                <td t-attf-rowspan="{{classes_cnt}}"><t t-esc="f.department_id and f.department_id.code or ''"/></td>
+<!--                                <td class='text-center' t-attf-rowspan="{{classes_cnt}}"><t t-esc="str(f.employment_nature)[0].upper()"/></td>-->
+<!--                                <td class='text-center' t-attf-rowspan="{{classes_cnt}}"><t t-esc="len(current_term_classes.filtered(lambda l: not l.class_id.primary_class_id.parent_id))"/></td>-->
+                                <t t-if="current_term_classes">
+                                    <t t-set="class_faculty" t-value="current_term_classes[0]"/>
+                                    <t t-set="class" t-value="class_faculty.class_id"/>
+                                    <td class='text-center'><t t-esc="class_faculty.credits if not class.primary_class_id.parent_id else '-'"/></td>
+                                    <td><t t-esc="str(class.code).split('-')[0]"/></td>
+                                    <td><t t-esc="class.name"/></td>
+                                    <td><t t-esc="class.primary_class_id.institute_id.code"/></td>
+                                    <td class='text-center'><t t-esc="class.primary_class_id.section_id and class.primary_class_id.section_id.name or ''"/>
+                                        <span t-if="class.primary_class_id.is_parent"> (P)</span>
+                                        <span t-if="class.primary_class_id.parent_id"> (M)</span>
+                                    </td>
+                                    <td class='text-center'><t t-esc="len(class.registration_component_ids)"/></td>
+                                    <td><t t-esc="class.primary_class_id.program_id.code"/></td>
+<!--                                    <td><t t-esc="class.primary_class_id.department_id.code"/></td>-->
+                                </t>
+                            </tr>
+
+                            <t t-foreach="current_term_classes" t-as="class_faculty">
+                                <t t-set="sections" t-value="sections + 1 "/>
+                                <t t-if="class_faculty_index > 0">
+                                    <t t-set="class" t-value="class_faculty.class_id"/>
+                                    <tr style='font-size:11px;padding:2px'>
+                                        <td class='text-center'><t t-esc="class_faculty.credits if not class.primary_class_id.parent_id else '-'"/></td>
+                                        <td><t t-esc="str(class.code).split('-')[0]"/></td>
+                                        <td><t t-esc="class.name"/></td>
+                                        <td><t t-esc="class.primary_class_id.institute_id.code"/></td>
+                                        <td class='text-center'><t t-esc="class.primary_class_id.section_id and class.primary_class_id.section_id.name or ''"/>
+                                            <span t-if="class.primary_class_id.is_parent"> (P)</span>
+                                            <span t-if="class.primary_class_id.parent_id"> (M)</span>
+                                        </td>
+                                        <td class='text-center'><t t-esc="len(class.registration_component_ids)"/></td>
+                                        <td><t t-esc="class.primary_class_id.program_id.code"/></td>
+<!--                                        <td><t t-esc="class.primary_class_id.department_id.code"/></td>-->
+                                    </tr>
+                                </t>
+                            </t>
+
+                        </t>
+                    </tbody>
+                  </table>
+
+                <div class="col-2">
+                    <table t-if='len(docs)>1' class='table table-bordered'>
+                        <tr>
+                            <td  class='col'>Permanent</td>
+                            <td  class='col text-right'><t t-esc="permanent"/></td>
+                        </tr>
+                        <tr>
+                            <td  class='col'>Visiting</td>
+                            <td  class='col text-right'><t t-esc="visiting"/></td>
+                        </tr>
+                        <tr>
+                            <td  class='col'>Contract</td>
+                            <td  class='col text-right'><t t-esc="contract"/></td>
+                        </tr>
+                        <tr>
+                            <td  class='col'>Total Sections</td>
+                            <td  class='col text-right'><t t-esc="sections"/></td>
+                        </tr>
+                    </table>
+                </div>
+
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_odoocms_course_registration_tree_fee" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.tree</field>
+            <field name="model">odoocms.course.registration</field>
+            <field name="inherit_id" ref="odoocms_registration.view_odoocms_course_registration_tree"/>
+            <field name="arch" type="xml">
+                <field name="cnt" position="after">
+                    <field name="invoice_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_odoocms_course_registration_form_fee" model="ir.ui.view">
+            <field name="name">odoocms.course.registration.form</field>
+            <field name="model">odoocms.course.registration</field>
+            <field name="inherit_id" ref="odoocms_registration.view_odoocms_course_registration_form"/>
+            <field name="arch" type="xml">
+                <field name="new_courses" position="after">
+                    <field name="invoice_id" context="{'form_view_ref': 'odoocms_fee.odoocms_receipt_form'}"/>
+                </field>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='state']" position="after">
+                    <field name="price_unit" optional="hide" readonly="1"/>
+                    <field name="discount" optional="hide" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>

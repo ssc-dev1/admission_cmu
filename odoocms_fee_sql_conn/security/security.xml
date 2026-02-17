@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--***** Module Category *****-->
+        <record model="ir.module.category" id="ucp_fee_integration_category">
+            <field name="name">Fee Integration</field>
+            <field name="sequence">13</field>
+        </record>
+
+        <!--***** User *****-->
+        <record id="group_odoo_fee_sql_connector_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="odoocms_fee_sql_conn.ucp_fee_integration_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!--***** Manager *****-->
+        <record id="group_odoo_fee_sql_connector_manager" model="res.groups">
+            <field name="name">SQL Connection Manager</field>
+            <field name="category_id" ref="odoocms_fee_sql_conn.ucp_fee_integration_category"/>
+            <field name="implied_ids" eval="[(4, ref('odoocms_fee_sql_conn.group_odoo_fee_sql_connector_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

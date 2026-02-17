@@ -1,0 +1,339 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="admission_student_dashboard_ucp" name="Admission Dashboard">
+        <!-- Determine background image based on company -->
+        <t t-set="company_name_lower" t-value="(application_id.company_id.name or '').lower()" />
+        <t t-set="bg_img" t-value="'/odoocms_admission_portal/static/img/cust_new.png'" />
+        <t t-if="'ubas' in company_name_lower">
+            <t t-set="bg_img" t-value="'/odoocms_admission_portal/static/img/ubas_new.png'" />
+        </t>
+        <t t-if="'maju' in company_name_lower">
+            <t t-set="bg_img" t-value="'/odoocms_admission_portal/static/img/maju_new.png'" />
+        </t>
+
+        <div class="dashboard_main_wrapper" t-attf-style="--bg-col:{{color_scheme}}; background-image: url('#{bg_img}');">
+            <meta name="portal-security" content="verified" />
+            <link rel="stylesheet" type="text/css"
+                href="/odoocms_admission_portal/static/bootstrap/css/bootstrap.min.css" />
+            <link rel="stylesheet" type="text/css"
+                href="/odoocms_admission_portal/static/fontawesome/css/all.css" />
+            <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery.min.js"/>
+            <script type="text/javascript" src="/odoocms_admission_portal/static/js/popper.min.js"/>
+            <script type="text/javascript"
+                src="/odoocms_admission_portal/static/bootstrap/js/bootstrap.min.js"/>
+            <script type="text/javascript"
+                src="/odoocms_admission_portal/static/js/dashboard_ucp.js"/>
+            <link rel="stylesheet" type="text/css"
+                href="/odoocms_admission_portal/static/css/dashboard_ucp.css" />
+
+            <!-- ========== NAVBAR ========== -->
+            <nav class="navbar py-0 container-fluid px-5">
+                <a class="navbar-brand d-flex">
+                    <img style="width:90px;height:80px;"
+                         t-att-src="image_data_uri(application_id.company_id.logo) if application_id.company_id.logo else ''"
+                         class="d-inline-block align-top m-0 p-0" alt="Logo"/>
+                    <span class="align-self-center mx-2 navbar_custom">
+                        <t t-out="application_id.company_id.name" />
+                        <p class="py-0 mt-1 my-0 moto">Your Journey Awaits</p>
+                    </span>
+                </a>
+                <div class="navbar-text text-white">
+                    <h4 class="mb-0">
+                        <b>Welcome</b>, <t t-esc="user.name" />
+                        <span class="dropdown ms-2">
+                            <a class="btn dropdown-toggle text-white border-0" href="#" role="button"
+                               id="userMenu" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle fa-lg"/>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                       onclick="document.getElementById('change_password_form').reset()"
+                                       data-bs-toggle="modal" data-bs-target="#changePassword">
+                                        Change Password <i class="fas fa-key text-warning ms-2"/>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id="logout_button_dashboard" class="dropdown-item" href="#">
+                                        Logout <i class="fas fa-power-off text-danger ms-2"/>
+                                    </a>
+                                </li>
+                            </ul>
+                        </span>
+                    </h4>
+                </div>
+            </nav>
+
+            <!-- ========== DASHBOARD GRID ========== -->
+            <div class="container-fluid px-5 mt-5">
+                <div class="row g-4 justify-content-center dashboard-grid">
+
+                    <!-- 1  Application — blue -->
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div style="background-color:#1e88e5" class="card-fix shadow-lg">
+                            <a href="/admission/application" class="text-white text-decoration-none">
+                                <i class="fas fa-file-alt"/>
+                                <h4>Application</h4>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 2  State / Verification — yellow -->
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div style="background-color:#fbb515" class="card-fix shadow-lg state-card">
+                            <i class="fas fa-check-circle"/>
+                            <p class="small mb-1">Your State</p>
+                            <h4><t t-esc="str(application_id.state).upper()" /></h4>
+                        </div>
+                    </div>
+
+                    <!-- 3  Download Form — red -->
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div style="background-color:#c62828" class="card-fix shadow-lg">
+                            <t t-if="application_id.state != 'draft'">
+                                <a target="_blank" href="/download/admission/form" class="text-white text-decoration-none">
+                                    <i class="fas fa-cloud-download-alt"/>
+                                    <h4>Download Form</h4>
+                                </a>
+                            </t>
+                            <t t-else="">
+                                <i class="fas fa-lock opacity-50"/>
+                                <p class="small text-light">Submit Draft First</p>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- 4  Need-Based Scholarship — teal (conditional) -->
+                    <t t-if="application_id.meritlist_id and application_id.need_based_scholarship_applied">
+                        <div class="col-xl-4 col-lg-4 col-md-6">
+                            <div style="background-color:#00897b" class="card-fix shadow-lg highlight-card">
+                                <a href="/nbs/application/" class="text-white text-decoration-none">
+                                    <i class="fas fa-hand-holding-usd"/>
+                                    <h4>Need Based Scholarship</h4>
+                                    <span class="badge bg-danger">NEW</span>
+                                </a>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- 5  Payment — green -->
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div style="background-color:#73bd4c" class="card-fix shadow-lg">
+                            <i class="fas fa-wallet"/>
+                            <h4>Payment</h4>
+                        </div>
+                    </div>
+
+                    <!-- 6  Processing Fee — light card -->
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="card-fix info-text shadow-lg" style="background-color:#f0f4ff !important;">
+                            <a target="_blank" href="/download/invoice/admission/"
+                               class="text-decoration-none"
+                               t-attf-style="{{'pointer-events:none' if application_id.state == 'draft' else ''}}">
+                                <i class="fas fa-file-invoice-dollar text-primary"/>
+                                <h5>Processing Fee</h5>
+                                <t t-if="application_id.state == 'draft'">
+                                    <span class="badge bg-danger">Draft Mode</span>
+                                </t>
+                                <t t-else="">
+                                    <span class="badge bg-success">Download</span>
+                                </t>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 7  Pay Online — deep purple -->
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div style="background-color:#5e35b1" class="card-fix shadow-lg">
+                            <a href="https://cust.paymentprocessingpage.com/" target="_blank"
+                               class="text-white text-decoration-none">
+                                <i class="fas fa-receipt"/>
+                                <h4>Pay Online</h4>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 8  Program Transfer — emerald -->
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div style="background-color:#2e7d32" class="card-fix shadow-lg">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#TransferProgram"
+                               class="text-white text-decoration-none">
+                                <i class="fas fa-exchange-alt"/>
+                                <h4>Program Transfer</h4>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 9  Test / Interview — light green info card -->
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="card-fix card-fix-auto info-text shadow-lg" style="background-color:#e8f5e9 !important;">
+                            <i class="fas fa-clipboard-check text-success"/>
+                            <h5>Test / Interview</h5>
+
+                            <t t-if="admit_card">
+                                <a t-attf-href="/download/admit/test" class="btn btn-primary btn-sm mt-1">
+                                    Test Letter</a>
+                            </t>
+                            <t t-if="test_letter">
+                                <a t-attf-href="/download/admit/interview" class="btn btn-info btn-sm mt-1 text-white">
+                                    Interview Letter</a>
+                            </t>
+                            <t t-if="not admit_card and not test_letter">
+                                <span class="badge bg-secondary mt-1">Pending</span>
+                            </t>
+
+                            <a href="/download/offer/letter/" class="btn btn-success btn-sm mt-1"
+                               t-attf-style="{{'pointer-events:none;opacity:0.5' if not merit_student or is_blacklisted else ''}}">
+                                Download Offer</a>
+                            <a href="/download/fee/invoice/" target="_blank" class="btn btn-sm mt-1"
+                               t-attf-style="background-color:#9a0000;color:white;border:none;{{'pointer-events:none;opacity:0.5' if not fee_invoice or fee_invoice.payment_state != 'not_paid' else ''}}">
+                                Bank Challan</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ========== MODAL: Change Password ========== -->
+            <div class="modal fade" id="changePassword" tabindex="-1"
+                 aria-labelledby="changePasswordLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 style="color:grey" class="modal-title" id="changePasswordLabel">
+                                Change Password</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="change_password_form" class="row g-3">
+                                <div class="col-6">
+                                    <label for="password">Password</label>
+                                    <input type="password" minlength="6" class="form-control"
+                                           id="password" placeholder="Password" />
+                                </div>
+                                <div class="col-6">
+                                    <label for="password2">Confirm Password</label>
+                                    <input type="password" class="form-control"
+                                           id="password2" placeholder="Confirm Password" />
+                                </div>
+                                <input id="change_password_form_submit" type="submit"
+                                       style="display: none;" />
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
+                            <button type="button" disabled="1" id="change_pass_form"
+                                    onclick="document.getElementById('change_password_form_submit').click()"
+                                    class="btn btn-primary">Change Password</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== MODAL: Transfer Program ========== -->
+            <div style="color:grey" class="modal fade" id="TransferProgram" tabindex="-1"
+                 aria-labelledby="TransferProgramLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 style="color:grey" class="modal-title" id="TransferProgramLabel">
+                                Transfer Program</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center my-3">
+
+                                <t t-if="last_request">
+                                    <blockquote>
+                                        <b>Your Last Request is
+                                            <t t-esc="str(last_request.state).capitalize()" />
+                                        </b>
+                                    </blockquote>
+                                    <t t-if="last_request.state=='approve'">
+                                        <t t-if="application_id.fee_voucher_state != 'verify'">
+                                            <p t-attf-style="color:{{color_scheme}}">
+                                                Please Download Latest Application Processing Fee Challan
+                                            </p>
+                                        </t>
+                                    </t>
+                                </t>
+
+                                <t t-if="not pending_request">
+                                    <div class="row mx-2 my-2">
+                                        <div class="col-6 border p-2">
+                                            <div class="mb-2">Transferred From</div>
+                                            <input class="form-control inputText" type="text"
+                                                t-att-program="application_id.preference_ids[0].program_id.id if application_id.preference_ids else ''"
+                                                t-att-value="application_id.preference_ids[0].program_id.name if application_id.preference_ids else ''"
+                                                name="program_transfer_from"
+                                                id="program_transfer_from" />
+                                        </div>
+                                        <div class="col-6 border p-2">
+                                            <div class="mb-2">Transferred To</div>
+                                            <select id="program_transfer_to"
+                                                class="form-select form-select mb-3"
+                                                aria-label=".form-select-lg example">
+                                                <option selected="1" value="">Select New Program</option>
+                                                <t t-foreach="application_id.preference_ids"
+                                                    t-as="pref">
+                                                    <t t-if="pref.preference != 1">
+                                                        <option
+                                                            t-att-program_pretest="pref.program_id.pre_test.name if pref.program_id.pre_test else 'no'"
+                                                            t-att-program_pretest_id="pref.program_id.pre_test.id"
+                                                            t-att-value="pref.program_id.id">
+                                                            <t t-esc="pref.program_id.name" />
+                                                        </option>
+                                                    </t>
+                                                </t>
+                                            </select>
+                                        </div>
+                                        <div id="pretest_dashboard_div" class="col-6 border p-2">
+                                            <blockquote class="blockquote mb-0">Pre Test</blockquote>
+                                            <hr />
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <input class="form-control inputText"
+                                                        readonly="1" type="text"
+                                                        name="pretest_name_d" id="pretest_name_d" />
+                                                </div>
+                                                <div class="col-6">
+                                                    <input class="form-control inputText"
+                                                        type="number" placeholder="Marks"
+                                                        name="pre_test_marks_d"
+                                                        id="pre_test_marks_d" />
+                                                </div>
+                                            </div>
+                                            <label for="pre_test_attachment" class="form-label">
+                                                Upload Result Card*</label>
+                                            <input class="form-control" type="file"
+                                                id="pre_test_attachment_transfer" accept="image/*"
+                                                name="pre_test_attachment_transfer" />
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="mb-2">
+                                        <blockquote class="blockquote mb-0">
+                                            Your Request Is In Draft</blockquote>
+                                    </div>
+                                </t>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
+                            <button t-if="not pending_request" tabindex="-1"
+                                    id="program_transfer_request" type="button"
+                                    class="btn btn-primary">Request</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </template>
+</odoo>

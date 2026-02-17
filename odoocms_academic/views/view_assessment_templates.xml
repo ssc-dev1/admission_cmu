@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <!-- Assessment Type -->
+        <record id="odoocms_assessment_type_tree" model="ir.ui.view">
+            <field name="name">odoocms.assessment.type.tree</field>
+            <field name="model">odoocms.assessment.type</field>
+            <field name="arch" type="xml">
+                <tree string="Assessment Types" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="req_approval"/>
+                    <field name="uploadable"/>
+                    <field name="attendance"/>
+                    <field name="weightage"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Assessment Template -->
+        <record id="odoocms_assessment_template_tree" model="ir.ui.view">
+            <field name="name">odoocms.assessment.template.tree</field>
+            <field name="model">odoocms.assessment.template</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="component"/>
+                    <field name="institute_id"/>
+                    <field name="total"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="odoocms_assessment_template_form" model="ir.ui.view">
+            <field name="name">odoocms.assessment.template.form</field>
+            <field name="model">odoocms.assessment.template</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" placeholder="Eg: Lecture" required="True"/>
+                                <field name="code" required="True"/>
+                                <field name="component"/>
+                                <field name="institute_id"
+                                    options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                            <group>
+                                <field name="total"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Assessment Components">
+                                <field name="line_ids">
+                                    <tree editable='bottom'>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="type_id"
+                                            options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+<!--                                        <field name="name"/>-->
+                                        <field name="code"/>
+                                        <field name="weightage"/>
+                                        <field name="min"/>
+                                        <field name="max"/>
+                                        <field name="freeze"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Assessments Template">
+                                <field name="detail_ids">
+                                    <tree editable='bottom'>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="assessment_template_line_id" domain="[('template_id','=',parent.id)]"
+                                            options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                        <field name="assessment_name"/>
+                                        <field name="assessment_code"/>
+                                        <field name="max_marks"/>
+                                        <field name="freeze"/>
+                                        <field name="weightage" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Assessments Min. Load">
+                                <field name="load_ids">
+                                    <tree editable='bottom'>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="assessment_template_line_id" domain="[('template_id','=',parent.id)]"
+                                            options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                        <field name="event"/>
+<!--                                        <field name="weightage"/>-->
+                                        <field name="min_assessments"/>
+<!--                                        <field name="min"/>-->
+<!--                                        <field name="max"/>-->
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="odoocms_assessment_template_search" model="ir.ui.view">
+            <field name="name">odoocms.assessment.template.search</field>
+            <field name="model">odoocms.assessment.template</field>
+            <field name="arch" type="xml">
+                <search string="Assessment Template">
+                    <field name="name" string="Template" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <newline />
+                    <group expand="0" string="Group By...">
+                        <filter string="Institute/Faculty" domain="[]" name="institute_grp" context="{'group_by':'institute_id'}" />
+                        <filter string="Component" domain="[]" name="component_grp" context="{'group_by':'component'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="odoocms_assessment_template_line_tree" model="ir.ui.view">
+            <field name="name">odoocms.assessment.template.line.tree</field>
+            <field name="model">odoocms.assessment.template.line</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="sequence" widget="handle"/>
+                    <field name="template_id"/>
+                    <field name="type_id"/>
+<!--                    <field name="name"/>-->
+                    <field name="code"/>
+                    <field name="weightage"/>
+                    <field name="min"/>
+                    <field name="max"/>
+                    <field name="freeze"/>
+                </tree>
+            </field>
+        </record>
+
+         <record id="odoocms_assessment_template_detail_tree" model="ir.ui.view">
+            <field name="name">odoocms.assessment.template.detail.tree</field>
+            <field name="model">odoocms.assessment.template.detail</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="assessment_template_line_id"/>
+                    <field name="assessment_name"/>
+                    <field name="assessment_code"/>
+                    <field name="max_marks"/>
+                    <field name="freeze"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="odoocms_assessment_template_line_form" model="ir.ui.view">
+            <field name="name">odoocms.assessment.template.line.form</field>
+            <field name="model">odoocms.assessment.template.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+<!--                                <field name="name" placeholder="Eg: Quiz"/>-->
+                                <field name="type_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="code"/>
+                                <field name="template_id"/>
+                            </group>
+                            <group>
+                                <field name="weightage"/>
+                                <field name="min"/>
+                                <field name="max"/>
+                                <field name="freeze"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="odoocms_assessment_template_line_search" model="ir.ui.view">
+            <field name="name">odoocms.assessment.template.line.search</field>
+            <field name="model">odoocms.assessment.template.line</field>
+            <field eval="14" name="priority"/>
+            <field name="arch" type="xml">
+                <search string="Assessment Type">
+                    <field name="type_id"/>
+                    <field name="code"/>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter context="{'group_by':'template_id'}" domain="[]" name="template_id" string="Distribution Template"/>
+                        <filter context="{'group_by':'type_id'}" domain="[]" name="grp_type" string="Distribution Template"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <!-- Grade Method -->
+        <record id="odoocms_grade_method_tree" model="ir.ui.view">
+            <field name="name">odoocms.grade.method.tree</field>
+            <field name="model">odoocms.grade.method</field>
+            <field name="arch" type="xml">
+                <tree string="Grade Method">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="method"/>
+                    <field name="grade_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="odoocms_grade_method_form" model="ir.ui.view">
+            <field name="name">odoocms.grade.method.form</field>
+            <field name="model">odoocms.grade.method</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" placeholder="Eg: Relative Grading Scheme"/>
+                                <field name="code"/>
+                            </group>
+                            <group>
+                                <field name="method"/>
+                                <field name="grade_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="notes"/>
+                        </group>
+
+<!--                        <notebook>-->
+<!--                            <page string="Classes">-->
+<!--                                <field name="class_ids">-->
+<!--                                    <tree create="false" delete="false" edit="false">-->
+<!--                                        <field name="code"/>-->
+<!--                                        <field name="name"/>-->
+<!--                                        <field name="batch_section_id"/>-->
+<!--                                        <field name="term_id"/>-->
+<!--                                        <field name="faculty_staff_id"/>-->
+<!--                                        <field name="student_count"/>-->
+<!--                                    </tree>-->
+<!--                                </field>-->
+<!--                            </page>-->
+<!--                        </notebook>-->
+                    </sheet>
+                     <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_odoocms_assessment_type" model="ir.actions.act_window">
+            <field name="name">Assessment Type</field>
+            <field name="res_model">odoocms.assessment.type</field>
+            <field name="view_mode">tree</field>
+            <field name="target">current</field>
+        </record>
+
+         <record id="action_odoocms_assessment_template" model="ir.actions.act_window">
+            <field name="name">Assessment Template</field>
+            <field name="res_model">odoocms.assessment.template</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+
+        <record id="action_odoocms_grade_method" model="ir.actions.act_window">
+            <field name="name">Grade Method</field>
+            <field name="res_model">odoocms.grade.method</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+        <menuitem
+                id="assessment_type_menu"
+                parent="menu_odoocms_academic_configuration"
+                name="Assessment Type"
+                action="action_odoocms_assessment_type"
+                sequence="20"/>
+
+        <menuitem
+                id="assessment_template_menu"
+                parent="menu_odoocms_academic_configuration"
+                name="Assessment Template"
+                action="action_odoocms_assessment_template"
+                sequence="30"/>
+
+        <menuitem
+                id="grade_method_menu"
+                parent="menu_odoocms_academic_configuration"
+                name="Grade Methods"
+                action="action_odoocms_grade_method"
+                sequence="50"/>
+
+</odoo>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--***** Module Category *****-->
+        <record model="ir.module.category" id="odoo_sms_category">
+            <field name="name">SMS</field>
+            <field name="sequence">15</field>
+        </record>
+
+        <!--***** User *****-->
+        <record id="group_odoo_sms_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="send_sms.odoo_sms_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!--***** Manager *****-->
+        <record id="group_odoo_sms_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="send_sms.odoo_sms_category"/>
+            <field name="implied_ids" eval="[(4, ref('send_sms.group_odoo_sms_user'))]"/>
+        </record>
+
+        <!-- ***** Gateway Setup Multi Company Rule *****-->
+        <record id="gateway_setup_multi_company_rule" model="ir.rule">
+            <field name="name">Gateway Setup Multi Company Rule</field>
+            <field name="model_id" ref="send_sms.model_gateway_setup"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- ***** Send Sms Multi Company Rule *****-->
+        <record id="send_sms_multi_company_rule" model="ir.rule">
+            <field name="name">Send SMS Multi Company Rule</field>
+            <field name="model_id" ref="send_sms.model_send_sms"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+         <!-- ***** Send SMS Cron Multi Company Rule *****-->
+        <record id="send_sms_cron_multi_company_rule" model="ir.rule">
+            <field name="name">Send SMS Cron Multi Company Rule</field>
+            <field name="model_id" ref="send_sms.model_send_sms_cron"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- ***** Send SMS Employee Multi Company Rule *****-->
+        <record id="send_sms_employee_multi_company_rule" model="ir.rule">
+            <field name="name">Send SMS Employee Multi Company Rule</field>
+            <field name="model_id" ref="send_sms.model_send_sms_employee"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+         <!-- ***** Send SMS Employee Line Multi Company Rule *****-->
+        <record id="send_sms_employee_line_multi_company_rule" model="ir.rule">
+            <field name="name">Send SMS Employee Line Multi Company Rule</field>
+            <field name="model_id" ref="send_sms.model_send_sms_employee_line"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- ***** Send SMS List Multi Company Rule *****-->
+        <record id="send_sms_list_multi_company_rule" model="ir.rule">
+            <field name="name">Send SMS List Multi Company Rule</field>
+            <field name="model_id" ref="send_sms.model_send_sms_list"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+         <!-- ***** Send SMS Student Multi Company Rule *****-->
+        <record id="send_sms_student_multi_company_rule" model="ir.rule">
+            <field name="name">Send SMS Student Multi Company Rule</field>
+            <field name="model_id" ref="send_sms.model_send_sms_student"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+         <!-- ***** Send SMS Student Line Multi Company Rule *****-->
+<!--        <record id="send_sms_student_line_multi_company_rule" model="ir.rule">-->
+<!--            <field name="name">Send SMS Student Line Multi Company Rule</field>-->
+<!--            <field name="model_id" ref="send_sms.model_send_sms_student_line"/>-->
+<!--            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>-->
+<!--        </record>-->
+
+          <!-- ***** SMS Track Multi Company Rule *****-->
+        <record id="sms_track_multi_company_rule" model="ir.rule">
+            <field name="name">SMS Track Multi Company Rule</field>
+            <field name="model_id" ref="send_sms.model_sms_track"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

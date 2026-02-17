@@ -1,0 +1,95 @@
+@font-face {
+  font-family: oet;
+  src: url(/odoocms_admission_portal/static/fonts/font.ttf);
+}
+@font-face {
+  font-family: Galano Grotesque;
+  src: url(/odoocms_admission_portal/static/fonts/FontsFree-Net-Galano-Grotesque3.ttf);
+}
+
+.tower-white {
+  float: right;
+  bottom: 5px;
+  left: 14px;
+  height: 215px;
+  width: 150px;
+  /* position: absolute; */
+}
+
+.input-group-text {
+  border: none;
+  background-color: #ffffff;
+  position: absolute;
+}
+.form-control {
+  border: none;
+  padding-left: 15%;
+}
+.fas {
+  color: #112c4f;
+}
+
+body {
+  color: #ffffff;
+  font-family: Galano Grotesque, serif;
+  background: -moz-linear-gradient(1deg, #112c4f 39.234406%, #991b1e 122.5708%);
+  background: -o-linear-gradient(1deg, #112c4f 39.234406%, #991b1e 122.5708%);
+  background: -webkit-linear-gradient(
+    1deg,
+    #112c4f 39.234406%,
+    #991b1e 122.5708%
+  );
+  background: linear-gradient(89deg, #112c4f 39.234406%, #991b1e 122.5708%);
+}
+.alert-warning {
+  color: #ffffff;
+  font-family: Galano Grotesque, serif;
+  background: -moz-linear-gradient(1deg, #9b0303 39.234406%, #640f11 122.5708%);
+  background: -o-linear-gradient(1deg, #991b1e 39.234406%, #112c4f 122.5708%);
+  background: -webkit-linear-gradient(
+    1deg,
+    #991b1e 39.234406%,
+    #112c4f 122.5708%
+  );
+  background: linear-gradient(89deg, #991b1e 39.234406%, #112c4f 90.5708%);
+  border: none;
+}
+.alert-success {
+  color: #ffffff;
+  font-family: Galano Grotesque, serif;
+  background: -moz-linear-gradient(1deg, #269b03 39.234406%, #1f991b 111.5708%);
+  background: -o-linear-gradient(1deg, #1f991b 39.234406%, #112c4f 122.5708%);
+  background: -webkit-linear-gradient(
+    1deg,
+    #1f991b 39.234406%,
+    #112c4f 122.5708%
+  );
+  background: linear-gradient(89deg, #1f991b 39.234406%, #112c4f 90.5708%);
+  border: none;
+}
+
+.navbar_custom {
+  font-family: oet;
+  color: white;
+}
+.moto {
+  font-size: small;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  top: -9px;
+}
+.flare {
+  position: absolute;
+  width: 39%;
+  border: none;
+  right: -17px;
+  top: 0;
+  background: none;
+  height: 200px;
+  opacity: 0.8;
+  z-index: -8;
+}
+#display_image {
+  max-width: 100%;
+}

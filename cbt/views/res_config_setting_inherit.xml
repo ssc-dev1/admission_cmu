@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="99"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="CBT" string="CBT" data-key="cbt">
+                        <h2>CBT Configuration</h2>
+                        <div class="container row">
+                            <div class="col-6 row mt-4">
+                                <div class="col-5">
+                                    <label for="admission_url">Admission URL : &#160;</label>
+                                </div>
+                                <div class="col-7">
+                                    <field name="admission_url" widget='url'/>
+                                </div>
+                            </div>
+                            <div class="col-6 row mt-4">
+                                <div class="col-5">
+                                    <label for="admission_login">Admission Login : &#160;</label>
+                                </div>
+                                <div class="col-7">
+                                    <field name="admission_login" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="container row">
+                            <div class="col-6 row mt-4">
+                                <div class="col-5">
+                                    <label for="admission_db">Admission Database : &#160;</label>
+                                </div>
+                                <div class="col-7">
+                                    <field name="admission_db" />
+                                </div>
+                            </div>
+                            <div class="col-6 row mt-4">
+                                <div class="col-5 ">
+                                    <label for="admission_password">Admission Password : &#160;</label>
+                                </div>
+                                <div class="col-7">
+                                    <field name="admission_password" password='True'/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr/>   
+
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_application_single_challan_form_inherit" model="ir.ui.view">
+            <field name="name">odoocms.application.single.challan.form.inherit</field>
+            <field name="model">odoocms.application</field>
+            <field name="inherit_id" ref="odoocms_admission_fee.view_odoocms_application_single_challan_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='scholarship_id']" position="after">
+                    <field name="ref_meritlist" readonly="1"/>
+                    <field name="meritlist_date" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="inherit_action_odoocms_application_single_challan" model="ir.actions.act_window">
+            <field name="name">Candidate Single Challan</field>
+            <field name="res_model">odoocms.application</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                           (0, 0, {'view_mode': 'tree', 'view_id': ref('odoocms_admission_fee.view_odoocms_application_single_challan_tree')}),
+                                           (0, 0, {'view_mode': 'form', 'view_id': ref('odoocms_admission_fee.view_odoocms_application_single_challan_form')})]"/>
+            <field name="search_view_id" ref="odoocms_admission_fee.view_odoocms_application_single_challan_search"/>
+            <field name="context">{}</field>
+            <field name="domain">[('ref_meritlist', '!=', False)]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create the First Challan Here.
+                </p>
+            </field>
+        </record>
+
+        <!--***** Menu *****-->
+        <menuitem
+                id="odoocms_admission_fee.menu_odoocms_application_single"
+                name="Candidate Single Challan"
+                parent="odoocms_admission_fee.menu_odoocms_admission_finance_main"
+                action="inherit_action_odoocms_application_single_challan"
+                sequence="10"/>
+
+    </data>
+</odoo>

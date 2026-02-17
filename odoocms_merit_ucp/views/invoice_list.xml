@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="invoice_list_view_form" model="ir.ui.view">
+        <field name="name">invoice_list_view_form</field>
+        <field name="model">invoice.list</field>
+        <field name="arch" type="xml">
+            <form string="Invoice List">
+                <sheet>
+                    <widget name="web_ribbon" title="Invoice List" bg_color="bg-success"/>
+                    <h3 style="text-align: center;">Invoice List</h3>
+                    <group>
+                        <group>
+                            <field name="applicant_id" required="1"/>
+                            <field name="document_state"/>
+                        </group>
+                        <group>
+                            <field name="fee_voucher"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="invoice_list_view_tree" model="ir.ui.view">
+        <field name="name">invoice_list_view_tree</field>
+        <field name="model">invoice.list</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="fee_voucher != 'verify'" decoration-info="document_state == 'Not Verified'">
+                <field name="applicant_id" required="1"/>
+                <field name="document_state"/>
+                <field name="fee_voucher"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_invoice_list_search" model="ir.ui.view">
+        <field name="name">Invoice List</field>
+        <field name="model">invoice.list</field>
+        <field name="arch" type="xml">
+            <search string="Search Invoice State">
+                <field name="applicant_id" required="1"/>
+                <field name="document_state"/>
+                <field name="fee_voucher"/>
+                <group expand='0' string='Group by...'>
+                    <filter name="applicant_id" string='Application' icon="fa-user" domain="[]"
+                            context="{'group_by' : 'applicant_id'}"/>
+                    <filter name="document_state" string='Document State' icon="fa-user" domain="[]"
+                            context="{'group_by' : 'document_state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="invoice_list_action" model="ir.actions.act_window">
+        <field name="name">Invoice List</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">invoice.list</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+    <!--<menuitem
+            id="invoice_list_menu"
+            name="Invoice List"
+            action="invoice_list_action"
+            sequence="40"
+            parent="merit_register_main_menu"
+    />-->
+</odoo>

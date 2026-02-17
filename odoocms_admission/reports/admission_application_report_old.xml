@@ -1,0 +1,448 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="application_final_report">
+        <t t-call="web.basic_layout">
+            <t t-call="web.html_container">
+                <style>
+                    body{
+                        font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;
+                        ;font-size:12px;
+                    }
+                </style>
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="application" t-value="o"/>
+                    <t t-set="company" t-value="request.env.company"/>
+
+                    <div class="container row text-center m-0 p-0">
+                        <div class="col-3 m-0 p-0">
+                            <img style="width:100px;height:100px;" class='text-center m-0 p-0' t-if='request.env.company.logo' t-att-src='image_data_uri(request.env.company.logo)'/>
+                        </div>
+                        <div class="col-7 mt-3 m-0 p-0">
+                            <h5 class='m-0 p-0'>
+                                <b>
+                                    <t t-out="company.name"/>
+                                </b>
+                            </h5>
+                            <h5>
+                                <b>
+                                    <t t-out="str(company.city).upper()"/>
+                                </b>
+                            </h5>
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row justify-content-between text-center">
+                        <div style='text-align:left !important;' class=" col-4 m-0 p-0 mx-3">
+                            <span t-out="application.register_id.term_id.name"/>
+                        </div>
+                        <div class=" col-4 m-0 p-0">
+                            <span t-out="company.website"/>
+                        </div>
+                        <div style='text-align:right !important;' class="col-4 m-0 p-0">
+                            <span t-out="'Candidate Ref. #:'"/>
+                            <span class='mr-5' t-out="application.application_no"/>
+                        </div>
+                        <!-- <div class="col-1"></div> -->
+                    </div>
+                    <p class='text-center m-0'>
+                        <t t-out="company.street"/>
+,
+                        <t t-out="company.street2"/>
+                        
+UAN:<t t-out="company.admission_phone"/>
+, Fax:<t t-out="'051-4486705'"/>
+, (                <t t-out="company.admission_mail"/>
+) </p>
+            <h5 style='background-color:black !important;color:white;' class='text-center m-0 mb-2 py-1'>
+                <b>APPLICATION FORM</b>
+            </h5>
+
+            <!-- preference row -->
+            <t t-set="ordinal_number" t-value="['1st' ,'2nd' ,'3rd' ,'4th' ,'5th' ,'6th' ,'7th' ,'8th' ,'9th' ,'10th']"/>
+            <t t-foreach="application.preference_ids" t-as="preference">
+                <div class="container row m-0">
+                    <div style='text-align:right' class="col-3">
+                        <t t-out="'Program Applied for:' if preference_index == 0 else ordinal_number[preference_index] + ' Priority:' "/>
+                    </div>
+                    <div style='border-bottom:1px solid black !important;text-align:left;' class="col-6 p-0">
+                        <t t-out="preference.program_id.name"/>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+            </t>
+            <h6 class=' m-0 mt-2 mb-1'>
+                <span class='px-3 py-1' style='background-color:black !important;color:white;'>PERSONAL INFORMATION</span>
+            </h6>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Candidate's Name:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-6 p-0">
+                    <t t-out="application.name"/>
+                </div>
+                <div class="col-3">
+                    <img width='150px' height='150px' style='position:fixed !important;top:180px !important' t-if='application.image' t-att-src='image_data_uri(application.image)'/>
+                </div>
+            </div>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Candidate CNIC/B-Form:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-6 p-0">
+                    <t t-out="application.cnic or application.passport"/>
+                </div>
+                <div class="col-3">
+                </div>
+            </div>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Candidate's Father Name:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-3 p-0">
+                    <t t-out="application.father_name"/>
+                </div>
+                <div class="col-3 row">
+                    <div style='text-align:right' class="col-6 ">Job Status:</div>
+                    <div style='border-bottom:1px solid black !important;text-align:left;' class="col-6 p-0">
+                        <t t-out="application.father_profession.name if application.father_profession else 'UNKNOWN'"/>
+                    </div>
+                </div>
+                <div class="col-3"></div>
+            </div>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Candidate's Email:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-6 p-0">
+                    <t t-out="application.email"/>
+                </div>
+                <div class="col-3">
+
+                    <!-- style="width:180px important;height:180px !important;position:absolute !important;top:-70px !important;" -->
+                </div>
+            </div>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Mailing Address:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-6 p-0">
+                    <t t-out="str(application.street) + ' ' +  str(application.city)"/>
+                </div>
+                <div class="col-3">
+                </div>
+            </div>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Permanent Address:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-6 p-0">
+                    <t t-out="str(application.per_street) + ' ' +  str(application.per_city)"/>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">CNIC of Fee Payer:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-3 p-0">
+                    <t t-out="application.fee_payer_cnic"/>
+                </div>
+                <div class="col-6 row">
+                    <div style='text-align:right' class="col-4">Fee Payer Name:</div>
+                    <div style='border-bottom:1px solid black !important;text-align:left;' class="col-8 p-0">
+                        <t t-out="application.fee_payer_name"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Date of Birth:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-3 p-0">
+                    <t t-out="application.date_of_birth"/>
+                </div>
+                <div class="col-6 row">
+                    <div style='text-align:right' class="col-4">Nationality:</div>
+                    <div style='border-bottom:1px solid black !important;text-align:left;' class="col-8 p-0">
+                        <t t-out="application.nationality.name"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Religion:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-3 p-0">
+                    <t t-out="application.religion_id.name"/>
+                </div>
+                <div class="col-6 row">
+                    <div style='text-align:right' class="col-4">Gender:</div>
+                    <div style='border-bottom:1px solid black !important;text-align:left;' class="col-8 p-0">
+                        <t t-out="dict(application.fields_get('gender')['gender']['selection'])[application.gender]"/>
+                    </div>
+                </div>
+            </div>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Candidate’s Mobile #:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-3 p-0">
+                    <t t-out="application.mobile"/>
+                </div>
+                <div class="col-6 row">
+                    <div style='text-align:right' class="col-4">Father's Mobile:</div>
+                    <div style='border-bottom:1px solid black !important;text-align:left;' class="col-8 p-0">
+                        <t t-out="application.father_cell"/>
+                    </div>
+                </div>
+            </div>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Next of Kin Name:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-3 p-0">
+                    <t t-out="application.guardian_name"/>
+                </div>
+                <div class="col-6 row">
+                    <div style='text-align:right' class="col-4">Job Status:</div>
+                    <div style='border-bottom:1px solid black !important;text-align:left;' class="col-8 p-0">
+                        <t t-out="application.guardian_profession.name if application.guardian_profession else ''"/>
+                    </div>
+                </div>
+            </div>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Family monthly income:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-3 p-0">
+                    <t t-out="application.guardian_income"/>
+                </div>
+                <div class="col-6 row">
+                    <div style='text-align:right' class="col-4">Next of Kin Mobile: </div>
+                    <div style='border-bottom:1px solid black !important;text-align:left;' class="col-8 p-0">
+                        <t t-out="application.guardian_cell"/>
+                    </div>
+                </div>
+            </div>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Father Occupation:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-3 p-0">
+                    <t t-out="application.father_profession.name if application.father_profession else ''"/>
+                </div>
+                <div class="col-6 row">
+                    <div style='text-align:right' class="col-4">Domicile: </div>
+                    <div style='border-bottom:1px solid black !important;text-align:left;' class="col-8 p-0">
+                        <t t-out="application.domicile_id.name if application.domicile_id else ''"/>
+                    </div>
+                </div>
+            </div>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">Mother Name:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-3 p-0">
+                    <t t-out="application.mother_name"/>
+                </div>
+                <div class="col-6 row">
+                    <div style='text-align:right' class="col-4">Permit Authority: </div>
+                    <div style='border-bottom:1px solid black !important;text-align:left;' class="col-8 p-0"></div>
+                </div>
+            </div>
+            <div class="container row m-0">
+                <div style='text-align:right' class="col-3">No.of Family Members:</div>
+                <div style='border-bottom:1px solid black !important;text-align:left;' class="col-3 p-0">
+                    <t t-out="int(application.brothers) + int(application.sisters) + 3 "/>
+                </div>
+                <div class="col-6 row">
+                    <div style='text-align:right' class="col-4">Permit #: </div>
+                    <div style='border-bottom:1px solid black !important;text-align:left;' class="col-8 p-0"></div>
+                </div>
+            </div>
+
+            <hr style='border:1px solid black'/>
+            <h6 class=' m-0 mt-1 mb-1'>
+                <span class='px-3 py-1' style='background-color:black !important;color:white;'>ACADEMIC DETAILS</span>
+            </h6>
+            <table style='border:1px solid black' class="table table-bordered">
+                <thead style='background-color:#87CEEB !important;color:black !important;border:1px solid black !important'>
+                    <th style='border:1px solid black !important;' class='text-center m-0 p-0'>Title of Certificate/Diploma/ Degree</th>
+                    <th style='border:1px solid black !important;' class='text-center m-0 p-0'>Degree Title </th>
+                    <th style='border:1px solid black !important;' class='text-center m-0 p-0'>Passing Year</th>
+                    <th style='border:1px solid black !important;' class='text-center m-0 p-0'>Total Marks/CGPA</th>
+                    <th style='border:1px solid black !important;' class='text-center m-0 p-0'>Obtained Marks/CGPA</th>
+                    <th style='border:1px solid black !important;' class='text-center m-0 p-0'>Percentage</th>
+                    <th style='border:1px solid black !important;' class='text-center m-0 p-0'>Board/University</th>
+                    <th style='border:1px solid black !important;' class='text-center m-0 p-0'>Status</th>
+                </thead>
+                <tbody>
+                    <t t-foreach="application.applicant_academic_ids" t-as="education">
+
+                        <tr class='p-0 m-0' style='border:1px solid black !important'>
+                            <td style='border:1px solid black !important;' class='text-center m-0 p-0'>
+                                <t t-out="education.degree_level_id.name"/>
+                            </td>
+                            <td style='border:1px solid black !important;' class='text-center m-0 p-0'>
+                                <t t-out="education.group_specialization.short_name"/>
+                            </td>
+                            <td style='border:1px solid black !important;' class='text-center m-0 p-0'>
+                                <t t-out="education.year"/>
+                            </td>
+                            <td style='border:1px solid black !important;' class='text-center m-0 p-0'>
+                                <t t-out="education.total_marks if not education.cgpa_check else 4"/>
+                            </td>
+                            <td style='border:1px solid black !important;' class='text-center m-0 p-0'>
+                                <t t-out="education.obt_marks if not education.cgpa_check else education.obtained_cgpa"/>
+                            </td>
+                            <td style='border:1px solid black !important;' class='text-center m-0 p-0'>
+                                <t t-out="education.percentage"/>
+                            </td>
+                            <t t-set="board" t-value="request.env['odoocms.application.board'].sudo().search([('name','ilike',education.board)],limit=1)"/>
+                            <td style='border:1px solid black !important;' class='text-center m-0 p-0'>
+                                <t t-out="board.sh_name if education.board else education.institute"/>
+                            </td>
+                            <td style='border:1px solid black !important;' class='text-center m-0 p-0'>
+                                <t t-if="education.result_status=='complete'">
+                                    Completed
+                                </t>
+                                <t t-else="">
+                                    Waiting
+                                </t>
+                            </td>
+                        </tr>
+                    </t>
+
+
+                </tbody>
+
+            </table>
+
+            <h6 t-if='application.pre_test_id' class=' m-0 mt-2 mb-1'>
+                <span class='px-3 py-1' style='background-color:black !important;color:white;'>APTITUDE TEST</span>
+            </h6>
+            <table t-if='application.pre_test_id' style='border:1px solid black' class="table table-bordered">
+                <thead>
+                    <thead style='background-color:#87CEEB !important;color:black !important;border:1px solid black !important'>
+                        <th style='border:1px solid black !important;' class='text-center m-0 p-0'>Name</th>
+                        <th style='border:1px solid black !important;' class='text-center m-0 p-0'>Marks  </th>
+                        <th style='border:1px solid black !important;' class='text-center m-0 p-0'>Total Marks</th>
+                    </thead>
+                    <tbody class='m-0 p-0'>
+                        <tr class='m-0 p-0'>
+                            <td class='m-0 p-0'>
+                                <t t-out="application.pre_test_id.name"/>
+                            </td>
+                            <td class='m-0 p-0'>
+                                <t t-out="application.pre_test_marks"/>
+                            </td>
+                            <td class='m-0 p-0'>
+                                <t t-out="application.pre_test_id.pre_test_total_marks"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+            <div class="container text-center m-0 p-0">
+                <h6 class='m-0 p-0'>
+                    <b>UNDERTAKING</b>
+                </h6>
+                <hr class='m-0 p-0' style='border:1px solid black;'/>
+            </div>
+            <div style='width:90%;text-align:justify;text-justify:inter-word;' class="container mt-1">
+                <t t-raw="application.register_id.undertaking"/>
+            </div>
+            <br/>
+            <div class="container d-flex justify-content-between text-center">
+                <div class="col-4 my-0 p-0">
+                    <span style='border-bottom:1px solid black;' class='px-5 my-0'>
+                        <t t-out="application.application_submit_date.strftime('%A %d %B %Y') if application.application_submit_date else application.application_date.strftime('%A %d %B %Y')"/>
+                    </span>
+                    <br/>
+                    <span class='p-0 my-0'>Date</span>
+                </div>
+                <div class="col-4 my-0 p-0">
+                    <span style='border-bottom:1px solid black;' class='px-5 my-0'>
+                        <t t-out="application.father_name or application.guardian_name"/>
+                    </span>
+                    <br/>
+                    <span class='p-0 my-0'>Father's Signature</span>
+
+                </div>
+                <div class="col-4 my-0 p-0">
+                    <span style='border-bottom:1px solid black;' class='px-5 my-0'>
+                        <t t-out="application.name"/>
+                    </span>
+                    <br/>
+                    <span class='p-0 my-0'>Candidate's Signature</span>
+                </div>
+            </div>
+
+
+
+        </t>
+    </t>
+</t>
+</template>
+
+
+<record id="admission_app_form_paperformat" model="report.paperformat">
+<field name="name">Admission Application Form Format</field>
+<field name="format">A4</field>
+<field name="orientation">Portrait</field>
+<field name="default" eval="False" />
+<field name="dpi" eval="90" />
+<field name="margin_top" eval="5" />
+<field name="margin_right" eval="2" />
+<field name="margin_bottom" eval="2" />
+<field name="margin_left" eval="7" />
+<field name="header_line" eval="False" />
+<field name="header_spacing" eval="35" />
+</record>
+
+<record id="action_application_final_report" model="ir.actions.report">
+<field name="name">Admission Application</field>
+<field name="model">odoocms.application</field>
+<field name="report_type">qweb-pdf</field>
+<field name="report_name">odoocms_admission.application_final_report</field>
+<field name="report_file">odoocms_admission.application_final_report</field>
+<field name="binding_model_id" ref="model_odoocms_application"/>
+<field name="binding_type">report</field>
+<field name="paperformat_id" ref='admission_app_form_paperformat'/>
+</record>
+
+
+</odoo>
+
+
+<!-- 
+<div class=" mb-0 p-0">
+    <div class="text-center header_custom row">
+        <div class="col-2 m-0 p-0">
+            <img style="width:210px;height:100px;" t-if='request.env.company.logo' t-att-src='image_data_uri(request.env.company.logo)'/>
+        </div>
+        <div class="col-10">
+            <h2 class='mb-0'>
+                <t t-esc="request.env.company.name"/>
+            </h2>
+            <strong class='mt-2'>
+                <t t-esc="report_title"/>
+            </strong>
+        </div>
+    </div>
+    <hr class='m-0 p-0' />
+</div>
+<t t-set="company" t-value="request.env.company"/>
+<div style='font-size:13px;' class="container-fluid">
+    <div class="container-fluid text-center">
+        <div class="d-flex justify-content-between mb-1">
+            <div class="col-4">
+                <b>Admission Term:</b>
+                <u>
+                    <t t-esc="o.register_id.term_id.name"/>
+                </u>
+            </div>
+            <div class="col-4">
+                <t t-esc="company.website"/>
+            </div>
+            <div class="col-4">
+                <b>Candidate Ref#:</b>
+                <u>
+                    <t t-esc="o.application_no"/>
+                </u>
+            </div>
+        </div>
+    </div>
+    <h6 >1.<t t-esc="company.street"/>
+.                        <t t-esc="company.city"/>
+,                        <t t-esc="company.country_id.name"/>
+Admission Office Phone: <t t-esc="company.admission_phone"/>
+(                    <t t-esc="company.admission_mail"/>
+) </h6>
+<div style='border:1px solid grey;background-color:black;color:white;' class="container-fluid text-center p-0 ">
+<h6 class='py-1 m-0'>
+    <b>Application Form</b>
+</h6>
+</div>
+
+
+</div> -->

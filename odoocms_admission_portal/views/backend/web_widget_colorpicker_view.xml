@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="assets_backend" name="web_widget_time_delta assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/odoocms_admission_portal/static/css/widget.css"/>
+            <link rel="stylesheet" href="/odoocms_admission_portal/static/bootstrap/css/bootstrap-colorpicker.min.css"/>
+            <script type="text/javascript" src="/odoocms_admission_portal/static/js/widget.js"></script>
+            <script type="text/javascript" src="/odoocms_admission_portal/static/bootstrap/js/bootstrap-colorpicker.min.js"></script>
+        </xpath>
+    </template>
+</odoo>

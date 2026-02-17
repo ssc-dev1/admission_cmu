@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_users_form_odoocms" model="ir.ui.view">
+        <field name="name">res.users.form.odoocms</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <page name="access_rights" position="after">
+                <page name="programs" string="Programs">
+                    <field name="program_ids" nolabel="1"/>
+                </page>
+                <page name="batches" string="Batches">
+                    <field name="batch_ids" nolabel="1"/>
+                </page>
+            </page>
+            <group name="preferences" position="before">
+                 <group string="Defaults">
+                     <field name="user_type"/>
+                     <field name="home_page"/>
+                     <field name="emp_id" readonly="0" attrs="{
+                            'invisible': [('user_type','!=','employee')],
+                            'required': [('user_type','=','employee')]
+                        }"
+                        options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                 </group>
+            </group>
+
+        </field>
+    </record>
+
+
+
+    <record id="view_odoocms_section_pattern_tree" model="ir.ui.view">
+        <field name="name">odoocms.section.pattern.tree</field>
+        <field name="model">odoocms.section.pattern</field>
+        <field name="arch" type="xml">
+            <tree string="Section Pattern">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_section_pattern_form" model="ir.ui.view">
+        <field name="name">odoocms.section.pattern.form</field>
+        <field name="model">odoocms.section.pattern</field>
+        <field name="arch" type="xml">
+            <form string="Section Pattern">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="sections" string="Sections">
+                            <field name="line_ids" no_label="1">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_odoocms_campus_form" model="ir.ui.view">
+        <field name="name">odoocms.campus.form</field>
+        <field name="model">odoocms.campus</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_campus_form"/>
+        <field name="arch" type="xml">
+            <page name="institutes" position="after">
+                <page name="faculty" string="Faculty">
+                    <field name="faculty_ids" colspan="4" context="{'default_campus_id':id}">
+                        <tree editable="bottom">
+                            <field name="employee_id"/>
+                            <field name="employee_tag_id" widget="many2many_tags"/>
+                            <field name="employee_name"/>
+                            <field name="employee_work_phone"/>
+                            <field name="employee_work_email"/>
+                            <field name="employee_department_id"/>
+                            <field name="employee_job_id"/>
+                            <field name="employee_parent_id"/>
+                        </tree>
+                        <form>
+                            <group>
+                                <group>
+                                    <field name="employee_id"/>
+                                    <field name="employee_name"/>
+                                </group>
+                                <group>
+                                    <field name="employee_work_phone"/>
+                                    <field name="employee_work_email"/>
+                                </group>
+                                <group>
+                                    <field name="employee_department_id"/>
+                                    <field name="employee_job_id"/>
+                                    <field name="employee_parent_id"/>
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+                <page name='other_info' string="Other Info">
+                    <group>
+                        <group name="fee_info"/>
+                        <group name="fine_info"/>
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+
+
+    <record id="action_odoocms_section_pattern" model="ir.actions.act_window">
+        <field name="name">Section Patterns</field>
+        <field name="res_model">odoocms.section.pattern</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+<!--        <field name="search_view_id" ref="view_odoocms_campus_search"/>-->
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the First Section Pattern here.
+            </p>
+        </field>
+    </record>
+
+
+     <menuitem
+            id="menu_odoocms_section"
+            name="Section Patterns"
+            parent="odoocms_base.menu_odoocms_config_general"
+            action="action_odoocms_section_pattern"
+            sequence='310'/>
+    <!-- groups="group_cms_manager" -->
+</odoo>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_challan_rollback_wiz" model="ir.ui.view">
+            <field name="name">challan.rollback.wiz.view</field>
+            <field name="model">challan.rollback.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Challan Roll Back">
+                    <group>
+                        <group>
+                            <field name="set_to_be"/>
+                            <field name="set_student_to_be"/>
+                            <field name="auto_delete"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Invoices">
+                            <group>
+                                <field name="invoice_ids" colspan="4" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="action_challan_rollback" string="Challan Rollback" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="act_challan_rollback_wiz" model="ir.actions.act_window">
+            <field name="name">Challan Roll Back</field>
+            <field name="res_model">challan.rollback.wiz</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_challan_rollback_wiz"/>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="groups_id" eval="[(4,ref('odoocms_fee.group_fee_super_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ***** Scholarship Type Form View ***** -->
+        <record id="inherited_view_odoocms_fee_waiver_type_form" model="ir.ui.view">
+            <field name="name">inherited.odoocms.fee.waiver.type.form.view</field>
+            <field name="model">odoocms.fee.waiver.type</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_waiver_type_form"/>
+            <field name="arch" type="xml">
+                <field name="type" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+                <field name="type" position="attributes">
+                    <attribute name="string">Scholarship/Waiver</attribute>
+                </field>
+                <field name="type" position="before">
+                    <field name="scholarship_category_id" required="1"
+                           options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                </field>
+
+                <field name="code" position="after">
+                    <field name="auto_type" required="1"/>
+                </field>
+
+                <xpath expr="//notebook/page/field[@name='waiver_ids']/tree/field[@name='donor_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//notebook/page/field[@name='waiver_ids']/tree/field[@name='session_id']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//notebook/page/field[@name='waiver_ids']/tree/field[@name='type']" position="attributes">
+                    <attribute name="string">Scholarship/Waiver</attribute>
+                </xpath>
+                <xpath expr="//notebook/page/field[@name='waiver_ids']/tree/field[@name='type']" position="after">
+                    <field name="scholarship_category_id"
+                           options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                </xpath>
+
+
+            </field>
+        </record>
+
+        <!-- ***** Scholarship Type Tree View ***** -->
+        <record id="inherited_view_odoocms_fee_waiver_type_tree" model="ir.ui.view">
+            <field name="name">inherited.odoocms.fee.waiver.type.tree.view</field>
+            <field name="model">odoocms.fee.waiver.type</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_waiver_type_tree"/>
+            <field name="arch" type="xml">
+                <field name="type" position="attributes">
+                    <attribute name="string">Scholarship/Waiver</attribute>
+                </field>
+                <field name="type" position="before">
+                    <field name="scholarship_category_id"/>
+                </field>
+                <field name="type" position="after">
+                    <field name="auto_type"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- ***** Scholarship Type Search View ***** -->
+        <record id="inherited_view_odoocms_fee_waiver_type_search" model="ir.ui.view">
+            <field name="name">inherited.odoocms.fee.waiver.type.search.view</field>
+            <field name="model">odoocms.fee.waiver.type</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_waiver_type_search"/>
+            <field name="arch" type="xml">
+                <field name="code" position="after">
+                    <field name="scholarship_category_id"/>
+                </field>
+                <filter name="type" position="attributes">
+                    <attribute name="string">Scholarship/Waiver</attribute>
+                </filter>
+
+                <filter name="type" position="before">
+                    <separator/>
+                    <filter name="group_by_scholarship_category" string="Scholarship Categories" domain="[]" context="{'group_by':'scholarship_category_id'}"/>
+                    <separator/>
+                    <filter name="group_by_auto_type" string="Auto/Non Auto" domain="[]" context="{'group_by':'auto_type'}"/>
+                    <separator/>
+                </filter>
+            </field>
+        </record>
+
+        <!-- ***** Scholarship Form View ***** -->
+        <record id="inherited_view_odoocms_fee_waiver_form" model="ir.ui.view">
+            <field name="name">inherited.odoocms.fee.waiver.form.view</field>
+            <field name="model">odoocms.fee.waiver</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_waiver_form"/>
+            <field name="arch" type="xml">
+                <field name="waiver_type" position="after">
+                    <field name="scholarship_category_id" required="1"
+                           options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                </field>
+
+                <field name="waiver_type" position="attributes">
+                    <attribute name="string">Scholarship Type</attribute>
+                </field>
+
+                <field name="tag_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+
+                <field name="type" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+
+                <xpath expr="//form/sheet/group/group[2]/field[@name='donor_id']" position="replace">
+                    <field name="donor_id" invisible="1"/>
+                </xpath>
+
+                <field name="domain" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+
+                <xpath expr="//field[@name='code']" position="before">
+                    <xpath expr="//field[@name='name']" position="move"/>
+                </xpath>
+
+                <field name="session_id" position="after">
+                    <field name="is_special"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- ***** Scholarship Tree View ***** -->
+        <record id="inherited_view_odoocms_fee_waiver_tree" model="ir.ui.view">
+            <field name="name">inherited.odoocms.fee.waiver.tree.view</field>
+            <field name="model">odoocms.fee.waiver</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_waiver_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="sequence" widget="handle"/>
+                </field>
+                <field name="waiver_type" position="before">
+                    <field name="scholarship_category_id"/>
+                </field>
+                <field name="waiver_type" position="attributes">
+                    <attribute name="string">Scholarship Type</attribute>
+                </field>
+                <field name="tag_id" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </field>
+                <field name="type" position="attributes">
+                    <attribute name="string">Scholarship/Waiver</attribute>
+                </field>
+                <field name="donor_id" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </field>
+                <field name="session_id" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </field>
+            </field>
+        </record>
+
+        <!-- ***** Scholarship Search View ***** -->
+        <record id="inherited_view_odoocms_fee_waiver_search" model="ir.ui.view">
+            <field name="name">inherited.odoocms.fee.waiver.search.view</field>
+            <field name="model">odoocms.fee.waiver</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_waiver_filter"/>
+            <field name="arch" type="xml">
+                <field name="tag_id" position="after">
+                    <field name="scholarship_category_id"/>
+                </field>
+
+                <filter name="waiver_type" position="before">
+                    <separator/>
+                    <filter name="group_by_scholarship_category" string="Scholarship Categories" domain="[]" context="{'group_by':'scholarship_category_id'}"/>
+                    <separator/>
+                </filter>
+
+                <filter name="waiver_type" position="attributes">
+                    <attribute name="string">Scholarship Types</attribute>
+                </filter>
+
+                <filter name="type" position="attributes">
+                    <attribute name="string">Scholarship/Waiver</attribute>
+                </filter>
+
+                <field name="tag_id" position="after">
+                    <field name="scholarship_category_id"/>
+                </field>
+            </field>
+        </record>
+
+
+        <!-- ***** Scholarship Categories Form View ***** -->
+        <record id="view_odoocms_fee_scholarship_category_form" model="ir.ui.view">
+            <field name="name">odoocms.fee.scholarship.category.form.view</field>
+            <field name="model">odoocms.fee.scholarship.category</field>
+            <field name="arch" type="xml">
+                <form string="Scholarship Categories" delete="false">
+                    <header>
+                        <button name="action_lock" type="object" class="oe_highlight" string="Lock" states="draft"/>
+                        <button name="action_unlock" type="object" class="oe_highlight" string="Unlock" states="lock"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" attrs="{'readonly':[('state','!=','draft')]}" required="1"/>
+                            </group>
+                            <group>
+                                <field name="progress_base"/>
+                                <field name="advance_enrollment"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- ***** Scholarship Category Tree View ***** -->
+        <record id="view_odoocms_fee_scholarship_category_tree" model="ir.ui.view">
+            <field name="name">oodoocms.fee.scholarship.category.tree.view</field>
+            <field name="model">odoocms.fee.scholarship.category</field>
+            <field name="arch" type="xml">
+                <tree string="Scholarship Categories" delete="false" decoration-info="state=='draft'" decoration-success="state=='lock'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="progress_base"/>
+                    <field name="advance_enrollment"/>
+                    <field name="create_uid" string="Created By" optional="show" widget="many2one_avatar_user"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-success="state=='lock'"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- ***** Scholarship Category Search View ***** -->
+        <record id="view_odoocms_fee_scholarship_category_search" model="ir.ui.view">
+            <field name="name">odoocms.fee.scholarship.category.search</field>
+            <field name="model">odoocms.fee.scholarship.category</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Scholarship Categories">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <separator/>
+                    <filter string="Progress Base" name="group_by_progress_base" domain="[('progress_base','=',True)]"/>
+                    <separator/>
+                    <filter string="Advance Enrollment" name="group_by_advance_enrollment" domain="[('advance_enrollment','=',True)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_fee_scholarship_category" model="ir.actions.act_window">
+            <field name="name">Scholarship Categories</field>
+            <field name="res_model">odoocms.fee.scholarship.category</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_fee_scholarship_categories"
+                name="Scholarship Categories"
+                sequence='6'
+                parent="odoocms_fee.menu_fee_configuration_waivers"
+                action="action_odoocms_fee_scholarship_category"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager"
+        />
+
+        <record id="inherited_view_odoocms_fee_payment_register_form" model="ir.ui.view">
+            <field name="name">inherited.view.odoocms.fee.payment.register.form</field>
+            <field name="model">odoocms.fee.payment.register</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_payment_register_form"/>
+            <field name="arch" type="xml">
+                <field name="barcode" position="attributes">
+                    <attribute name="string">Challan Number</attribute>
+                </field>
+                <xpath expr="//notebook/page/field[@name='fee_payment_ids']/tree/field[@name='receipt_number']" position="attributes">
+                    <attribute name="string">Challan Number</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

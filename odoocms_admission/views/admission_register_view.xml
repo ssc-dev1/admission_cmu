@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_admission_register_tree" model="ir.ui.view">
+            <field name="name">odoocms.admission.register.tree</field>
+            <field name="model">odoocms.admission.register</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="Admission Register">
+                    <field name="name"/>
+                    <field name="career_id"/>
+                    <field name="academic_session_id"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_admission_register_form" model="ir.ui.view">
+            <field name="name">odoocms.admission.register.form</field>
+            <field name="model">odoocms.admission.register</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Admission Register">
+                    <header groups="base.group_user">
+                        <button name="confirm_register" states="draft" type="object"
+
+                                string="Confirm" class="oe_highlight"/>
+                        <button name="start_application" states="confirm" type="object"
+
+                                string="Start Application" class="oe_highlight"/>
+                        <button name="stop_application" states="application" type="object"
+
+                                string="Stop Application" class="oe_highlight"/>
+                        <!--<button name="sort_applications" states="sort" type="object"
+                             
+                                string="Sort Applications" class="oe_highlight"/>-->
+                        <button name="start_admission" states="sort" type="object"
+
+                                string="Start Merit Process" class="oe_highlight"/>
+                        <!--                        <button name=" ( action_odoocms_merit_register_wizard ) d" states="admission" type="action"-->
+                        <!--                             -->
+                        <!--                                string="Merit List" class="oe_highlight"/>-->
+                        <!--                        <button name=" ( action_odoocms_merit_register_wizard ) d" states="merit" type="action"-->
+                        <!--                             -->
+                        <!--                                string="Next Merit List" class="oe_highlight"/>-->
+                        <!--                        <button name=" ( action_odoocms_close_register_wizard ) d" states="merit" type="action"-->
+                        <!--                             -->
+                        <!--                                string="Close Register" class="oe_highlight" />-->
+                        <button name="cancel_register" states="draft,confirm" string="Cancel" type="object"/>
+                        <button name="set_to_draft" states="cancel" string="Set to Draft" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,application,admission,done"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                                <field name="dob_min"/>
+                                <field name="dob_max"/>
+                                <field name="min_edu_year" required="1" />
+                                <field name="preferences_allowed"/>
+                                <field name="class_commencement"/>
+                                <field name="enable_admission_challan"/>
+                            </group>
+                            <group>
+                                <field name="campus_id" required="1"/>
+                                <field name="career_id"/>
+                                <field name="academic_session_id"/>
+                                <field name="term_id"/>
+                                <field name="eligibility_criteria_image"/>
+                            </group>
+                        </group>
+                        <notebook colspan="4">
+                            <page name="deg_program" string="Programs">
+                                <field name="program_ids" domain="[('career_id', '=', career_id)]" >
+                                    <tree>
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="duration"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Applications">
+                                <group>
+                                    <field name="application_ids" nolabel="1" readonly="1"/>
+                                </group>
+                            </page>
+                            <!--<page string="Test Series">
+                                <field name="test_series_ids">
+                                    <tree editable="bottom">
+                                        <field name="register_id"/>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>-->
+                            <page name="under_taking" string="Undertaking">
+                                <group>
+                                    <field name="undertaking"/>
+                                </group>
+                            </page>
+                            <page name="offer_letter" string="Offer Letter Setup">
+                                <group>
+                                    <field name="offer_letter" widget='html' />
+                                </group>
+                            </page>
+                            <page name="admit_card_letter" string="Admit Card Setup">
+                                <group>
+                                    <field name="admit_card_letter" widget='html' />
+                                </group>
+                            </page>
+                            <page name="merit_list_line" string="Merit List Line">
+                                <group>
+                                    <field name="merit_list_line" widget='html' />
+                                </group>
+                            </page>
+                            <page name="important_notes_line" string="Important Notes Line">
+                                <group>
+                                    <field name="important_notes_line" widget='html' />
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_admission_register_search" model="ir.ui.view">
+            <field name="name">odoocms.admission.register.search</field>
+            <field name="model">odoocms.admission.register</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Admission Register">
+                    <field name="name"/>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Status" name="group_by_adm_reg_state"
+                                domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_odoocms_admission_register_pivot" model="ir.ui.view">
+            <field name="name">odoocms.admission.register.pivot</field>
+            <field name="model">odoocms.admission.register</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <pivot string="Admission Register">
+                    <field name="name"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="state"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="action_odoocms_admission_register" model="ir.actions.act_window">
+            <field name="name">Admission Registers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoocms.admission.register</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_odoocms_admission_register_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_admission_register"
+                name="Admission Register"
+                parent="menu_odoocms_admission_main"
+                action="action_odoocms_admission_register"
+                groups="odoocms_admission.group_admission_manager"
+                sequence="10"/>
+
+        <!-- odoocms.group_cms_manager, -->
+
+
+    </data>
+</odoo>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+    <record id="view_payment_term_holiday_tree" model="ir.ui.view">
+        <field name="name">account.payment.term.holiday.tree</field>
+        <field name="model">account.payment.term.holiday</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="holiday" />
+                <field name="date_postponed" />
+                <field name="payment_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_payment_term_label_tree" model="ir.ui.view">
+        <field name="name">account.payment.term.label.tree</field>
+        <field name="model">account.payment.term.label</field>
+        <field name="arch" type="xml">
+            <tree string="Payment Label" editable="bottom">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="code" />
+                <field name="type" />
+                <field name="auto_publish" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_payment_term_label" model="ir.actions.act_window">
+        <field name="name">Payment Term Label</field>
+        <field name="res_model">account.payment.term.label</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem
+            id="menu_payment_term_label"
+            name="Payment Term Label"
+            sequence="50"
+            parent="account.account_invoicing_menu"
+            action="action_payment_term_label"/>
+
+
+    <record id="view_payment_term_form_aarsol" model="ir.ui.view">
+        <field name="name">account.payment.term.form.aarsol</field>
+        <field name="model">account.payment.term</field>
+        <field name="inherit_id" ref="account.view_payment_term_form" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="sequential_lines" />
+                <field name="locked" 
+                       widget="boolean_toggle"
+                       readonly="1"
+                       help="When locked, this payment term and its lines become readonly. Invoices using this payment term will also have readonly payment term field. This field can only be modified by developers via database or code."/>
+                <field name="portal" />
+                <field name="discount" />
+            </field>
+            <field name="line_ids" position="attributes">
+                <attribute name="attrs">{'readonly': [('locked', '=', True)]}</attribute>
+            </field>
+            <field name="line_ids" position="after">
+                <separator string="Holidays" />
+                <p class="text-muted">
+                    When a payment term coincides with a holiday, it is postponed to the chosen date.
+                </p>
+                <field name="holiday_ids">
+                    <tree editable="top">
+                        <field name="holiday" />
+                        <field name="date_postponed" />
+                    </tree>
+                </field>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_payment_term_line_form_aarsol" model="ir.ui.view">
+        <field name="name">account.payment.term.line.form.aarsol</field>
+        <field name="model">account.payment.term.line</field>
+        <field name="inherit_id" ref="account.view_payment_term_line_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_row')]" position="after">
+                <br />
+                <div attrs="{'invisible':[('value','=', 'balance')]}" class="o_row">
+                    <label for="amount_round" attrs="{'invisible':[('value','=', 'balance')]}"/>
+                    <field name="amount_round" class="oe_inline"
+                        attrs="{'invisible':[('value','=','balance')]}"/>
+                </div>
+            </xpath>
+            <field name="option" position="after">
+                <br />
+                <label for="weeks" class="oe_inline"
+                    attrs="{'invisible': [('option', 'in', ['day_following_month', 'day_current_month','custom'])]}"/>
+                <field
+                    name="weeks" class="oe_inline"
+                    attrs="{'invisible': [('option', 'in', ['day_following_month', 'day_current_month','custom'])]}"/>
+                <br />
+                <label for="months"
+                    attrs="{'invisible': [('option', 'in', ['day_following_month', 'day_current_month','custom'])]}"/>
+                <field name="months" class="oe_inline"
+                    attrs="{'invisible': [('option', 'in', ['day_following_month', 'day_current_month','custom'])]}"/>
+                <br />
+                <label for="payment_days" attrs="{'invisible': [('option','=','custom')]}"/>
+                <field name="payment_days" attrs="{'invisible': [('option','=','custom')]}" />
+                <label for="custom_date" attrs="{'invisible': [('option','!=','custom')], 'required':[('option','=','custom')]}" />
+                <field name="custom_date" attrs="{'invisible': [('option','!=','custom')], 'required':[('option','=','custom')]}" />
+            </field>
+            <xpath expr="//form/div[2]" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='value_amount']/following-sibling::span" position="attributes">
+                <attribute name="attrs">{'invisible':[('value', 'not in', ['percent', 'percent_amount_untaxed'])]}</attribute>
+            </xpath>
+            <field name="value" position="after">
+                <field name="label_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_payment_term_line_tree_aarsol" model="ir.ui.view">
+        <field name="name">account.payment.term.line.tree.aarsol</field>
+        <field name="model">account.payment.term.line</field>
+        <field name="inherit_id" ref="account.view_payment_term_line_tree" />
+        <field name="arch" type="xml">
+            <field name="value_amount" position="after">
+                <field name="amount_round" />
+            </field>
+            <field name="days" position="after">
+                <field name="weeks" />
+                <field name="months" />
+                <field name="payment_days" />
+            </field>
+            <field name="day_of_the_month" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_move_form_aarsol_terms" model="ir.ui.view">
+        <field name="name">account.move.aarsol.terms</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="after">
+                <field name="label_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/tree/field[@name='account_id']" position="after">
+                <field name="label_id" invisible="1"/>
+            </xpath>
+            <field name="invoice_payment_term_id" position="before">
+                <field name="payment_term_locked" invisible="1"/>
+            </field>
+            <field name="invoice_payment_term_id" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), ('payment_term_locked', '=', True)]}</attribute>
+            </field>
+        </field>
+    </record>
+
+    </data>
+</odoo>

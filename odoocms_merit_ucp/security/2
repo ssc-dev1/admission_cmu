@@ -1,0 +1,15 @@
+
+
+access_odoocms_application_hafiz_quran_result_user,odoocms.application.hafiz.quran.result,model_odoocms_application_hafiz_quran_result,odoocms.group_cms_user,1,1,1,0
+access_odoocms_application_hafiz_quran_result_manager,odoocms.application.hafiz.quran.result,model_odoocms_application_hafiz_quran_result,odoocms.group_cms_manager,1,1,1,0
+
+access_odoocms_admission_confirm_fee_user,odoocms.admission.confirm.fee,model_odoocms_admission_confirm_fee,odoocms.group_cms_user,1,1,1,0
+access_odoocms_admission_confirm_fee_manager,odoocms.admission.confirm.fee,model_odoocms_admission_confirm_fee,odoocms.group_cms_manager,1,1,1,0
+
+access_odoocms_candidate_verification_user,odoocms.candidate.verification,model_odoocms_condidate_verification,odoocms.group_cms_user,1,1,1,0
+access_odoocms_candidate_verification_manager,odoocms.candidate.verification,model_odoocms_condidate_verification,odoocms.group_cms_manager,1,1,1,0
+
+access_odoocms_admission_subject_result_manager,odoocms.admission.subject.result.manager,model_odoocms_admission_subject_result,odoocms.group_cms_manager,1,1,1,1
+
+access_odoocms_overall_result_manager,odoocms.overall.result.manager,model_odoocms_overall_result,odoocms.group_cms_manager,1,1,1,1
+

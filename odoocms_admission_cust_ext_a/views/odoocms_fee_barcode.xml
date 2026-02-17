@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="odoocms_challan_tree_ucp" model="ir.ui.view">
+        <field name="name">odoocms.fee.barcode.tree.ucp</field>
+        <field name="model">odoocms.fee.barcode</field>
+        <field name="inherit_id" ref="odoocms_fee.odoocms_challan_tree"/>
+        <field name="arch" type="xml">
+            <field name="discipline_id" position="after">
+                <field name="sync_challan" optional="hide" readonly="1"/>
+                <field name="synced_challan" optional="hide" readonly="1"/>
+                <field name="sql_id" optional="hide" readonly="1"/>
+                <field name="date_sync" optional="hide" readonly="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="odoocms_challan_form_ucp" model="ir.ui.view">
+        <field name="name">odoocms.fee.barcode.form.ucp</field>
+        <field name="model">odoocms.fee.barcode</field>
+        <field name="inherit_id" ref="odoocms_fee.odoocms_challan_form"/>
+        <field name="arch" type="xml">
+            <group name="academic" position="after">
+                <group>
+                    <field name="sync_challan" readonly="1"/>
+                    <field name="synced_challan" readonly="1"/>
+                    <field name="sql_id" readonly="1"/>
+                    <field name="date_sync" readonly="1"/>
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <record id="odoocms_challan_filter_ucp" model="ir.ui.view">
+        <field name="name">odoocms.fee.barcode.select.ucp</field>
+        <field name="model">odoocms.fee.barcode</field>
+        <field name="inherit_id" ref="odoocms_fee.odoocms_challan_filter"/>
+        <field name="arch" type="xml">
+            <field name="date_post" position="after">
+                <field name="date_sync" string="Sync Date"/>
+            </field>
+            <filter name="paid" position="after">
+                <filter name="sync_challan" string="Syncable" domain="[('sync_challan', '=', True)]"/>
+                <filter name="synced_challan" string="Synced" domain="[('synced_challan', '=', True)]"/>
+            </filter>
+            <filter name="group_by_post_date" string="Post Date" context="{'group_by':'date_post'}">
+                <filter name="group_by_sync_date" string="Sync Date" context="{'group_by':'date_sync'}"/>
+            </filter>
+        </field>
+    </record>
+
+
+</odoo>

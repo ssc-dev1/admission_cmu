@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="odoocms_receipt_prospectus_tree" model="ir.ui.view">
+            <field name="name">account.move.prospectus.tree</field>
+            <field name="model">account.move</field>
+            <field name="arch" type="xml">
+                <tree string="Prospectus Fee Receipts" create="false" delete="false"
+                      decoration-primary="payment_state == 'not_paid'"
+                      decoration-success="payment_state in ('in_payment','paid')">
+
+                    <field name="application_id"/>
+                    <field name="old_challan_no"/>
+                    <field name="name" string="Name"/>
+                    <field name="term_id"/>
+                    <field name="invoice_date" string="Invoice Date" optional="show"/>
+                    <field name="invoice_date_due" optional="show"/>
+                    <field name="payment_date" optional="show"/>
+                    <field name="journal_id" invisible="1"/>
+                    <field name="receipt_type_ids" widget="many2many_tags" optional="hide"/>
+
+                    <field name="amount_total_signed" string="Total" sum="Total"/>
+                    <field name="amount_residual" optional="1" string="Amount Due" sum="Amount Due"/>
+
+                    <field name="payment_state" string="Payment Status"/>
+                    <field name="state" optional="hide"/>
+
+                    <field name="is_fee" invisible="1"/>
+                    <field name="commercial_partner_id" invisible="1"/>
+                    <field name="reference" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+                    <field name="user_id" string="Responsible" invisible="1"/>
+                    <field name="invoice_origin" invisible="1"/>
+                    <field name="currency_id" optional="hide"/>
+                    <field name="company_currency_id" invisible="1"/>
+
+                    <field name="cancel_due_to_arrears" invisible="1"/>
+                    <field name="session_id" optional="1"/>
+
+                </tree>
+            </field>
+        </record>
+
+    <record id="odoocms_fee.action_odoocms_receipt" model="ir.actions.act_window">
+        <field name="domain">[('move_type','=','out_invoice'), ('challan_type', '!=', 'prospectus_challan') ]</field>
+    </record>
+
+    <record id="view_fee_receipts_prospectus_filter" model="ir.ui.view">
+        <field name="name">account.move.prospectus.select</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <search string="Prospectus Receipts">
+                <field name="old_challan_no"/>
+                <field name="application_id"/>
+                <field name="name" string="Receipts"
+                       filter_domain="['|','|', ('name','ilike',self), ('reference', 'ilike', self), ('partner_id', 'child_of', self)]"/>
+
+                <separator/>
+                <filter name="draft" string="Draft" domain="[('payment_state','=','not_paid')]"/>
+                <filter name="paid" string="Paid" domain="[('payment_state', 'in', ('in_payment','paid'))]"/>
+                <filter name="late" string="Overdue"
+                        domain="['&amp;', ('invoice_date_due', '&lt;', time.strftime('%%Y-%%m-%%d')), ('payment_state', '=', 'not_paid')]"
+                        help="Overdue invoices, maturity date passed"/>
+
+                <separator/>
+                <filter name="unposted" string="Unposted" domain="[('state', '=', 'draft')]"/>
+                <filter name="posted" string="Posted" domain="[('state', '=', 'posted')]"/>
+
+                <separator/>
+                <field name="date" string="Period"/>
+
+                <separator/>
+                <filter name="to_be_filter" string="To Be" domain="[('to_be', '=', True)]"/>
+
+                <group expand="0" string="Group By">
+                    <filter name="group_by_academic_term" string="Academic Term" context="{'group_by':'term_id'}"/>
+
+                    <separator/>
+                    <filter name="group_by_institute" string="Institute" context="{'group_by':'institute_id'}"/>
+                    <filter name="group_by_session" string="Session" context="{'group_by':'session_id'}"/>
+
+                    <separator/>
+                    <filter name="group_by_invoice_payment_status" string="Payment Status" context="{'group_by':'payment_state'}"/>
+                    <filter name="group_by_move_status" string="Status" context="{'group_by':'state'}"/>
+                    <separator/>
+                    <filter name="group_by_invoice_date" string="Receipt Date" context="{'group_by':'invoice_date'}"/>
+                    <filter name="group_by_due_date" string="Due Date" context="{'group_by':'invoice_date_due'}"/>
+                    <filter name="group_by_payment_date" string="Payment Date" context="{'group_by':'payment_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <!--***** Prospectus Receipts Action *****-->
+    <record id="action_odoocms_prospectus_fee_receipt" model="ir.actions.act_window">
+        <field name="name">Prospectus Fee Receipts</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field eval="False" name="view_id"/>
+        <field name="domain">[('move_type','=','out_invoice'), ('challan_type', '=', 'prospectus_challan')]</field>
+        <field name="context">{'move_type':'out_invoice', 'journal_type': 'sale', 'search_default_current':1,}
+        </field>
+        <field name="search_view_id" ref="view_fee_receipts_prospectus_filter"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            </p>
+        </field>
+    </record>
+
+    <record id="action_odoocms_prospectus_receipt_view1" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="odoocms_receipt_prospectus_tree"/>
+        <field name="act_window_id" ref="action_odoocms_prospectus_fee_receipt"/>
+    </record>
+
+    <record id="action_odoocms_prospectus_receipt_view2" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="odoocms_fee.odoocms_receipt_form"/>
+        <field name="act_window_id" ref="action_odoocms_prospectus_fee_receipt"/>
+    </record>
+
+    <record id="action_odoocms_prospectus_receipt_view3" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="odoocms_fee.odoocms_receipt_pivot"/>
+        <field name="act_window_id" ref="action_odoocms_prospectus_fee_receipt"/>
+    </record>
+
+    <menuitem
+        id="menu_student_prospectus_fee_receipt"
+        parent="odoocms_fee.menu_odoocms_fee_receipts_main"
+        name="Prospectus Fee Receipts"
+        action="action_odoocms_prospectus_fee_receipt"
+        groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+        sequence="100"/>
+
+
+</odoo>

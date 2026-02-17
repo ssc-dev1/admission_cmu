@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="odoocms_program_inherit" model="ir.ui.view">
+        <field name="name">odoocms.application.form.inherit</field>
+        <field name="model">odoocms.application</field>
+        <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='blood_group']" position="after">
+                <field name="last_school_attend"/>
+                <field name="advertisement"/>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="invoice_visibility"/>
+            </xpath>
+            <xpath expr="//page[@name='voucher_details']" position="after">
+                <page name="need_base_scholarship" string="Need Base Scholarship">
+                    <h3 style="text-align: center;">Need Base Scholarship</h3>
+                    <group>
+                        <group>
+                            <field name="guardian_occupation"/>
+                            <field name="guardian_monthly_income"/>
+                            <field name="family_member"/>
+                        </group>
+                        <group>
+                            <field name="guardian_job_status"/>
+                            <field name="residential_status"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='voucher_details']" position="after">
+                <page name="pgc_scholarship" string="PGC Scholarship">
+                    <h3 style="text-align: center;">PGC Scholarship</h3>
+                    <group>
+                        <group>
+                            <field name="previous_school_attend"/>
+                            <field name="pgc_registration_no"/>
+                        </group>
+                        <group>
+                            <field name="pgc_institute_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='pgc_scholarship']" position="after">
+                <page name="student_documents" string="Student Documents">
+                    <h3 style="text-align: center;">Student Documents</h3>
+                    <group>
+                        <group>
+                            <field name="cnic_front" widget="image"
+                                   options='{"zoom":true, "preview_image":"cnic_front"}'
+                                   style="width: 80px; height: 80px;"/>
+                            <field name="domicile" widget="image"
+                                   options='{"zoom":true, "preview_image":"domicile"}'
+                                   style="width: 80px; height: 80px;"/>
+                        </group>
+                        <group>
+                            <field name="cnic_back" widget="image"
+                                   options='{"zoom":true, "preview_image":"cnic_back"}'
+                                   style="width: 80px; height: 80px;"/>
+                            <field name="pass_port" widget="image"
+                                   options='{"zoom":true, "preview_image":"pass_port"}'
+                                   style="width: 80px; height: 80px;"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="odoocms_register_inherit" model="ir.ui.view">
+        <field name="name">odoocms.program.inherit</field>
+        <field name="model">odoocms.program</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_program_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/field[@name='code']" position="after">
+                <field name="offering"/>
+                <field name="payment"/>
+                <field name="entry_test"/>
+                <field name="interview"/>
+                <field name="offer_letter"/>
+                <field name="date"/>
+            </xpath>
+            <xpath expr="//page[@name='rooms']" position="after">
+                <page name="offer_description" string="Offer Letter Setup">
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </page>
+                <page name="admit_card" string="Admit Card Setup">
+                    <group>
+                        <field name="test_admit_card"/>
+                    </group>
+                </page>
+                <page name="interview_letter" string="Interview Letter Setup">
+                    <group>
+                        <field name="interview_card_setup"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="admission_register_inherit" model="ir.ui.view">
+        <field name="name">admission.inherit.register</field>
+        <field name="model">odoocms.admission.register</field>
+        <field name="inherit_id" ref="odoocms_admission.view_odoocms_admission_register_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='eligibility_criteria_image']" position="after">
+                <field name="prospectus_fee_due_date"/>
+                <field name="first_challan_due_date"/>
+                <field name="second_challan_due_date"/>
+            </xpath>
+            <xpath expr="//page/field/tree/field[@name='duration']" position="after">
+                <field name="offering"/>
+                <!--<field name="payment"/>-->
+                <field name="entry_test"/>
+                <field name="interview"/>
+                <field name="offer_letter"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+
+
+    <record id="course_website_report_form" model="ir.ui.view">
+        <field name="name">withdraw.reinstate.wizard.form</field>
+        <field name="model">withdraw.reinstate.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Course Withdraw/Reinstate">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="start_date" />
+                            <field name="program_id" />
+                            <!-- <field name="batch_id" /> -->
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                            <field name="type"/>
+                        </group>
+                     
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="print_report" string="Print Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="course_withdraw_reinstate_action" model="ir.actions.act_window">
+        <field name="name">Course Withdraw/Reinstate</field>
+        <field name="res_model">withdraw.reinstate.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+
+    <menuitem id="course_load_menu" name="Course Withdraw/Reinstate" action="odoocms_registration.course_withdraw_reinstate_action" parent="odoocms_registration.menu_odoocms_registration_report" />
+
+    
+</odoo>

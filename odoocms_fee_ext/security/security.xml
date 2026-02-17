@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="seq_odoocms_student_scholarship_eligibility" model="ir.sequence">
+            <field name="name">Student Scholarship Eligibility</field>
+            <field name="code">odoocms.student.scholarship.eligibility</field>
+            <field name="prefix"/>
+            <field name="padding">5</field>
+        </record>
+
+        <!--***** Unregister Fee Payment Group *****-->
+        <record id="group_unregister_fee_payment" model="res.groups">
+            <field name="name">Unregister Fee Payment</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!--***** Other Fine Discount Group *****-->
+        <record id="group_other_fine_discount_user" model="res.groups">
+            <field name="name">Other Fine Discount User.</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+        <!--***** Finance Clearance Group *****-->
+        <record id="group_odoo_finance_clearance_user" model="res.groups">
+            <field name="name">Finance Clearance User.</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+        <!-- ***** Additional Charges ***** -->
+<!--        <record id="odoocms_student_ad_hoc_multi_company_rule" model="ir.rule">-->
+<!--            <field name="name">Additional Charges Multi Company Rule</field>-->
+<!--            <field name="model_id" ref="odoocms_fee_ext.model_odoocms_fee_additional_charges"/>-->
+<!--            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>-->
+<!--        </record>-->
+
+        <record id="odoocms_student_ad_hoc_readonly_user_rule" model="ir.rule">
+            <field name="name">Student Adhoc Charges Access for Readonly Users</field>
+            <field name="model_id" ref="odoocms_fee_ext.model_odoocms_fee_additional_charges"/>
+            <field name="global" eval="False"/>
+            <field name="domain_force">[('student_id.program_id.user_ids','in',[user.id])]</field>
+            <field name="groups" eval="[(4, ref('odoocms_fee.group_fee_readonly_user'))]"/>
+        </record>
+
+        <record id="odoocms_student_ad_hoc_coordinator_rule" model="ir.rule">
+            <field name="name">Student Fee Ad Hoc Access for Fee Coordinator</field>
+            <field name="model_id" ref="odoocms_fee_ext.model_odoocms_fee_additional_charges"/>
+            <field name="global" eval="False"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('odoocms_fee.group_fee_coordinator'))]"/>
+        </record>
+
+        <record id="odoocms_student_ad_hoc_manager_rule" model="ir.rule">
+            <field name="name">Student Adhoc Charges Access for Fee Manager</field>
+            <field name="model_id" ref="odoocms_fee_ext.model_odoocms_fee_additional_charges"/>
+            <field name="global" eval="False"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('odoocms_fee.group_fee_manager'))]"/>
+        </record>
+
+
+        <record model="ir.rule" id="odoocms_fee_scholarship_category_comp_rule">
+            <field name="name">Fee Scholarship Category multi-company</field>
+            <field name="model_id" ref="model_odoocms_fee_scholarship_category"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record model="ir.rule" id="odoocms_program_term_scholarship_comp_rule">
+            <field name="name">Program Term Scholarship multi-company</field>
+            <field name="model_id" ref="model_odoocms_program_term_scholarship"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record model="ir.rule" id="odoocms_scholarship_continue_policy_comp_rule">
+            <field name="name">Scholarship Continue policy multi-company</field>
+            <field name="model_id" ref="model_odoocms_scholarship_continue_policy"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record model="ir.rule" id="odoocms_scholarship_continue_policy_line_comp_rule">
+            <field name="name">Scholarship Continue policy Detail multi-company</field>
+            <field name="model_id" ref="model_odoocms_scholarship_continue_policy_line"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record model="ir.rule" id="odoocms_student_scholarship_eligibility_comp_rule">
+            <field name="name">Student Scholarship Eligibility multi-company</field>
+            <field name="model_id" ref="model_odoocms_student_scholarship_eligibility"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record model="ir.rule" id="odoocms_student_applied_scholarships_comp_rule">
+            <field name="name">Student Applied Scholarships multi-company</field>
+            <field name="model_id" ref="model_odoocms_student_applied_scholarships"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record model="ir.rule" id="odoocms_student_scholarship_block_comp_rule">
+            <field name="name">Block Student Scholarships multi-company</field>
+            <field name="model_id" ref="model_odoocms_student_scholarship_block"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record model="ir.rule" id="odoocms_course_scholarship_block_comp_rule">
+            <field name="name">Course Scholarship Block multi-company</field>
+            <field name="model_id" ref="model_odoocms_course_scholarship_block"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record model="ir.rule" id="odoocms_student_special_scholarship_comp_rule">
+            <field name="name">Student Special Scholarship multi-company</field>
+            <field name="model_id" ref="model_odoocms_student_special_scholarship"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+
+
+
+    </data>
+</odoo>

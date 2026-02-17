@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_odoocms_merit_registers,access.odoocms.merit.registers,model_odoocms_merit_registers,,1,1,1,0
+access_odoocms_merit_register_line,access.odoocms.merit.register.line,model_odoocms_merit_register_line,,1,1,1,1
+access_generate_invoice_wizard,access.generate.invoice.wizard,model_generate_invoice_wizard,,1,1,1,1
+access_invoice_list,access.invoice.list,model_invoice_list,,1,1,1,1
+access_admission_offer_letter,access.odoocms.admission.offer.letter,model_admission_offer_letter,,1,1,1,1
+
+
+
+
+

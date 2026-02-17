@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+        <template id="submission_message" name="Message">
+            <!-- <t t-call="website.layout"> -->
+                <div id="wrap">
+                    <div class="oe_structure">
+                        <div class="container">
+                            <h1><span t-esc="header"/></h1>
+                            <p t-esc="message"/>
+                        </div>
+                    </div>
+                </div>
+            <!-- </t> -->
+        </template>
+        
+</odoo>

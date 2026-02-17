@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_ucp_odoocms_student_form_inherit2" model="ir.ui.view">
+            <field name="name">ucp.odoocms.student.form.inherit2</field>
+            <field name="model">odoocms.student</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_student_form_inherit2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='name']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='barcode']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='invoice_date']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='invoice_date_due']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='payment_date']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='term_id']" position="attributes">
+                    <attribute name="string">Term</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='state']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='payment_state']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='barcode']" position="after">
+                    <field name="old_challan_no"/>
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='fee_receipts']/group/field[@name='receipt_ids']/tree/field[@name='amount_total_signed']" position="after">
+<!--                    <field name="admission_fee" string="Admission" optional="hide" sum="sum_admission_fee"/>-->
+<!--                    <field name="tuition_fee" string="Tuition" optional="hide" sum="sum_tuition_fee"/>-->
+<!--                    <field name="misc_fee" string="Misc" optional="hide" sum="sum_misc_fee"/>-->
+<!--                    <field name="hostel_fee" string="Hostel" optional="hide" sum="sum_hostel_fee"/>-->
+<!--                    <field name="fine_amount" string="Fine" optional="hide" sum="sum_fine_amount"/>-->
+<!--                    <field name="tax_amount" string="Tax" optional="hide" sum="sum_tax_amount"/>-->
+                    <field name="waiver_ids" string="Discount" optional="hide" widget="many2many_tags"/>
+                    <field name="waiver_percentage" string="Disc%" optional="hide"/>
+                    <field name="waiver_amount" string="Disc Amt" optional="hide" sum="sum_waiver_amount"/>
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='fee_receipts']/group[@name='fee_ledger_group']/field[@name='ledger_lines']/tree/field[@name='invoice_id']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group[@name='fee_ledger_group']/field[@name='ledger_lines']/tree/field[@name='slip_barcode']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group[@name='fee_ledger_group']/field[@name='ledger_lines']/tree/field[@name='date']" position="before">
+                    <field name="old_challan_no"/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group[@name='fee_ledger_group']/field[@name='ledger_lines']/tree/field[@name='payment_id']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='fee_receipts']/group[@name='fee_ledger_group']/field[@name='ledger_lines']/tree/field[@name='description']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ***** Generate Invoice Multi Company Rule *****-->
+    <record id="generate_invoice_multi_company_rule" model="ir.rule">
+        <field name="name">Generate Invoice Multi Company Rule</field>
+        <field name="model_id" ref="odoocms_admission_fee.model_generate_invoice"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- ***** Generate Invoice Line Multi Company Rule *****-->
+    <record id="generate_invoice_line_multi_company_rule" model="ir.rule">
+        <field name="name">Generate Invoice Line Multi Company Rule</field>
+        <field name="model_id" ref="odoocms_admission_fee.model_generate_invoice_line"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- ***** Invoice List Multi Company Rule *****-->
+    <record id="invoice_list_multi_company_rule" model="ir.rule">
+        <field name="name">Invoice List Multi Company Rule</field>
+        <field name="model_id" ref="odoocms_admission_fee.model_invoice_list"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_integration_odoocms_department_tree" model="ir.ui.view">
+        <field name="name">integration.odoocms.department.tree</field>
+        <field name="model">odoocms.department</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_department_tree"/>
+        <field name="arch" type="xml">
+            <field name="campus_id" position="after">
+                <field name="integration_code" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_integration_odoocms_department_form" model="ir.ui.view">
+        <field name="name">integration.odoocms.department.form</field>
+        <field name="model">odoocms.department</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_department_form"/>
+        <field name="arch" type="xml">
+            <field name="active" position="after">
+                <field name="integration_code" required="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_integration_odoocms_department_search" model="ir.ui.view">
+        <field name="name">integration.odoocms.department.search</field>
+        <field name="model">odoocms.department</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_department_search"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="integration_code"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--***** Prospectus Challan Paperformat *****-->
+    <record id="paperformat_prospectus_challan_landscape" model="report.paperformat">
+        <field name="name">Prospectus Landscape Challan</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+
+
+    <template id="odoocms_admission_portal.receipt_copy">
+        <div class="row">
+            <div class="col col-2">
+                <img alt="..." style="max-width:40px" t-att-src="image_data_uri(company.logo)" t-if="company.logo"/>
+                <img alt="..." style="max-width:40px" src="/web/static/src/img/user_menu_avatar.png" t-if=" not company.logo"/>
+            </div>
+            <div class="col col-10" style="text-align:center; font-size:18px; font-weight:bold;">
+                <!--***** Company Name *****-->
+                <span>
+                    <t t-esc="company.name if company.name else ''"/>
+                </span>
+                <br/>
+                <span style="text-align:center; font-size:14px; font-weight:bold;">Application Processing Fee - C</span>
+            </div>
+        </div>
+
+        <!--*****  Academic Session + C*****-->
+        <div class="container">
+            <div class="row">
+                <div class="col col-6">
+                    <span style="font-size:14px;font-weight:bold;text-align:left;" t-esc="o.academic_session_id.name"/>
+                </div>
+                <div class="col col-6" style="text-align:center; font-size:14px; font-weight:bold;background-color: #D0D0D0;margin-right:20px;">
+                    <span t-esc="copy_name"/>
+                </div>
+            </div>
+        </div>
+
+        <!--*****  Deposit Line *****-->
+        <div class="row" style="margin-top:10px;">
+            <div class="col col-12" style="text-align:center;font-size:18px;font-weight:bold;">
+                <span>Online Deposit Slip</span>
+            </div>
+        </div>
+
+        <!--***** Line *****-->
+        <hr style="border: 1px solid black;"/>
+
+        <div class="container">
+            <!--***** Bank Information *****-->
+            <div class="row">
+                <div class="col col-12" style="text-align:center; font-size:12px;font-weight:bold;">
+                    Al Baraka Bank (Pakistan) Ltd./The Bank of Punjab/Dubai Islamic Bank
+                </div>
+            </div>
+
+            <!--***** Faculty *****-->
+            <div class="row" style="margin-top:10px;">
+                <div class="col col-2"/>
+
+                <div class="col col-10" style="text-align:left;font-size:12px;">
+                    <span style="font-weight:bold;font-size:12px;">Faculty:&#160;</span>
+                    <t t-if="o.preference_ids">
+                        <t t-esc="o.preference_ids[0].program_id.name"/>
+                    </t>
+                </div>
+            </div>
+
+            <!--***** Challan# *****-->
+            <div class="row" style="margin-top:15px;">
+                <div class="col col-2"/>
+                <div class="col col-10" style="text-align:left;font-size:12px;font-weight:bold;">
+                    <span style="font-weight:bold;font-size:12px;">Challan #:&#160;&#160;</span>
+                    <t t-if="o.prospectus_inv_id and o.prospectus_inv_id.barcode">
+                        <t t-esc="o.prospectus_inv_id.barcode"/>
+                    </t>
+                    <t t-if="not prospectus_inv_id">
+                        <span t-esc="o.application_no"/>
+                    </t>
+                </div>
+            </div>
+        </div>
+
+        <!--***** Line *****-->
+        <hr style="border: 1px solid black;"/>
+        <div class="container">
+
+            <!--***** Candidate Ref *****-->
+            <div class="row">
+                <div class="col col-4" style="font-size:12px;font-weight:bold;">
+                    <span>Candidate Ref#:</span>
+                </div>
+                <div class="col col-8" style="text-align:left;font-size:13px;">
+                    <div style="border-bottom:1px solid #ddd;">
+                        <span t-esc="o.application_no"/>
+                    </div>
+                </div>
+            </div>
+
+            <!--***** Candidate Ref *****-->
+            <div class="row">
+                <div class="col col-4" style="font-size:12px;font-weight:bold">
+                    <span>Candidate Name:</span>
+                </div>
+                <div class="col col-8" style="text-align:left;font-size:13px;">
+                    <div style="border-bottom:1px solid #ddd;">
+                        <span t-esc="o.name"/>
+                    </div>
+                </div>
+            </div>
+
+            <!--***** CNIC/B Form# *****-->
+            <div class="row">
+                <div class="col col-4" style="font-size:12px;font-weight:bold">
+                    <span>CNIC/B Form #:</span>
+                </div>
+                <div class="col col-8" style="text-align:left;font-size:13px;">
+                    <div style="border-bottom:1px solid #ddd;">
+                        <span t-esc="o.cnic"/>
+                    </div>
+                </div>
+            </div>
+
+            <!--***** Mobile *****-->
+            <div class="row">
+                <div class="col col-4" style="font-size:12px;font-weight:bold">
+                    <span>Mobile #:</span>
+                </div>
+                <div class="col col-8" style="text-align:left;font-size:13px;">
+                    <div style="border-bottom:1px solid #ddd;">
+                        <t t-if="o.mobile">
+                            <span t-esc="o.mobile"/>
+                        </t>
+                        <t t-if="not o.mobile and o.phone">
+                            <span t-esc="o.phone"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <!--***** Father Name *****-->
+            <div class="row">
+                <div class="col col-4" style="font-size:12px;font-weight:bold">
+                    <span>Father Name:</span>
+                </div>
+                <div class="col col-8" style="text-align:left;font-size:13px;">
+                    <div style="border-bottom:1px solid #ddd;">
+                        <span t-esc="o.father_name"/>
+                    </div>
+                </div>
+            </div>
+
+            <!--***** Degree Program *****-->
+            <div class="row">
+                <div class="col col-4" style="font-size:12px;font-weight:bold">
+                    <span>Degree Program:</span>
+                </div>
+                <div class="col col-8" style="text-align:left;font-size:13px;">
+                    <div style="border-bottom:1px solid #ddd;">
+                        <t t-if="o.preference_ids">
+                            <span t-esc="o.preference_ids[0].program_id.name"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <!--***** Valid Till  *****-->
+            <div class="row">
+                <div class="col col-4" style="font-size:12px;font-weight:bold;">
+                    <span>Valid Till:</span>
+                </div>
+                <div class="col col-8" style="text-align:left;font-size:13px;">
+                    <div style="border-bottom:1px solid #ddd;">
+                        <t t-if="o.prospectus_inv_id">
+                            <span t-esc="o.prospectus_inv_id.invoice_date_due"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--***** Amounts *****-->
+        <div class="container" style="border: 1px solid black;margin-top:10px;">
+            <!--***** Amount Line *****-->
+            <div class="row" style="margin-top:10px;">
+                <div class="col col-6" style="font-size:14px;font-weight:bold;">
+                    Amount:
+                </div>
+
+                <div class="col col-6" style="text-align:left;font-size:14px;font-weight:bold;">
+                    <div style="border-bottom:1px solid #ddd;">
+                        <t t-if="o.prospectus_inv_id">
+                            Rs.
+                            <span t-esc="o.prospectus_inv_id.amount_total"/>
+                        </t>
+                        <t t-if="not o.prospectus_inv_id">
+                            <t t-if="o.preference_ids">
+                                Rs.
+                                <t t-esc="o.preference_ids[0].program_id.prospectus_registration_fee"/>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <!--***** Amount in Words Line *****-->
+            <div class="row" style="margin-top: 15px;margin-bottom:15px;">
+                <div class="col col-6" style="font-size:14px;font-weight:bold;">
+                    Amount In Words:
+                </div>
+                <div class="col col-6" style="text-align:left;font-size:14px;font-weight:bold;">
+                    <div style="border-bottom:1px solid #ddd;">
+                        <t t-if="o.prospectus_inv_id">
+                            <span t-esc="o.amount_to_text(float(o.prospectus_inv_id.amount_total))"/>
+                            Only
+                        </t>
+                        <t t-if="not o.prospectus_inv_id">
+                            <t t-if="o.preference_ids">
+                                <t t-esc="o.amount_to_text(float(o.preference_ids[0].program_id.prospectus_registration_fee))"/>
+                                Only
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--***** Deposited and Bank Stamp  *****-->
+        <div class="container" style="margin-top: 40px;">
+            <div class="row">
+                <div class="col col-6" style="font-size:14px;font-weight:bold;text-align:center;">
+                    Deposited By
+                </div>
+                <div class="col col-6" style="font-size:14px;font-weight:bold;text-align:center;">
+                    Bank Stamp
+                </div>
+            </div>
+        </div>
+
+        <!--***** Instructions Div *****-->
+        <div class="row" style="margin-top:10px;">
+            <div class="col col-12" style="font-size:11px;">
+                <span style="padding-left:2px;margin-left:5px;font-weight:bold;font-size:10px;">* Deposit cash in any branch of The Bank of Punjab/Al Baraka Bank (Pakistan) Ltd.
+                    &#160;&#160;&#160;&#160;&#160;&#160;Only
+                </span>
+                <br/>
+                <span style="padding-left:2px;margin-left:5px;font-weight:bold;font-size:10px;">* Pay at Booth of Al Baraka Bank / CDM available at UCP Campus</span>
+                <br/>
+                <span style="padding-left:2px;margin-left:5px;">* Pay Online by visiting <a href="pay.ucp.edu.pk">https://pay.ucp.edu.pk</a> for following options.
+                </span>
+                <br/>
+                <span style="padding-left:2px;margin-left:5px;font-weight:bold;font-size:10px;">
+                    &#160;&#160;&#160;&#160; * Credit &amp; Debit Card (Visa/Master)/ Easy Paisa
+                </span>
+                <br/>
+                <span style="padding-left:2px;margin-left:5px;font-weight:bold;font-size:10px;">
+                    &#160;&#160;&#160;&#160; * Online (internet) Bank Payment /Mobile Banking/ATM
+                </span>
+                <br/>
+                <span style="padding-left:2px;margin-left:5px;">* Please Pay before Challan form Expiry date to avoid late payment charges.</span>
+                <br/>
+                <span style="padding-left:2px;margin-left:5px;">* The fee once paid will not be refunded under any circumstances.</span>
+                <br/>
+            </div>
+        </div>
+
+        <!--***** Challan Issue Date *****-->
+        <div class="row" style="margin-top:10px;">
+            <div class="col col-6" style="margin-left:5px;">
+                <span>Challan Issue Date:</span>
+            </div>
+            <div class="col col-6">
+                <span>
+                    <t t-esc="datetime.date.today().strftime('%d-%b-%Y')"/>
+                </span>
+            </div>
+        </div>
+    </template>
+
+    <record id="odoocms_admission_portal.action_report_admission_invoices" model="ir.actions.report">
+
+         <field name="binding_model_id" ref="odoocms_admission.model_register_candidate"/>
+    </record>
+    <record id="odoocms_admission_portal.action_report_admission_invoices" model="ir.actions.report">
+        <field name="name">Application Processing Invoice</field>
+        <field name="model">odoocms.application</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">odoocms_admission_ucp.paperformat_prospectus_challan_landscape</field>
+        <field name="report_file">odoocms_admission_ucp.paperformat_prospectus_challan_landscape</field>
+        <field name="print_report_name">'%s' % object.name</field>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>

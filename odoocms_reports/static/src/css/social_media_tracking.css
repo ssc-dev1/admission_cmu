@@ -1,0 +1,11 @@
+select {
+    min-width: 70px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4' viewBox='0 0 7 4'%3E%3Cpolygon fill='%23444B5A' points='3.5 4 7 0 0 0'/%3E%3C/svg%3E") no-repeat right center;
+    border-radius: 0;
+    color: #444B5A;
+    background-origin: content-box;
+    padding-right: 10px;
+}

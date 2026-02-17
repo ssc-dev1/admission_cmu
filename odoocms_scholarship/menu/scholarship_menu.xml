@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <menuitem
+                id="menu_odoocms_scholarship_main"
+                name="Scholarships"
+                parent="odoocms_fee.menu_odoocms_fee_root"
+                sequence="50"
+                groups="odoocms.group_cms_manager,odoocms.group_cms_user,base.group_user" />
+
+
+    </data>
+
+
+
+</odoo>

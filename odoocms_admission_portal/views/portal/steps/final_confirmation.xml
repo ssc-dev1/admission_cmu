@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="final_confirmation" name="Final Confirmation">
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/steps/final.js"></script>
+
+        <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" onclick="$('#final_confirmation_div').slideToggle(1000); $('#final_confirmation_dropdpown').toggleClass('fa-angle-down fa-angle-up');">
+            <a class="btn btn-link">
+                <i style='color: white;font-size: 25px;' class="fa-solid fa-money-check-dollar float-left"></i>
+                <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/>
+                </h2>
+            </a>
+            <a>
+                <i id='final_confirmation_dropdpown' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+            </a>
+        </div>
+        <div id="final_confirmation_div" class="row container-fluid mt-3 collapse_div border text-center">
+            <input type="hidden" id='step_no' name="step_no" t-att-value='counter_step' />
+            <div class="container">
+                <div id='final_confirmation_profile_pic'></div>
+            </div>
+            <div id='review_final' class='container'></div>
+            <div id='preference_testing' class='container text-center'></div>
+            <h4 class='text-start'>Undertaking</h4>
+            <p id='undertaking_div' class='text-start'>
+                <t t-raw="application_id.register_id.undertaking"/>
+            </p>
+        </div>
+        <div class="container-fluid mb-2 ">
+            <t t-if="application_id.state=='draft'">
+                <div style='display:none' class="form-check mt-2 ml-3">
+                    <input class="form-check-input" type="checkbox" value="" id="agreement_terms"/>
+                    <label class="form-check-label" for="agreement_terms">I Agree With Term And Conditions
+                    </label>
+                </div>
+            </t>
+            <br/>
+            <t t-if="application_id.state=='draft'">
+                <div class='text-center ml-5' style='display:none' id='apply_application_button_div'>
+                </div>
+            </t>
+        </div>
+        <br/>
+    </template>
+</odoo>

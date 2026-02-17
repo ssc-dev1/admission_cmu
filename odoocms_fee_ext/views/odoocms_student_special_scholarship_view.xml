@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ***** Student Special Scholarship Assignment ***** -->
+        <record id="view_odoocms_student_special_scholarship_form" model="ir.ui.view">
+            <field name="name">odoocms.student.special.scholarship.form.view</field>
+            <field name="model">odoocms.student.special.scholarship</field>
+            <field name="arch" type="xml">
+                <form string="Student Special Scholarship" delete="false">
+                    <header>
+                        <button name="action_approved" type="object" class="oe_highlight" string="Approve" states="draft"/>
+                        <button name="action_reject" type="object" class="oe_highlight" string="Reject" states="draft,approved"/>
+                        <button name="action_turn_to_draft" type="object" class="oe_highlight" string="Turn To Draft" states="reject"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group string="Student Profile">
+                            <group >
+                                <field name="student_id" required="1" domain="[('state','=','enroll')]"
+                                       attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="term_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="batch_id" readonly="1"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                            <group>
+                                <field name="institute_id" readonly="1"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="program_id" readonly="1"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group string="Current Scholarship">
+                                <field name="current_scholarship_id"/>
+                                <field name="current_scholarship_value" string="Scholarship Value"/>
+                                <field name="total_credit_hours"/>
+                                <field name="per_credit_hour_fee"/>
+                            </group>
+                            <group string="Fee and Waiver Info">
+                                <field name="total_fee" string="Total Term Fee"/>
+                                <field name="total_waiver" string="Term Waiver"/>
+                                <field name="total_fee_after_discount" string="After Waiver"/>
+                                <field name="paid_fee" string="Paid Fee"/>
+                                <field name="unpaid_fee" string="Unpaid Fee"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group string="New Scholarship">
+                                <field name="is_special_scholarship" invisible="1"/>
+                                <field name="scholarship_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="value_type" required="1" attrs="{'readonly':[('state','!=','draft')],'readonly':[('is_special_scholarship','=',False)]}"/>
+                                <field name="scholarship_value" required="1" attrs="{'readonly':[('state','!=','draft')],'readonly':[('is_special_scholarship','=',False)]}"/>
+                            </group>
+                            <group>
+                                <field name="total_waiver" string="Current Scholarship"/>
+                                <field name="new_scholarship_amount" string="New Scholarship"/>
+                                <field name="scholarship_amount_diff" string="Scholarship Difference"/>
+                                <field name="move_id" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group>
+                                <field name="allow_scholarship_repeating_courses" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="type" widget="radio" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <field name="remarks" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_student_special_scholarship_tree" model="ir.ui.view">
+            <field name="name">odoocms.student.special.scholarship.tree.view</field>
+            <field name="model">odoocms.student.special.scholarship</field>
+            <field name="arch" type="xml">
+                <tree string="Student Special Scholarship" delete="false" decoration-info="state=='draft'" decoration-danger="state=='reject'" decoration-success="state=='approved'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="student_id" invisible="1"/>
+                    <field name="institute_id" optional="show"/>
+                    <field name="program_id" optional="show"/>
+                    <field name="batch_id" optional="show"/>
+                    <field name="term_id" optional="show"/>
+                    <field name="type" optional="show"/>
+                    <field name="create_uid" string="Created By" optional="hide" widget="many2one_avatar_user"/>
+                    <field name="remarks" optional="show"/>
+                    <field name="allow_scholarship_repeating_courses" optional="hide"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-danger="state=='reject'" decoration-success="state=='approved'"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_odoocms_student_special_scholarship_search" model="ir.ui.view">
+            <field name="name">odoocms.student.special.scholarship.search</field>
+            <field name="model">odoocms.student.special.scholarship</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Student Special Scholarship">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="institute_id"/>
+                    <field name="program_id"/>
+                    <field name="batch_id"/>
+                    <field name="term_id"/>
+                    <field name="state"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Term" name="group_by_term_id" domain="[]" context="{'group_by':'term_id'}"/>
+                        <filter string="Student" name="group_by_student_id" domain="[]" context="{'group_by':'student_id'}"/>
+                        <filter string="Faculty" name="group_by_institute" domain="[]" context="{'group_by':'institute_id'}"/>
+                        <filter string="Program" name="group_by_program_id" domain="[]" context="{'group_by':'program_id'}"/>
+                        <filter string="Batch" name="group_by_batch_id" domain="[]" context="{'group_by':'batch_id'}"/>
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_odoocms_student_special_scholarship" model="ir.actions.act_window">
+            <field name="name">Student Special Scholarship</field>
+            <field name="res_model">odoocms.student.special.scholarship</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_special_scholarships"
+                name="Special Scholarships"
+                sequence="200"
+                parent="menu_student_fee_scholarship_main"
+                groups="odoocms_fee.group_fee_manager"
+        />
+
+        <menuitem
+                id="menu_odoocms_student_special_scholarship"
+                name="Student Special Scholarship"
+                sequence="10"
+                parent="menu_odoocms_special_scholarships"
+                action="action_odoocms_student_special_scholarship"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+        />
+
+    </data>
+</odoo>

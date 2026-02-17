@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="pre_test_view_form_inherit" model="ir.ui.view">
+            <field name="name">pre.test.view.form.inherit</field>
+            <field name="model">odoocms.pre.test</field>
+            <field name="inherit_id" ref="odoocms_admission.pre_test_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='compulsory']" position="after">
+                    <field name="exempt_entry_test"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+
+    <data>
+        <record id="view_odoocms_application_form_hec_inherit" model="ir.ui.view">
+            <field name="name">view.odoocms.application.form.hec.inherit</field>
+            <field name="model">odoocms.application</field>
+            <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='pre_test_attachment']" position="after">
+                    <field name="exempt_entry_test"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+    <data>
+        <record id="applicant_entry_test_view_form_inherit" model="ir.ui.view">
+            <field name="name">applicant.entry.test.view.form.inherit</field>
+            <field name="model">applicant.entry.test</field>
+            <field name="inherit_id" ref="odoocms_admission_ucp.applicant_entry_test_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='slot_type']" position="after">
+                    <field name="pre_test_name"/>
+                    <field name="exempt_entry_test"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+    <record id="odoocms_application_pre_test_verification_tree" model="ir.ui.view">
+        <field name="name">odoocms.application.hec.verification.tree</field>
+        <field name="model">odoocms.application</field>
+        <field name="priority" eval="16"/>
+        <field name="arch" type="xml">
+            <tree string="Pre-Test Document Verificaton">
+                <field name="register_id" invisible="1"/>
+                <field name="application_no"/>
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="exempt_entry_test"/>
+                <field name="pre_test_verification"/>
+                <field name="email" optional="hide"/>
+                <field name="mobile" optional="hide"/>
+                <field name="cnic" optional="show"/>
+                <field name="fee_voucher_state" optional="show"/>
+                <field name="prefered_program" optional="hide"/>
+                <field name="verification_status"/>
+                <field name="degree"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="odoocms_application_pre_test_verification_form" model="ir.ui.view">
+        <field name="name">odoocms.application.hec.verification.form</field>
+        <field name="model">odoocms.application</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button type="object" name="action_document_verified" string="Verify"
+                            groups="odoocms_admission.group_admission_user"
+                            class="oe_highlight" attrs="{'invisible':[('pre_test_verification', '==', 'verify')]}"/>
+
+                    <button type="object" name="action_document_unverified"
+                            string="UnVerify"
+                            groups="odoocms_admission.group_admission_user"
+                            class="oe_highlight" attrs="{'invisible':[('pre_test_verification', '==', 'un_verify')]}"/>
+
+                    <button type="object" name="action_document_rejected" string="Rejected"
+                            groups="odoocms_admission.group_admission_manager"
+                            class="oe_highlight" attrs="{'invisible':[('pre_test_verification', '==', 'rejected')]}"/>
+
+<!--                    <field name="pre_test_verification" widget="statusbar"/>-->
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Rejected" bg_color="bg-danger" attrs="{'invisible': [('pre_test_verification', '!=', 'rejected')]}"/>
+                    <widget name="web_ribbon" title="Not Verified" bg_color="bg-warning" attrs="{'invisible': [('pre_test_verification', '!=', 'un_verify')]}"/>
+                    <widget name="web_ribbon" title="Verified" bg_color="bg-success" attrs="{'invisible': [('pre_test_verification', '!=', 'verify')]}"/>
+                    <h3 style="text-align: center;">Pre-Test Document Verification</h3>
+                    <group>
+                        <group>
+                            <field name="register_id" invisible="1"/>
+                            <field name="application_no"/>
+                            <field name="name"/>
+                            <field name="gender"/>
+                            <field name="exempt_entry_test"/>
+                            <field name="pre_test_verification"/>
+                            <field name="email" optional="hide"/>
+                            <field name="mobile" optional="hide"/>
+                        </group>
+                        <group>
+                            <field name="cnic" optional="show"/>
+                            <field name="fee_voucher_state" optional="show"/>
+                            <field name="prefered_program" optional="hide"/>
+                            <field name="verification_status"/>
+                            <field name="degree"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Pre_Test Document Details">
+                            <group>
+                                <group>
+                                    <field name="exempt_entry_test"/>
+                                    <field name="pre_test_marks"/>
+                                    <field name="pre_test_verification"/>
+                                </group>
+                                <group>
+                                    <field name="pre_test_attachment"
+                                           options='{"zoom": true, "preview_image":"pre_test_attachment", "zoom_delay": 1000}'
+                                           widget="image"/>
+                                    <field name='pre_test_attachment_download'/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="hec_document_verification_form_action" model="ir.actions.act_window">
+        <field name="name">Pre-Test Verification</field>
+        <field name="res_model">odoocms.application</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                                   (0, 0, {'view_mode': 'tree', 'view_id': ref('odoocms_application_pre_test_verification_tree')}),
+                                   (0, 0, {'view_mode': 'form', 'view_id': ref('odoocms_application_pre_test_verification_form')})]"/>
+        <field name="context">{}</field>
+        <field name="domain">[('exempt_entry_test', '=', True),('fee_voucher_state','=','verify')]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                No Document to show
+            </p>
+        </field>
+    </record>
+    <menuitem
+            id="hec_document_verification_form_menu"
+            name="Pretest Verification"
+            parent="odoocms_admission.admission_applicant_menu"
+            action="hec_document_verification_form_action"
+            sequence="16"/>
+
+</odoo>

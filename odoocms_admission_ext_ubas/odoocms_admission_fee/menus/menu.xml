@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <menuitem
+                id="menu_odoocms_admission_finance_main"
+                name="Finance"
+                parent="odoocms_admission.menu_odoocms_admission_root"
+                groups="odoocms_admission.group_admission_manager"
+                sequence="36"/>
+
+        <record id="menu_odoocms_admission_finance_reports" model="ir.ui.menu">
+            <field name="name">Reports</field>
+            <field name="parent_id" ref="odoocms_admission_fee.menu_odoocms_admission_finance_main"/>
+            <field name="sequence" eval="110"/>
+        </record>
+    </data>
+</odoo>

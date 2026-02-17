@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_processing_fee_challan_no" model="ir.sequence">
+            <field name="name">Processing Fee Challan Sequence</field>
+            <field name="code">odoocms.processing.fee.challan.sequence</field>
+            <field name="prefix">1451</field>
+            <field name="padding">8</field>
+        </record>
+        <record id="seq_admission_fee_challan_no" model="ir.sequence">
+            <field name="name">Admission Fee Challan Sequence</field>
+            <field name="code">odoocms.admission.fee.challan.sequence</field>
+            <field name="prefix">1452</field>
+            <field name="padding">8</field>
+        </record>
+
+          
+         <!--***** Fee Payment Multi Company Rule *****-->
+        <record id="odoocms_unconfirmed_paid_bank_challan_multi_company_rule" model="ir.rule">
+            <field name="name">Uconfirmed Paid Bank Challan Multi Company Rule</field>
+            <field name="model_id" ref="odoocms_admission_fee_ucp.model_odoocms_unconfirmed_paid_bank_challan"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+         <!--***** Show Challan On Portal Multi Company Rule *****-->
+        <record id="show_challan_on_portal_multi_company_rule" model="ir.rule">
+            <field name="name">Show Challan On Portal Multi Company Rule</field>
+            <field name="model_id" ref="odoocms_admission_fee_ucp.model_odoocms_show_challan_on_portal"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!--***** Show Challan On Portal Line Multi Company Rule *****-->
+        <record id="show_challan_on_portal_line_multi_company_rule" model="ir.rule">
+            <field name="name">Show Challan On Portal Line Multi Company Rule</field>
+            <field name="model_id" ref="odoocms_admission_fee_ucp.model_odoocms_show_challan_on_portal_line"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>
+

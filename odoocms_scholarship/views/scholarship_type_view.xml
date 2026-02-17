@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_odoocms_scholarship_type_tree" model="ir.ui.view">
+            <field name="name">odoocms.scholarship.type.tree</field>
+            <field name="model">odoocms.scholarship.type</field>
+            <field name="arch" type="xml">
+                <tree string="Scholarship Types">
+                    <field name="name" />
+                    <field name="amount" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoo_scholarship_type_form" model="ir.ui.view">
+            <field name="name">odoocms.scholarship.type.form</field>
+            <field name="model">odoocms.scholarship.type</field>
+            <field name="arch" type="xml">
+                <form string="Scholarship Types">
+                    <sheet>
+                        <group colspan="4">
+                            <field name="name" />
+                            <field name="amount" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_scholarship_type_search" model="ir.ui.view">
+            <field name="name">odoocms.scholarship.type.search</field>
+            <field name="model">odoocms.scholarship.type</field>
+            <field name="arch" type="xml">
+                <search string="Tag">
+                    <field name="name" />
+                    <field name="amount" />
+                    <newline />
+                    <group expand="0" string="Group By...">
+                        <filter name="grp_name"  string="Name" domain="[]" context="{'group_by':'name'}" />
+                        <filter name="grp_amount" string="Amount" domain="[]" context="{'group_by':'amount'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_odoocms_scholarship_type_view" model="ir.actions.act_window">
+            <field name="name">Scholarship Types</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoocms.scholarship.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_odoocms_scholarship_type_search" />
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_scholarship_type"
+                name="Scholarship Types"
+                parent="menu_odoocms_scholarship_main"
+                sequence="60"
+                action="action_odoocms_scholarship_type_view"
+                groups="odoocms.group_cms_manager,odoocms.group_cms_user,base.group_user" />
+
+    </data>
+</odoo>

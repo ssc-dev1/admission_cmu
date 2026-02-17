@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="nbs_application" name="Need Based Scholarship Application">
+    <div class="nbs_page_heading">
+      <h1>Need Based Scholarship</h1>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/fontawesome/css/all.css"/>
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/popper.min.js"></script>
+    <script type="text/javascript" src="/odoocms_admission_portal/static/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/need_based_scholarship/static/src/js/nbs_portal.js"></script>
+
+    <style>
+      *{font-family:Arial;}
+      .accordion-item{ border-radius:0; margin-bottom:20px; border:none; }
+      .accordion-button{ background:#112b4f!important; font-size:20px; color:#fff!important; }
+      .accordion-button::after,.accordion-button:not(.collapsed)::after{
+        background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+      }
+      .nbs_page_heading{ text-align:center; margin:50px 0; }
+      .form-label{ font-weight:600; margin-top:.25rem; display:block; }
+      .small-note{font-size:12px;color:#666}
+      .table thead th{white-space:nowrap;}
+      .btn-mini{padding:.2rem .5rem;font-size:.75rem;}
+    </style>
+
+    <!-- Generic Edit Modal (content injected by JS) -->
+<div class="modal fade" id="nbsEditModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form id="nbsEditForm">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  t-if="False"/> 
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="id"/>
+          <div class="nbs-edit-container"><!-- fields injected via JS --></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="nbsEditSaveBtn" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+    <div class="m-3">
+      <div class="accordion" id="nbsAccordion">
+        <!-- STEP 1: Personal -->
+        <div class="accordion-item">
+  <h2 class="accordion-header" id="nbs-step1-head">
+    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+            data-bs-target="#nbs-step1" aria-expanded="true" aria-controls="nbs-step1">
+      1) Personal Information
+    </button>
+  </h2>
+  <div id="nbs-step1" class="accordion-collapse collapse show"
+       aria-labelledby="nbs-step1-head" data-bs-parent="#nbsAccordion">
+    <div class="accordion-body">
+      <form class="row g-3 nbs-personal-form" action="/nbs/save/personal"
+            method="post" enctype="multipart/form-data">
+        <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+
+        <!-- Readonly Personal Details -->
+        <div class="col-md-4">
+          <label class="form-label">Full Name</label>
+          <input class="form-control" type="text"
+                 t-att-value="nbs.full_name or application.name or ''"
+                 readonly="readonly"/>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Student Registration Number</label>
+          <input class="form-control" type="text"
+                 t-att-value="application.application_no or ''"
+                 readonly="readonly"/>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Degree Program</label>
+          <input class="form-control" type="text"
+                 t-att-value="degree_name or ''"
+                 readonly="readonly"/>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Year / Session</label>
+          <input class="form-control" type="text"
+                 t-att-value="year_name or ''"
+                 readonly="readonly"/>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Contact Number</label>
+          <input class="form-control" type="text"
+                 t-att-value="application.mobile or nbs.mobile or ''"
+                 readonly="readonly"/>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Email</label>
+          <input class="form-control" type="email"
+                 t-att-value="nbs.email or application.email or ''"
+                 readonly="readonly"/>
+        </div>
+
+        <!-- Editable Scholarship Info -->
+        <div class="col-md-4">
+          <label class="form-label">Previously on Scholarship?</label>
+          <select class="form-select" name="prev_scholarship"
+                  required="required" id="prev_scholarship">
+            <option value="">Select Option</option>
+            <option value="yes" t-att-selected="nbs.prev_scholarship == 'yes'">Yes</option>
+            <option value="no" t-att-selected="nbs.prev_scholarship == 'no'">No</option>
+          </select>
+        </div>
+
+        <div class="col-md-8" id="prev_scholarship_details_wrap">
+          <label class="form-label">Previous Scholarship Details</label>
+          <textarea class="form-control" name="prev_scholarship_details"
+                    placeholder="Provide details if Yes">
+            <t t-esc="nbs.prev_scholarship_details or ''"/>
+          </textarea>
+        </div>
+
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit">
+            Save &amp; Continue
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+        <!-- STEP 2: Household Information (Father + Mother + Other Members) -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="nbs-step2-head">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nbs-step2">2) Household Information</button>
+          </h2>
+          <div id="nbs-step2" class="accordion-collapse collapse" aria-labelledby="nbs-step2-head" data-bs-parent="#nbsAccordion">
+            <div class="accordion-body">
+              <!-- Father -->
+              <form class="row g-3 nbs-father-form" action="/nbs/save/father" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+                <div class="col-12"><h5>Father</h5></div>
+
+                <div class="col-md-4">
+                  <input class="form-control" type="text" name="father_name" t-att-value="nbs.father_name or  application.father_name or ''"  readonly="readonly"/>
+                  <label class="form-label">Father’s Name </label>
+                </div>
+                <div class="col-md-4">
+                  <select class="form-select" name="father_occupation" id="father_occupation"
+                          t-att-disabled="(application.father_status or '') == 'deceased' and 'disabled' or None">
+                    <option value="">Select Occupation</option>
+                    <option value="employed" t-att-selected="nbs.father_occupation == 'employed'">Employed</option>
+                    <option value="self_employed" t-att-selected="nbs.father_occupation == 'self_employed'">Self-Employed / Business owner</option>
+                    <option value="unemployed" t-att-selected="nbs.father_occupation == 'unemployed'">Un-employed</option>
+                    <option value="deceased" t-att-selected="nbs.father_occupation == 'deceased'">Deceased</option>
+                  </select>
+                  <label class="form-label">Father’s Occupation</label>
+                </div>
+
+                <!-- Employed / Self-Employed -->
+                <div class="col-md-4 nbs-father-employed">
+                  <input class="form-control" type="text" name="father_employer_name" t-att-value="nbs.father_employer_name or ''"/>
+                  <label class="form-label">Employer / Business Name</label>
+                </div>
+                <div class="col-md-4 nbs-father-employed">
+                  <input class="form-control" type="text" name="father_designation" t-att-value="nbs.father_designation or ''"/>
+                  <label class="form-label">Designation / Business Type</label>
+                </div>
+                <div class="col-md-4 nbs-father-employed">
+                  <input class="form-control" type="file" name="father_salary_slips" accept="application/pdf"/>
+                  <label class="form-label">Salary/Income Proof (PDF)</label>
+                </div>
+
+                <!-- Unemployed -->
+                <div class="col-md-8 nbs-father-unemployed">
+                  <textarea class="form-control" name="father_unemployed_reason"><t t-esc="nbs.father_unemployed_reason or ''"/></textarea>
+                  <label class="form-label">Reason of Unemployment</label>
+                </div>
+
+                <!-- Deceased -->
+                <div class="col-md-4 nbs-father-deceased">
+                  <input class="form-control" type="file" name="father_death_certificate" accept="application/pdf"/>
+                  <label class="form-label">Death Certificate (PDF)</label>
+                </div>
+
+                <div class="col-12">
+                  <button class="btn btn-primary" type="submit">Save Father &amp; Continue</button>
+                </div>
+
+                <div class="col-12"><hr/></div>
+              </form>
+
+              <!-- Mother -->
+              <form class="row g-3 nbs-mother-form" action="/nbs/save/mother" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+                <div class="col-12"><h5>Mother</h5></div>
+
+                <div class="col-md-4">
+                  <input class="form-control" type="text" name="mother_name" t-att-value="nbs.mother_name or application.mother_name or ''" readonly="readonly" />
+                  <label class="form-label">Mother’s Name</label>
+                </div>
+                <div class="col-md-4">
+                  <select class="form-select" name="mother_occupation" id="mother_occupation"
+                          t-att-disabled="(application.mother_status or '') == 'deceased' and 'disabled' or None">
+                    <option value="">Select Occupation</option>
+                    <option value="employed" t-att-selected="nbs.mother_occupation == 'employed'">Employed</option>
+                    <option value="self_employed" t-att-selected="nbs.mother_occupation == 'self_employed'">Self-Employed / Business owner</option>
+                    <option value="unemployed" t-att-selected="nbs.mother_occupation == 'unemployed'">Un-employed</option>
+                    <option value="deceased" t-att-selected="nbs.mother_occupation == 'deceased'">Deceased</option>
+                  </select>
+                  <label class="form-label">Mother’s Occupation</label>
+                </div>
+
+                <!-- Employed / Self-Employed -->
+                <div class="col-md-4 nbs-mother-employed">
+                  <input class="form-control" type="text" name="mother_employer_name" t-att-value="nbs.mother_employer_name or ''"/>
+                  <label class="form-label">Employer / Business Name</label>
+                </div>
+                <div class="col-md-4 nbs-mother-employed">
+                  <input class="form-control" type="text" name="mother_designation" t-att-value="nbs.mother_designation or ''"/>
+                  <label class="form-label">Designation / Business Type</label>
+                </div>
+                <div class="col-md-4 nbs-mother-employed">
+                  <input class="form-control" type="file" name="mother_salary_slips" accept="application/pdf"/>
+                  <label class="form-label">Salary/Income Proof (PDF)</label>
+                </div>
+
+                <!-- Unemployed -->
+                <div class="col-md-8 nbs-mother-unemployed">
+                  <textarea class="form-control" name="mother_unemployed_reason"><t t-esc="nbs.mother_unemployed_reason or ''"/></textarea>
+                  <label class="form-label">Reason of Unemployment</label>
+                </div>
+
+                <!-- Deceased -->
+                <div class="col-md-4 nbs-mother-deceased">
+                  <input class="form-control" type="file" name="mother_death_certificate" accept="application/pdf"/>
+                  <label class="form-label">Death Certificate (PDF)</label>
+                </div>
+
+                <div class="col-12">
+                  <button class="btn btn-primary" type="submit">Save Mother &amp; Continue</button>
+                </div>
+              </form>
+
+              <!-- Other Household Members -->
+              <div class="col-12 mt-4">
+                <h5>Other Household Members (living/contributing)</h5>
+              </div>
+              
+              <form class="row g-3 nbs-add-member-form" id="form-add-member" action="/nbs/household_member/add" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+                <div class="col-md-3">
+                  <input class="form-control" type="text" name="name" required="required"/>
+                  <label class="form-label">Name</label>
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control" type="text" name="relation"/>
+                  <label class="form-label">Relation</label>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-select" name="occupation" id="member_occupation">
+                    <option value="">Select occupation</option>
+                    <option value="employed">Employed</option>
+                    <option value="student">Student</option>
+                    <option value="self_employed">Self-Employed / Business</option>
+                    <option value="unemployed">Un-employed</option>
+                  </select>
+                  <label class="form-label">Occupation</label>
+                </div>
+                <div class="col-md-3 when-employed">
+                  <input class="form-control" type="text" name="employer_or_institute"/>
+                  <label class="form-label">Employer / Business</label>
+                </div>
+                <div class="col-md-3 when-employed">
+                  <input class="form-control" type="text" name="designation_or_type"/>
+                  <label class="form-label">Designation / Business Type</label>
+                </div>
+                <div class="col-md-3 when-employed">
+                  <input class="form-control" type="file" name="salary_slips" accept="application/pdf"/>
+                  <label class="form-label">Salary Slips (PDF)</label>
+                </div>
+                <div class="col-md-3 when-student">
+                  <input class="form-control" type="text" name="student_institute"/>
+                  <label class="form-label">Institute (if Student)</label>
+                </div>
+                <div class="col-md-6 when-unemployed">
+                  <textarea class="form-control" name="reason_unemployed"></textarea>
+                  <label class="form-label">Reason of Unemployment</label>
+                </div>
+                <div class="col-md-12">
+                  <button class="btn btn-primary" type="submit">Add Member</button>
+                </div>
+              </form>
+
+              <div class="table-responsive mt-3">
+                <table class="table table-sm table-bordered" id="tbl-members">
+                  <thead class="table-light">
+                    <tr>
+                      <th>#</th><th>Name</th><th>Relation</th><th>Occupation</th><th>Employer/Institute</th><th>Designation/Type</th><th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <t t-foreach="household_members" t-as="m" t-foreach-index="idx">
+                      <tr t-att-data-id="m.id">
+                        <td class="c-idx"><t t-esc="(idx or 0) + 1"/></td>
+                        <td class="c-name"><t t-esc="m.name"/></td>
+                        <td class="c-relation"><t t-esc="m.relation or ''"/></td>
+                        <td class="c-occupation"><t t-esc="m.occupation or ''"/></td>
+                        <td class="c-employer"><t t-esc="m.employer_or_institute or ''"/></td>
+                        <td class="c-designation"><t t-esc="m.designation_or_type or ''"/></td>
+                        <td>
+                          <button type="button" class="btn btn-warning btn-mini nbs-edit-row"
+                                  data-type="member"
+                                  t-att-data-id="m.id"
+                                  t-att-data-name="m.name"
+                                  t-att-data-relation="m.relation or ''"
+                                  t-att-data-occupation="m.occupation or ''"
+                                  t-att-data-employer_or_institute="m.employer_or_institute or ''"
+                                  t-att-data-designation_or_type="m.designation_or_type or ''">Edit</button>
+                          <form action="/nbs/household_member/delete" method="post" class="d-inline nbs-del-member-form">
+                            <input type="hidden" name="id" t-att-value="m.id"/>
+                            <button class="btn btn-danger btn-mini" type="submit">Delete</button>
+                          </form>
+                        </td>
+                      </tr>
+                    </t>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- STEP 3: Household Income (Monthly) -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="nbs-step3-head">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nbs-step3">3) Household Income (Monthly)</button>
+          </h2>
+          <div id="nbs-step3" class="accordion-collapse collapse" data-bs-parent="#nbsAccordion">
+            <div class="accordion-body">
+              <!-- Main income save form -->
+              <form class="row g-3 nbs-income-form" action="/nbs/save/income" method="post">
+                <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+                <div class="col-md-3">
+                  <input class="form-control" type="number" step="0.01" name="father_monthly_income" t-att-value="nbs.father_monthly_income or 0"/>
+                  <label class="form-label">Father Monthly Income (PKR)</label>
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control" type="number" step="0.01" name="mother_monthly_income" t-att-value="nbs.mother_monthly_income or 0"/>
+                  <label class="form-label">Mother Monthly Income (PKR)</label>
+                </div>
+
+                <!-- Rental -->
+                <div class="col-md-3">
+                  <input class="form-check-input" type="checkbox" name="income_rental"
+                         id="chk_income_rental"
+                         t-att-checked="nbs.income_rental and 'checked' or None"/>
+                  <label class="form-label" for="chk_income_rental">Rental income?</label>
+                  <div class="mt-1 nbs-show-when-rental">
+                    <input class="form-control" type="number" step="0.01" name="income_rental_amount"
+                           t-att-value="nbs.income_rental_amount or 0"/>
+                  </div>
+                </div>
+
+                <!-- Pension -->
+                <div class="col-md-3">
+                  <input class="form-check-input" type="checkbox" name="income_pension"
+                         id="chk_income_pension"
+                         t-att-checked="nbs.income_pension and 'checked' or None"/>
+                  <label class="form-label" for="chk_income_pension">Pension?</label>
+                  <div class="mt-1 nbs-show-when-pension">
+                    <input class="form-control" type="number" step="0.01" name="income_pension_amount"
+                           t-att-value="nbs.income_pension_amount or 0"/>
+                  </div>
+                </div>
+
+                <!-- Zakat -->
+                <div class="col-md-3">
+                  <input class="form-check-input" type="checkbox" name="income_zakat"
+                         id="chk_income_zakat"
+                         t-att-checked="nbs.income_zakat and 'checked' or None"/>
+                  <label class="form-label" for="chk_income_zakat">Zakat received?</label>
+                  <div class="mt-1 nbs-show-when-zakat">
+                    <input class="form-control" type="number" step="0.01" name="income_zakat_amount"
+                           t-att-value="nbs.income_zakat_amount or 0"/>
+                  </div>
+                </div>
+
+                <!-- Remittance -->
+                <div class="col-md-3">
+                  <input class="form-check-input" type="checkbox" name="income_remittance"
+                         id="chk_income_remittance"
+                         t-att-checked="nbs.income_remittance and 'checked' or None"/>
+                  <label class="form-label" for="chk_income_remittance">Remittances received?</label>
+                  <div class="mt-1 nbs-show-when-remittance">
+                    <input class="form-control" type="number" step="0.01" name="income_remittance_amount"
+                           t-att-value="nbs.income_remittance_amount or 0"/>
+                  </div>
+                </div>
+
+                <!-- Self -->
+                <div class="col-md-3">
+                  <input class="form-check-input" type="checkbox" name="income_self"
+                         id="chk_income_self"
+                         t-att-checked="nbs.income_self and 'checked' or None"/>
+                  <label class="form-label" for="chk_income_self">Self income (applicant)?</label>
+                  <div class="mt-1 nbs-show-when-self">
+                    <input class="form-control" type="number" step="0.01" name="income_self_amount"
+                           t-att-value="nbs.income_self_amount or 0"/>
+                  </div>
+                </div>
+
+                <div class="col-12"><span class="small-note">Other contributing members below</span></div>
+
+                <div class="col-12 mt-2">
+                  <button class="btn btn-primary" type="submit">Save Income &amp; Continue</button>
+                </div>
+              </form>
+
+              <!-- OTHER INCOME: Add form and table moved OUTSIDE main income save form -->
+              <div class="mt-3">
+                <form class="row g-2 nbs-add-other-income-form" action="/nbs/other_income/add" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+                  <div class="col-md-3"><input class="form-control" type="text" name="name" placeholder="Name" required="required"/></div>
+                  <div class="col-md-3"><input class="form-control" type="text" name="relation" placeholder="Relation"/></div>
+                  <div class="col-md-3"><input class="form-control" type="number" step="0.01" name="monthly_income" placeholder="Monthly Income"/></div>
+                  <div class="col-md-2"><input class="form-control" type="file" name="income_proof" accept="application/pdf"/></div>
+                  <div class="col-md-1"><button class="btn btn-primary btn-mini" type="submit">Add</button></div>
+                </form>
+
+                <div class="table-responsive mt-2">
+                  <table class="table table-sm table-bordered" id="tbl-other-income">
+                    <thead class="table-light"><tr><th>#</th><th>Name</th><th>Relation</th><th>Monthly Income</th><th>Actions</th></tr></thead>
+                    <tbody>
+                      <t t-foreach="other_incomes" t-as="i" t-foreach-index="idx">
+                        <tr t-att-data-id="i.id">
+                          <td class="c-idx"><t t-esc="(idx or 0) + 1"/></td>
+                          <td class="c-name"><t t-esc="i.name"/></td>
+                          <td class="c-relation"><t t-esc="i.relation or ''"/></td>
+                          <td class="c-amount"><t t-esc="i.monthly_income or 0.0"/></td>
+                          <td>
+                            <button type="button" class="btn btn-warning btn-mini nbs-edit-row"
+                                    data-type="other_income"
+                                    t-att-data-id="i.id"
+                                    t-att-data-name="i.name"
+                                    t-att-data-relation="i.relation or ''"
+                                    t-att-data-monthly_income="i.monthly_income or 0.0">Edit</button>
+                            <form action="/nbs/other_income/delete" method="post" class="d-inline nbs-del-other-income-form">
+                              <input type="hidden" name="id" t-att-value="i.id"/>
+                              <button class="btn btn-danger btn-mini" type="submit">Delete</button>
+                            </form>
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: Household Expenses (Monthly) -->
+       <div class="accordion-item">
+          <h2 class="accordion-header" id="nbs-step4-head">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nbs-step4">
+              4) Household Expenses (Monthly)
+            </button>
+          </h2>
+          <div id="nbs-step4" class="accordion-collapse collapse" data-bs-parent="#nbsAccordion">
+            <div class="accordion-body">
+              <!-- SIBLING EXPENSES: add/list moved OUTSIDE main expenses save form -->
+              <div id="sibexp_block">
+                <form class="row g-2 nbs-add-sibexp-form" action="/nbs/sibling_expense/add" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+                  <div class="col-md-4"><input class="form-control" type="text" name="sibling_name" placeholder="Sibling Name"/></div>
+                  <div class="col-md-3"><input class="form-control" type="number" step="0.01" name="monthly_expense" placeholder="Monthly Education Expense"/></div>
+                  <div class="col-md-3">
+                    <input class="form-control" type="file" name="fee_challan" accept="application/pdf"/>
+                    <label class="form-label">Fee Challan (PDF)</label>
+                  </div>
+                  <div class="col-md-2"><button class="btn btn-primary btn-mini" type="submit">Add</button></div>
+                </form>
+
+                <div class="table-responsive mt-2">
+                  <table class="table table-sm table-bordered" id="tbl-sibexp">
+                    <thead class="table-light"><tr><th>#</th><th>Sibling</th><th>Monthly Expense</th><th>Actions</th></tr></thead>
+                    <tbody>
+                      <t t-foreach="sibling_expenses" t-as="se" t-foreach-index="idx">
+                        <tr t-att-data-id="se.id">
+                          <td class="c-idx"><t t-esc="(idx or 0) + 1"/></td>
+                          <td class="c-name"><t t-esc="se.sibling_name"/></td>
+                          <td class="c-amount"><t t-esc="se.monthly_expense or 0.0"/></td>
+                          <td>
+                            <button type="button" class="btn btn-warning btn-mini nbs-edit-row"
+                                    data-type="sibexp"
+                                    t-att-data-id="se.id"
+                                    t-att-data-sibling_name="se.sibling_name"
+                                    t-att-data-monthly_expense="se.monthly_expense or 0.0">Edit</button>
+                            <form action="/nbs/sibling_expense/delete" method="post" class="d-inline nbs-del-sibexp-form">
+                              <input type="hidden" name="id" t-att-value="se.id"/>
+                              <button class="btn btn-danger btn-mini" type="submit">Delete</button>
+                            </form>
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Main expenses save form -->
+              <form class="row g-3 nbs-expenses-form" action="/nbs/save/expenses" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+
+                <div class="col-md-12">
+                  <input class="form-check-input" type="checkbox" name="has_sibling_education_expense" t-att-checked="nbs.has_sibling_education_expense and 'checked' or None" id="chk_sibexp"/>
+                  <label class="form-label">Education expenses for siblings?</label>
+                </div>
+
+                <hr/>
+
+                <div class="col-md-3">
+                  <input class="form-check-input" type="checkbox" name="is_living_on_rent" t-att-checked="nbs.is_living_on_rent and 'checked' or None" id="chk_rent"/>
+                  <label class="form-label">Do you reside in a rented house?</label>
+
+                  <!-- only this block should show/hide with checkbox -->
+                  <div class="mt-2 nbs-rent-block">
+                    <label class="form-label">What is your Monthly Rent?</label>
+                    <input class="form-control" type="number" step="0.01" name="monthly_rent" t-att-value="nbs.monthly_rent or 0"/>
+                    <input class="form-control mt-1" type="file" name="rent_agreement" accept="application/pdf"/>
+                    <span class="small-note">Upload rental agreement (PDF)</span>
+                  </div>
+                </div>
+
+
+                <div class="col-md-3">
+                  <input class="form-control" type="number" step="0.01" name="gas_bill_amount" t-att-value="nbs.gas_bill_amount or 0"/>
+                  <label class="form-label">Gas Bill (Latest Month)</label>
+                  <input class="form-control" type="file" name="gas_bill_attachment" accept="application/pdf"/>
+                </div>
+
+                <div class="col-md-3">
+                  <input class="form-control" type="number" step="0.01" name="elec_bill_amount" t-att-value="nbs.elec_bill_amount or 0"/>
+                  <label class="form-label">Electricity Bill (Latest Month)</label>
+                  <input class="form-control" type="file" name="elec_bill_attachment" accept="application/pdf"/>
+                </div>
+
+                <div class="col-md-3">
+                  <input class="form-control" type="number" step="0.01" name="water_bill_amount" t-att-value="nbs.water_bill_amount or 0"/>
+                  <label class="form-label">Water Bill (Latest Month)</label>
+                  <input class="form-control" type="file" name="water_bill_attachment" accept="application/pdf"/>
+                </div>
+
+                <div class="col-md-3">
+                  <input class="form-control" type="number" step="0.01" name="monthly_grocery" t-att-value="nbs.monthly_grocery or 0"/>
+                  <label class="form-label">Monthly Grocery / Living</label>
+                </div>
+
+                <div class="col-md-12">
+                  <input class="form-check-input" type="checkbox" name="has_medical_expense" t-att-checked="nbs.has_medical_expense and 'checked' or None" id="chk_med"/>
+                  <label class="form-label">Recurring Medical Expense?</label>
+                </div>
+                <div class="col-md-4 med-block">
+                  <input class="form-control" type="text" name="medical_expense_nature" t-att-value="nbs.medical_expense_nature or ''"/>
+                  <label class="form-label">Nature</label>
+                </div>
+                <div class="col-md-3 med-block">
+                  <input class="form-control" type="number" step="0.01" name="medical_expense_amount" t-att-value="nbs.medical_expense_amount or 0"/>
+                  <label class="form-label">Monthly Amount</label>
+                </div>
+                <div class="col-md-3 med-block">
+                  <input class="form-control" type="file" name="medical_expense_attachment" accept="application/pdf"/>
+                  <label class="form-label">Medical Evidence (PDF)</label>
+                </div>
+
+                <div class="col-md-12">
+                  <input class="form-check-input" type="checkbox" name="has_other_recurring" t-att-checked="nbs.has_other_recurring and 'checked' or None" id="chk_otherrec"/>
+                  <label class="form-label">Other Major Monthly Recurring Expense?</label>
+                </div>
+                <div class="col-md-4 otherrec-block">
+                  <input class="form-control" type="text" name="other_recurring_nature" t-att-value="nbs.other_recurring_nature or ''"/>
+                  <label class="form-label">Nature</label>
+                </div>
+                <div class="col-md-3 otherrec-block">
+                  <input class="form-control" type="number" step="0.01" name="other_recurring_amount" t-att-value="nbs.other_recurring_amount or 0"/>
+                  <label class="form-label">Monthly Amount</label>
+                </div>
+                <div class="col-md-3 otherrec-block">
+                  <input class="form-control" type="file" name="other_recurring_attachment" accept="application/pdf"/>
+                  <label class="form-label">Evidence (PDF)</label>
+                </div>
+
+                <div class="col-12">
+                  <button class="btn btn-primary" type="submit">Save Expenses &amp; Continue</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5: Assets -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="nbs-step5-head">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nbs-step5">5) Assets Owned by Family</button>
+          </h2>
+          <div id="nbs-step5" class="accordion-collapse collapse" data-bs-parent="#nbsAccordion">
+            <div class="accordion-body">
+              <!-- Main assets save form -->
+              <form class="row g-3 nbs-assets-form" action="/nbs/save/assets" method="post">
+                <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+                <div class="col-md-12"><span class="small-note">Info only (no attachments required)</span></div>
+
+                <div class="col-md-3">
+                  <input class="form-check-input" type="checkbox" name="asset_house" t-att-checked="nbs.asset_house and 'checked' or None"/>
+                  <label class="form-label">House (Self-owned)</label>
+                  <input class="form-control" type="text" name="asset_house_area" placeholder="Area/Locality" t-att-value="nbs.asset_house_area or ''"/>
+                  <input class="form-control mt-1" type="number" step="0.01" name="asset_house_value" placeholder="Approx. Value" t-att-value="nbs.asset_house_value or 0"/>
+                </div>
+
+                <div class="col-md-3">
+                  <input class="form-check-input" type="checkbox" name="asset_land" t-att-checked="nbs.asset_land and 'checked' or None"/>
+                  <label class="form-label">Land / Property</label>
+                  <input class="form-control" type="text" name="asset_land_area" placeholder="Area/Locality" t-att-value="nbs.asset_land_area or ''"/>
+                  <input class="form-control mt-1" type="number" step="0.01" name="asset_land_value" placeholder="Approx. Value" t-att-value="nbs.asset_land_value or 0"/>
+                </div>
+
+                <div class="col-md-3">
+                  <input class="form-check-input" type="checkbox" name="asset_business" t-att-checked="nbs.asset_business and 'checked' or None"/>
+                  <label class="form-label">Business Ownership</label>
+                  <input class="form-control" type="number" step="0.01" name="asset_business_value" placeholder="Approx. Value" t-att-value="nbs.asset_business_value or 0"/>
+                </div>
+
+                <div class="col-12"><hr/></div>
+
+                <div class="col-12">
+                  <button class="btn btn-primary" type="submit">Save Assets &amp; Continue</button>
+                </div>
+              </form>
+
+              <!-- VEHICLES: add/list moved OUTSIDE assets save form -->
+              <div class="mt-3">
+                <div class="col-md-12 mb-3">
+                  <input class="form-check-input" type="checkbox" name="has_vehicles" id="chk_vehicles"/>
+                  <label class="form-label">Does your family own any Car?</label>
+                </div>
+                
+                <div id="vehicle_fields" style="display: none;">
+                  <form class="row g-2 nbs-add-vehicle-form" action="/nbs/vehicle/add" method="post">
+                    <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+                    <div class="col-md-4">
+                      <input class="form-control" type="text" name="make_model" placeholder="Make &amp; Model" required="required"/>
+                      <label class="form-label">Make &amp; Model</label>
+                    </div>
+                    <div class="col-md-3">
+                      <input class="form-control" type="number" step="0.01" name="estimated_value" placeholder="Estimated Value" required="required"/>
+                      <label class="form-label">Estimated Value</label>
+                    </div>
+                    <div class="col-md-2"><button class="btn btn-primary btn-mini" type="submit">Add Vehicle</button></div>
+                  </form>
+                </div>
+
+                <div class="table-responsive mt-2">
+                  <table class="table table-sm table-bordered" id="tbl-vehicles">
+                    <thead class="table-light"><tr><th>#</th><th>Make &amp; Model</th><th>Estimated Value</th><th>Actions</th></tr></thead>
+                    <tbody>
+                      <t t-foreach="vehicles" t-as="v" t-foreach-index="idx">
+                        <tr t-att-data-id="v.id">
+                          <td class="c-idx"><t t-esc="(idx or 0) + 1"/></td>
+                          <td class="c-make"><t t-esc="v.make_model"/></td>
+                          <td class="c-value"><t t-esc="v.estimated_value or 0.0"/></td>
+                          <td>
+                            <button type="button" class="btn btn-warning btn-mini nbs-edit-row"
+                                    data-type="vehicle"
+                                    t-att-data-id="v.id"
+                                    t-att-data-make_model="v.make_model"
+                                    t-att-data-estimated_value="v.estimated_value or 0.0">Edit</button>
+                            <form action="/nbs/vehicle/delete" method="post" class="d-inline nbs-del-vehicle-form">
+                              <input type="hidden" name="id" t-att-value="v.id"/>
+                              <button class="btn btn-danger btn-mini" type="submit">Delete</button>
+                            </form>
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 6: Loans -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="nbs-step6-head">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nbs-step6">6) Loans / Liabilities</button>
+          </h2>
+          <div id="nbs-step6" class="accordion-collapse collapse" data-bs-parent="#nbsAccordion">
+            <div class="accordion-body">
+              <!-- Loans toggle form -->
+              <form class="row g-3 nbs-loans-toggle-form" action="/nbs/save/loans" method="post">
+                <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+                <div class="col-md-12">
+                  <input class="form-check-input" type="checkbox" name="has_loans" t-att-checked="nbs.has_loans and 'checked' or None" id="chk_loans"/>
+                  <label class="form-label">Any Outstanding Loans / Liabilities?</label>
+                </div>
+                <div class="col-12">
+                  <button class="btn btn-primary" type="submit">Save Loans &amp; Continue</button>
+                </div>
+              </form>
+
+              <!-- LOANS: add/list moved OUTSIDE toggle form -->
+              <div id="loan_block" class="mt-3">
+                <form class="row g-2 nbs-add-loan-form" action="/nbs/loan/add" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+                  <div class="col-md-5"><input class="form-control" type="text" name="purpose" placeholder="Purpose of loan"/></div>
+                  <div class="col-md-3"><input class="form-control" type="number" step="0.01" name="outstanding_amount" placeholder="Outstanding amount"/></div>
+                  <div class="col-md-3"><input class="form-control" type="file" name="proof" accept="application/pdf"/></div>
+                  <div class="col-md-1"><button class="btn btn-primary btn-mini" type="submit">Add</button></div>
+                </form>
+
+                <div class="table-responsive mt-2">
+                  <table class="table table-sm table-bordered" id="tbl-loans">
+                    <thead class="table-light"><tr><th>#</th><th>Purpose</th><th>Outstanding Amount</th><th>Actions</th></tr></thead>
+                    <tbody>
+                      <t t-foreach="loans" t-as="l" t-foreach-index="idx">
+                        <tr t-att-data-id="l.id">
+                          <td class="c-idx"><t t-esc="(idx or 0) + 1"/></td>
+                          <td class="c-purpose"><t t-esc="l.purpose or ''"/></td>
+                          <td class="c-amount"><t t-esc="l.outstanding_amount or 0.0"/></td>
+                          <td>
+                            <button type="button" class="btn btn-warning btn-mini nbs-edit-row"
+                                    data-type="loan"
+                                    t-att-data-id="l.id"
+                                    t-att-data-purpose="l.purpose or ''"
+                                    t-att-data-outstanding_amount="l.outstanding_amount or 0.0">Edit</button>
+                            <form action="/nbs/loan/delete" method="post" class="d-inline nbs-del-loan-form">
+                              <input type="hidden" name="id" t-att-value="l.id"/>
+                              <button class="btn btn-danger btn-mini" type="submit">Delete</button>
+                            </form>
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 7: Statement, Declaration, Attachments -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="nbs-step7-head">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nbs-step7">7) Statement, Declaration and Attachments</button>
+          </h2>
+          <div id="nbs-step7" class="accordion-collapse collapse" data-bs-parent="#nbsAccordion">
+            <div class="accordion-body">
+              <!-- Statement save form -->
+              <form class="row g-3 nbs-statement-form" action="/nbs/save/statement" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+
+                <div class="col-12">
+                  <textarea class="form-control" name="sop" rows="4" placeholder="Why are you applying? (≤ 350 words)"><t t-esc="nbs.sop or ''"/></textarea>
+                  <label class="form-label">Statement of Purpose</label>
+                </div>
+
+                <div class="col-12">
+                  <textarea class="form-control" name="continuation_plan" rows="4" placeholder="If scholarship not granted, how will you continue your degree? (≤ 500 words)" maxlength="2500"><t t-esc="nbs.continuation_plan or ''"/></textarea>
+                  <label class="form-label">Continuation Plan</label>
+                  <span class="small-note">Maximum 500 words</span>
+                </div>
+
+                <div class="col-md-6">
+                  <input class="form-control" type="file" name="bank_statements_6m" accept="application/pdf"/>
+                  <label class="form-label">6-month Bank Statement (Parents/Guardians)</label>
+                </div>
+                <div class="col-md-6">
+                  <input class="form-control" type="file" name="cnic_parents" accept="application/pdf,image/*"/>
+                  <label class="form-label">CNIC copies of parents/guardians (front and back in one file)</label>
+                </div>
+
+                <div class="col-md-3">
+                  <input class="form-control" type="file" name="house_pic_outside_1" accept="image/*"/>
+                  <label class="form-label">House Picture (Outside 1)</label>
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control" type="file" name="house_pic_outside_2" accept="image/*"/>
+                  <label class="form-label">House Picture (Outside 2)</label>
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control" type="file" name="house_pic_drawing_1" accept="image/*"/>
+                  <label class="form-label">Drawing Room Picture 1</label>
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control" type="file" name="house_pic_drawing_2" accept="image/*"/>
+                  <label class="form-label">Drawing Room Picture 2</label>
+                </div>
+
+                <div class="col-12">
+                  <input class="form-check-input" type="checkbox" name="declaration" t-att-checked="nbs.declaration and 'checked' or None" id="chk_decl"/>
+                  <label class="form-label">I hereby declare that the information provided above is true to the best of my knowledge. Any false or misleading information may result in cancellation of my application.</label>
+                </div>
+
+                <div class="col-12">
+                  <button class="btn btn-primary" type="submit">Save Statement and Attachments</button>
+                </div>
+              </form>
+
+              <!-- FINAL SUBMIT: moved OUTSIDE statement form to avoid nesting -->
+              <div class="mt-2">
+                <form action="/nbs/submit" method="post" class="d-inline ms-2 nbs-submit-form">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs.id"/>
+                  <button class="btn btn-success" type="submit">Submit Application</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+</odoo>

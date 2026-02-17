@@ -1,0 +1,19 @@
+.btn_tab:hover{
+    background-color: whitesmoke;
+    color:black !important;
+    /* padding: 0px; */
+}
+.btn_tab{
+    background: rgba(0, 0, 0, 0.5);   
+    color: white;
+    border:none;
+}
+.active{
+    background-color: whitesmoke !important;
+    color:black !important;
+    color:#384664;
+    border:1px solid grey;
+}
+.dataTables_info{
+    display: none;
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="inherited_view_odoocms_fee_payment_register_form" model="ir.ui.view">
+            <field name="name">inherited.odoocms.fee.payment.register.form</field>
+            <field name="model">odoocms.fee.payment.register</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_payment_register_form"/>
+            <field name="arch" type="xml">
+                <field name="non_barcode_receipts" position="after">
+                    <field name="total_amount_mismatch_receipts"/>
+                </field>
+
+                <xpath expr="//form/sheet/notebook/page[@name='non_barcode_receipts_page']" position="before">
+                    <page string="Amount Mismatch Challan" name="payment_mismatch_challan_page">
+                        <field name="payment_mismatch_ids" nolabel="1">
+                            <tree string="Fee Payment Mismatch Challan" create="false" editable="bottom" decoration-primary="state == 'Draft'" decoration-success="state == 'Posted'" decoration-danger="state == 'Cancel'">
+                                <field name="barcode" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                <field name="invoice_id" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                <field name="invoice_amount" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                <field name="payment_amount" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                <field name="diff_amount" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                <field name="state" attrs="{'readonly':[('state','!=','Draft')]}" optional="hide"/>
+                                <field name="payment_register_id" attrs="{'readonly':[('state','!=','Draft')]}" invisible="1"/>
+                            </tree>
+
+                            <form string="Fee Payment Mismatch Challan">
+                                <header>
+                                    <field name="state" widget="statusbar"/>
+                                </header>
+                                <sheet>
+                                    <group>
+                                        <group>
+                                            <field name="barcode" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                            <field name="invoice_id" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                        </group>
+                                        <group>
+                                            <field name="invoice_amount" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                            <field name="payment_amount" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                            <field name="diff_amount" attrs="{'readonly':[('state','!=','Draft')]}"/>
+                                        </group>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="inherited_view_odoocms_fee_payment_register_tree" model="ir.ui.view">
+            <field name="name">inherited.odoocms.fee.payment.register.tree</field>
+            <field name="model">odoocms.fee.payment.register</field>
+            <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_payment_register_tree"/>
+            <field name="arch" type="xml">
+                <field name="non_barcode_receipts" position="after">
+                    <field name="total_amount_mismatch_receipts" sum="sum_total_amount_mismatch_receipts"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

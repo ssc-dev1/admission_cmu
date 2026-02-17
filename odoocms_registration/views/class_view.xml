@@ -1,0 +1,910 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_odoocms_class_grade_tree" model="ir.ui.view">
+        <field name="name">odoocms.class.grade.tree</field>
+        <field name="model">odoocms.class.grade</field>
+        <field name="arch" type="xml">
+            <tree string="Grade Class" delete="false" create="false">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="student_count"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_grade_form" model="ir.ui.view">
+        <field name="name">odoocms.class.grade.form</field>
+        <field name="model">odoocms.class.grade</field>
+        <field name="arch" type="xml">
+            <form string="Grade Class" delete="false" create="false">
+                <header>
+                    <button name="final_grade_report" class='btn btn-primary' type="object" string="Final Grade Report"/>
+                    <field name="state" widget="statusbar" statusbar_visible="current,submit,disposal,notify"/>
+                </header>
+                <sheet>
+                    <group name="one">
+                        <group name="one_left">
+                            <field name="name"/>
+                            <field name="code" required="1"/>
+                            <field name="department_id"/>
+                            <field name="career_id"/>
+                        </group>
+                        <group name="one_right">
+                            <field name="grade_staff_id"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name='primary_classes' string="Primary Classes">
+                            <field name="primary_class_ids">
+                                <tree create="false" delete="false" edit="false">
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="section_id"/>
+                                    <field name="program_id"/>
+                                    <field name="grade_staff_id"/>
+                                    <field name="state" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_grade_search" model="ir.ui.view">
+        <field name="name">odoocms.class.grade.search</field>
+        <field name="model">odoocms.class.grade</field>
+        <field name="arch" type="xml">
+            <search string="Grade Class">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="institute_id"/>
+                <field name="department_id"/>
+                <field name="batch_id"/>
+                <field name="term_id"/>
+                <field name="grade_staff_id"/>
+<!--                <newline/>-->
+<!--                <filter name='current_classes' string="Current" domain="[('state','in',('draft','current','lock'))]"/>-->
+<!--                <filter name='result_classes' string="Result" domain="[('state','in',('submit','disposal','approval'))]"/>-->
+<!--                <filter name='passed_classes' string="Passed" domain="[('state','=','done')]"/>-->
+                <newline/>
+                <group expand="0" string="Group By...">
+                    <filter name="state_grp" string="Status" domain="[]" context="{'group_by':'state'}"/>
+                    <filter name="institute_grp" string="Institute/Faculty" domain="[]" context="{'group_by':'institute_id'}"/>
+                    <filter name="department_grp" string="Department" domain="[]" context="{'group_by':'department_id'}"/>
+                    <filter name="program_grp" string="Program" domain="[]" context="{'group_by':'program_id'}"/>
+                    <filter name="batch_grp" string="Batch" domain="[]" context="{'group_by':'batch_id'}"/>
+                    <filter name="academic_term_grp" string="Academic Term" domain="[]" context="{'group_by':'term_id'}"/>
+                    <filter name="grade_staff_grp" string='Grading Staff' domain="[]" context="{'group_by':'grade_staff_id'}"/>
+                    <filter name="career_grp" string='Career' domain="[]" context="{'group_by':'career_id'}"/>
+<!--                    -->
+                </group>
+
+                <searchpanel>
+<!--                    -->
+                    <field name="career_id" icon="fa-users"/>
+                    <field name="state" icon="fa-users"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_primary_tree" model="ir.ui.view">
+        <field name="name">odoocms.class.primary.tree</field>
+        <field name="model">odoocms.class.primary</field>
+        <field name="arch" type="xml">
+            <tree string="Primary Class" duplicate="false" multi_edit="1">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="section_id"/>
+                <field name="parent_id" optional="hide"/>
+                <field name="term_id" readonly="1" optional="show"/>
+                <field name="couple_class_id" optional="hide"
+                       domain="[('term_id','=',term_id),('study_scheme_id','=',study_scheme_id),('course_id','!=',course_id)]"/>
+                <field name="grade_staff_id" optional="hide"/>
+                <field name="allowed_batch_ids" widget="many2many_tags" optional="hide"/>
+                <field name="allowed_institute_ids" widget="many2many_tags" optional="hide"/>
+                <field name="allowed_program_ids" widget="many2many_tags" optional="hide"/>
+                <field name="strength" optional="show"/>
+                <field name="reserved" optional="hide"/>
+                <field name="student_count" optional="show"/>
+                <field name="offer_for" optional="hide"/>
+                <field name="own_section" optional="hide"/>
+                <field name="study_scheme_id" invisible="1"/>
+                <field name="course_id" invisible="1"/>
+                <field name="state" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_primary_tree_report" model="ir.ui.view">
+        <field name="name">odoocms.class.primary.tree</field>
+        <field name="model">odoocms.class.primary</field>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <tree string="Section Status Report" duplicate="false" create="false" edit="false" delete="false">
+                <field name="institute_id" optional="hide"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="section_id" optional="hide"/>
+                <field name="parent_id" optional="hide"/>
+                <field name="term_id" optional="show"/>
+                <field name="grade_staff_id" optional="hide"/>
+                <field name="credits" optional="show"/>
+                <field name="strength" string="Max Strength" optional="show"/>
+                <field name="registration_count" string="Registered" optional="show"/>
+                <field name="student_count" string="Confirmed" optional="show"/>
+                <field name="reserved" string="Reserved" optional="show"/>
+                <field name="course_id" optional="hide"/>
+                <field name="status"/>
+                <field name="offer_for" optional="hide"/>
+                <field name="tt_html" optional="hide"/>
+                <field name="state" invisible="1"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_primary_form" model="ir.ui.view">
+        <field name="name">odoocms.class.primary.form</field>
+        <field name="model">odoocms.class.primary</field>
+        <field name="arch" type="xml">
+            <form string="Primary Class" duplicate="false">
+                <header>
+                    <button name="set_to_draft" type="object" states="current"
+                        class="oe_highlight" string="Set To Draft" groups="odoocms.group_cms_manager,odoocms_registration.group_registration_coordinator"/>
+                    <button name="set_to_current" type="object" states="draft"
+                        class="oe_highlight" string="Set To Current" groups="odoocms.group_cms_manager,odoocms_registration.group_registration_coordinator"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,current,lock"/>
+                </header>
+                <sheet string="Primary Class">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="view_students" type="object"
+                                class="oe_stat_button" icon="fa-user"
+                                attrs="{'invisible': [('student_count', '=', 0)]}">
+                            <field name="student_count" widget="statinfo" string="Students"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="career_id"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="strength"/>
+                            <field name="couple_class_id"
+                                domain="[('term_id','=',term_id),('study_scheme_id','=',study_scheme_id),('course_id','!=',course_id)]"/>
+                        </group>
+                        <group>
+                            <field name="grade_staff_id" string="Faculty Member"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="grade_class_id" string="Grading Class"
+                                   domain="[('batch_id','=',batch_id), ('study_scheme_line_id','=',study_scheme_line_id)]"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="student_count"/>
+                        </group>
+                        <group>
+                            <field name="term_id"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="course_id"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+
+                        </group>
+                        <group>
+                            <field name="class_type"
+                                />  <!-- attrs="{'invisible': [('class_type','=', 'special')]}" -->
+                            <field name="session_id"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                   />
+                            <!-- attrs="{'required':[('class_type','in',('regular','elective'))]}" -->
+                            <field name="batch_id"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                   domain="[('session_id','=',session_id),('career_id','=',career_id)]"
+                                   />
+                            <!-- attrs="{'required':[('class_type','in',('regular','elective'))]}" -->
+<!--                            <field name="batch_section_id"-->
+<!--                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"-->
+<!--                                   domain="[('batch_id','=',batch_id)]"-->
+<!--                                   attrs="{-->
+<!--                                        'required':[('class_type','=','regular'),('batch_sections','=',True)],-->
+<!--                                        'invisible': ['|',-->
+<!--                                            ('batch_sections','=',False),('class_type','in', ('elective','special','winter','summer'))]-->
+<!--                                   }"/>-->
+                            <field name="section_id"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                   />
+
+                        </group>
+<!--                        <group>-->
+<!--                            <field name="tt_html" widget="html"/>-->
+<!--                        </group>-->
+                    </group>
+
+                    <notebook>
+                        <page name="component_classes" string="Component Classes"
+                              groups="odoocms_registration.group_registration_coordinator">
+                            <field name="class_ids" nolabel="1">
+                                <tree string="Component Classes" readonly="1"  class="tree_no_open" delete="false" create="false">
+                                    <field name="sequence" widget="handle" readonly="0"/>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="faculty_staff_id"/>
+                                    <field name="component"/>
+                                    <field name="weightage"/>
+                                    <field name="contact_hours"/>
+                                    <field name="state"/>
+                                    <button type="object" name="get_formview_action" string="Open" icon="fa-edit"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="students" string="Students">
+                            <field name="registration_ids" nolabel="1">
+                                <tree name="students" string="Students" edit="false" delete="false" create="false">
+                                    <field name="student_id"/>
+                                    <field name="program_id"/>
+                                    <field name="session_id"/>
+                                    <field name="term_id"/>
+                                    <field name="state" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="registration_request" string="Unconfirmed Registration">
+                            <field name="registration_request_ids" nolabel="1" readonly="1"/>
+                        </page>
+                        <page name="other_info" string="Other Info" groups="odoocms.group_cms_manager">
+                            <group>
+                                <group>
+                                    <field name="major_course"/>
+                                    <field name="self_enrollment"/>
+                                    <field name="offer_for"/>
+                                    <field name="own_section"/>
+                                    <field name="finalize_weightage"/>
+                                </group>
+                                <group name="study_scheme">
+                                    <field name="study_scheme_id"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                       domain="[('career_id','=',career_id),('session_id','=',session_id)]"
+                                       />
+                                    <!-- attrs="{'required':[('class_type','not in',('special','winter','summer'))],
+                                            'invisible':[('class_type','in',('special','winter','summer'))],
+                                            }" -->
+
+                                    <field name="study_scheme_line_id"
+                                       domain="[('study_scheme_id','=',study_scheme_id)]"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                        />
+                                    <!-- attrs="{'invisible':[('class_type','in',('special','winter','summer'))],}" -->
+
+                                    <field name="merge_cnt" invisible="1"/>
+                                    <field name="is_parent"
+                                        attrs="{'invisible': ['|',('merge_cnt','!=',0),('parent_id','!=',False)]}"/>
+                                    <field name="parent_id" domain="[('term_id','=',term_id),('is_parent','=',True)]"
+                                           options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                           attrs="{'invisible': [('is_parent','=',True)]}"/>
+                                    <field name="child_ids" widget="many2many_tags" readonly="1"
+                                           options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                           attrs="{'invisible': [('is_parent','=',False)]}"/>
+                                </group>
+                                <group name="others">
+                                    <field name="credits"/>
+                                </group>
+                                <group name="enroll_domain">
+                                    <field name="allowed_batch_ids" widget="many2many_tags"
+                                        options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    <field name="allowed_institute_ids" widget="many2many_tags"
+                                        options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    <field name="allowed_program_ids" widget="many2many_tags"
+                                        options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    <field name="enroll_domain" widget="domain" options="{'model': 'odoocms.student', 'in_dialog': True}"/>
+                                </group>
+                               <group>
+<!--                                    <field name="batch_class_id"/>-->
+                                    <field name="course_code"/>
+                                    <field name="course_name"/>
+                                </group>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_primary_search" model="ir.ui.view">
+        <field name="name">odoocms.class.primary.search</field>
+        <field name="model">odoocms.class.primary</field>
+        <field name="arch" type="xml">
+            <search string="Primary Class">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="institute_id"/>
+                <field name="department_id"/>
+                <field name="session_id"/>
+                <field name="batch_id"/>
+                <field name="grade_staff_id"/>
+                <newline/>
+                <filter name='current_classes' string="Current" domain="[('state','in',('draft','current','lock'))]"/>
+                <filter name='result_classes' string="Result" domain="[('state','in',('submit','disposal','approval'))]"/>
+                <filter name='passed_classes' string="Passed" domain="[('state','=','done')]"/>
+                <newline/>
+                <filter name='is_parent_filter' string="Is Parent Class" domain="[('is_parent','=',True)]"/>
+                <filter name='merged_filter' string="Merged Classes" domain="[('parent_id','!=',False)]"/>
+                <group expand="0" string="Group By...">
+                    <filter name="institute" string="Institute/Faculty" domain="[]" context="{'group_by':'institute_id'}"/>
+                    <filter name="department" string="Department" domain="[]" context="{'group_by':'department_id'}"/>
+                    <filter name="program" string="Program" domain="[]" context="{'group_by':'program_id'}"/>
+                    <filter name="academic_session" string="Calendar Year" domain="[]" context="{'group_by':'session_id'}"/>
+                    <filter name="batch" string="Batch" domain="[]" context="{'group_by':'batch_id'}"/>
+                    <filter name="academic_term" string="Academic Term" domain="[]" context="{'group_by':'term_id'}"/>
+                    <filter name="section" string='Section' domain="[]" context="{'group_by':'section_id'}"/>
+                    <filter name="grade_staff" string='Grading Staff' domain="[]" context="{'group_by':'grade_staff_id'}"/>
+                </group>
+
+<!--                <searchpanel>-->
+<!--                    <field name="institute_id" icon="fa-users"/>-->
+<!--                    <field name="batch_id" icon="fa-users"/>-->
+<!--                </searchpanel>-->
+            </search>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_primary_search_report" model="ir.ui.view">
+        <field name="name">odoocms.class.primary.search.report</field>
+        <field name="model">odoocms.class.primary</field>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <search string="Primary Class">
+                <field name="code"/>
+                <field name="name"/>
+                <newline/>
+                <filter name='current_classes' string="Current" domain="[('state','in',('draft','current','lock'))]"/>
+                <newline/>
+                <group expand="0" string="Group By...">
+                    <filter name="academic_term" string="Academic Term" domain="[]"
+                            context="{'group_by':'term_id'}"/>
+                    <filter name="section" string='Section' domain="[]" context="{'group_by':'section_id'}"/>
+                    <filter name="grade_staff" string='Grading Staff' domain="[]"
+                            context="{'group_by':'grade_staff_id'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_tree" model="ir.ui.view">
+        <field name="name">odoocms.class.tree</field>
+        <field name="model">odoocms.class</field>
+        <field name="arch" type="xml">
+            <tree string="component Class" duplicate="false" create="false" delete="false"  multi_edit="1">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="section_id"/>
+                <field name="term_id" readonly="1"/>
+                <field name="faculty_staff_id" optional="show"/>
+                <field name="student_count"/>
+                <field name="state" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_form" model="ir.ui.view">
+        <field name="name">odoocms.class.form</field>
+        <field name="model">odoocms.class</field>
+        <field name="arch" type="xml">
+            <form string="Class" duplicate="false" delete="false" create="false">
+                <header>
+                    <button name="set_to_draft" type="object" states="current"
+                            class="oe_highlight" string="Set To Draft" groups="odoocms.group_cms_manager,odoocms_registration.group_registration_coordinator"/>
+                    <button name="set_to_current" type="object" states="draft"
+                            class="oe_highlight" string="Set To Current" groups="odoocms.group_cms_manager,odoocms_registration.group_registration_coordinator"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,current,lock"/>
+                </header>
+                <sheet string="Class">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="primary_class_id" readonly="1"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="course_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="term_id"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="faculty_staff_id"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group name="components">
+                            <field name="component"/>
+                            <field name="weightage"/>
+                            <field name="contact_hours"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page name="students" string="Students">
+                            <field name="registration_component_ids" nolabel="1">
+                                <tree name="students" string="Students" edit="false" delete="false" create="false">
+                                    <field name="student_id"/>
+                                    <field name="program_id"/>
+                                    <field name="session_id"/>
+                                    <field name="term_id"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page name="faculty_staff" string="Faculty Staff">
+                            <field name="faculty_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="faculty_domain" invisible="1"/>
+                                    <field name="faculty_staff_id"
+                                        options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    <!-- domain="[('id','in',faculty_domain)]" -->
+                                    <field name="role_id"/>
+                                    <field name="active"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="rooms" string="Rooms">
+                            <group>
+                                <group>
+                                    <field name="building_id"/>
+                                </group>
+                                <group>
+                                    <field name="floor_id"/>
+                                </group>
+                            </group>
+                            <group colspan="4">
+                                <field name="room_ids" nolabel="1"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}">
+                                    <tree string="Rooms"> <!--  create="false" delete="false" edit="false" -->
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="room_type"/>
+                                        <field name="building_id"/>
+                                        <field name="capacity"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page name="other" string="Other info">
+                            <group>
+                                <group>
+                                    <field name="allow_secondary_staff"/>
+                                </group>
+                                <group>
+                                    <field name="merge_id"
+                                       domain="[('term_id','=',term_id),('component','=',component),('course_id','=',course_id),('id','!=',id)]"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                        attrs="{'readonly':[('state','not in',('draft','current'))],
+                                            }"/>
+                                    <button name="action_marge_class" string="Merge Class" type="object" icon="fa-object-group"
+                                        attrs="{'invisible':['|',('state','not in',('draft','current')),('merge_id','=',False)]}"
+                                        groups="odoocms.group_cms_manager"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="description"/>
+                            </group>
+                        </page>
+                        <page name="course_website" string="Course Website">
+                           <group string="Course Requirements">
+                                <field name="course_requirements" readonly="1"/>  <!-- widget="html" options="{'style-inline': true, 'codeview': true }"  -->
+                            </group>
+                            <group string="Course Objectives">
+                                <field name="course_objectives" readonly="1"/> <!-- widget="html" options="{'style-inline': true}"   -->
+                            </group>
+                            <group string="Learning Outcome">
+                                <field name="learning_outcome" readonly="1"/> <!-- widget="html" options="{'style-inline': true}"   -->
+                            </group>
+                            <group>
+                                <field name="methodology" readonly="1"/> <!-- widget="html" class="oe-bordered-editor" options="{'style-inline': true}"  -->
+                            </group>
+
+                            <group string="Suggested Books">
+                                <field name="suggested_book_ids" nolabel="1">
+                                    <tree>
+                                        <field name="book_type" />
+                                        <field name="title" />
+                                        <field name="authors" />
+                                        <field name="edition" />
+                                        <field name="publisher" />
+                                        <field name="year" />
+                                        <field name="edition" />
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="book_type" />
+                                                <field name="title" />
+                                                <field name="authors" />
+                                            </group>
+                                            <group>
+                                                <field name="edition" />
+                                                <field name="publisher" />
+                                                <field name="year" />
+                                            </group>
+                                            <group string="Description">
+                                                <field name="description"  widget="html"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </group>
+
+                            <group string="Additional Info">
+                                <field name="additional_info_ids" nolabel="1">
+                                    <tree>
+                                        <field name="subject" />
+<!--                                        <field name="description" />-->
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="subject" />
+                                        </group>
+                                        <group string="Description">
+                                            <field name="description"  widget="html"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </group>
+
+                            <group string="Web Resources">
+                                <field name="web_resource_ids" nolabel="1">
+                                    <tree>
+                                        <field name="url" />
+<!--                                        <field name="description" />-->
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="url" />
+                                        </group>
+                                        <group string="Description">
+                                            <field name="description"  widget="html"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </group>
+
+                        </page>
+                        <page name="calendar_activities" string="Calendar Of Activities">
+                            <group>
+                                <field name="break_ids" nolabel="1">
+                                    <tree>
+                                        <field name="name" />
+<!--                                        <field name="name" widget="html"/>-->
+                                        <field name="assessment" />
+                                     </tree>
+
+                                     <form>
+                                         <group>
+                                             <group>
+                                                 <field name="name" />
+                                                 <field name="assessment" />
+                                             </group>
+                                             <group>
+                                                <field name="attachment_ids">
+                                                    <tree editable="bottom">
+                                                        <field name="name"/>
+                                                        <field name="attachment" filename="name" widget="many2many_binary"/>
+                                                    </tree>
+
+                                                </field>
+                                                 <!-- widget="many2many_binary -->
+                                             </group>
+                                            </group>
+                                             <field name="contents" widget="html"/>
+                                        </form>
+                                </field>
+                            </group>
+                           
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_search" model="ir.ui.view">
+        <field name="name">odoocms.class.search</field>
+        <field name="model">odoocms.class</field>
+        <field name="arch" type="xml">
+            <search string="Component Class">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="institute_id"/>
+                <field name="department_id"/>
+                <field name="session_id"/>
+                <field name="batch_id"/>
+                <field name="faculty_staff_id"/>
+                <newline/>
+                <filter name='current_classes' string="Current" domain="[('state','in',('draft','current','lock'))]"/>
+                <filter name='result_classes' string="Result" domain="[('state','in',('submit','disposal','approval'))]"/>
+                <filter name='passed_classes' string="Completed" domain="[('state','=','done')]"/>
+                <newline/>
+                <group expand="0" string="Group By...">
+                    <filter name="institute" string="Institute/Faculty" domain="[]" context="{'group_by':'institute_id'}"/>
+                    <filter name="department" string="Department" domain="[]" context="{'group_by':'department_id'}"/>
+                    <filter name="program" string="Program" domain="[]" context="{'group_by':'program_id'}"/>
+                    <filter name="academic_session" string="Calendar Year" domain="[]" context="{'group_by':'session_id'}"/>
+                    <filter name="batch" string="Batch" domain="[]" context="{'group_by':'batch_id'}"/>
+                    <filter name="academic_term" string="Academic Term" domain="[]" context="{'group_by':'term_id'}"/>
+                    <filter name="section" string='Section' domain="[]" context="{'group_by':'section_id'}"/>
+                    <filter name="faculty_staff" string='Faculty Staff' domain="[]" context="{'group_by':'faculty_staff_id'}"/>
+                </group>
+                <searchpanel>
+                    <field name="session_id" icon="fa-watch"/>
+                    <field name="institute_id" icon="fa-building"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_primary_couple_tree" model="ir.ui.view">
+        <field name="name">odoocms.class.primary.couple.tree</field>
+        <field name="model">odoocms.class.primary.couple</field>
+        <field name="arch" type="xml">
+            <tree string="Couple Class">
+                <field name="sequence" widget="handle"/>
+                <field name="term_id"
+                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                <field name="batch_id"
+                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                <field name="course_id"
+                       domain="[('id','in',course_domain)]"
+                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                <field name="couple_course_id"
+                       domain="[('id','in',course_domain)]"
+                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                <field name="course_domain" invisible="1"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_class_primary_couple_form" model="ir.ui.view">
+        <field name="name">odoocms.class.primary.couple.form</field>
+        <field name="model">odoocms.class.primary.couple</field>
+        <field name="arch" type="xml">
+            <form string="Couple Class">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="term_id"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="batch_id"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                        <group>
+                            <field name="course_id"
+                               domain="[('id','in',course_domain)]"
+                               options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="couple_course_id"
+                               domain="[('id','in',course_domain)]"
+                               options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="course_domain" invisible="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+     <record id="view_odoocms_lab_tree" model="ir.ui.view">
+        <field name="name">odoocms.lab.tree</field>
+        <field name="model">odoocms.lab</field>
+        <field name="arch" type="xml">
+            <tree string="Labs" delete="false">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="ip_ids"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_odoocms_lab_form" model="ir.ui.view">
+        <field name="name">odoocms.lab.form</field>
+        <field name="model">odoocms.lab</field>
+        <field name="arch" type="xml">
+            <form string="Labs" delete="false">
+                <sheet>
+                    <group name="one">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="IP Address">
+                            <field name="ip_ids">
+                                <tree editable="top">
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_odoocms_class_grade" model="ir.actions.act_window">
+        <field name="name">Grade Classes</field>
+        <field name="res_model">odoocms.class.grade</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_odoocms_class_grade_search"/>
+        <field name="domain">[]</field>   <!-- ('state','in',('draft','current','lock','submit','disposal','notify')) -->
+        <field name="context">{
+            'search_default_institute':1,
+            'search_default_department':1,
+            'search_default_program':1,
+            }
+        </field>
+    </record>
+
+    <record id="action_odoocms_class_primary" model="ir.actions.act_window">
+        <field name="name">Primary Classes</field>
+        <field name="res_model">odoocms.class.primary</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_odoocms_class_primary_search"/>
+        <field name="domain">[('state','in',('draft','current','lock','submit'))]</field>
+        <field name="context">{
+            'search_default_current_classes':1,
+            'search_default_institute':1,
+            'search_default_department':1,
+            'search_default_program':1,
+            }
+        </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Primary Class here.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_odoocms_class" model="ir.actions.act_window">
+        <field name="name">Component Classes</field>
+        <field name="res_model">odoocms.class</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_odoocms_class_search"/>
+        <field name="domain">[('state','in',('draft','current','lock','submit'))]</field>
+        <field name="context">{
+            'search_default_current_classes':1,
+            'search_default_institute':1,
+            'search_default_department':1,
+            'search_default_program':1,
+            }
+        </field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Component Class here.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_odoocms_class_primary_couple" model="ir.actions.act_window">
+        <field name="name">Couple Classes</field>
+        <field name="res_model">odoocms.class.primary.couple</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Couple Class here.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_odoocms_lab" model="ir.actions.act_window">
+        <field name="name">Labs</field>
+        <field name="res_model">odoocms.lab</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Lab here.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_odoocms_class_primary_report" model="ir.actions.act_window">
+        <field name="name">Section Report</field>
+        <field name="res_model">odoocms.class.primary</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_odoocms_class_primary_search_report"/>
+        <field name="domain">[('state','in',('draft','current'))]</field>
+<!--        <field name="context">{-->
+<!--            'search_default_current_classes':1,-->
+<!--            'search_default_academic_session':1,-->
+<!--            'search_default_batch':1,-->
+<!--            'search_default_section':1,-->
+<!--            }-->
+<!--        </field>-->
+    </record>
+
+        <record id="action_odoocms_class_primary_report1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_odoocms_class_primary_tree_report"/>
+            <field name="act_window_id" ref="action_odoocms_class_primary_report"/>
+        </record>
+
+    <menuitem
+            id="menu_odoocms_lab"
+            name="Labs"
+            parent="menu_registration_configuration"
+            action="action_odoocms_lab"
+            sequence="100"/>
+
+    <menuitem
+            id="menu_odoocms_class_primary_report"
+            name="Section Status Report"
+            parent="menu_odoocms_registration_classes"
+            action="action_odoocms_class_primary_report"
+            sequence="18"/>
+
+    <menuitem
+            id="menu_odoocms_class_primary"
+            name="Primary Classes"
+            parent="menu_odoocms_registration_classes"
+            action="action_odoocms_class_primary"
+            sequence="10"/>
+
+    <menuitem
+            id="menu_odoocms_class"
+            name="Component Classes"
+            parent="menu_odoocms_registration_classes"
+            action="action_odoocms_class"
+            sequence="20"/>
+
+    <menuitem
+            id="menu_odoocms_class_grade"
+            name="Grade Classes"
+            parent="menu_odoocms_registration_classes"
+            action="action_odoocms_class_grade"
+            sequence="25"/>
+
+    <menuitem
+            id="menu_odoocms_class_primary_couple"
+            name="Coupled Classes"
+            parent="menu_odoocms_registration_classes"
+            action="action_odoocms_class_primary_couple"
+            sequence="30"/>
+
+    <!--    <menuitem-->
+    <!--            id="menu_odoocms_class_primary_academic"-->
+    <!--            name="Class Sections"-->
+    <!--            parent="menu_odoocms_academic_main"-->
+    <!--            action="action_odoocms_class"-->
+    <!--            sequence="10"/>-->
+
+
+</odoo>

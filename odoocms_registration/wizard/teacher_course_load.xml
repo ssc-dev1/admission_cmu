@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+
+
+    <record id="teacher_course_load_wizard_form" model="ir.ui.view">
+        <field name="name">teacher.course.load.wizard.form</field>
+        <field name="model">teacher.course.load.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Teacher Course Load">
+                    <group>
+                        <group>
+                            <field name="institute_id" required="1"
+                                options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="term_id" required="1"
+                                options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="type"/>
+                            <field name="teacher_id" domain="[('institute','=',institute_id)]"
+                                options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                        <group>
+                            <field name="cross_faculty"/>
+                            <field name="include_other"/>
+                        </group>
+                    </group>
+                <footer>
+                    <button name="print_report" string="Print Report" type="object" class="btn-primary"/>
+                    <button name="view_list_report" string="List View All" type="object" class="btn-primary"/>
+<!--                    <button name="% ( odoocms_ registration. faculty_staff_load_action ) d" string="List View All" type="action" class="btn-primary"/>-->
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="teacher_course_load_action" model="ir.actions.act_window">
+        <field name="name">Teacher Course Load</field>
+        <field name="res_model">teacher.course.load.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+            id="course_load_menu_cms"
+            name="Teacher Course Load"
+            action="teacher_course_load_action"
+            parent="odoocms.menu_odoocms_faculty_root" />
+
+    
+</odoo>

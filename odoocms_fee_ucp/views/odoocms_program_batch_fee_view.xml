@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_odoocms_batch_fee_tree" model="ir.ui.view">
+        <field name="name">odoocms.batch.fee.tree.view</field>
+        <field name="model">odoocms.batch</field>
+        <field name="priority" eval="32"/>
+        <field name="arch" type="xml">
+            <tree string="Batch Wise Fee">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="department_id"/>
+                <field name="career_id"/>
+                <field name="program_id"/>
+                <field name="session_id"/>
+                <field name="per_fee_type"/>
+                <field name="per_credit_hour_fee"/>
+                <field name="admission_fee"/>
+                <field name="batch_tuition_structure_head" optional="hide"/>
+                <field name="admission_tuition_structure_head" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="fee_view_odoocms_batch_form_fee_ucp" model="ir.ui.view">
+            <field name="name">fee.odoocms.batch.form.view.fee.ucp</field>
+            <field name="model">odoocms.batch</field>
+            <field name="inherit_id" ref="odoocms_fee_ext.fee_view_odoocms_batch_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@name='batch_fee_setting']//group[@name='other_settings_grp4']" position="replace">
+                    <group name="fee_settings_main2" string="PGC Scholarship">
+                        <group name="other_settings_grp5">
+                            <field name="pgc_scholarship_applicable" string="PGC Applicable"/>
+                            <field name="pgc_scholarship_id" string="PGC Scholarship" attrs="{'required':[('pgc_scholarship_applicable','=',True)],'invisible':[('pgc_scholarship_applicable','!=',True)]}"
+                                   options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                        <group name="other_settings_grp6">
+                            <field name="pgc_scholarship_applicable_semesters" string="Applicable Semesters" attrs="{'required':[('pgc_scholarship_applicable','=',True)],'invisible':[('pgc_scholarship_applicable','!=',True)]}"/>
+                            <field name="pgc_scholarship_merge_semester" string="PGC Merge Semester" attrs="{'required':[('pgc_scholarship_applicable','=',True)],'invisible':[('pgc_scholarship_applicable','!=',True)]}"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    <record id="odoocms_batch_fee_action" model="ir.actions.act_window">
+        <field name="name">Batch Wise Fee</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.batch</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem
+            id="menu_odoocms_batch_fee"
+            name="Batch Wise Fee"
+            parent="odoocms_fee.menu_odoocms_fee_others_main"
+            action="odoocms_batch_fee_action"
+            groups="odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user,odoocms_fee.group_fee_user,odoocms_fee.group_fee_coordinator"
+            sequence="50"/>
+
+</odoo>

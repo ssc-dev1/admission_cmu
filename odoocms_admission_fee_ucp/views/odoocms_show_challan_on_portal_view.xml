@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ***** Show Challan On Portal  ***** -->
+        <record id="view_odoocms_show_challan_on_portal_form" model="ir.ui.view">
+            <field name="name">odoocms.show.chalan.on.portal.form.view</field>
+            <field name="model">odoocms.show.challan.on.portal</field>
+            <field name="arch" type="xml">
+                <form string="Show Challan On Portal">
+                    <header>
+                        <button name="action_confirm" type="object" class="oe_highlight" string="Confirm" states="draft"/>
+                        <button name="action_hide_from_portal" type="object" class="oe_highlight" string="Hide From Portal" states="confirm"/>
+                        <button name="action_cancel" type="object" class="oe_highlight" string="Cancel" states="draft"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="term_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="challan_cnt" readonly="1"/>
+                                <field name="challan_hide_cnt" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="type" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="faculty_type" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="program_selection_type" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="company_id" groups="base.group_multi_company" attrs="{'readonly':[('state','!=','draft')]}"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_create':True}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="remarks" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+
+                        <notebook>
+                            <page string="Faculties" name="faculty_ids" attrs="{'invisible':[('faculty_type','=','All')]}">
+                                <field name="faculty_ids" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </page>
+
+                            <page string="Programs" name="program_ids" attrs="{'invisible':[('program_selection_type','=','All')]}">
+                                <field name="program_ids" domain="[('institute_id','in',faculty_ids)]"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </page>
+
+                            <page string="Detail" name="line_detail">
+                                <field name="lines">
+                                    <tree editable="bottom" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="term_id"/>
+                                        <field name="show_line" invisible="1"/>
+                                        <field name="faculty_name" string="Faculty"/>
+                                        <field name="faculty_id" invisible="1"/>
+                                        <field name="program_id" invisible="1"/>
+                                        <field name="program_name" string="Program"/>
+                                        <field name="date" optional="show"/>
+                                        <field name="type" optional="show"/>
+                                        <field name="state" widget="badge" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_show_challan_on_portal_tree" model="ir.ui.view">
+            <field name="name">odoocms.show.challan.on.portal.tree.view</field>
+            <field name="model">odoocms.show.challan.on.portal</field>
+            <field name="arch" type="xml">
+                <tree string="Show Challan On Portal" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="term_id"/>
+                    <field name="date"/>
+                    <field name="type"/>
+                    <field name="challan_cnt" optional="hide"/>
+                    <field name="challan_hide_cnt" optional="hide"/>
+                    <field name="create_uid" string="Created By" optional="hide" widget="many2one_avatar_user"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_show_challan_on_portal_search" model="ir.ui.view">
+            <field name="name">odoocms.show.challan.on.portal.search</field>
+            <field name="model">odoocms.show.challan.on.portal</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Show Challan On Portal">
+                    <field name="name"/>
+                    <field name="term_id"/>
+                    <field name="type"/>
+                    <field name="date"/>
+                    <field name="state"/>
+
+                    <newline/>
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                    <filter name="confirm" string="Confirm" domain="[('state', '=','confirm')]"/>
+                    <filter name="cancel" string="Cancel" domain="[('state', '=','Cancel')]"/>
+                    <separator/>
+                    <filter name="date" string="Date" date="date"/>
+
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Term" name="group_by_term_id" domain="[]" context="{'group_by':'term_id'}"/>
+                        <separator/>
+                        <filter string="Date" name="group_by_date" domain="[]" context="{'group_by':'date'}"/>
+                        <separator/>
+                        <filter string="Type" name="group_by_type" domain="[]" context="{'group_by':'type'}"/>
+                        <separator/>
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                        <separator/>
+                        <filter string="Company" name="group_by_company" domain="[]" context="{'group_by':'company_id'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_show_challan_on_portal" model="ir.actions.act_window">
+            <field name="name">Show Challan On Portal</field>
+            <field name="res_model">odoocms.show.challan.on.portal</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_show_challan_on_portal_main"
+                name="Show Challan On Portal"
+                sequence="400"
+                parent="odoocms_fee_ext.menu_student_fee_scholarship_main"
+                groups="odoocms_fee.group_fee_manager"
+        />
+
+        <menuitem
+                id="menu_odoocms_show_challan_on_portal"
+                name="Show Challan On Portal"
+                sequence="10"
+                parent="menu_odoocms_show_challan_on_portal_main"
+                action="action_odoocms_show_challan_on_portal"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+        />
+
+        <!-- ***** Show Challan On Portal Detail ***** -->
+        <record id="view_odoocms_show_challan_on_portal_line_form" model="ir.ui.view">
+            <field name="name">odoocms.show.chalan.on.portal.line.form.view</field>
+            <field name="model">odoocms.show.challan.on.portal.line</field>
+            <field name="arch" type="xml">
+                <form string="Show Challan On Portal Detail">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="term_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="type" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="faculty_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="program_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="company_id" groups="base.group_multi_company"  attrs="{'readonly':[('state','!=','draft')]}" 
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_create':True}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_show_challan_on_portal_line_tree" model="ir.ui.view">
+            <field name="name">odoocms.show.challan.on.portal.line.tree.view</field>
+            <field name="model">odoocms.show.challan.on.portal.line</field>
+            <field name="arch" type="xml">
+                <tree string="Show Challan On Portal Detail" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="term_id"/>
+                    <field name="date"/>
+                    <field name="type"/>
+                    <field name="faculty_name"/>
+                    <field name="program_name"/>
+                    <field name="create_uid" string="Created By" optional="hide" widget="many2one_avatar_user"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_show_challan_on_portal_line_search" model="ir.ui.view">
+            <field name="name">odoocms.show.challan.on.portal.line.search</field>
+            <field name="model">odoocms.show.challan.on.portal.line</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Show Challan On Portal Detail">
+                    <field name="name"/>
+                    <field name="term_id"/>
+                    <field name="type"/>
+                    <field name="date"/>
+                    <field name="state"/>
+
+                    <newline/>
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                    <filter name="confirm" string="Confirm" domain="[('state', '=','confirm')]"/>
+                    <filter name="cancel" string="Cancel" domain="[('state', '=','Cancel')]"/>
+                    <separator/>
+                    <filter name="date" string="Date" date="date"/>
+
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Term" name="group_by_term_id" domain="[]" context="{'group_by':'term_id'}"/>
+                        <separator/>
+                        <filter string="Date" name="group_by_date" domain="[]" context="{'group_by':'date'}"/>
+                        <separator/>
+                        <filter string="Type" name="group_by_type" domain="[]" context="{'group_by':'type'}"/>
+                        <separator/>
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                        <separator/>
+                        <filter string="Company" name="group_by_company" domain="[]" context="{'group_by':'company_id'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_show_challan_on_portal_line" model="ir.actions.act_window">
+            <field name="name">Show Challan On Portal Line</field>
+            <field name="res_model">odoocms.show.challan.on.portal.line</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_show_challan_on_portal_line"
+                name="Show Challan On Portal Detail"
+                sequence="20"
+                parent="menu_odoocms_show_challan_on_portal_main"
+                action="action_odoocms_show_challan_on_portal_line"
+                groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+        />
+
+    </data>
+</odoo>

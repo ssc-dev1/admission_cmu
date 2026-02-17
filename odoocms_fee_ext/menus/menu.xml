@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.menu" id="odoocms_fee.menu_fee_configuration_waivers">
+        <field name="name">Fee Scholarship</field>
+    </record>
+
+    <record model="ir.ui.menu" id="odoocms_fee.menu_odoocms_fee_donors">
+        <field name="name">Scholarship Donors</field>
+    </record>
+
+    <record model="ir.ui.menu" id="odoocms_fee.menu_odoocms_fee_waiver_type">
+        <field name="name">Scholarship Types</field>
+    </record>
+
+    <record model="ir.ui.menu" id="odoocms_fee.menu_odoocms_fee_waiver">
+        <field name="name">Scholarship Definitions</field>
+    </record>
+
+    <menuitem
+            id="menu_student_fee_scholarship_main"
+            name="Scholarship"
+            parent="odoocms_fee.menu_odoocms_fee_root"
+            groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+            sequence="65"/>
+
+
+
+    <menuitem
+            id="menu_fee_ad_hoc_charges_main"
+            parent="odoocms_fee.menu_odoocms_student_fee_main"
+            name="Ad hoc Charges"
+            groups="odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager,odoocms_fee.group_fee_readonly_user"
+            sequence="100"/>
+
+
+
+</odoo>

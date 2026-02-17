@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_odoocms_graduate_application_steps_tree" model="ir.ui.view">
+        <field name="name">odoocms.application.steps.tree</field>
+        <field name="model">odoocms.application.steps</field>
+        <field name="arch" type="xml">
+            <tree string="Application Steps" editable="bottom">
+                <field name="main_step_id"/>
+                <field name="sequence"/>
+                <field name="icon"/>
+                <field name="step_details"/>
+                <field name="name"/>
+                <field name="template"
+                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                <field name="test_field"
+                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                <field name="career_ids" widget="many2many_tags"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_odoocms_graduate_application_steps" model="ir.actions.act_window">
+        <field name="name">Application Steps</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.application.steps</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+
+    <menuitem
+            id="menu_odoocms_graduate_application_steps"
+            name="Application Steps"
+            parent='odoocms_admission.menu_admission_configuration'
+            action="action_odoocms_graduate_application_steps"
+            sequence="200"/>
+            <!-- groups="odoocms.group_cms_manager,odoocms_admission.group_admission_manager" -->
+            <!-- parent="odoocms_admission.menu_admission_configuration" -->
+
+
+</odoo>

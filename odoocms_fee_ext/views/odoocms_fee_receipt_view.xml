@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="inherited_odoocms_receipt_tree_view" model="ir.ui.view">
+            <field name="name">inherited.odoocms.receipt.tree.view</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="odoocms_fee.odoocms_receipt_tree"/>
+            <field name="arch" type="xml">
+                <field name="currency_id" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </field>
+<!--                <field name="tag" position="attributes">-->
+<!--                    <attribute name="optional">hide</attribute>-->
+<!--                </field>-->
+                <field name="semester_id" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </field>
+                <field name="session_id" position="after">
+                    <field name="challan_type" optional="1"/>
+                    <button name="button_cancel" type="object" string="Cancel" class="btn btn-link"
+                            attrs="{'invisible':[('payment_state','in',('paid','in_payment'))]}"/>
+                    <button name="unlink" type="object" string="Delete" class="btn btn-link"
+                            attrs="{'invisible':[('payment_state','in',('paid','in_payment'))]}"/>
+
+                    <button name="action_merge_in_second_installment" type="object" string="Adjust In 2nd"
+                            class="btn btn-link" attrs="{'invisible':[('challan_type','!=','add_drop')]}"/>
+
+                </field>
+                <field name="receipt_type_ids" position="after">
+                    <field name="challan_type"/>
+                    <field name="installment_no" optional="hide"/>
+                    <field name="add_drop_no" optional="show"/>
+                </field>
+
+                <field name="amount_total_signed" position="before">
+                    <field name="semester_gross_fee" string="Gross" optional="show"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="inherited_odoocms_receipt_filter_view" model="ir.ui.view">
+            <field name="name">inherited.odoocms.receipt.filter.view</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="odoocms_fee.view_fee_receipts_filter"/>
+            <field name="arch" type="xml">
+<!--                <field name="barcode" position="after">-->
+<!--                </field>-->
+                <filter name="group_by_donor" position="after">
+                    <separator/>
+                    <filter name="challan_type" string="Challan Type" context="{'group_by':'challan_type'}"/>
+                    <separator/>
+                </filter>
+
+            </field>
+        </record>
+
+
+        <record id="odoocms_receipt_tree_view2" model="ir.ui.view">
+            <field name="name">odoocms.receipt.tree.view2</field>
+            <field name="priority" eval="100"/>
+            <field name="model">account.move</field>
+            <field name="arch" type="xml">
+                <tree create="false" delete="false">
+<!--                    <field name="barcode"/>-->
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="term_id"/>
+                    <field name="semester_id"/>
+                    <field name="invoice_date" string="Invoice Date"/>
+                    <field name="invoice_date_due"/>
+                    <field name="payment_date"/>
+                    <field name="receipt_type_ids" widget="many2many_tags"/>
+<!--                    <field name="tag"/>-->
+                    <field name="amount_total_signed" string="Total" sum="Total"/>
+                    <field name="payment_state" string="Invoice Status"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_odoocms_receipt_view_test100" model="ir.actions.act_window.view">
+            <field name="sequence" eval="100"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="odoocms_fee_ext.odoocms_receipt_tree_view2"/>
+        </record>
+
+    </data>
+</odoo>

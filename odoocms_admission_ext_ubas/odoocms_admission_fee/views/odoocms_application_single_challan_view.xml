@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--***** Tree *****-->
+        <record id="view_odoocms_application_single_challan_tree" model="ir.ui.view">
+            <field name="name">odoocms.application.single.challan.tree</field>
+            <field name="model">odoocms.application</field>
+            <field name="arch" type="xml">
+                <tree string="Candidate Applications" create="false"
+                      decoration-success="state in ('approve','open','done')" decoration-danger="state=='reject'"
+                      decoration-primary="state in ('draft','confirm')" decoration-info="state=='submit'"
+                      decoration-warning="state=='verify'" decoration-it="state=='verification'">
+
+                    <!--<field name="register_id"/>-->
+                    <field name="application_no"/>
+                    <field name="name"/>
+                    <field name="gender"/>
+                    <field name="father_name" optional="show"/>
+                    <field name="mobile"/>
+                    <field name="cnic"/>
+                    <field name="prefered_program" optional="show"/>
+                    <field name="nationality" optional="hide"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--***** Form *****-->
+        <record id="view_odoocms_application_single_challan_form" model="ir.ui.view">
+            <field name="name">odoocms.application.single.challan.form</field>
+            <field name="model">odoocms.application</field>
+            <field name="arch" type="xml">
+                <form string="Candidate Application" create="false">
+                    <header>
+                        <button type="object" name="check_applicant_doc" attrs="{'invisible':[('admission_inv_id','!=',False)]}" string="Generate Challan" class="oe_highlight"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="action_view_documents" type="object" icon="fa-list-ol">
+                                <field string="Documents" name="doc_count" widget="statinfo"/>
+                            </button>
+                        </div>
+
+                        <field name="image" widget='image' class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h3>
+                                <field name="application_no"/>
+                            </h3>
+                            <label for="name" class="oe_edit_only" string="Candidate Name"/>
+                            <h2>
+                                <table>
+                                    <tr>
+                                        <td style="padding-right:10px;">
+                                            <field style="width:inherit;" name="name" placeholder="Name"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </h2>
+                        </div>
+                        <separator/>
+
+                        <group>
+                            <group string="Admission/Fee Details">
+                                <field name="register_id" readonly="1"/>
+                                <field name="academic_session_id" readonly="1"/>
+                                <field name="applicant_type" readonly="1"/>
+                                <field name="application_date" readonly="1"/>
+                                <field name="prefered_program"/>
+                                <field name="voucher_number" string="Voucher No." readonly="1"/>
+                                <field name="voucher_verified_date" string="Voucher Verified Date"/>
+                                <field name="fee_voucher_state" string="Voucher State" readonly="1"/>
+                                <field name="scholarship_id"/>
+                            </group>
+
+                            <group string="Candidate Details">
+                                <field name="father_name" readonly="1"/>
+                                <field name="date_of_birth" readonly="1"/>
+                                <field name="gender" readonly="1"/>
+                                <field name="cnic" readonly="1"/>
+                                <field name="passport" readonly="1"/>
+                                <field name="nationality" readonly="1"/>
+                                <field name="province_id" readonly="1"/>
+                                <field name="domicile_id" readonly="1"/>
+                                <field name="admission_inv_id" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <!--***** Form Tabs *****-->
+                        <notebook>
+                            <!--***** first Semester Courses Detail *****-->
+                            <page string="Courses" name="first_semester_courses_page">
+                                <field name="first_semester_courses">
+                                    <tree editable="bottom">
+                                        <field name="course_id_domain" invisible="1"/>
+                                        <field name="course_id" domain="course_id_domain" required="1"
+                                               options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                        <field name="semester_no"/>
+                                        <field name="credit_hours" required="1"/>
+                                        <field name="per_credit_hour_fee" required="1"/>
+                                        <field name="course_fee"/>
+                                        <field name="study_scheme_id" optional="hide" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                        <field name="study_scheme_line_id" optional="hide" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    </tree>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="course_id"
+                                                           options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                                    <field name="credit_hours"/>
+                                                    <field name="per_credit_hour_fee"/>
+                                                    <field name="course_fee"/>
+                                                </group>
+                                                <group>
+                                                    <field name="semester_no"/>
+                                                    <field name="study_scheme_id"
+                                                           options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                                    <field name="study_scheme_line_id"
+                                                           options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                                    <field name="application_id"
+                                                           options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+
+                            <!--***** Scholarship Tab *****-->
+                            <page name="scholarship_ids" string="Scholarship">
+                                <field name="scholarship_ids_domain" invisible="1"/>
+                                <field name="scholarship_ids" domain="scholarship_ids_domain"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="waiver_type" string="Scholarship Type"/>
+                                        <field name="amount" string="Percentage"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                            <!--***** Academic Detail Tab *****-->
+                            <page name="academic_info_page" string="Academic Details">
+                                <field name="applicant_academic_ids">
+                                    <tree decoration-success="doc_state == 'yes'" string="Academic Details">
+                                        <field name="roll_no"/>
+                                        <field name="sec_year_roll_no"/>
+                                        <field name="degree_name"/>
+                                        <field name="degree_level_id"/>
+                                        <field name="board"/>
+                                        <field name="institute"/>
+                                        <field name="group_specialization"/>
+                                        <field name="total_marks"/>
+                                        <field name="obt_marks"/>
+                                        <field name="obtained_cgpa"/>
+                                        <field name="percentage"/>
+                                        <field name="year"/>
+                                        <field name="attachment"/>
+                                        <field name="doc_state"/>
+                                        <field name="result_status"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                            <!--***** Challan Detail Tab *****-->
+                            <page name="admission_challan_ids" string="Challans">
+                                <field name="admission_challan_ids" readonly="1">
+                                    <tree create="false" delete="false" decoration-primary="payment_state == 'not_paid'"
+                                          decoration-info="payment_state == 'not_paid'"
+                                          decoration-muted="payment_state == 'open'"
+                                          decoration-success="payment_state in ('in_payment','paid')"
+                                          decoration-danger="payment_state == 'cancel' and not cancel_due_to_arrears"
+                                          decoration-warning="payment_state == 'cancel' and cancel_due_to_arrears == True"
+                                          string="Admission Challans">
+
+                                        <field name="barcode"/>
+                                        <field name="name"/>
+                                        <field name="partner_id" groups="base.group_user" invisible="1"/>
+                                        <field name="application_id"/>
+                                        <field name="term_id"/>
+                                        <field name="semester_id"/>
+                                        <field name="invoice_date" string="Invoice Date"/>
+                                        <field name="invoice_date_due"/>
+                                        <field name="payment_date"/>
+                                        <field name="journal_id" optional="1"/>
+                                        <field name="receipt_type_ids" widget="many2many_tags" optional="hide"/>
+                                        <field name="tag"/>
+                                        <field name="amount_total_signed" string="Total" sum="Total"/>
+                                        <field name="amount_residual" optional="1" string="Amount Due" sum="Amount Due"/>
+                                        <field name="waiver_amount" optional="1" string="Waiver Amount" sum="Waiver Amount"/>
+                                        <field name="amount_residual_signed" invisible="1" string="Amount Due Signed" sum="Amount Due Signed"/>
+
+                                        <field name="payment_state" string="Invoice Status"/>
+                                        <field name="state" optional="hide"/>
+
+                                        <field name="is_fee" invisible="1"/>
+                                        <field name="commercial_partner_id" invisible="1"/>
+                                        <field name="reference" invisible="1"/>
+                                        <field name="name" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="user_id" string="Responsible" invisible="1"/>
+                                        <field name="invoice_origin" invisible="1"/>
+                                        <field name="currency_id" invisible="0"/>
+                                        <field name="company_currency_id" invisible="1"/>
+                                        <field name="cancel_due_to_arrears" invisible="1"/>
+<!--                                        <field name="batch_id" optional="1"/>-->
+<!--                                        <field name="career_id" optional="1"/>-->
+<!--                                        <field name="institute_id" optional="1"/>-->
+<!--                                        <field name="discipline_id" optional="1"/>-->
+<!--                                        <field name="campus_id" optional="1"/>-->
+<!--                                        <field name="study_scheme_id" optional="1"/>-->
+<!--                                        <field name="session_id" optional="1"/>-->
+
+                                        <button name="%(odoocms_fee_ext.action_report_admission_fee_challan)d" string="Print" class="btn btn-link" type="action" attrs="{'invisible':[('payment_state','in',('cancel'))]}"/>
+                                        <button name="button_cancel" type="object" string="Cancel" class="btn btn-link" attrs="{'invisible':[('payment_state','in',('paid','in_payment','cancel'))]}"/>
+                                        <button name="unlink" type="object" string="Delete" class="btn btn-link" attrs="{'invisible':[('payment_state','in',('paid','in_payment','cancel'))]}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+
+            </field>
+        </record>
+
+        <!--*****  Search *****-->
+        <record id="view_odoocms_application_single_challan_search" model="ir.ui.view">
+            <field name="name">Application Single Challan</field>
+            <field name="model">odoocms.application</field>
+            <field name="arch" type="xml">
+                <search string="Search Application">
+                    <field name="application_no"/>
+                    <field name="name"/>
+                    <field name="cnic"/>
+                    <field name="email"/>
+                    <field name="gender"/>
+                    <field name="father_name"/>
+                    <field name="nationality"/>
+                    <field name="province_id"/>
+                    <field name="domicile_id"/>
+                    <field name="application_date"/>
+                    <field name="register_id"/>
+                    <field name="voucher_number"/>
+                    <field name="fee_voucher_state"/>
+
+                    <filter string="New Application" name="new_application" domain="[('register_id.state','=','application')]"/>
+                    <filter string="Done" name="done" domain="[('state','=','done')]"/>
+                    <filter string="In Merit" name="merit" domain="[('state','in',('approve','open'))]"/>
+                    <filter string="Rejected" name="rejected" domain="[('state','=','reject')]"/>
+                    <separator/>
+                    <filter string="National Applicants" name="national_applicants" domain="[('applicant_type','=','national')]"/>
+                    <filter string="International Applicants" name="international_applicants" domain="[('applicant_type','=','international')]"/>
+                    <separator/>
+                    <filter name="filter_by_application_date" string="Application Date" date="application_date"/>
+                    <separator/>
+
+                    <group expand='0' string='Group by...'>
+                        <separator/>
+                        <filter name="academic_session_id" string='Academic Session' icon="fa-user" domain="[]" context="{'group_by' : 'academic_session_id'}"/>
+                        <separator/>
+                        <filter name="group_by_register_id" string='Admission Register' icon="fa-user" domain="[]" context="{'group_by' : 'register_id'}"/>
+                        <separator/>
+                        <filter name="gender" string='Gender' icon="fa-genderless" domain="[]" context="{'group_by' : 'gender'}"/>
+                        <separator/>
+                        <filter name="religion_id" string='Religion' icon="fa-pencil-square-o" domain="[]" context="{'group_by' : 'religion_id'}"/>
+                        <separator/>
+                        <filter name="state" string='Status' icon="fa-pencil-square-o" domain="[]" context="{'group_by' : 'state'}"/>
+                        <separator/>
+                        <filter name="degree" string='Last Degree' icon="fa-pencil-square-o" domain="[]" context="{'group_by' : 'degree'}"/>
+                        <separator/>
+                        <filter name="Nationality" string='Nationality' icon="fa-pencil-square-o" domain="[]" context="{'group_by' : 'nationality'}"/>
+                        <separator/>
+                        <filter name="group_by_province" string='Province' icon="fa-pencil-square-o" domain="[]" context="{'group_by' : 'province_id'}"/>
+                        <separator/>
+                        <filter name="group_by_domicile_id" string='Domicile' icon="fa-pencil-square-o" domain="[]" context="{'group_by' : 'domicile_id'}"/>
+                        <separator/>
+                        <filter name="group_by_application_date" string='Application Date' icon="fa-pencil-square-o" domain="[]" context="{'group_by' : 'application_date'}"/>
+                        <separator/>
+                        <filter name="group_by_fee_voucher_state" string='Fee Voucher Status' icon="fa-pencil-square-o" domain="[]" context="{'group_by' : 'fee_voucher_state'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--***** Action *****-->
+        <record id="action_odoocms_application_single_challan" model="ir.actions.act_window">
+            <field name="name">Candidate Single Challan</field>
+            <field name="res_model">odoocms.application</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                           (0, 0, {'view_mode': 'tree', 'view_id': ref('view_odoocms_application_single_challan_tree')}),
+                                           (0, 0, {'view_mode': 'form', 'view_id': ref('view_odoocms_application_single_challan_form')})]"/>
+            <field name="search_view_id" ref="view_odoocms_application_single_challan_search"/>
+            <field name="context">{}</field>
+<!--            <field name="domain">[('offer_allocated','=',True)]</field>-->
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create the First Challan Here.
+                </p>
+            </field>
+        </record>
+
+        <!--***** Menu *****-->
+        <menuitem
+                id="menu_odoocms_application_single"
+                name="Candidate Single Challan"
+                parent="menu_odoocms_admission_finance_main"
+                action="action_odoocms_application_single_challan"
+                sequence="10"/>
+
+    </data>
+</odoo>

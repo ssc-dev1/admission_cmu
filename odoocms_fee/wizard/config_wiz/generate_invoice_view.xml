@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_generate_invoice_form" model="ir.ui.view">
+            <field name="name">odoocms.generate.invoice.form</field>
+            <field name="model">odoocms.generate.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Generate Invoice">
+                    <group>
+                        <field name="company_id" invisible="1"/>
+                        <field name="semester_required" invisible="1"/>
+                        <field name="override_amount" invisible="1"/>
+                        <field name="fixed_type" invisible="1"/>
+                        <field name="registration_id" invisible="1"/>
+                        <field name="receipt_type_ids" widget="many2many_tags" required="1"
+                               attrs="{'readonly': [('fixed_type','=',True)]}"
+                               options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        <group>
+                            <field name="term_id"
+                                   options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                   attrs="{
+									'invisible':[('semester_required','=', False)], 'required': [('semester_required','=',True)]
+								}"/>
+                            <field name="tag" readonly="1"/>
+                            <field name="charge_annual_fee" widget="boolean_toggle"/>
+                            <field name="apply_taxes" widget="boolean_toggle"/>
+                            <field name="hostel_challan_months"/>
+                            <!--                            <field name="check_student_tags" widget="many2many_tags" options="{'no_create':True}"/>-->
+                        </group>
+                        <group>
+                            <label for="payment_term_id" string="Due Date"/>
+                            <div class="d-flex">
+                                <field name="date_due" force_save="1" placeholder="Date" attrs="{'invisible': [('payment_term_id', '!=', False)]}"/>
+                                <span class="o_form_label mx-3 oe_edit_only" attrs="{'invisible': [('payment_term_id', '!=', False)]}"> or </span>
+                                <field name="payment_term_id" placeholder="Terms"/>
+                            </div>
+
+                            <field name="reference"/>
+                            <field name="description_id"/>
+                            <field name="rechecking_id" invisible="1"/>
+                            <field name="description_sub"/>
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Students" attrs="{'invisible': [('student_ids','=',[])]}">
+                            <group>
+                                <field name="student_ids" colspan="4" nolabel="1">
+                                    <tree string="Students">
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="gender"/>
+                                        <field name="email" invisible="1"/>
+                                        <field name="mobile" invisible="1"/>
+                                        <field name="program_id"/>
+                                        <field name="session_id"/>
+                                        <field name="term_id" string="Current Term"/>
+                                        <field name="semester_id"/>
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page name="invoice_comment" string="Description of Invoice">
+                            <field name="comment"/>
+                        </page>
+                        <!--                        SARFRAZ 10-11-2020-->
+                        <!--                        <page string="Registrations" attrs="{'invisible': [('reg_ids','=',[])]}">-->
+                        <!--                            <group>-->
+                        <!--                                <field name="reg_ids" colspan="4" nolabel="1">-->
+                        <!--                                    <tree string="Registrations">-->
+                        <!--                                        <field name="name"/>-->
+                        <!--                                        <field name="student_id"/>-->
+                        <!--                                        <field name="program_id"/>-->
+                        <!--                                        <field name="term_id"/>-->
+                        <!--                                        <field name="state" invisible="1"/>-->
+                        <!--                                    </tree>-->
+                        <!--                                </field>-->
+                        <!--                            </group>-->
+                        <!--                        </page>-->
+                        <page string="Term Defer" attrs="{'invisible': [('defer_ids','=',[])]}">
+                            <group>
+                                <field name="defer_ids" colspan="4" nolabel="1">
+                                    <tree string="Term Defer">
+                                        <field name="student_id"/>
+                                        <field name="program_id"/>
+                                        <field name="batch_id"/>
+                                        <field name="term_id"/>
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Term Un-Defer" attrs="{'invisible': [('resume_ids','=',[])]}">
+                            <group>
+                                <field name="resume_ids" colspan="4" nolabel="1">
+                                    <tree string="Term Resume">
+                                        <field name="student_id"/>
+                                        <field name="program_id"/>
+                                        <field name="batch_id"/>
+                                        <field name="term_id"/>
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Override Amount" attrs="{
+									'invisible':[('override_amount','=',False)]}">
+                            <field name="override_line" colspan="4" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="fee_head_id"/>
+                                    <field name="payment_type"/>
+                                    <field name="fee_description"/>
+                                    <field name="fee_amount"/>
+                                    <field name="note"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                    <footer>
+                        <button name="generate_invoice_action" string="Generate Semester Invoice" type="object" invisible="0" class="btn-primary"/>
+                        <button name="generate_hostel_invoice" string="⛪ Generate Hostel Invoice" type="object" class="btn-primary"/>
+                        <button name="generate_ad_hoc_charges_invoice_wiz" string="Generate Ad Hoc Charges Invoice" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_generate_invoice_form_hostel" model="ir.ui.view">
+            <field name="name">odoocms.generate.invoice.form</field>
+            <field name="model">odoocms.generate.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Generate Hostel Invoice">
+                    <group>
+                        <field name="semester_required" invisible="1"/>
+                        <field name="override_amount" invisible="1"/>
+                        <field name="fixed_type" invisible="1"/>
+                        <field name="registration_id" invisible="1"/>
+                        <field name="receipt_type_ids" widget="many2many_tags" required="1" domain="[('code','=','HF')]"
+                               attrs="{'readonly': [('fixed_type','=',True)]}"
+                               options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        <group>
+                            <field name="term_id"
+                                   options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                   attrs="{
+									'invisible':[('semester_required','=', False)], 'required': [('semester_required','=',True)]
+								}"/>
+                            <field name="date_due" required="1"/>
+                            <field name="charge_annual_fee" widget="boolean_toggle"/>
+                            <field name="apply_taxes" widget="boolean_toggle"/>
+                            <!--                            <field name="check_student_tags" widget="many2many_tags" options="{'no_create':True}"/>-->
+                        </group>
+                        <group>
+                            <field name="tag" readonly="1"/>
+                            <field name="reference"/>
+                            <field name="description_id"/>
+                            <field name="rechecking_id" invisible="1"/>
+                            <field name="description_sub"/>
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Students" attrs="{'invisible': [('student_ids','=',[])]}">
+                            <group>
+                                <field name="student_ids" colspan="4" nolabel="1">
+                                    <tree string="Students">
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="gender"/>
+                                        <field name="email" invisible="1"/>
+                                        <field name="mobile" invisible="1"/>
+                                        <field name="program_id"/>
+                                        <field name="session_id"/>
+                                        <field name="term_id" string="Current Term"/>
+                                        <field name="semester_id"/>
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page name="invoice_comment" string="Description of Invoice">
+                            <field name="comment"/>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="generate_hostel_invoice" string="⛪ Generate Hostel Invoice" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="menu_odoocms_generate_invoice" model="ir.actions.act_window">
+            <field name="name">Generate Invoice</field>
+            <field name="res_model">odoocms.generate.invoice</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_odoocms_generate_invoice_form"/>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="odoocms.model_odoocms_student"/>
+            <field name="binding_view_types">form,list</field>
+            <!--            <field name="groups_id" eval="[(4,ref('odooschool.group_cms_manager'))]"/>-->
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,158 @@
+class OdoocmsEmployeeRolesSetup(models.Model):
+    _name = 'cbt.emloyee.roles.setup'
+    _description = 'Employee Roles Setup'
+
+    name = fields.Selection([
+        ('cbt', 'Computer Based Test'),
+        ('pbt', 'Paper Based Test'),
+    ], string='Application')
+    role_ids = fields.One2many('cbt.emloyee.roles.lines', 'role_id', string='Role Name')
+
+
+class OdoocmsEmployeeRolesTypeSetup(models.Model):
+    _name = 'cbt.emloyee.roles.lines'
+    _description = 'Employee Roles Types Setup'
+
+    name = fields.Char('Role Name')
+    active = fields.Boolean('Permission', default=True)
+    role_id = fields.Many2one('cbt.emloyee.roles.setup', string='Role Name')
+
+
+access_cbt_emloyee_roles_faculty,access_cbt_emloyee_roles_setup,model_cbt_emloyee_roles_setup,cbt.group_cbt_faculty,1,0,0,0
+access_cbt_emloyee_roles_user,access_cbt_emloyee_roles_setup,model_cbt_emloyee_roles_setup,cbt.group_cbt_user,1,0,0,0
+access_cbt_emloyee_roles_admin,access_cbt_emloyee_roles_setup,model_cbt_emloyee_roles_setup,cbt.group_cbt_admin,1,1,1,1
+
+access_cbt_emloyee_roles_lines_faculty,access_cbt_emloyee_roles_lines,model_cbt_emloyee_roles_lines,cbt.group_cbt_faculty,1,0,0,0
+access_cbt_emloyee_roles_lines_user,access_cbt_emloyee_roles_lines,model_cbt_emloyee_roles_lines,cbt.group_cbt_user,1,0,0,0
+access_cbt_emloyee_roles_lines_admin,access_cbt_emloyee_roles_lines,model_cbt_emloyee_roles_lines,cbt.group_cbt_admin,1,1,1,1
+
+
+<!--Roles-->
+<record model="ir.ui.view" id="cbt_emloyee_roles_setup_tree">
+    <field name="name">cbt.emloyee.roles.setup</field>
+    <field name="model">cbt.emloyee.roles.setup</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <!--  <field name="designation"/>-->
+            <!--<field name="cnic"/>
+            <field name="gender"/>
+            <field name="office_address"/>
+            <field name="office_phone"/>
+            <field name="mobile"/>
+             <field name="email"/>-->
+
+        </tree>
+    </field>
+</record>
+
+<record model="ir.ui.view" id="cbt_emloyee_roles_setup_form">
+    <field name="name">cbt.emloyee.roles.setup</field>
+    <field name="model">cbt.emloyee.roles.setup</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <!-- <field name="designation"/>-->
+                        <!-- <field name="cnic"/>
+                          <field name="gender"/>
+                          <field name="active"/>-->
+                    </group>
+                </group>
+                <notebook>
+                    <page name="User Types" string="User Types">
+                        <field name="role_ids">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="active"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                </notebook>
+            </sheet>
+
+        </form>
+    </field>
+</record>
+
+<record model="ir.actions.act_window" id="cbt_emloyee_roles_setupaction_window">
+    <field name="name">Roles Setup</field>
+    <field name="res_model">cbt.emloyee.roles.setup</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<menuitem name="Roles" id="cbt_employee_roles" parent="cbt_employee_root"
+                  action="cbt_emloyee_roles_setupaction_window"/>
+
+
+
+
+
+class CBTEmployee(models.Model):
+    _name = 'cbt.employee'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherits = {'res.partner': 'partner_id'}
+    _description = 'Employees'
+
+    partner_id = fields.Many2one('res.partner', string="Partner",ondelete='cascade')
+    office_address = fields.Text('Office Address')
+    home_address = fields.Text('Home Address')
+    home_phone = fields.Text('Home Phone')
+
+access_cbt_employee_faculty,access_cbt_emloyee,model_cbt_employee,cbt.group_cbt_faculty,1,0,0,0
+access_cbt_employee_user,access_cbt_emloyee,model_cbt_employee,cbt.group_cbt_user,1,0,0,0
+access_cbt_employee_admin,access_cbt_emloyee,model_cbt_employee,cbt.group_cbt_admin,1,1,1,1
+
+<record id="cbt_employee_tree" model="ir.ui.view">
+    <field name="name">cbt.employee.tree</field>
+    <field name="model">cbt.employee</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="office_address"/>
+            <field name="home_phone"/>
+        </tree>
+    </field>
+</record>
+
+<record id="cbt_employee_form" model="ir.ui.view">
+    <field name="name">cbt.employee</field>
+    <field name="model">cbt.employee</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="emp_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>
+                        <!--<field name="designation"   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>-->
+                        <!--widget="one2many" domain="[('faculty_staff_id','=',emp_id)]"-->
+<!--                                <field name="cnic"/>-->
+<!--                                <field name="gender"/>-->
+                        <field name="active"/>
+                    </group>
+                    <group>
+<!--                                <field name="mobile"/>-->
+<!--                                <field name="email"/>-->
+<!--                                <field name="office_address"/>-->
+<!--                                <field name="office_phone"/>-->
+                        <field name="home_address"/>
+                        <field name="home_phone"/>
+                    </group>
+                </group>
+            </sheet>
+
+        </form>
+    </field>
+</record>
+
+<record model="ir.actions.act_window" id="cbt_emloyee_setupaction_window">
+    <field name="name">Employee Setup</field>
+    <field name="res_model">cbt.emloyee</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<menuitem name="Employee" id="cbt_employee_list" parent="cbt_employee_root"
+                  action="cbt_emloyee_setupaction_window"/>
+

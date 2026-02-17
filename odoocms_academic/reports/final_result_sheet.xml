@@ -1,0 +1,269 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <template id="final_result_sheet">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="report_title" t-value="'Final Result Sheet'"/>
+                <t t-call="odoocms_assets.custom_header_report"/>
+
+                <br/>
+                <t t-set="primary_class_id" t-value="request.env['odoocms.class.primary'].sudo().search([('grade_class_id','=',docs.id)])"/>
+                <t t-set="class_id" t-value="primary_class_id.class_ids"/>
+                <t t-set="assessment_summary" t-value="request.env['odoocms.assessment.summary'].sudo().search([('class_id','=',class_id.id)])"/>
+
+                <t t-set="grade" t-value="request.env['odoocms.grade'].sudo().search([],limit=1,order=desc).line_ids.sorted(lambda x:x.name)"/>
+                <t t-set="assessment" t-value="request.env['odoocms.assessment'].sudo().search([('class_id','=',class_id.id),('weightage','>',0)])"/>
+
+                <t t-if="primary_class_id">
+                    <t t-set="docs_len" t-value="len(docs.registration_ids)/25"/>
+                    <t t-if="docs_len > int(docs_len)">
+                        <t t-set="range_docs" t-value="int(docs_len) + 1"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set="range_docs" t-value="int(docs_len)"/>
+                    </t>
+                    <t t-set="serial_no" t-value="0"/>
+                    <t t-set="withdraw" t-value="len(docs.registration_ids.filtered(lambda x: x.grade and x.grade.lower() == 'w'))"/>
+                    <t t-foreach="range(range_docs)" t-as="page">
+                        <t t-set="record" t-value="docs.registration_ids.sorted(lambda x:x.student_id.id_number)[ page*25: (page*25) + 25 ]"/>
+                        <div t-attf-style="{{'page-break-after:always;' if not page_last else ''}}">
+                            <div class="container-fluid text-start">
+                                <h3 style='text-align:center'>
+                                    <b t-esc="docs.institute_id.name"/>
+                                </h3>
+                                <div class="row mb-2">
+                                    <div class="col-1"/>
+                                    <div class="col-7">
+                                        <b class='my-1'>Course Code: </b>
+                                        <span class='ml-2' t-esc="str(docs.code).split('-')[0]"/>
+                                        <br/>
+                                        <b class='my-1'>Course Title: </b>
+                                        <span class='ml-2' t-esc="docs.name"/>
+                                        <br/>
+                                        <b class='my-1'>Course Instructor: </b>
+                                        <span class='ml-2' t-esc="docs.grade_staff_id.name"/>
+
+                                    </div>
+
+                                    <div class="col-2">
+                                        <b>Section: </b>
+                                        <span t-esc="primary_class_id.section_id and primary_class_id.section_id.name or ''"/>
+                                    </div>
+                                    <div class="col-2"/>
+                                </div>
+                            </div>
+                            <div class="container-fluid text-center">
+                                <h3>
+                                    <b>Result Sheet of <t t-esc="class_id.term_id.name"/>
+                                    </b>
+                                </h3>
+                            </div>
+                            <table class="table table-bordered table-striped text-center">
+                                <thead>
+                                    <tr>
+                                        <th style='border:none;' class='p-0 m-0' scope="col"/>
+                                        <th style='border:none;' class='p-0 m-0' scope="col"/>
+                                        <th style='border:none;' class='p-0 m-0' scope="col"/>
+                                        <th style='border:none;' class='p-0 m-0' scope="col"/>
+                                        <th style='border:none;' class='p-0 m-0' scope="col"/>
+                                        <th style='border:none;' class='p-0 m-0' scope="col"/>
+
+                                        <th class='p-0 m-0' scope="col">
+                                            <t t-set="final_weightage" t-value="assessment_summary.filtered(lambda x: x.assessment_component_id.type_id.name == 'Final Term')[:1]"/>
+                                            <t t-if="final_weightage">
+                                                <t t-set="final_weightage" t-value="final_weightage.assessment_component_id.weightage"/>
+                                                <t t-esc="final_weightage"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="final_weightage" t-value="0"/>
+                                                <t t-esc="final_weightage"/>
+                                            </t>
+                                        </th>
+                                        <th class='p-0 m-0' scope="col">
+                                            <t t-set='mid_weightage' t-value="assessment_summary.filtered(lambda x: x.assessment_component_id.type_id.name == 'Mid Term')[:1]"/>
+                                            <t t-if="mid_weightage">
+                                                <t t-set="mid_weightage" t-value="mid_weightage.assessment_component_id.weightage"/>
+                                                <t t-esc="mid_weightage"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="mid_weightage" t-value="0"/>
+                                                <t t-esc="mid_weightage"/>
+                                            </t>
+                                        </th>
+                                        <th class='p-0 m-0' scope="col">
+                                            <t t-esc="100 - (final_weightage + mid_weightage) "/>
+                                            <!-- <t t-esc="assessment.filtered(lambda x: x.assessment_component_id.type_id.name not in ('Final Term','Mid Term')).weightage"/> -->
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class='p-0 m-0' scope="col">Sr#</th>
+                                        <th class='p-0 m-0' scope="col">Registration</th>
+                                        <th class='p-0 m-0' scope="col">Student Name</th>
+                                        <th class='p-0 m-0' scope="col">Letter Grade</th>
+                                        <th class='p-0 m-0' scope="col">Total %</th>
+                                        <th class='p-0 m-0' scope="col">Adj %</th>
+                                        <th class='p-0 m-0' scope="col">Final Exam </th>
+                                        <th class='p-0 m-0' scope="col">Mid Term </th>
+                                        <th class='p-0 m-0' scope="col">Term Work</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="record" t-as="rec">
+                                        <t t-set="serial_no" t-value="serial_no + 1"/>
+                                        <t t-set="final_term" t-value="assessment_summary.filtered(lambda x: x.student_id == rec.student_id and x.assessment_component_id.type_id.name == 'Final Term')"/>
+                                        <t t-set="final_marks" t-value="round(final_term.percentage * ((final_term.assessment_component_id.weightage)/100),2)"/>
+                                        <t t-set="mid_term" t-value="assessment_summary.filtered(lambda x: x.student_id == rec.student_id and x.assessment_component_id.type_id.name == 'Mid Term')"/>
+                                        <t t-set='mid_marks' t-value="round(mid_term.percentage * ((mid_term.assessment_component_id.weightage)/100),2)"/>
+                                        <t t-set="team_work" t-value="assessment_summary.filtered(lambda x: x.student_id == rec.student_id and x.assessment_component_id.type_id.name not in ('Final Term','Mid Term'))"/>
+                                        <t t-set='team_work_marks' t-value="round(sum(map(lambda x:x.percentage * ((x.assessment_component_id.weightage)/100),team_work)),2)"/>
+                                        <t t-set="adjustment_factor" t-value="rec.grade_class_id.adjustment_factor if rec.grade_class_id.adjustment_factor_allowed > 0 else 0"/>
+
+                                        <tr style='font-size:14px' class='p-0'>
+                                            <th class='p-0 m-0' scope="row">
+                                                <t t-esc="serial_no"/>
+                                            </th>
+                                            <td class='p-0 m-0' >
+                                                <t t-esc="rec.student_id.id_number"/>
+                                            </td>
+                                            <td style='text-align:left' class='p-0 m-0 ' >
+                                                <t t-esc="rec.student_id.name"/>
+                                            </td>
+                                            <td class='p-0 m-0' >
+                                                <t t-esc="rec.grade"/>
+                                            </td>
+                                            <td class='p-0 m-0' >
+<!--                                                <t t-esc="round(final_marks + mid_marks + team_work_marks + adjustment_factor,2)"/>-->
+                                                <t t-esc="round(rec.normalized_marks,2)"/>
+                                            </td>
+                                            <td class='p-0 m-0'>
+                                                <t t-esc="adjustment_factor"/>
+                                            </td>
+                                            <td class='p-0 m-0'>
+                                                <t t-esc="final_marks"/>
+                                            </td>
+                                            <td class='p-0 m-0'>
+                                                <t t-esc="mid_marks"/>
+                                            </td>
+                                            <td class='p-0 m-0'>
+                                                <t t-esc="team_work_marks"/>
+                                            </td>
+                                        </tr>
+
+                                    </t>
+                                    <t t-if="len(record) &lt; 25">
+                                        <t t-foreach="range(25 - len(record))" t-as="dummy_row">
+                                            <tr style='font-size:14px;border:none;visibility:hidden;' class='p-0'>
+                                                <td class='p-0 m-0' >hidden</td>
+                                                <td class='p-0 m-0' >hidden</td>
+                                                <td class='p-0 m-0' >hidden</td>
+                                                <td class='p-0 m-0' >hidden</td>
+                                                <td class='p-0 m-0' >hidden</td>
+                                                <td class='p-0 m-0' >hidden</td>
+                                                <td class='p-0 m-0' >hidden</td>
+                                                <td class='p-0 m-0' >hidden</td>
+                                                <td class='p-0 m-0' >hidden</td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <t t-set="grade" t-value="docs.registration_ids.mapped('grade')"/>
+                            <t t-set="grade_count" t-value="{ rec:grade.count(rec)  for rec in grade}"/>
+                            
+
+                            <table class="table table-bordered text-center">
+                                <thead>
+                                    <th class='m-0 p-0'>Letter Grade</th>
+                                    
+                                    <t t-foreach="grade_count.keys()" t-as="g">
+                                        <th class='p-0 m-0'>
+                                            <t t-esc="g"/>
+                                        </th>
+                                    </t>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class='m-0 p-0'>Total</td>
+
+                                        <t t-foreach="grade_count.keys()" t-as="g">
+                                            <td class='p-0 m-0'>
+                                                <t t-esc="grade_count[g]"/>
+                                            </td>
+
+                                        </t>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div style='margin-top:150px !important' class="container row text-center">
+                                <div style='border-top:1px solid black;margin-left:60px' class="col-3">
+                                    <b>Instructor Signature</b>
+                                </div>
+                                <div style='border-top:1px solid black;margin-left:60px' class="col-3">
+                                    <b>Dean Signature</b>
+                                </div>
+                                <div style='border-top:1px solid black;margin-left:60px' class="col-3">
+                                    <b>Controller Signature</b>
+                                </div>
+                            </div>
+
+                            <div style='margin-top:25px !important'>
+                                <!-- <div t-if='page_last' style='margin-top:440px !important'></div> -->
+                                <hr/>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <span style='border-bottom:2px solid black;' t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M')"/>
+                                        <br/>
+                                        <span style='font-size:10px;margin-left:30px'>Print Time</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <b style='font-size:10px;'>*Mid-term includes all Mid-term Tests. </b>
+                                        <br/>
+                                        <b style='font-size:10px;'>*Term work Includes all Assignments,Quizzes,Class Presentations,Projects etc</b>
+                                    </div>
+                                    <div class="col-3">
+                                        <span style='border-bottom:2px solid black;' t-esc="docs.grade_submit_date"/>
+                                        <br/>
+                                        <span style='font-size:10px;margin-left:30px'>Submit Date</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+
+                </t>
+
+            </t>
+            <br/>
+        </t>
+    </template>
+
+
+
+    <record id="final_result_sheet_paperformat" model="report.paperformat">
+        <field name="name">final result sheet</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="default" eval="False" />
+        <field name="dpi" eval="90" />
+        <field name="margin_top" eval="40" />
+        <field name="margin_right" eval="7" />
+        <field name="margin_bottom" eval="0" />
+        <field name="margin_left" eval="7" />
+        <field name="header_line" eval="False" />
+        <field name="header_spacing" eval="35" />
+    </record>
+    <record id="action_final_result_sheet" model="ir.actions.report">
+        <field name="name">Final Result Sheet</field>
+        <field name="model">odoocms.class.grade</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">odoocms_academic.final_result_sheet</field>
+        <field name="report_file">odoocms_academic.final_result_sheet</field>
+        <field name="binding_model_id" ref="model_odoocms_class_grade"/>
+        <field name="paperformat_id" ref="final_result_sheet_paperformat"/>
+    </record>
+
+
+</odoo>

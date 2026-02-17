@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="application_main_step_view_form" model="ir.ui.view">
+        <field name="name">application.main.step.view.form</field>
+        <field name="model">odoocms.application.main.steps</field>
+        <field name="arch" type="xml">
+            <form string="application_main_step_form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="step_no"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Application Steps">
+                            <field name="application_step_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="template"/>
+                                    <field name="test_field"/>
+                                    <field name="career_ids"/>
+                                    <field name="icon"/>
+                                    <field name="step_details"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_odoocms_application_main_steps_tree" model="ir.ui.view">
+        <field name="name">odoocms.application.steps.tree</field>
+        <field name="model">odoocms.application.main.steps</field>
+        <field name="arch" type="xml">
+            <tree string="Application Main Steps">
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="step_no"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_odoocms_application_main_steps" model="ir.actions.act_window">
+        <field name="name">Application Main Steps</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.application.main.steps</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create Your Main Steps Here...
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem
+            id="menu_odoocms_graduate_application_main_steps"
+            name="Application Main Steps"
+            parent='odoocms_admission.menu_admission_configuration'
+            action="action_odoocms_application_main_steps"
+            sequence="190"/>
+</odoo>

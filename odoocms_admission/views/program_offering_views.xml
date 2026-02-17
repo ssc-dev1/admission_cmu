@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Form View to Modify it -->
+<!--    <record id="program_offering_inherit" model="ir.ui.view">-->
+<!--        <field name="name">program.offering.form.inherit</field>-->
+<!--        <field name="model">odoocms.program</field>-->
+<!--        <field name="inherit_id" ref="odoocms_admission.view_odoocms_degree_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='career_id']" position="after">-->
+<!--               <field name="offering"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+</odoo>
