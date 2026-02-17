@@ -25,7 +25,7 @@
 }</script>
 
 
-        <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2"
+        <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" t-if="request.env.company.visible_need_based_scholarship"
              onclick="$('#scholarshipcollapse').slideToggle(1000); $('#scholarship_dropdown').toggleClass('fa-angle-down fa-angle-up');">
             <a class="btn btn-link">
                 <i style='color: white;font-size: 25px;' class="fa-solid fa-address-card float-left"></i>
