@@ -1,0 +1,328 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <template id="student_personal_info_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="student">
+
+                <t t-call="web.basic_layout">
+                    <t t-set="report_title" t-value="'Student Personal Information'"/>
+                    <t t-call="odoocms_assets.custom_header_report"/>
+                    <br/>
+                    <hr/>
+                    <style>
+                        strong{
+                            color:blue;
+                            margin-right:9px;
+                        }
+                            legend{
+                            color:blue;
+                        }
+                    </style>
+                    <div class='container-fluid p-1'>
+
+                        <fieldset style='border:2px solid grey'>
+                            <legend style='margin-left:10px;width:auto'>Personal Information</legend>
+                            <div class='d-flex flex-row justify-content-between mx-1 my-3'>
+                                <div class='d-flex flex-column'>
+                                    <div class="d-flex flex-row">
+                                        <span><strong>Reg # :</strong></span>
+                                        <span><t t-esc=" student.id_number"/></span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span><strong>Name :</strong></span>
+                                        <span><t t-esc=" student.name"/></span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span><strong>Father Name :</strong></span>
+                                        <span><t t-esc="student.father_name"/></span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span><strong>Father N.I.C :</strong></span>
+                                        <span><t t-esc="student.father_guardian_cnic"/></span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span><strong>Mail Address 1 : :</strong></span>
+                                        <span><t t-esc="student.per_street"/></span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span><strong>Mail Address 2 :</strong></span>
+                                        <span><t t-esc="student.street"/></span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span>
+                                            <strong>City :</strong>
+                                        </span>
+                                        <span>
+                                            <t t-esc="student.city"/>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span>
+                                            <strong>Date Of Birth :</strong>
+                                        </span>
+                                        <span>
+                                            <t t-esc="student.date_of_birth"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class='d-flex flex-column'>
+                                    <div class="d-flex flex-row">
+                                        <span>
+                                            <strong>Career :</strong>
+                                        </span>
+                                        <span>
+                                            <t t-esc="student.career_id.name"/>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span>
+                                            <strong>CGPA :</strong>
+                                        </span>
+                                        <span>
+                                            <t t-esc="student.cgpa"/>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span>
+                                            <strong>N.I.C :</strong>
+                                        </span>
+                                        <span>
+                                            <t t-esc="student.cnic"/>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span><strong>Father's N.T.N :</strong></span>
+                                        <span><t t-esc="student.ntn"/></span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span><strong>Current Phone :</strong></span>
+                                        <span><t t-esc="student.phone"/></span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span><strong>Permanent Phone :</strong></span>
+                                        <span><t t-esc="student.mobile"/></span>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <span><strong>Gender :</strong></span>
+                                        <span>
+                                            <t t-esc="dict(student.fields_get(allfields=['gender'])['gender']['selection'])[student.gender]"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-2">
+                                        <img style="width:100px;height:100px;" t-att-src='image_data_uri(student.image_1920)' t-if="student.image_1920"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class='container-fluid p-1'>
+                        <t t-foreach="student.term_ids[::-1]" t-as="term">
+                            <fieldset style='border:2px solid grey'>
+                                <legend style='margin-left:10px;width:auto'>
+                                    <t t-esc="term.term_id.name"/>
+                                </legend>
+                                <div class="container-fluid row">
+                                    <div class="col-10">
+                                        <fieldset style='border:2px solid grey'>
+                                            <legend style='margin-left:10px;width:auto'>Course Information</legend>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Course Code</th>
+                                                        <th scope="col">Course Title</th>
+                                                        <th scope="col">Credit Hours</th>
+                                                        <th scope="col">Fee</th>
+                                                        <th scope="col">Course Type</th>
+                                                        <th scope="col">Grade</th>
+                                                        <th scope="col">section</th>
+                                                        <th scope="col">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="term.student_course_ids" t-as="course">
+                                                        <tr>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="course.course_id.code"/>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="course.course_id.name"/>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="course.credits"/>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>Fee</td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="course.course_id.course_type_id.name"/>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="course.grade"/>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="course.primary_class_id.batch_section_id.name"/>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="course.state"/>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+
+                                                </tbody>
+                                            </table>
+                                        </fieldset>
+                                        <fieldset style='border:2px solid grey'>
+                                            <legend style='margin-left:10px;width:auto'>Discount Information</legend>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Discount ID</th>
+                                                        <th scope="col">Discount Type</th>
+                                                        <th scope="col">Tution Percent</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-set="discount_dict" t-value="student.get_term_discount_detail(term)"/>
+                                                    <tr>
+                                                        <td style='padding-top:2px;padding-bottom:2px;'>
+                                                            <t t-esc="discount_dict['discount_id']"/>
+                                                        </td>
+                                                        <td style='padding-top:2px;padding-bottom:2px;'>
+                                                            <t t-esc="discount_dict['discount_type']"/>
+                                                        </td>
+                                                        <td style='padding-top:2px;padding-bottom:2px;'>
+                                                            <t t-esc="discount_dict['discount_percentage']"/>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </fieldset>
+                                        <fieldset style='border:2px solid grey'>
+                                            <legend style='margin-left:10px;width:auto'>Account Information</legend>
+                                            <h3>Main Registration</h3>
+
+                                        </fieldset>
+
+                                        <fieldset style='border:2px solid grey'>
+                                            <legend style='margin-left:10px;width:auto'>Installment Information</legend>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Inst #</th>
+                                                        <th scope="col">Amount</th>
+                                                        <th scope="col">Rem. Amount</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col">Due Date</th>
+                                                        <th scope="col">Paid Date</th>
+                                                        <th scope="col">Event</th>
+                                                        <th scope="col">Remarks</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="student.get_term_invoices_detail(term)" t-as="inv">
+                                                        <tr>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="inv_index+1"/>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="int(inv.amount_total)"/>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-if="inv.forward_invoice">
+                                                                    <t t-esc="int(inv.forward_invoice.amount_total)"/>
+                                                                </t>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="dict(inv.fields_get(allfields=['payment_state'])['payment_state']['selection'])[inv.payment_state]"/>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="inv.invoice_date_due and inv.invoice_date_due.strftime('%d-%b-%Y') or ''"/>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-esc="inv.payment_date and inv.payment_date.strftime('%d-%b-%Y') or ''"/>
+                                                            </td>
+                                                            <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                <t t-if="inv.challan_type" t-esc="dict(inv.fields_get(allfields=['challan_type'])['challan_type']['selection'])[inv.challan_type]"/>
+                                                            </td>
+<!--                                                            <td style='padding-top:2px;padding-bottom:2px;'>-->
+<!--                                                                <t t-esc="dict(inv.fields_get(allfields=['challan_type'])['challan_type']['selection'])[inv.challan_type]"/>-->
+<!--                                                            </td>-->
+                                                        </tr>
+                                                    </t>
+
+                                                </tbody>
+                                            </table>
+                                        </fieldset>
+                                        <fieldset style='border:2px solid grey'>
+                                            <legend style='margin-left:10px;width:auto'>Over Draft Information</legend>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Inst #</th>
+                                                        <th scope="col">Amount</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Remarks</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-if="student.get_over_draft_detail(term)">
+                                                        <t t-foreach="student.get_over_draft_detail(term)" t-as="od_info">
+                                                            <tr>
+                                                                <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                    <t t-esc="od_info_index + 1"/>
+                                                                </td>
+                                                                <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                    <t t-esc="int(od_info.debit)"/>
+                                                                </td>
+                                                                <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                    <t t-esc="od_info.date and od_info.date.strftime('%d-%b-%Y') or ''"/>
+                                                                </td>
+                                                                <td style='padding-top:2px;padding-bottom:2px;'>
+                                                                    <t t-esc="od_info.description"/>
+                                                                </td>
+                                                            </tr>
+                                                        </t>
+                                                    </t>
+
+                                                    <t t-if="not student.get_over_draft_detail(term)">
+                                                        <tr>
+                                                            <td colspan="4">
+                                                                No OD found !
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+
+                                                </tbody>
+                                            </table>
+                                        </fieldset>
+
+
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </t>
+
+
+                    </div>
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="student_personal_info_report_action" model="ir.actions.report">
+        <field name="name">Student Personal Info</field>
+        <field name="model">odoocms.student</field>
+        <field name="report_type">qweb-html</field>
+        <field name="binding_model_id" ref="model_odoocms_student"/>
+        <field name="binding_type">report</field>
+        <field name="report_name">odoocms.student_personal_info_template</field>
+        <field name="report_file">odoocms.student_personal_info_template</field>
+    </record>
+
+
+</odoo>

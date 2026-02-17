@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- PDF Report Action -->
+  <record id="action_nbs_pdf_report" model="ir.actions.report">
+    <field name="name">Need Based Scholarship Report</field>
+    <field name="model">need.based.scholarship</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">need_based_scholarship.nbs_pdf_report</field>
+    <field name="report_file">need_based_scholarship.nbs_pdf_report</field>
+    <field name="binding_type">report</field>
+    <field name="paperformat_id" ref="base.paperformat_euro"/>
+  </record>
+
+  <!-- Add PDF Report Button to Form View -->
+  <record id="view_form_need_based_scholarship_pdf" model="ir.ui.view">
+    <field name="name">need.based.scholarship.form.pdf</field>
+    <field name="model">need.based.scholarship</field>
+    <field name="inherit_id" ref="view_form_need_based_scholarship"/>
+    <field name="arch" type="xml">
+      <header position="inside">
+        <button name="%(action_nbs_pdf_report)d" string="Download PDF Report" type="action" class="btn-primary" icon="fa-download"/>
+      </header>
+    </field>
+  </record>
+</odoo>

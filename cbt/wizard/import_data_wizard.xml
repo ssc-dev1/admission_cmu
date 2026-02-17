@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_import_data_wizard_view" model="ir.ui.view">
+            <field name="name">import.data.wizard.view</field>
+            <field name="model">import.data.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="user_id" required="1" password="True"/>
+                            <field name="db" required="1"/>
+<!--                            <field name="export_id" invisible="1"/>-->
+                        </group>
+                        <group>
+                            <field name="password" required="1" password="True"/>
+                            <field name="admin_pass" required="1" password="True"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="import_cbt_data" string="Import" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_import_data_wizard" model="ir.actions.act_window">
+            <field name="name">Import Data</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">import.data.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_cbt_import_result"
+              name="Import Result"
+              parent="cbt_menu_root"
+              action="action_import_data_wizard"
+              sequence="30"/>
+
+
+
+
+    </data>
+</odoo>

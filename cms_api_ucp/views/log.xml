@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="odoocms_api_log_tree_view">
+            <field name="name">odoocms.api.log.tree</field>
+            <field name="model">odoocms.api.log</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="name"/>
+                    <field name="time"/>
+                    <field name="param_body"/>
+                    <field name="response_body"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="odoocms_api_log_act_window">
+            <field name="name">Api Log</field>
+            <field name="res_model">odoocms.api.log</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <record model="ir.ui.menu" id="odoocms_api_log_menu">
+            <field name="name">Api Log</field>
+            <field name="parent_id" ref="base.menu_custom"/>
+            <field name="action" ref="odoocms_api_log_act_window"/>
+            <field name="sequence" eval="110"/>
+        </record>
+
+    </data>
+</odoo>

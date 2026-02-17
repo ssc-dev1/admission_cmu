@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="merit_register_view_form_welcome_letter_inherit" model="ir.ui.view">
+        <field name="name">merit.register.view.form.welcome.letter.inherit</field>
+        <field name="model">odoocms.merit.registers</field>
+        <field name="inherit_id" ref="odoocms_merit_ucp.merit_register_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='submit']" position="after">
+                <button type="object" name="generate_welcome_letter" string="Welcome Letter" states='open,done' class="oe_highlight" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

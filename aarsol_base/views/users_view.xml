@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="view_users_tree_aarsol_base" model="ir.ui.view">
+        <field name="name">res.users.tree.aarsol.base</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_tree"/>
+        <field name="arch" type="xml">
+            <field name="login_date" position="before">
+                <field name="user_type"/>
+                <field name="home_page"/>
+<!--                <field name="emp_id" readonly="1" optional="hide"/>-->
+            </field>
+        </field>
+    </record>
+
+    <record id="view_users_form_aarsol_base" model="ir.ui.view">
+        <field name="name">res.users.form.aarsol.base</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <group name="preferences" position="before">
+                 <group string="Defaults">
+                     <field name="user_type"/>
+                     <field name="home_page"/>
+<!--                     <field name="emp_id" readonly="0" attrs="{-->
+<!--                            'invisible': [('user_type','!=','employee')],-->
+<!--                            'required': [('user_type','=','employee')]-->
+<!--                        }"-->
+<!--                        options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>-->
+                 </group>
+            </group>
+        </field>
+    </record>
+
+    <record id="view_users_search_aarsol_base" model="ir.ui.view">
+        <field name="name">res.users.filter.aarsol.base</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_search"/>
+        <field name="arch" type="xml">
+            <field name="share" position="before">
+                <field name="login"/>
+            </field>
+            <field name="share" position="after">
+                <filter name="yes_share" string="External Users" domain="[('share','!=',False)]"/>
+                <filter name="employees" string="Employees" domain="[('user_type','=','employee')]"/>
+                <separator/>
+                <filter name="user_type_grp" string="User Type" context="{'group_by': 'user_type'}"/>
+                <filter name="home_page_grp" string="Home Page" context="{'group_by': 'home_page'}"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

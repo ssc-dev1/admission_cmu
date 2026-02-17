@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="odoocms_register_program_inherit" model="ir.ui.view">
+        <field name="name">odoocms.register.program.inherit</field>
+        <field name="model">odoocms.program</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_program_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/field[@name='code']" position="after">
+                <field name="work_experience_required"/>
+                <field name='calculate_merit_with_exemption'/>
+                <field name="publish_merit"/>
+                 <field name ="def_courses_group" widget="many2many_tags"/>
+            </xpath >
+        </field>
+    </record>
+
+        <record id="view_odoocms_application_form_hec_inherit" model="ir.ui.view">
+            <field name="name">view.odoocms.application.form.hec.inherit</field>
+            <field name="model">odoocms.application</field>
+            <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='pre_test_attachment']" position="after">
+                    <field name="test_center_id"/>
+                </xpath>
+            </field>
+ </record>
+</odoo>

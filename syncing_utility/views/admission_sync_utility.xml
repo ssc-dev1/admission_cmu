@@ -1,0 +1,105 @@
+<odoo>
+    <record id="view_admission_sync_form" model="ir.ui.view">
+        <field name="name">admission.sync.form</field>
+        <field name="model">admission.sync</field>
+        <field name="arch" type="xml">  
+            <form string="Admission Sync">
+
+                <header>
+                    <button name="update_store_procedures" type="object" string="Update Store Procedures" class="oe_highlight"/>
+                    <button name="fetch_schema_cms_db" type="object" string="Update CMS Schema" class="oe_highlight"/>
+                    <button name="update_server_id_for_conf_tables" type="object" string="Update Conf Tables" class="oe_highlight"/>
+                    <!-- <button name="create_functions_on_remote_db" type="object" string="Setup Sequence Configurations" class="oe_highlight"/> -->
+                    <button name="fetch_students" type="object" string="Get Students" class="oe_highlight"/>
+                    <button name="perform_selected_action" type="object" string="Sync to CMS" class="oe_highlight"/>
+                </header>
+                <sheet>
+                <group>
+                    <group>
+                    <field name="name"></field>
+                    </group>
+                    <group>
+                        <field name="cms_action" widget="selection" string="Select Action"/>
+                    </group>
+                    <!-- <group>
+                    <field name="conf"></field>
+                    </group> -->
+                    <group>
+                        <field name="company"></field>
+                    </group>
+                </group>
+                    <group>
+                        <field name="student_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="log"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_admission_sync_tree" model="ir.ui.view">
+        <field name="name">admission.sync.tree</field>
+        <field name="model">admission.sync</field>
+        <field name="arch" type="xml">
+            <tree string="Admission Sync">
+                <field name="name"/>
+                <!-- <field name="conf"/> -->
+            </tree>
+        </field>
+    </record>
+    <record id="action_student_sync_to_cms" model="ir.actions.act_window">
+        <field name="name">Admission Sync</field>
+        <field name="res_model">admission.sync</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_admission_sync_tree"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new sync.
+            </p>
+        </field>
+    </record>
+</odoo>
+
+
+
+<!--<odoo>-->
+<!--    <record id="view_admission_sync_form" model="ir.ui.view">-->
+<!--        <field name="name">admission.sync.form</field>-->
+<!--        <field name="model">admission.sync</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Admission Sync">-->
+<!--                <header>-->
+<!--                    <button name="fetch_students" type="object" string="Get Students" class="oe_highlight"/>-->
+<!--                    <button name="call_db_procedure" type="object" string="Sync" class="oe_link"/>-->
+<!--                </header>-->
+<!--                <sheet>-->
+<!--                    <group>-->
+<!--                        <field name="student_ids" widget="text"/>-->
+<!--                    </group>-->
+<!--                </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="view_admission_sync_tree" model="ir.ui.view">-->
+<!--        <field name="name">admission.sync.tree</field>-->
+<!--        <field name="model">admission.sync</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="Admission Sync">-->
+<!--                <field name="name"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="action_admission_sync" model="ir.actions.act_window">-->
+<!--        <field name="name">Admission Sync</field>-->
+<!--        <field name="res_model">admission.sync</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--        <field name="help" type="html">-->
+<!--            <p class="oe_view_nocontent_create">-->
+<!--                Click to create a new sync.-->
+<!--            </p>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--</odoo>-->

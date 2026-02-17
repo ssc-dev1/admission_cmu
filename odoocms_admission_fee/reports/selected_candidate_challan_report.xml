@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id='odoocms_admission_fee.selected_candidate_challan_report'>
+            <t t-call='web.html_container'>
+                <t t-call='web.basic_layout'>
+                    <div class='page'>
+                        <style>
+                            #invoice-report1 {
+                            font-family: "Arial, Helvetica, sans-serif;
+                            border-collapse: collapse;
+                            width: 98%;
+                            margin: 1.5%;
+                            }
+
+                            #invoice-report1 td, #invoice-report1 th {
+                            border: 1px solid #ddd;
+                            padding: 2px;
+                            font-size:10px;
+                            }
+
+                            #invoice-report1 th {
+                            font-weight:normal;
+                            background-color: #F9FAFA;
+                            font-size:10px;
+                            font-weight:bold;
+                            text-align:center;
+                            }
+                        </style>
+
+                        <h4 align='center' style="text-decoration:underline;font-family:Times New Roman,Times,serif;font-size:20px;margin-top:10px;">
+                            <t t-esc="company_name"/>
+                        </h4>
+
+                        <h5 align='center' style="text-decoration:underline;font-family:Times New Roman,Times,serif;font-size:15px;">
+                            Selected Candidate Challan Report
+                        </h5>
+
+                        <p style="font-family:Times New Roman,Times,serif;font-size:15px; font-weight:bold; text-align:left;margin-left:20px;">
+                            Merit List:
+                            <span style="font-family:Times New Roman,Times,serif;font-size:12px; font-weight:bold;" t-esc="merit_list"/>
+                            <br/>
+                            Program:
+                            <span style="font-family:Times New Roman,Times,serif;font-size:12px; font-weight:bold;text-align:left;" t-esc="program"/>
+                        </p>
+
+
+                        <table class='table' width='100%' id="invoice-report1" style="padding-top:5p">
+                            <thead>
+                                <tr class="align-middle" style="text-align:center;border: 1px solid black;">
+                                    <th class="align-middle" style="border: 1px solid black;">Sr#</th>
+                                    <th class="align-middle" style="border: 1px solid black;">Application#</th>
+                                    <th class="align-middle" style="border: 1px solid black;">Applicant Name</th>
+                                    <th class="align-middle" style="border: 1px solid black;">Per Credit Hour Fee</th>
+                                    <th class="align-middle" style="border: 1px solid black;">Total Credit Hours</th>
+                                    <th class="align-middle" style="border: 1px solid black;">Fee Amount</th>
+                                    <th class="align-middle" style="border: 1px solid black;">Admission Fee</th>
+                                    <th class="align-middle" style="border: 1px solid black;">Scholarship</th>
+                                    <th class="align-middle" style="border: 1px solid black;">Scholarship%</th>
+                                    <th class="align-middle" style="border: 1px solid black;">Scholarship Amount</th>
+                                    <th class="align-middle" style="border: 1px solid black;">Net Receivable</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <t t-foreach="lines" t-as="line">
+                                    <tr style="font-size:8px;border: 1px solid black">
+                                        <td style="padding-left:5px;">
+                                            <span t-esc="line_index+1"/>
+                                        </td>
+                                        <td style="padding-left:5px;">
+                                            <span t-esc="line['application_no']"/>
+                                        </td>
+                                        <td style="padding-left:5px;">
+                                            <span t-esc="line['applicant_name']"/>
+                                        </td>
+                                        <td style="padding-left:5px;text-align:right;">
+                                            <span t-esc="'{0:,.0f}'.format(line['credit_hrs'])"/>
+                                        </td>
+                                        <td style="padding-left:5px;text-align:right;">
+                                            <span t-esc="'{0:,.0f}'.format(line['credit_hrs_fee'])"/>
+                                        </td>
+                                        <td style="padding-left:5px;text-align:right;">
+                                            <span t-esc="'{0:,.0f}'.format(line['fee_amount'])"/>
+                                        </td>
+                                        <td style="padding-left:5px;text-align:right;">
+                                            <span t-esc="'{0:,.0f}'.format(line['admission_amount'])"/>
+                                        </td>
+                                        <td style="padding-left:5px;text-align:left;">
+                                            <span t-esc="line['scholarship_name']"/>
+                                        </td>
+                                        <td style="padding-left:5px;text-align:right;">
+                                            <span t-esc="'{0:,.0f}'.format(line['scholarship_percentage'])"/>
+                                        </td>
+                                        <td style="padding-left:5px;text-align:right;">
+                                            <span t-esc="'{0:,.0f}'.format(line['scholarship_amount'])"/>
+                                        </td>
+                                        <td style="padding-left:5px;text-align:right;">
+                                            <span t-esc="'{0:,.0f}'.format(line['net_amount'])"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td style="padding-left:5px;" colspan="5">
+                                    </td>
+                                    <td style="padding-left:5px;text-align:right;font-weight:bold;">
+                                        <span t-esc="'{0:,.0f}'.format(totals['fee_amount'])"/>
+                                    </td>
+                                    <td style="padding-left:5px;text-align:right;font-weight:bold;">
+                                        <span t-esc="'{0:,.0f}'.format(totals['admission_amount'])"/>
+                                    </td>
+
+                                    <td style="padding-left:5px;text-align:right;font-weight:bold;">
+                                    </td>
+                                    <td style="padding-left:5px;text-align:right;font-weight:bold;">
+                                    </td>
+
+                                    <td style="padding-left:5px;text-align:right;font-weight:bold;">
+                                        <span t-esc="'{0:,.0f}'.format(totals['scholarship_amount'])"/>
+                                    </td>
+                                    <td style="padding-left:5px;text-align:right;font-weight:bold;">
+                                        <span t-esc="'{0:,.0f}'.format(totals['net_amount'])"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class='table table-condensed' width='100%' style="margin-top:5px;">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span style="font-weight:bold;font-size:9px;">Print Date:</span>
+                                    </td>
+                                    <td style="font-weight:bold;font-size:9px;">
+                                        <span style="padding-left:20px;" t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y %H:%M')"/>
+                                    </td>
+                                    <td style="font-weight:bold;font-size:9px;">
+                                        <span>Print User:</span>
+                                    </td>
+                                    <td style="font-weight:bold;font-size:9px;">
+                                        <span style="padding-left:5px;" t-esc="request.env.user.name"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

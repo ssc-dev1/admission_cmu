@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_odoo_fee_sql_connector_from" model="ir.ui.view">
+            <field name="name">odoo.fee.sql.connector.form.view</field>
+            <field name="model">odoo.fee.sql.connector</field>
+            <field name="arch" type="xml">
+                <form string="Odoo Fee SQL Connector">
+                    <header>
+                        <button name="action_lock" type="object" class="oe_highlight" string="Lock" states="draft" groups="hr.group_hr_user"/>
+                        <button name="action_unlock" type="object" class="oe_highlight" string="UnLock" states="lock" groups="hr.group_hr_user"/>
+                        <button class="oe_highlight" name="action_establish_connection" states="draft,lock" string="Test Connection"
+                                type="object" groups="odoocms_fee_ucp.group_odoo_fee_sql_connector_user"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="driver" attrs="{'readonly':[('state','!=','draft')]}" required="1"/>
+                                <field name="server" attrs="{'readonly':[('state','!=','draft')]}" required="1"/>
+                                <field name="database" attrs="{'readonly':[('state','!=','draft')]}" required="1"/>
+                            </group>
+                            <group>
+                                <field name="conn_uid" attrs="{'readonly':[('state','!=','draft')]}" required="1"/>
+                                <field name="conn_pwd" attrs="{'readonly':[('state','!=','draft')]}" required="1" password="True"/>
+                            </group>
+                        </group>
+                        <group string="Notes">
+                            <field name="notes" nolabel="1"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoo_fee_sql_connector_tree" model="ir.ui.view">
+            <field name="name">odoo.fee.sql.connector.tree.view</field>
+            <field name="model">odoo.fee.sql.connector</field>
+            <field name="arch" type="xml">
+                <tree string="Odoo Fee SQL Connector">
+                    <field name="driver"/>
+                    <field name="server"/>
+                    <field name="database"/>
+                    <field name="conn_uid"/>
+                    <field name="conn_pwd" password="True"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoo_fee_sql_connector_search" model="ir.ui.view">
+            <field name="name">odoo.fee.sql.connector.search.view</field>
+            <field name="model">odoo.fee.sql.connector</field>
+            <field name="arch" type="xml">
+                <search string="Odoo Fee SQL Connector">
+                    <field name="driver"/>
+                    <field name="server"/>
+                    <field name="database"/>
+                    <field name="conn_uid"/>
+                    <field name="conn_pwd"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="odoo_fee_sql_connector_action" model="ir.actions.act_window">
+            <field name="name">Odoo Fee SQL Connector</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoo.fee.sql.connector</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoo_fee_sql_connects"
+                name="Connections"
+                groups="group_odoo_fee_sql_connector_user"
+                parent="menu_odoo_fee_sql_connector_configuration"
+                action="odoo_fee_sql_connector_action"
+                sequence="10"/>
+    </data>
+</odoo>

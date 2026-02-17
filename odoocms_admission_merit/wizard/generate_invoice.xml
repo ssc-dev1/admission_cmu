@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="generate_invoice_wizard_view_form" model="ir.ui.view">
+        <field name="name">generate.invoice.wizardform</field>
+        <field name="model">generate.invoice.wizard</field>
+        <field name="arch" type="xml">
+            <form string="generate_invoice_form">
+                <header>
+                    <button type="object" name="generate_admission_invoices" string="Generate Invoice" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="merit_id"/>
+                        </group>
+                        <group>
+                            <field name="program_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="generate_invoice_wizard_action" model="ir.actions.act_window">
+        <field name="name">Generate Invoice Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">generate.invoice.wizard</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <menuitem
+            id="generate_invoice_wizard_menu"
+            name="Generate Invoice Wizard"
+            action="generate_invoice_wizard_action"
+            sequence="30"
+            parent="merit_register_main_menu"/>
+</odoo>

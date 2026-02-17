@@ -1,0 +1,108 @@
+
+import json
+import logging
+import pdb
+
+from odoo import fields
+from odoo.tools import config
+
+_logger = logging.getLogger(__name__)
+try:
+    from cryptography.fernet import Fernet
+except (ImportError, IOError) as err:
+    _logger.debug(err)
+
+if config.get('encryption_key', False):
+    encryption_key = config['encryption_key'].encode()
+else:
+    _logger.warning("encryption_key is not set in configuration parameters. Using default key! This is not secure!")
+    encryption_key = "uumO_L_e_PI6seDtKGoqr7LANf-ozaZxwf0ziki2_nw=".encode()
+
+fernet = Fernet(encryption_key)
+
+
+def parrot_patch(cls):
+    """ Return a method decorator to monkey-patch the given class. """
+    def decorate(func):
+        name = func.__name__
+        func.super = getattr(cls, name, None)
+        setattr(cls, name, func)
+        return func
+    return decorate
+
+# Implement encrypt fields by monkey-patching fields.Field
+fields.Field.__doc__ += """
+        .. _field-encrypted:
+        
+        .. rubric:: Encrypted fields
+        ...
+        :param encrypt: the name of the field where encrypted the value of this field must be stored.
+"""
+fields.Field.encrypt = None
+
+
+@parrot_patch(fields.Field)
+def _get_attrs(self, model, name):
+    attrs = _get_attrs.super(self, model, name)
+    if attrs.get('encrypt'):
+        # by default, encrypt fields are not stored and not copied
+        attrs['store'] = False
+        attrs['copy'] = attrs.get('copy', False)
+        attrs['compute'] = self._compute_encrypt
+        if not attrs.get('readonly'):
+            attrs['inverse'] = self._inverse_encrypt
+    return attrs
+
+    
+@parrot_patch(fields.Field)
+def _compute_encrypt(self, records):
+    for record in records:
+        values = record[self.encrypt] or {}
+        # if not isinstance(values, dict):
+        #     values = json.loads(fernet.decrypt(bytes(values)).decode())
+        record[self.name] = values.get(self.name)
+    if self.relational:
+        for record in records:
+            record[self.name] = record[self.name].exists()
+
+            
+@parrot_patch(fields.Field)
+def _inverse_encrypt(self, records):
+    for record in records:
+        values = record[self.encrypt] or {}
+        value = self.convert_to_read(record[self.name], record, use_name_get=False)
+        # if not isinstance(values, dict):
+        #     values = json.loads(fernet.decrypt(bytes(values)).decode())
+        
+        if value:
+            if values.get(self.name) != value:
+                values[self.name] = value
+                record[self.encrypt] = values
+        else:
+            if self.name in values:
+                values.pop(self.name)
+                record[self.encrypt] = values
+
+    
+# Definition and implementation of encrypted fields
+class Encrypted(fields.Field):
+    """ Encrypted fields provide the storage for encrypt fields. """
+    type = 'encrypted'
+    column_type = ('bytea', 'bytea')
+    prefetch = False                    # not prefetched by default
+
+    def convert_to_column(self, value, record, values=None, validate=True):
+        return self.convert_to_cache(value, record, validate=validate)
+
+    def convert_to_cache(self, value, record, validate=True):
+        # cache format: json.dumps(value) or None
+        return fernet.encrypt(json.dumps(value).encode()) if isinstance(value, dict) else (value or None)
+    
+    def convert_to_record(self, value, record):
+        if value is None:
+            return value
+        return value if isinstance(value, dict) else \
+            json.loads(fernet.decrypt(bytes(value or "{}")).decode())  #
+    
+    
+fields.Encrypted = Encrypted

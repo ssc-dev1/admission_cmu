@@ -1,0 +1,124 @@
+<odoo>
+    <record id="student_email_wizard_form" model="ir.ui.view">
+        <field name="name">student.email.wizard.form</field>
+        <field name="model">student.email.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send Email">
+                <group>
+                    <field name="subject" placeholder="Subject"/>
+                    <field name="body" placeholder="Enter email content here..."/>
+                </group>
+                <footer>
+                    <button string="Send" type="object" name="send_email" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="student_sms_wizard_form" model="ir.ui.view">
+        <field name="name">student.sms.wizard.form</field>
+        <field name="model">student.sms.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send SMS">
+                <group>
+                    <field name="sms" placeholder="Enter sms content here..."/>
+                </group>
+                <footer>
+                    <button string="Send" type="object" name="send_sms" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="email_template_custom" model="mail.template">
+        <field name="name">Student Notification</field>
+        <field name="model_id" ref="odoocms_admission.model_odoocms_application"/> 
+        <field name="email_from">{{ctx.get('email_from')}}</field>
+        <field name="email_to">{{ctx.get('email_to')}}</field>
+        <field name="subject">{{ctx.get('subject')}}</field>
+        <field name="body_html" type="html">
+            <div style="background-color: #fbfbfb;" lang="en" dir="auto">
+                <div class="r e ys" style="margin: 0px auto; max-width: 600px;">
+                    <div style="padding: 20px;">
+                        <t t-esc="ctx.get('body_html')" type="html"/>
+
+                    </div>
+                </div>
+            </div>
+        </field>
+    </record>
+
+
+
+       <record id="email_template_custom_user" model="mail.template">
+        <field name="name">Student Notification</field>
+        <field name="model_id" ref="odoocms_admission.model_res_users"/> 
+        <field name="email_from">{{ctx.get('email_from')}}</field>
+        <field name="email_to">{{ctx.get('email_to')}}</field>
+        <field name="subject">{{ctx.get('subject')}}</field>
+        <field name="body_html" type="html">
+            <div style="background-color: #fbfbfb;" lang="en" dir="auto">
+                <div class="r e ys" style="margin: 0px auto; max-width: 600px;">
+                    <div style="padding: 20px;">
+                        <t t-esc="ctx.get('body_html')" type="html"/>
+                    </div>
+                </div>
+            </div>
+        </field>
+    </record>
+
+    <record id="action_send_email_wizard" model="ir.actions.act_window">
+        <field name="name">Send Email</field>
+        <field name="res_model">student.email.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="student_email_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_send_sms_wizard" model="ir.actions.act_window">
+        <field name="name">Send SMS</field>
+        <field name="res_model">student.sms.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="student_sms_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+
+    <record id="action_send_email_application" model="ir.actions.server">
+        <field name="name">Send Email</field>
+        <field name="model_id" ref="odoocms_admission.model_odoocms_application"/>
+        <field name="state">code</field>
+        <field name="binding_model_id" ref="odoocms_admission.model_odoocms_application"/>
+        <field name="code">
+            action = {
+                'type': 'ir.actions.act_window',
+                'name': 'Send Email',
+                'res_model': 'student.email.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {
+                    'active_ids': env.context.get('active_ids'),
+                }
+            }
+        </field>
+    </record>
+    <record id="action_send_sms_application" model="ir.actions.server">
+        <field name="name">Send SMS</field>
+        <field name="model_id" ref="odoocms_admission.model_odoocms_application"/>
+        <field name="state">code</field>
+        <field name="binding_model_id" ref="odoocms_admission.model_odoocms_application"/>
+        <field name="code">
+            action = {
+                'type': 'ir.actions.act_window',
+                'name': 'Send SMS',
+                'res_model': 'student.sms.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {
+                    'active_ids': env.context.get('active_ids'),
+                }
+            }
+        </field>
+    </record>
+</odoo>

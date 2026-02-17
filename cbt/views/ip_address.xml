@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="ip_address_view_tree" model="ir.ui.view">
+        <field name="name">ip.address.view.tree</field>
+        <field name="model">ip.address.login</field>
+        <field name="arch" type="xml">
+            <tree string="" editable="bottom">
+                <field name="name" />
+                <field name="ipaddress" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="ip_address_form" model="ir.ui.view">
+        <field name="name">ip.address.form</field>
+        <field name="model">ip.address.login</field>
+        <field name="arch" type="xml">
+            <form string="Ip Adress">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="ipaddress" placeholder="192.168.0.1" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="ipaddress_login_action" model="ir.actions.act_window">
+        <field name="name">Ip Address PC</field>
+        <field name="res_model">ip.address.login</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="ip_addres_login_menu_root" name="PCs IP Address"  parent="cbt.cbt_menu_root" sequence="9999"/>
+    <menuitem id="ip_addres_login_menu" name="PCs IP Address" action="cbt.ipaddress_login_action" parent="cbt.ip_addres_login_menu_root" sequence="9"/>
+
+</odoo>

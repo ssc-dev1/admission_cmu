@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="fee_scholarship_adjustment_wiz_view" model="ir.ui.view">
+        <field name="name">fee.scholarship.adjustment.wiz.view</field>
+        <field name="model">fee.scholarship.adjustment.wiz</field>
+        <field name="arch" type="xml">
+            <form string="Scholarship Adjustment">
+                <group>
+                    <group>
+                        <field name="student_id" invisible="1"/>
+                        <field name="term_id" required="1" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>
+                        <field name="scholarship_id_domain" invisible="1"/>
+                        <field name="scholarship_id" domain="scholarship_id_domain" required="1" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>
+                        <field name="scholarship_value"/>
+                    </group>
+                    <group>
+                        <field name="current_scholarship_id"/>
+                        <field name="current_scholarship_value"/>
+                    </group>
+                </group>
+                <group>
+                    <group string="Fee">
+                        <field name="total_fee" string="Total (Term)"/>
+                        <field name="total_fee_after_discount" string="After Discount"/>
+                        <field name="paid_fee" string="Paid (First)"/>
+                        <field name="unpaid_fee" string="Unpaid (Second)"/>
+                    </group>
+                    <group string="Waivers">
+                        <field name="total_waiver" string="Total (Term)"/>
+                        <field name="paid_waiver" string="Paid (First)"/>
+                        <field name="unpaid_waiver" string="Unpaid (Second)"/>
+                    </group>
+                </group>
+
+                <group>
+                    <group>
+                        <field name="total_waiver" string="Current Scholarship Amount"/>
+                        <field name="new_scholarship_amount"/>
+                    </group>
+                    <group>
+                        <field name="scholarship_amount_diff"/>
+                        <field name="total_credit_hours"/>
+                        <field name="per_credit_hour_fee"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="action_fee_scholarship_adjustment" string="Scholarship Adjustment" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn btn-sm btn-default" special="cancel"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fee_scholarship_adjustment_wiz" model="ir.actions.act_window">
+        <field name="name">Scholarship Adjustment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fee.scholarship.adjustment.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="fee_scholarship_adjustment_wiz_view"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="odoocms.model_odoocms_student"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="groups_id" eval="[(4,ref('account.group_account_manager')), (4,ref('account.group_account_user'))]"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,45 @@
+<odoo>
+    <data>
+        <record id="view_prospectus_challan_rep_wiz" model="ir.ui.view">
+            <field name="name">prospectus.challan.rep.wiz.form</field>
+            <field name="model">prospectus.challan.rep.wiz</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="date_from" required="1"/>
+                                <field name="date_to" required="1"/>
+                                <field name="source" required="1"/>
+                                <field name="program_id" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <footer>
+                            <button name="print_report" string="PDF Report" type="object" class="btn-primary"/>
+                            <button name="make_excel" string="Excel Report" type="object" class="btn-primary"/>
+                            <button string="Cancel" special="cancel" class="btn btn-secondary"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_prospectus_challan_rep_wizard" model="ir.actions.act_window">
+            <field name="name">Prospectus Challan Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">prospectus.challan.rep.wiz</field>
+            <field name="view_mode">form,list</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="menu_prospectus_challan_report" model="ir.ui.menu">
+            <field name="name">Prospectus Sale Reports</field>
+            <field name="parent_id" ref="odoocms_admission_fee.menu_odoocms_admission_finance_reports"/>
+            <field name="action" ref="action_prospectus_challan_rep_wizard"/>
+            <field name="sequence" eval="10"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  
+
+    <record id="student_convocation_list_form" model="ir.ui.view">
+        <field name="name">student.convocation.list.form</field>
+        <field name="model">student.convocation.list</field>
+        <field name="arch" type="xml">
+            <form string="Student Convocation List">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="institute_id"
+                                options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="batch_ids" 
+                            widget="many2many_tags" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                        <group>
+                            <field name="cgpa" string='CGPA &gt;='/>
+                            <field name="cr_hr" string='Credit Hours &gt;='/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="print_report" string="Print Report" type="object" class="btn-primary"/>
+                    <button name="get_student_list" string="List Students " type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="student_convocation_list_action" model="ir.actions.act_window">
+        <field name="name">Student Convocation List</field>
+        <field name="res_model">student.convocation.list</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="student_convocation_list_menu" name="Student Convocation List" action="odoocms_registration.student_convocation_list_action" parent="odoocms_registration.menu_odoocms_registration_report" />
+    
+</odoo>

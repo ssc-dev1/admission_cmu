@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="fee_challan_installment_wiz_view" model="ir.ui.view">
+        <field name="name">fee.installment.challan.wiz.view</field>
+        <field name="model">fee.challan.installment.wiz</field>
+        <field name="arch" type="xml">
+            <form string="Challan Installment Form">
+                <group>
+                    <group>
+                        <field name="invoice_id" required="1" readonly="1"
+                               options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>
+                        <field name="total_amount" required="1" readonly="1"/>
+                        <field name="value_type" required="1"/>
+                        <field name="installment_amount" required="1"/>
+                        <field name="invoice_date_due" required="1"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="action_challan_installments" string="Submit" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn btn-sm btn-default" special="cancel"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fee_challan_installment_wiz" model="ir.actions.act_window">
+        <field name="name">Challan Installment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fee.challan.installment.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

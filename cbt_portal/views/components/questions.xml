@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="cbt_questions" name="">
+        <div class="paginate">
+            <div class="items">
+                <t t-set="sr" t-value="0"/>
+                <t t-set="sr_2" t-value="0"/>
+
+                    <t t-foreach="section.question_ids" t-as="question">
+                        <t t-if="question in paper.line_ids">
+
+                        <div>
+
+                            <p class="right-align">
+                                <label>
+                                    <input type="checkbox" t-if="not question.mark_review"
+                                           t-attf-onchange="mark_review({{ question.id }},{{section.id}},{{paper.id}},this)"
+                                           t-att-value="question.id"/>
+                                    <input type="checkbox" t-if="question.mark_review" checked="True"
+                                           t-attf-onchange="mark_review({{ question.id }},{{section.id}},{{paper.id}},this)"
+                                           t-att-value="question.id"/>
+                                    <span>Mark For Review</span>
+                                </label>
+                            </p>
+                            <span>
+                                <t t-if="not question.scenario_relation == 'child'">
+                                <t t-set="sr" t-value="sr+1"/>
+                                <b >Q<t t-esc="sr"/>.
+                                </b>
+                                </t>
+                                <t t-if="question.scenario_relation == 'child'">
+                                <t t-set="sr_2" t-value="sr_2+1"/>
+                                <b >Q<t t-esc="sr"/> (<t t-esc="sr_2"/>)
+                                </b>
+                                </t>
+
+                                <t t-raw="question.name"/>
+                            </span>
+                            <t t-set="answer_no" t-value="0"/>
+                            <t t-foreach="question.option_ids" t-as="option">
+                              <t t-if="option.name">
+                                
+                                <t t-set="answer_no" t-value="answer_no+1"/>
+                                <div class="data">
+                                    <!--  <p>-->
+                                     <b style="font-size:18px;">
+                                         <t t-if="answer_no==1">
+                                             A
+                                         </t>
+                                         <t t-elif="answer_no==2">
+                                             B
+                                         </t>
+                                         <t t-elif="answer_no==3">
+                                             C
+                                         </t>
+                                          <t t-elif="answer_no==4 ">
+                                             D
+                                         </t>
+                                           <t t-elif="answer_no==5 ">
+                                             E
+                                         </t>
+                                         <t t-elif="answer_no==6 ">
+                                             F
+                                         </t>
+                                         .</b>
+                                    <label>
+
+                                        <input t-if="question.answer == option.id" t-attf-id="{{option.id}}"
+                                               t-attf-name="{{ question.id }}" type="radio"
+                                               t-attf-onchange="rec_answer({{ question.id }},{{section.id}},{{paper.id}},{{answer_no}},this.value)"
+                                               t-attf-value="{{option.id}}"
+                                               checked="True"/>
+                                        <input t-if="not question.answer == option.id" t-attf-id="{{option.id}}"
+                                               t-attf-name="{{ question.id }}" type="radio"
+                                               t-attf-onchange="rec_answer({{ question.id }},{{section.id}},{{paper.id}},{{answer_no}},this.value)"
+                                               t-attf-value="{{option.id}}"/>
+                                         <span>
+                                            <b id="fix_align" style="font-size:18px;"> <t t-raw="option.name"/> </b>
+                                        </span>
+                                    </label>
+
+                                    <!--   </p>-->
+                                </div>
+                            </t>
+                            </t>
+                        </div>
+
+                    </t>
+                </t>
+            </div>
+            <div class="pager right-align">
+                <div class="firstPage ">First Question &amp;laquo;</div>
+                <div class="previousPage">Previous Question &amp;lsaquo;</div>
+                <div class="nextPage">Next Question &amp;rsaquo;</div>
+                <div class="lastPage">Last Question &amp;raquo;</div>
+                <div style='display:none;' class="nextsection" >Next Section &amp;raquo;</div>
+                <div class="pageNumbers"/>
+            </div>
+            <div class="left-align">
+                <t t-set="uq" t-value="0"/>
+                <t t-set="uq_2" t-value="0"/>
+                 <b> Unanswered questions: </b>
+                  <t t-foreach="paper.line_ids" t-as="question">
+                    <t t-if="question.subject_id.id ==section.id ">
+                        
+                        <t t-if="question.scenario_relation == 'parent'" t-set="uq" t-value="uq+1"/>
+                        <t t-if="not question.answer and not question.scenario_relation == 'child' and not question.scenario_relation == 'parent'">
+                            <t t-set="uq" t-value="uq+1"/>
+                            <span style="color:red;" t-attf-id="{{section.id}}_{{question.id}}"> <t t-esc="uq"/> </span>
+                        </t>
+                        <t t-if="not question.answer and question.scenario_relation == 'child'">
+                            <t t-set="uq_2" t-value="uq_2+1"/>
+                            <span style="color:red;" t-attf-id="{{section.id}}_{{question.id}}"> <t t-esc="uq"/> (<t t-esc="uq_2"/>) </span>
+                        </t>
+                    </t>
+                  </t>
+            </div>
+        </div>
+
+    </template>
+    <template id="cbt_questions_review" name="">
+        <div class="paginate">
+            <div class="items">
+                <t t-set="sr" t-value="0"/>
+
+                    <t t-foreach="section.question_ids.filtered(lambda l: l.mark_review == True)" t-as="question">
+                        <div>
+                            <p class="right-align">
+                                <label>
+                                    <input type="checkbox" t-if="not question.mark_review"
+                                           t-attf-onchange="mark_review({{ question.id }},{{section.id}},{{paper.id}},this)"
+                                           t-att-value="question.id"/>
+                                    <input type="checkbox" t-if="question.mark_review" checked="True"
+                                           t-attf-onchange="mark_review({{ question.id }},{{section.id}},{{paper.id}},this)"
+                                           t-att-value="question.id"/>
+                                    <span>Mark For Review</span>
+                                </label>
+                            </p>
+
+
+                            <t t-set="sr" t-value="sr+1"/>
+                            <span>
+                                <b>Q<t t-esc="sr"/>.
+                                </b>
+                                <t t-raw="question.name"/>
+                            </span>
+                            <t t-set="answer_no" t-value="0"/>
+                            <t t-foreach="question.option_ids" t-as="option">
+                                <t t-if="option.name">
+                                    
+                                <t t-set="answer_no" t-value="answer_no+1"/>
+                                <div class="data">
+                                    <!--  <p>-->
+
+                                    <label>
+                                        <b style="font-size:18px;"> <t t-esc="answer_no"/>.</b>
+                                        <input t-if="question.answer == option.id" t-attf-id="{{option.id}}"
+                                               t-attf-name="{{ question.id }}" type="radio"
+                                               t-attf-onchange="rec_answer({{ question.id }},{{section.id}},{{paper.id}},{{answer_no}},this.value)"
+                                               t-attf-value="{{option.id}}"
+                                               checked="True"/>
+                                        <input t-if="not question.answer == option.id" t-attf-id="{{option.id}}"
+                                               t-attf-name="{{ question.id }}" type="radio"
+                                               t-attf-onchange="rec_answer({{ question.id }},{{section.id}},{{paper.id}},{{answer_no}},this.value)"
+                                               t-attf-value="{{option.id}}"/>
+                                        <span>
+                                            <b style="font-size:18px;"> <t t-raw="option.name"/> </b>
+                                        </span>
+                                    </label>
+                                    <!--   </p>-->
+                                </div>
+                            </t>
+                            </t>
+                        </div>
+                    </t>
+            </div>
+            <div class="pager right-align">
+                <div class="firstPage ">First Question &amp;laquo;</div>
+                <div class="previousPage">Previous Question &amp;lsaquo;</div>
+                <div class="nextPage">Next Question &amp;rsaquo;</div>
+                <div class="lastPage">Last Question &amp;raquo;</div>
+                <div class="pageNumbers"/>
+            </div>
+        </div>
+
+    </template>
+</odoo>

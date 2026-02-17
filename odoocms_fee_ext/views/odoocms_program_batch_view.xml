@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--***** Batch *****-->
+        <record id="fee_view_odoocms_batch_form" model="ir.ui.view">
+            <field name="name">fee.odoocms.batch.form.view</field>
+            <field name="model">odoocms.batch</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_batch_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@name='othersettings']" position="before">
+                    <page name="batch_fee_setting" string="Fee Setting">
+                        <group name="fee_settings_main1" string="Credit Hour / Admission Fee">
+                            <group name="other_settings_grp1">
+                                <field name="per_fee_type" string="Fee Type"/>
+                                <field name="per_credit_hour_fee" string="Credit Hour Fee" attrs="{'invisible': [('per_fee_type', '!=', 'per_credit_hour')]}"/>
+                                <field name="per_credit_hour_fee" string="Contact Hour Fee" attrs="{'invisible': [('per_fee_type', '!=', 'per_contact_hour')]}"/>
+                                <field name="per_credit_hour_fee" string="course Fee" attrs="{'invisible': [('per_fee_type', '!=', 'per_course')]}"/>
+                                <field name="admission_fee"/>
+                            </group>
+                            <group name="other_settings_grp2">
+                                <field name="fee_structure_id" readonly="1"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="batch_tuition_structure_head" readonly="1"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="admission_tuition_structure_head" string="Adm Structure Head" readonly="1"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+
+                            </group>
+
+                            <group name="other_settings_grp3">
+                                <button name="action_create_structure_head" type="object" string="Create Structure Heads" class="oe_highlight o_invoice_validate" groups="account.group_account_invoice"/>
+                            </group>
+
+                        </group>
+                        <group name="other_settings_grp4"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="fee_view_odoocms_batch_tree" model="ir.ui.view">
+            <field name="name">fee.odoocms.batch.tree.view</field>
+            <field name="model">odoocms.batch</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_batch_tree"/>
+            <field name="arch" type="xml">
+                <field name="session_id" position="after">
+                    <field name="per_credit_hour_fee" optional="hide" string="Credit Hour Fee"/>
+                    <field name="admission_fee" optional="hide"/>
+                </field>
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>

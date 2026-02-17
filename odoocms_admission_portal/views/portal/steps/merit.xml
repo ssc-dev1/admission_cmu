@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <template id="merit_template" name="Merit Template">
+
+    <!-- Second Page Contact   -->
+    <!-- <div class='container-fluid mb-3'> -->
+    <div t-attf-class="ml-3 mr-3 header_tab {{ '' if application_id.state == 'submit' else 'diable_header_tab' }} mt-0 p-2" onclick="$('#merit_collapse').slideToggle(1000); $('#angle_class2').toggleClass('fa-angle-down fa-angle-up');">
+      <a class="btn btn-link">
+        <i style='color: white;font-size: 25px;' class="fa-solid fa-address-card float-left"></i>
+        <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/>
+        </h2>
+
+      </a>
+      <a >
+        <i id='angle_class2' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+      </a>
+    </div>
+
+    <div id="merit_collapse" class="row container-fluid mt-3 collapse_div">
+      <br/>
+
+      <div class='col-8'>
+        <!-- <t t-esc="application_id.register_id.state"/> -->
+        <div class="table-responsive-sm">
+
+          <!-- <t t-if="application_id.academic_ids"> -->
+            <div class="container-fluid">
+              <t t-if="merit_student">
+                <a class='m-2' target='_blank' t-attf-href="/download/offer/letter/" >
+                      <button  class="btn btn-primary ml-1">Download Offer Letter</button>
+              </a>              
+              </t> 
+              <br/>
+            </div>
+          <table id='merit_table' class="table table-sm table-hover">
+            <thead>
+              <tr t-if='merit_student'>
+                <th class='col-auto' scope="col">Merit No.</th>
+                <th class='col-auto' scope="col">program</th>
+                <th class='col-auto' scope="col">Aggregte</th>               
+              </tr>
+            </thead>
+            <tbody id='merit_table_body'>
+              <t t-foreach="merit_student" t-as="m">
+                <tr >
+                  <td class='col-auto'>
+                    <input type="text" readonly='1' class="form-control" t-att-value="m.merit_no"/>
+                  </td>
+                  <td class='col-auto'>
+                    <input type="text" readonly='1' class="form-control" t-att-value="m.program_id.name if merit_student.program_id else ''"/>
+                  </td>
+                <td class='col-auto'>
+                  <input type="text" readonly='1' class="form-control" t-att-value="m.aggregate"/>
+                </td>
+              </tr>
+            </t>
+              
+            </tbody>
+          </table>
+          <t t-if="not merit_student">
+            <strong><label>Please Wait Your Merit Will Appear Soon</label></strong>
+          </t>
+          <!-- </t> -->
+        </div>
+      </div>
+      <div class='col-4'>
+        
+      </div>
+    </div>
+    <hr/>
+    <br/>
+
+    <!-- </div> -->
+
+  </template>
+</odoo>

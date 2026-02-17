@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "CBT portal",
+    'summary': 'University Online Entry Test Portal',
+    'category': 'OdooCMS',
+    'sequence': 10,
+    'author': "AARSOL",
+    'company': 'NUST Holdings &amp; AARSOL (Joint Venture)',
+    'website': "https://www.aarsol.com",
+    'version': '15.1',
+    'depends': ['base','website','cbt','portal_assets'],
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'views/instructions/instructions.xml',
+        'views/configurations/paper.xml',
+        'views/configurations/instructions.xml',
+        'views/configurations/menu.xml',
+        
+        'views/components/widgets.xml',
+        'views/components/questions.xml',
+        'views/components/sections.xml',
+        'views/paper/paper.xml',
+        'reports/solved_paper.xml',
+        'wizards/date_transfer_wizard.xml',
+        'wizards/prepare_result.xml',
+        # 'views/layout/layout_page.xml',
+    ],
+    'application': True,
+}

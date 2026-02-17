@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_program_term_scholarship_form" model="ir.ui.view">
+            <field name="name">odoocms.program.term.scholarship.form.view</field>
+            <field name="model">odoocms.program.term.scholarship</field>
+            <field name="arch" type="xml">
+                <form string="Program Term Scholarships">
+                    <header>
+                        <button name="action_lock" type="object" class="oe_highlight" string="Lock" states="draft"/>
+                        <button name="action_unlock" type="object" class="oe_highlight" string="UnLock" states="lock"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="program_id" required="1" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="term_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Scholarship" name="scholarship_ids">
+                                <field name="scholarship_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                                    <tree delete="false" create="false">
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="waiver_type" string="Scholarship Type"/>
+                                        <field name="amount"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_program_term_scholarship_tree" model="ir.ui.view">
+            <field name="name">odoocms.program.term.scholarship.tree.view</field>
+            <field name="model">odoocms.program.term.scholarship</field>
+            <field name="arch" type="xml">
+                <tree string="Program Term Scholarships" decoration-info="state=='draft'" decoration-success="state=='lock'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="program_id"/>
+                    <field name="term_id"/>
+                    <field name="scholarship_ids" widget="many2many_tags"/>
+                    <field name="create_uid" string="Created By" optional="show" widget="many2one_avatar_user"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-success="state=='lock'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_program_term_scholarship_search" model="ir.ui.view">
+            <field name="name">odoocms.program.term.scholarship.search</field>
+            <field name="model">odoocms.program.term.scholarship</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Program Term Scholarships">
+                    <field name="program_id"/>
+                    <field name="term_id"/>
+                    <field name="name"/>
+                    <separator/>
+
+                    <group expand="0" string="Group By...">
+                        <filter string="Term" name="group_by_term_id" domain="[]" context="{'group_by':'term_id'}"/>
+                        <separator/>
+                        <filter string="Program" name="group_by_program_id" domain="[]" context="{'group_by':'program_id'}"/>
+                        <separator/>
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_program_term_scholarship" model="ir.actions.act_window">
+            <field name="name">Program Term Scholarships</field>
+            <field name="res_model">odoocms.program.term.scholarship</field>
+            <field name="context">{'search_default_group_by_term_id': 188}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_program_term_scholarship"
+                name="Program Term Scholarship"
+                sequence='30'
+                parent="odoocms_fee.menu_fee_configuration_waivers"
+                action="action_odoocms_program_term_scholarship"
+                groups="odoocms_fee.group_fee_manager"
+        />
+
+    </data>
+</odoo>

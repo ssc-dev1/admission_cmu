@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id='assets_dashboard' name='Asset Dashboard'>
+      <t t-call-assets="portal_assets.assets_cbt"/>
+    </template>
+    <template id='assets_dashboard' name='Asset Dashboard'>
+       <!-- <link rel="apple-touch-icon" href="/portal_assets/app-assets/images/favicon/apple-touch-icon-152x152.png"/>-->
+       <!-- <link rel="shortcut icon" type="image/x-icon"
+              href="/portal_assets/app-assets/images/favicon/favicon-32x32.png"/>-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        <!-- BEGIN: VENDOR CSS-->
+        <link rel="stylesheet" type="text/css" href="/portal_assets/app-assets/vendors/vendors.min.css"/>
+     <link rel="stylesheet" type="text/css" href="/portal_assets/app-assets/vendors/materialize-stepper/materialize-stepper.css"/>
+        <!-- END: VENDOR CSS-->
+        <!-- BEGIN: Page Level CSS-->
+        <link rel="stylesheet" type="text/css" href="/portal_assets/app-assets/css/themes/vertical-modern-menu-template/materialize.css"/>
+        <link rel="stylesheet" type="text/css"
+              href="/portal_assets/app-assets/css/themes/vertical-modern-menu-template/style.css"/>
+     <link rel="stylesheet" type="text/css" href="/portal_assets/app-assets/css/pages/form-wizard.css"/>
+       <!-- <link rel="stylesheet" type="text/css" href="/portal_assets/app-assets/css/pages/dashboard.css"/>-->
+        <!-- END: Page Level CSS-->
+        <!-- BEGIN: Custom CSS-->
+        <!--<link rel="stylesheet" type="text/css" href="/portal_assets/app-assets/css/pages/form-select2.css"/>-->
+        <link rel="stylesheet" type="text/css" href="/portal_assets/app-assets/css/custom/custom.css"/>
+        <!-- BEGIN VENDOR JS-->
+        <script src="/portal_assets/app-assets/js/vendors.js"></script>
+        <!-- BEGIN VENDOR JS-->
+        <!-- BEGIN PAGE VENDOR JS-->
+        <!--<script src="/portal_assets/app-assets/vendors/chartjs/chart.js"></script>-->
+        <!-- END PAGE VENDOR JS-->
+        <!-- BEGIN THEME  JS-->
+     <script src="/portal_assets/app-assets/vendors/materialize-stepper/materialize-stepper.js"></script>
+        <!--<script src="/portal_assets/app-assets/js/plugins.js"></script>-->
+        <!--<script src="/portal_assets/app-assets/js/search.js"></script>-->
+        <script src="/portal_assets/app-assets/js/custom/custom-script.js"></script>
+        <!--<script src="/portal_assets/app-assets/js/scripts/customizer.js"></script>-->
+     <script src="/portal_assets/app-assets/js/scripts/form-wizard.js"></script>
+
+
+        <!-- END THEME  JS-->
+        <!-- BEGIN PAGE LEVEL JS-->
+        <!--<script src="/portal_assets/app-assets/js/scripts/dashboard-ecommerce.js"></script>-->
+        <script src="/portal_assets/app-assets/js/scripts/advance-ui-modals.js"></script>
+       <!-- <script src="/portal_assets/app-assets/js/scripts/form-select2.js"></script>-->
+     <script src="/portal_assets/app-assets/js/scripts/form-elements.js"></script>
+
+        <!-- END PAGE LEVEL JS-->
+    </template>
+</odoo>

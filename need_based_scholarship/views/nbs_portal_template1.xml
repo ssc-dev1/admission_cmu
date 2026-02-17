@@ -1,0 +1,2944 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <template id="need_based_scholarship_application" name="Need Based Scholarship Application">
+    <div class="nbs_page_heading">
+      <h1>
+        Need Based Scholarship
+      </h1>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/fontawesome/css/all.css" />
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery.min.js"/>
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/popper.min.js"/>
+    <script type="text/javascript" src="/odoocms_admission_portal/static/bootstrap/js/bootstrap.min.js"/>
+    <script type="text/javascript" src="/need_based_scholarship/static/src/js/nbs_portal.js"/>
+    <style>
+*{
+  font-family: 'Arial';
+
+}
+.accordion-item{
+  border-radius: 0px;
+  margin-bottom: 20px;
+  border: none;
+}
+.accordion-button{
+  background:rgb(17,43,79,1)!important;
+  font-size:20px;
+  color:white!important;
+}
+
+.accordion-button::after,.accordion-button:not(.collapsed)::after{
+   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+
+}
+
+.accordion-button:not(.collapsed){
+  color:white!important;
+
+}
+.nbs_page_heading{
+  text-align: center;
+  margin: 50px 0 50px 0;
+}
+    </style>
+
+    <t t-set="title">Stepwise Accordion</t>
+    <div class="m-3">
+      <t t-set="step_no" t-value="nbs_id.step_no or 1"/>
+      <div class="accordion" id="accordionPanelsStayOpenExample">
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step1-heading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#step1" aria-expanded="true" aria-controls="step1">
+                Personal Information
+            </button>
+          </h2>
+          <div id="step1" class="accordion-collapse collapse show" aria-labelledby="step1-heading">
+            <div class="accordion-body">
+              <form class="nbs-foundation-form row g-3">
+                <input type="hidden" name="step_name" value="nbs_foundation"/>
+                <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                <input type="hidden" name="df_step_no" id="df_step_no" value="1"/>
+                <div class="mb-1 col-md-4 pb-2">
+                  <input id="first_name" style='pointer-events:none;' required='1' t-att-value='application_id.first_name' name='first_name' type="text" class="form-control inputText validate_char" />
+                  <span class="floating-label">First Name*</span>
+                </div>
+                <div class="mb-1 col-md-4 pb-2">
+                  <input id="last_name" style='pointer-events:none' required="1" t-att-value='application_id.last_name' name='last_name' type="text" class="form-control inputText validate_char" />
+                  <span class="floating-label">Last Name*</span>
+                </div>
+                <div class="mb-1 col-md-4 pb-2">
+                  <input id="application_no" t-att-value='application_id.application_no' name='application_no' type="text" class="form-control inputText validate_char" disabled="disabled" />
+                  <span class="floating-label-norequired">Referece Number</span>
+                </div>
+                <div class="mb-1 mt-3 col-md-4">
+                  <select required="required" name="parents_marital_status" class="form-control inputText" id="parents_marital_status">
+                    <option value="">Select Parents Marital Status</option>
+                    <option value="Married" t-att-selected="nbs_id.parents_marital_status == 'Married'">Married</option>
+                    <option value="Separated" t-att-selected="nbs_id.parents_marital_status == 'Separated'">Separated</option>
+                    <option value="Divorced" t-att-selected="nbs_id.parents_marital_status == 'Divorced'">Divorced</option>
+                  </select>
+                  <label class="floating-label">Parents Marital Status*</label>
+                </div>
+
+                <div class="mb-1 mt-3 col-md-4">
+                  <select required="required" name="parents_status" class="form-control inputText" id="parents_status">
+                    <option value="">Select Parents Status</option>
+                    <option value="Both Living" t-att-selected="nbs_id.parents_status == 'Both Living'">Both Living</option>
+                    <option value="Both Deceased" t-att-selected="nbs_id.parents_status == 'Both Deceased'">Both Deceased</option>
+                    <option value="Father Living/Mother Deceased" t-att-selected="nbs_id.parents_status == 'Father Living/Mother Deceased'">Father Living / Mother Deceased</option>
+                    <option value="Father Deceased/Mother Living" t-att-selected="nbs_id.parents_status == 'Father Deceased/Mother Living'">Father Deceased / Mother Living</option>
+                  </select>
+                  <label class="floating-label">Parents Status*</label>
+                </div>
+
+                <div class="mb-1 mt-3 col-md-4">
+                  <input required="required" type="number" name="num_other_dependants" t-att-value="nbs_id.num_other_dependants" class="form-control inputText"/>
+                  <span class="floating-label">Number of Other Dependants*</span>
+                </div>
+
+                <div class="mb-1 mt-3 col-md-4">
+                  <select required="required" name="candidate_marital_status" class="form-control inputText" id="candidate_marital_status">
+                    <option value="">Select Your Marital Status</option>
+                    <option value="Single" t-att-selected="nbs_id.candidate_marital_status == 'Single'">Single</option>
+                    <option value="Married" t-att-selected="nbs_id.candidate_marital_status == 'Married'">Married</option>
+                    <option value="Divorced" t-att-selected="nbs_id.candidate_marital_status == 'Divorced'">Divorced</option>
+                  </select>
+                  <label class="floating-label">Your Marital Status*</label>
+                </div>
+
+                <div class="col-12 mt-2">
+                  <input type="submit" style="display:none;" class="btn btn-primary"/>
+                  <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step2-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step2" aria-expanded="false" aria-controls="step2">
+                Father Information
+            </button>
+          </h2>
+          <div id="step2" class="accordion-collapse collapse" aria-labelledby="step2-heading">
+            <div class="accordion-body">
+              <form class="father-info-form row g-3">
+                <input type="hidden" name="step_name" value="father_information"/>
+                <input type="hidden" name="df_step_no" id="df_step_no" value="2"/>
+                <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+                <input type="hidden" name="relation" t-att-value="Father"/>
+                <!-- Basic Info -->
+                <div class="col-md-4">
+                  <select name="relation" class="form-control" required="required" disabled="disabled">
+                    <option value="">Select Relation</option>
+                    <option value="father">Father</option>
+                    <option value="mother" selected='selected'>Mother</option>
+                    <option value="guardian">Guardian</option>
+                  </select>
+                  <label class="floating-label">Relation*</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="name" class="form-control" required="required" t-att-value="father_info and father_info.name or ''"/>
+                  <span class="floating-label">Name*</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" name="age" class="form-control" required="required" t-att-value="father_info and father_info.age or ''"/>
+                  <span class="floating-label">Age*</span>
+                </div>
+                <div class="col-md-4">
+                  <textarea name="address" t-att-value="father_info and father_info.address or ''" class="form-control"></textarea>
+                  <span class="floating-label">Address</span>
+                </div>
+                <div class="col-md-4">
+                  <select name="country_id" class="form-control">
+                    <t t-foreach="country_ids" t-as="con_id">
+                      <option t-att-value="con_id.id">
+                        <t t-esc="con_id.name" />
+                      </option>
+                    </t>
+                  </select>
+                  <label class="floating-label">Country</label>
+                </div>
+                <div class="col-md-4">
+                  <select name="city_id" class="form-control">
+                    <t t-foreach="city_ids" t-as="city_id">
+                      <option t-att-value="city_id.id">
+                        <t t-esc="city_id.name" />
+                      </option>
+                    </t>
+                  </select>
+                  <label class="floating-label">Country</label>
+                </div>
+                <!-- <div class="col-md-4">
+                  <input type="text" name="city" class="form-control" t-att-value="father_info and father_info.city or ''"/>
+                  <span class="floating-label">City</span>
+                </div> -->
+                <div class="col-md-4">
+                  <input type="text" name="mobile" class="form-control" t-att-value="father_info and father_info.mobile or ''"/>
+                  <span class="floating-label">Mobile</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="education" class="form-control" t-att-value="father_info and father_info.education or ''"/>
+                  <span class="floating-label">Educational Qualification</span>
+                </div>
+
+                <!-- Employment Section -->
+                <div class="col-md-4">
+                  <select name="employment_status" class="form-control">
+                    <option value="">Employment Status</option>
+                    <option value="employed">Employed</option>
+                    <option value="self_employed">Self-employed</option>
+                    <option value="business">Business</option>
+                    <option value="unemployed">Unemployed</option>
+                    <option value="retired">Retired</option>
+                  </select>
+                  <label class="floating-label">Employment Status</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="organization" class="form-control" t-att-value="father_info and father_info.organization or ''"/>
+                  <span class="floating-label">Organisation</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="designation" class="form-control" t-att-value="father_info and father_info.designation or ''"/>
+                  <span class="floating-label">Designation</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="annual_salary_gross" class="form-control" t-att-value="father_info and father_info.annual_salary_gross or ''"/>
+                  <span class="floating-label">Gross Annual Salary</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="annual_salary_net" class="form-control" t-att-value="father_info and father_info.annual_salary_net or ''"/>
+                  <span class="floating-label">Net Annual Salary</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="business_income" class="form-control" t-att-value="father_info and father_info.business_income or ''"/>
+                  <span class="floating-label">Annual Business Income</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="household_contribution" class="form-control" t-att-value="father_info and father_info.household_contribution or ''"/>
+                  <span class="floating-label">Annual Contribution to Household</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="date" name="joining_year" class="form-control" t-att-value="father_info and father_info.joining_year or ''"/>
+                  <span class="floating-label">Year of Joining</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="date" name="retirement_date" class="form-control" t-att-value="father_info and father_info.retirement_date or ''"/>
+                  <span class="floating-label">Expected Retirement Date</span>
+                </div>
+                <div class="col-md-4">
+                  <textarea name="retirement_benefits" class="form-control" t-att-value="father_info and father_info.retirement_benefits or ''"></textarea>
+                  <span class="floating-label">Expected Retirement Benefits</span>
+                </div>
+                <div class="col-md-4">
+                  <textarea name="unemployment_reason" class="form-control" t-att-value="father_info and father_info.unemployment_reason or ''"></textarea>
+                  <span class="floating-label">Unemployment Reason</span>
+                </div>
+
+                <!-- Business and Self-Employment -->
+                <div class="col-md-4">
+                  <input type="text" name="business_type" class="form-control" t-att-value="father_info and father_info.business_type or ''"/>
+                  <span class="floating-label">Business Type</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="business_locality" class="form-control" t-att-value="father_info and father_info.business_locality or ''"/>
+                  <span class="floating-label">Business Locality (Head Office)</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="business_turnover" class="form-control" t-att-value="father_info and father_info.business_turnover or ''"/>
+                  <span class="floating-label">Annual Turnover</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" name="business_employees" class="form-control" t-att-value="father_info and father_info.business_employees or ''"/>
+                  <span class="floating-label">Company Employees</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="ntn" class="form-control" t-att-value="father_info and father_info.ntn or ''"/>
+                  <span class="floating-label">NTN</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="self_employed_type" class="form-control" t-att-value="father_info and father_info.self_employed_type or ''"/>
+                  <span class="floating-label">Self-employed Type</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="self_employed_locality" class="form-control" t-att-value="father_info and father_info.self_employed_locality or ''"/>
+                  <span class="floating-label">Self-employed Locality</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="self_employed_income" class="form-control" t-att-value="father_info and father_info.self_employed_income or ''"/>
+                  <span class="floating-label">Self-employed Income</span>
+                </div>
+
+                <!-- Attachments -->
+                <div class="col-md-6">
+                  <label class="form-label">Document Attachment</label>
+                  <input type="file" name="attachment" class="form-control" t-att-value="father_info and father_info.self_employed_income or ''"/>
+                </div>
+                <!-- <div class="col-md-6">
+                  <input type="text" name="attachment_filename" class="form-control" placeholder="Document Filename"/>
+                </div> -->
+                <div class="col-md-6">
+                  <textarea name="previous_job_info" class="form-control" t-att-value="father_info and father_info.previous_job_info or ''"></textarea>
+                  <span class="floating-label">Previous Job Information</span>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Previous Job Attachment</label>
+                  <input type="file" name="previous_job_attachment" class="form-control" t-att-value="father_info and father_info.previous_job_attachment or ''"/>
+                </div>
+                <!-- <div class="col-md-6">
+                  <input type="text" name="previous_job_attachment_filename" class="form-control" placeholder="Previous Job Filename"/>
+                </div> -->
+
+                <div class="col-12 mt-2">
+                  <input type="submit" style="display:none;" class="btn btn-primary"/>
+                  <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+                </div>
+              </form>
+
+              <!-- <button class="btn btn-success mt-2" onclick="completeStep(2)">Complete Step 2</button> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step3-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step3" aria-expanded="false" aria-controls="step2">
+                Mother Information
+            </button>
+          </h2>
+          <div id="step3" class="accordion-collapse collapse" aria-labelledby="step2-heading">
+            <div class="accordion-body">
+              <form class="mother-info-form row g-3">
+                <input type="hidden" name="step_name" value="mother_information"/>
+                <input type="hidden" name="df_step_no" id="df_step_no" value="3"/>
+                <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+                <!-- Basic Info -->
+                <div class="col-md-4">
+                  <select name="relation" class="form-control" required="required" disabled="disabled">
+                    <option value="">Select Relation</option>
+                    <option value="father">Father</option>
+                    <option value="mother">Mother</option>
+                    <option value="guardian">Guardian</option>
+                  </select>
+                  <label class="floating-label">Relation*</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="name" class="form-control" required="required" t-att-value="mother_info and mother_info.name or ''"/>
+                  <span class="floating-label">Name*</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" name="age" class="form-control" required="required" t-att-value="mother_info and mother_info.age or ''"/>
+                  <span class="floating-label">Age*</span>
+                </div>
+                <div class="col-md-4">
+                  <textarea name="address" t-att-value="mother_info and mother_info.address or ''" class="form-control"></textarea>
+                  <span class="floating-label">Address</span>
+                </div>
+                <div class="col-md-4">
+                  <select name="country_id" class="form-control">
+                    <t t-foreach="country_ids" t-as="con_id">
+                      <option t-att-value="con_id.id">
+                        <t t-esc="con_id.name" />
+                      </option>
+                    </t>
+                  </select>
+                  <label class="floating-label">Country</label>
+                </div>
+                <div class="col-md-4">
+                  <select name="city_id" class="form-control">
+                    <t t-foreach="city_ids" t-as="city_id">
+                      <option t-att-value="city_id.id">
+                        <t t-esc="city_id.name" />
+                      </option>
+                    </t>
+                  </select>
+                  <label class="floating-label">Country</label>
+                </div>
+                <!-- <div class="col-md-4">
+                  <input type="text" name="city" class="form-control" t-att-value="mother_info and mother_info.city or ''"/>
+                  <span class="floating-label">City</span>
+                </div> -->
+                <div class="col-md-4">
+                  <input type="text" name="mobile" class="form-control" t-att-value="mother_info and mother_info.mobile or ''"/>
+                  <span class="floating-label">Mobile</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="education" class="form-control" t-att-value="mother_info and mother_info.education or ''"/>
+                  <span class="floating-label">Educational Qualification</span>
+                </div>
+
+                <!-- Employment Section -->
+                <div class="col-md-4">
+                  <select name="employment_status" class="form-control">
+                    <option value="">Employment Status</option>
+                    <option value="employed">Employed</option>
+                    <option value="self_employed">Self-employed</option>
+                    <option value="business">Business</option>
+                    <option value="unemployed">Unemployed</option>
+                    <option value="retired">Retired</option>
+                  </select>
+                  <label class="floating-label">Employment Status</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="organization" class="form-control" t-att-value="mother_info and mother_info.organization or ''"/>
+                  <span class="floating-label">Organisation</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="designation" class="form-control" t-att-value="mother_info and mother_info.designation or ''"/>
+                  <span class="floating-label">Designation</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="annual_salary_gross" class="form-control" t-att-value="mother_info and mother_info.annual_salary_gross or ''"/>
+                  <span class="floating-label">Gross Annual Salary</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="annual_salary_net" class="form-control" t-att-value="mother_info and mother_info.annual_salary_net or ''"/>
+                  <span class="floating-label">Net Annual Salary</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="business_income" class="form-control" t-att-value="mother_info and mother_info.business_income or ''"/>
+                  <span class="floating-label">Annual Business Income</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="household_contribution" class="form-control" t-att-value="mother_info and mother_info.household_contribution or ''"/>
+                  <span class="floating-label">Annual Contribution to Household</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="date" name="joining_year" class="form-control" t-att-value="mother_info and mother_info.joining_year or ''"/>
+                  <span class="floating-label">Year of Joining</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="date" name="retirement_date" class="form-control" t-att-value="mother_info and mother_info.retirement_date or ''"/>
+                  <span class="floating-label">Expected Retirement Date</span>
+                </div>
+                <div class="col-md-4">
+                  <textarea name="retirement_benefits" class="form-control" t-att-value="mother_info and mother_info.retirement_benefits or ''"></textarea>
+                  <span class="floating-label">Expected Retirement Benefits</span>
+                </div>
+                <div class="col-md-4">
+                  <textarea name="unemployment_reason" class="form-control" t-att-value="mother_info and mother_info.unemployment_reason or ''"></textarea>
+                  <span class="floating-label">Unemployment Reason</span>
+                </div>
+
+                <!-- Business and Self-Employment -->
+                <div class="col-md-4">
+                  <input type="text" name="business_type" class="form-control" t-att-value="mother_info and mother_info.business_type or ''"/>
+                  <span class="floating-label">Business Type</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="business_locality" class="form-control" t-att-value="mother_info and mother_info.business_locality or ''"/>
+                  <span class="floating-label">Business Locality (Head Office)</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="business_turnover" class="form-control" t-att-value="mother_info and mother_info.business_turnover or ''"/>
+                  <span class="floating-label">Annual Turnover</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" name="business_employees" class="form-control" t-att-value="mother_info and mother_info.business_employees or ''"/>
+                  <span class="floating-label">Company Employees</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="ntn" class="form-control" t-att-value="mother_info and mother_info.ntn or ''"/>
+                  <span class="floating-label">NTN</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="self_employed_type" class="form-control" t-att-value="mother_info and mother_info.self_employed_type or ''"/>
+                  <span class="floating-label">Self-employed Type</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="self_employed_locality" class="form-control" t-att-value="mother_info and mother_info.self_employed_locality or ''"/>
+                  <span class="floating-label">Self-employed Locality</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="self_employed_income" class="form-control" t-att-value="mother_info and mother_info.self_employed_income or ''"/>
+                  <span class="floating-label">Self-employed Income</span>
+                </div>
+
+                <!-- Attachments -->
+                <div class="col-md-6">
+                  <label class="form-label">Document Attachment</label>
+                  <input type="file" name="attachment" class="form-control" t-att-value="mother_info and mother_info.self_employed_income or ''"/>
+                </div>
+                <!-- <div class="col-md-6">
+                  <input type="text" name="attachment_filename" class="form-control" placeholder="Document Filename"/>
+                </div> -->
+                <div class="col-md-6">
+                  <textarea name="previous_job_info" class="form-control" t-att-value="mother_info and mother_info.previous_job_info or ''"></textarea>
+                  <span class="floating-label">Previous Job Information</span>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Previous Job Attachment</label>
+                  <input type="file" name="previous_job_attachment" class="form-control" t-att-value="mother_info and mother_info.previous_job_attachment or ''"/>
+                </div>
+                <!-- <div class="col-md-6">
+                  <input type="text" name="previous_job_attachment_filename" class="form-control" placeholder="Previous Job Filename"/>
+                </div> -->
+
+                <div class="col-12 mt-2">
+                  <input type="submit" style="display:none;" class="btn btn-primary"/>
+                  <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+                </div>
+              </form>
+
+
+              <!-- <button class="btn btn-success mt-2" onclick="completeStep(2)">Complete Step 2</button> -->
+            </div>
+          </div>
+        </div>
+
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step4-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step4" aria-expanded="false" aria-controls="step2">
+                Guardian Information
+            </button>
+          </h2>
+          <div id="step4" class="accordion-collapse collapse" aria-labelledby="step2-heading">
+            <div class="accordion-body">
+              <form class="guardian-info-form row g-3">
+                <input type="hidden" name="step_name" value="guardian_information"/>
+                <input type="hidden" name="df_step_no" id="df_step_no" value="4"/>
+                <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+                <!-- Basic Info -->
+                <div class="col-md-4">
+                  <select name="relation" class="form-control" required="required" disabled="disabled">
+                    <option value="">Select Relation</option>
+                    <option value="father" selected='selected'>Father</option>
+                    <option value="mother">Mother</option>
+                    <option value="guardian">Guardian</option>
+                  </select>
+                  <label class="floating-label">Relation*</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="name" class="form-control" required="required" t-att-value="guardian_info and guardian_info.name or ''"/>
+                  <span class="floating-label">Name*</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" name="age" class="form-control" required="required" t-att-value="guardian_info and guardian_info.age or ''"/>
+                  <span class="floating-label">Age*</span>
+                </div>
+                <div class="col-md-4">
+                  <textarea name="address" t-att-value="guardian_info and guardian_info.address or ''" class="form-control"></textarea>
+                  <span class="floating-label">Address</span>
+                </div>
+                <div class="col-md-4">
+                  <select name="country_id" class="form-control">
+                    <t t-foreach="country_ids" t-as="con_id">
+                      <option t-att-value="con_id.id">
+                        <t t-esc="con_id.name" />
+                      </option>
+                    </t>
+                  </select>
+                  <label class="floating-label">Country</label>
+                </div>
+                <div class="col-md-4">
+                  <select name="city_id" class="form-control">
+                    <t t-foreach="city_ids" t-as="city_id">
+                      <option t-att-value="city_id.id">
+                        <t t-esc="city_id.name" />
+                      </option>
+                    </t>
+                  </select>
+                  <label class="floating-label">Country</label>
+                </div>
+                <!-- <div class="col-md-4">
+                  <input type="text" name="city" class="form-control" t-att-value="guardian_info and guardian_info.city or ''"/>
+                  <span class="floating-label">City</span>
+                </div> -->
+                <div class="col-md-4">
+                  <input type="text" name="mobile" class="form-control" t-att-value="guardian_info and guardian_info.mobile or ''"/>
+                  <span class="floating-label">Mobile</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="education" class="form-control" t-att-value="guardian_info and guardian_info.education or ''"/>
+                  <span class="floating-label">Educational Qualification</span>
+                </div>
+
+                <!-- Employment Section -->
+                <div class="col-md-4">
+                  <select name="employment_status" class="form-control">
+                    <option value="">Employment Status</option>
+                    <option value="employed">Employed</option>
+                    <option value="self_employed">Self-employed</option>
+                    <option value="business">Business</option>
+                    <option value="unemployed">Unemployed</option>
+                    <option value="retired">Retired</option>
+                  </select>
+                  <label class="floating-label">Employment Status</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="organization" class="form-control" t-att-value="guardian_info and guardian_info.organization or ''"/>
+                  <span class="floating-label">Organisation</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="designation" class="form-control" t-att-value="guardian_info and guardian_info.designation or ''"/>
+                  <span class="floating-label">Designation</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="annual_salary_gross" class="form-control" t-att-value="guardian_info and guardian_info.annual_salary_gross or ''"/>
+                  <span class="floating-label">Gross Annual Salary</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="annual_salary_net" class="form-control" t-att-value="guardian_info and guardian_info.annual_salary_net or ''"/>
+                  <span class="floating-label">Net Annual Salary</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="business_income" class="form-control" t-att-value="guardian_info and guardian_info.business_income or ''"/>
+                  <span class="floating-label">Annual Business Income</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="household_contribution" class="form-control" t-att-value="guardian_info and guardian_info.household_contribution or ''"/>
+                  <span class="floating-label">Annual Contribution to Household</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="date" name="joining_year" class="form-control" t-att-value="guardian_info and guardian_info.joining_year or ''"/>
+                  <span class="floating-label">Year of Joining</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="date" name="retirement_date" class="form-control" t-att-value="guardian_info and guardian_info.retirement_date or ''"/>
+                  <span class="floating-label">Expected Retirement Date</span>
+                </div>
+                <div class="col-md-4">
+                  <textarea name="retirement_benefits" class="form-control" t-att-value="guardian_info and guardian_info.retirement_benefits or ''"></textarea>
+                  <span class="floating-label">Expected Retirement Benefits</span>
+                </div>
+                <div class="col-md-4">
+                  <textarea name="unemployment_reason" class="form-control" t-att-value="guardian_info and guardian_info.unemployment_reason or ''"></textarea>
+                  <span class="floating-label">Unemployment Reason</span>
+                </div>
+
+                <!-- Business and Self-Employment -->
+                <div class="col-md-4">
+                  <input type="text" name="business_type" class="form-control" t-att-value="guardian_info and guardian_info.business_type or ''"/>
+                  <span class="floating-label">Business Type</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="business_locality" class="form-control" t-att-value="guardian_info and guardian_info.business_locality or ''"/>
+                  <span class="floating-label">Business Locality (Head Office)</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="business_turnover" class="form-control" t-att-value="guardian_info and guardian_info.business_turnover or ''"/>
+                  <span class="floating-label">Annual Turnover</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" name="business_employees" class="form-control" t-att-value="guardian_info and guardian_info.business_employees or ''"/>
+                  <span class="floating-label">Company Employees</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="ntn" class="form-control" t-att-value="guardian_info and guardian_info.ntn or ''"/>
+                  <span class="floating-label">NTN</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="self_employed_type" class="form-control" t-att-value="guardian_info and guardian_info.self_employed_type or ''"/>
+                  <span class="floating-label">Self-employed Type</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" name="self_employed_locality" class="form-control" t-att-value="guardian_info and guardian_info.self_employed_locality or ''"/>
+                  <span class="floating-label">Self-employed Locality</span>
+                </div>
+                <div class="col-md-4">
+                  <input type="number" step="0.01" name="self_employed_income" class="form-control" t-att-value="guardian_info and guardian_info.self_employed_income or ''"/>
+                  <span class="floating-label">Self-employed Income</span>
+                </div>
+
+                <!-- Attachments -->
+                <div class="col-md-6">
+                  <label class="form-label">Document Attachment</label>
+                  <input type="file" name="attachment" class="form-control" t-att-value="guardian_info and guardian_info.self_employed_income or ''"/>
+                </div>
+                <!-- <div class="col-md-6">
+                  <input type="text" name="attachment_filename" class="form-control" placeholder="Document Filename"/>
+                </div> -->
+                <div class="col-md-6">
+                  <textarea name="previous_job_info" class="form-control" t-att-value="guardian_info and guardian_info.previous_job_info or ''"></textarea>
+                  <span class="floating-label">Previous Job Information</span>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Previous Job Attachment</label>
+                  <input type="file" name="previous_job_attachment" class="form-control" t-att-value="guardian_info and guardian_info.previous_job_attachment or ''"/>
+                </div>
+                <!-- <div class="col-md-6">
+                  <input type="text" name="previous_job_attachment_filename" class="form-control" placeholder="Previous Job Filename"/>
+                </div> -->
+
+                <div class="col-12 mt-2">
+                  <input type="submit" style="display:none;" class="btn btn-primary"/>
+                  <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+                </div>
+              </form>
+
+
+              <!-- <button class="btn btn-success mt-2" onclick="completeStep(2)">Complete Step 2</button> -->
+            </div>
+          </div>
+        </div>
+
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step5-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step5" aria-expanded="false" aria-controls="step5">
+      Siblings Information
+            </button>
+          </h2>
+          <div id="step5" class="accordion-collapse collapse" aria-labelledby="step5-heading">
+            <div class="accordion-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">Siblings</h5>
+                <div>
+                  <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#addSiblingModal">
+            Add New
+                  </button>
+                </div>
+              </div>
+
+              <t t-if="nbs_id.siblings_ids">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Marital Status</th>
+                        <th>Education</th>
+                        <th>Institute</th>
+                        <th>Profession</th>
+                        <th>Annual Salary</th>
+                        <th>Contribution</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-foreach="nbs_id.siblings_ids" t-as="sibling">
+                        <tr>
+                          <td>
+                            <t t-esc="sibling.name" />
+                          </td>
+                          <td>
+                            <t t-esc="sibling.age" />
+                          </td>
+                          <td>
+                            <t t-esc="sibling.marital_status" />
+                          </td>
+                          <td>
+                            <t t-esc="sibling.sibling_education.name if sibling.sibling_education else ''" />
+                          </td>
+                          <td>
+                            <t t-esc="sibling.institute" />
+                          </td>
+                          <td>
+                            <t t-esc="sibling.profession.name if sibling.profession else ''" />
+                          </td>
+                          <td>
+                            <t t-esc="sibling.annual_salary" />
+                          </td>
+                          <td>
+                            <t t-esc="sibling.annual_contribution" />
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </t>
+              <t t-if="not nbs_id.siblings_ids">
+                <p>No siblings have been added yet.</p>
+              </t>
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="siblings_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="5"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- Modal Form for Adding Sibling -->
+        <div class="modal fade" id="addSiblingModal" tabindex="-1" aria-labelledby="addSiblingModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <form id="siblingForm" enctype="multipart/form-data">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addSiblingModalLabel">Add Sibling</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-6">
+                    <label>Name*</label>
+                    <input type="text" class="form-control" name="name" required="required"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Age</label>
+                    <input type="number" class="form-control" name="age"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Marital Status</label>
+                    <select name="marital_status" class="form-control">
+                      <option value="">Select</option>
+                      <option value="Single">Single</option>
+                      <option value="Married">Married</option>
+                      <option value="Divorced">Divorced</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Education</label>
+                    <select name="sibling_education_id" class="form-control">
+                      <t t-foreach="education_levels" t-as="edu">
+                        <option t-att-value="edu.id">
+                          <t t-esc="edu.name" />
+                        </option>
+                      </t>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Institute</label>
+                    <input type="text" class="form-control" name="institute"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Profession</label>
+                    <select name="profession_id" class="form-control">
+                      <t t-foreach="professions" t-as="prof">
+                        <option t-att-value="prof.id">
+                          <t t-esc="prof.name" />
+                        </option>
+                      </t>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Designation</label>
+                    <input type="text" class="form-control" name="designation"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Annual Salary</label>
+                    <input type="number" class="form-control" name="annual_salary"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Annual Contribution</label>
+                    <input type="number" class="form-control" name="annual_contribution"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Annual Tuition Fee</label>
+                    <input type="number" class="form-control" name="annual_tuition_fee"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Annual Scholarship</label>
+                    <input type="number" class="form-control" name="annual_scholarship"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Annual Books Cost</label>
+                    <input type="number" class="form-control" name="annual_books_cost"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Expected Year of Graduation</label>
+                    <input type="number" class="form-control" name="expected_graduation_y"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Date of Joining</label>
+                    <input type="date" class="form-control" name="year_of_joining"/>
+                  </div>
+
+                  <!-- Attachments -->
+                  <div class="col-md-6">
+                    <label>Challan Attachment</label>
+                    <input type="file" class="form-control" name="challan_attachment"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Scholarship Letter</label>
+                    <input type="file" class="form-control" name="scholarship_letter_attachment"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Bank Statement</label>
+                    <input type="file" class="form-control" name="bank_statement_attachment"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Salary Statement</label>
+                    <input type="file" class="form-control" name="salary_statement_attachment"/>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- Accordion for Dependent Information -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step6-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step6" aria-expanded="false" aria-controls="step6">
+      Dependent Information
+            </button>
+          </h2>
+          <div id="step6" class="accordion-collapse collapse" aria-labelledby="step6-heading">
+            <div class="accordion-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">Dependents</h5>
+                <div>
+                  <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#addDependentModal">
+            Add New
+                  </button>
+                </div>
+              </div>
+
+              <t t-if="nbs_id.dependents_ids">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Name</th>
+                        <th>Profession</th>
+                        <th>Annual Expense</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-foreach="nbs_id.dependents_ids" t-as="dependent">
+                        <tr>
+                          <td>
+                            <t t-esc="dependent.name" />
+                          </td>
+                          <td>
+                            <t t-esc="dependent.profession" />
+                          </td>
+                          <td>
+                            <t t-esc="dependent.annual_expense" />
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </t>
+              <t t-if="not nbs_id.dependents_ids">
+                <p>No dependents have been added yet.</p>
+              </t>
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="dependents_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="6"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal for Adding Dependent -->
+        <div class="modal fade" id="addDependentModal" tabindex="-1" aria-labelledby="addDependentModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <form id="dependentForm" enctype="multipart/form-data">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addDependentModalLabel">Add Dependent</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-12">
+                    <label>Name*</label>
+                    <input type="text" class="form-control" name="name" required="required"/>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label>Profession</label>
+                    <select name="profession" class="form-control">
+                      <option value="">Select</option>
+                      <option value="Student">Student</option>
+                      <option value="Employed">Employed</option>
+                      <option value="Business">Business</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label>Annual Expense Incurred</label>
+                    <input type="number" class="form-control" name="annual_expense" />
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+
+        <!-- Accordion for Income and Expenses -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step7-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step7" aria-expanded="false" aria-controls="step7">
+      Income and Expenses Information
+            </button>
+          </h2>
+          <div id="step7" class="accordion-collapse collapse" aria-labelledby="step7-heading">
+            <div class="accordion-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">Income and Expenses</h5>
+                <div>
+                  <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#addIncomeExpenseModal">
+            Add New
+                  </button>
+                </div>
+              </div>
+
+              <t t-if="nbs_id.income_expense_ids">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Income Source</th>
+                        <th>Annual Income</th>
+                        <th>Clothing</th>
+                        <th>Entertainment</th>
+                        <th>Vacations</th>
+                        <th>Medical</th>
+                        <th>Servants’ Salaries</th>
+                        <th>Food</th>
+                        <th>Mobile</th>
+                        <th>Internet</th>
+                        <th>LPG</th>
+                        <th>Other Expense</th>
+                        <th>Other Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-foreach="nbs_id.income_expense_ids" t-as="rec">
+                        <tr>
+                          <td>
+                            <t t-esc="rec.source_name" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.amount" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.clothing" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.entertainment" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.vacations" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.medical" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.servants_salaries" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.food" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.family_mobile" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.internet" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.lpg" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.other_expense_amount" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.other_expense_description" />
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </t>
+              <t t-if="not nbs_id.income_expense_ids">
+                <p>No income or expense records have been added yet.</p>
+              </t>
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="income_expense_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="7"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal for Adding Income/Expense -->
+        <div class="modal fade" id="addIncomeExpenseModal" tabindex="-1" aria-labelledby="addIncomeExpenseModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl">
+            <form id="incomeExpenseForm" enctype="multipart/form-data">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addIncomeExpenseModalLabel">Add Income and Expense</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-6">
+                    <label>Income Source*</label>
+                    <input type="text" class="form-control" name="source_name" required="required"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Annual Amount*</label>
+                    <input type="number" class="form-control" name="amount" required="required"/>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label>Clothing (Annual)</label>
+                    <input type="number" class="form-control" name="clothing"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Entertainment (Annual)</label>
+                    <input type="number" class="form-control" name="entertainment"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Vacations (Annual)</label>
+                    <input type="number" class="form-control" name="vacations"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Medical (Annual)</label>
+                    <input type="number" class="form-control" name="medical"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Servants’ Salaries (Annual)</label>
+                    <input type="number" class="form-control" name="servants_salaries"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Food (Annual)</label>
+                    <input type="number" class="form-control" name="food"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Family Mobile (Annual)</label>
+                    <input type="number" class="form-control" name="family_mobile"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Internet (Annual)</label>
+                    <input type="number" class="form-control" name="internet"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>LPG (Annual)</label>
+                    <input type="number" class="form-control" name="lpg"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Other Expense Amount (Annual)</label>
+                    <input type="number" class="form-control" name="other_expense_amount"/>
+                  </div>
+                  <div class="col-md-8">
+                    <label>Other Expense Description</label>
+                    <input type="text" class="form-control" name="other_expense_description"/>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+        <!-- Accordion for House Information -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step8-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step8" aria-expanded="false" aria-controls="step8">
+      House Information
+            </button>
+          </h2>
+          <div id="step8" class="accordion-collapse collapse" aria-labelledby="step8-heading">
+            <div class="accordion-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">House Details</h5>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addHouseModal">
+          Add House Info
+                </button>
+              </div>
+
+              <t t-if="nbs_id.house_info_ids">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Ownership</th>
+                        <th>Purchase Year</th>
+                        <th>Purchase Price</th>
+                        <th>Current Value</th>
+                        <th>Area</th>
+                        <th>Front Picture</th>
+                        <th>Drawing Room</th>
+                        <th>Kitchen</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-foreach="nbs_id.house_info_ids" t-as="rec">
+                        <tr>
+                          <td>
+                            <t t-esc="rec.ownership_status" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.purchase_year" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.purchase_price" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.current_value_owned or rec.inherited_current_value or rec.annual_rent" />
+                          </td>
+                          <td>
+                            <t t-esc="rec.total_area" />
+                            <t t-esc="rec.area_measurement" />
+                          </td>
+                          <td>
+                            <t t-if="rec.front_picture">
+                              <img t-att-src="'data:image/png;base64,%s' % rec.front_picture" width="60"/>
+                            </t>
+                          </td>
+                          <td>
+                            <t t-if="rec.drawing_room_picture">
+                              <img t-att-src="'data:image/png;base64,%s' % rec.drawing_room_picture" width="60"/>
+                            </t>
+                          </td>
+                          <td>
+                            <t t-if="rec.kitchen_picture">
+                              <img t-att-src="'data:image/png;base64,%s' % rec.kitchen_picture" width="60"/>
+                            </t>
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </t>
+              <t t-if="not nbs_id.house_info_ids">
+                <p>No house information has been added yet.</p>
+              </t>
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="house_info_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="8"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal for Adding House Info -->
+        <div class="modal fade" id="addHouseModal" tabindex="-1" aria-labelledby="addHouseModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl">
+            <form id="houseForm" enctype="multipart/form-data">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addHouseModalLabel">Add House Information</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-6">
+                    <label>Ownership Status*</label>
+                    <select name="ownership_status" class="form-select" required="required">
+                      <option value="">Select</option>
+                      <option value="owned">Owned</option>
+                      <option value="rented">Rented</option>
+                      <option value="employer">Provided by Employer</option>
+                      <option value="inherited">Inherited</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Year of Purchase</label>
+                    <input type="date" name="purchase_year" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Purchase Price</label>
+                    <input type="number" name="purchase_price" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Current Market Value</label>
+                    <input type="number" name="current_value_owned" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Annual Property Tax</label>
+                    <input type="number" name="annual_property_tax" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Funding Source</label>
+                    <input type="text" name="funding_source" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Annual Rent</label>
+                    <input type="number" name="annual_rent" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Rent Funding Source</label>
+                    <input type="text" name="rent_funding_source" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Rent Locality</label>
+                    <input type="text" name="rent_locality" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Rented Area</label>
+                    <input type="text" name="rent_area" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Inherited By</label>
+                    <input type="text" name="inherited_by" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Inherited Locality</label>
+                    <input type="text" name="inherited_locality" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Inherited Value</label>
+                    <input type="number" name="inherited_current_value" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Family Share (%)</label>
+                    <input type="number" name="family_share_percentage" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Total Area</label>
+                    <input type="number" name="total_area" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Area Unit</label>
+                    <select name="area_measurement" class="form-select">
+                      <option value="">Select</option>
+                      <option value="marla">Marla</option>
+                      <option value="kanal">Kanal</option>
+                      <option value="square_yard">Square Yard</option>
+                      <option value="square_meter">Square Meter</option>
+                      <option value="square_feet">Square Feet</option>
+                      <option value="acre">Acre</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Constructed Area</label>
+                    <input type="number" name="constructed_area" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label>Has Previous House?</label>
+                    <input type="checkbox" name="has_previous_house"/>
+                    <label class="ms-2">Previous House Details</label>
+                    <textarea class="form-control" name="previous_house_details"></textarea>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Front Picture</label>
+                    <input type="file" name="front_picture" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Drawing Room Picture</label>
+                    <input type="file" name="drawing_room_picture" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Kitchen Picture</label>
+                    <input type="file" name="kitchen_picture" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Ownership Proof</label>
+                    <input type="file" name="ownership_proof_attachment" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Rent Agreement</label>
+                    <input type="file" name="rent_agreement_attachment" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Inheritance Proof</label>
+                    <input type="file" name="inheritance_attachment" class="form-control"/>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- Accordion: Property Information -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step9-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step9" aria-expanded="false" aria-controls="step9">
+      Property Information
+            </button>
+          </h2>
+          <div id="step9" class="accordion-collapse collapse" aria-labelledby="step9-heading">
+            <div class="accordion-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">List of Properties</h5>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPropertyModal">
+          Add Property
+                </button>
+              </div>
+
+              <t t-if="nbs_id.property_info_ids">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Asset Type</th>
+                        <th>Purchase Cost</th>
+                        <th>Current Price</th>
+                        <th>Purchase Date</th>
+                        <th>Locality</th>
+                        <th>Funding Source</th>
+                        <th>Attachment</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-foreach="nbs_id.property_info_ids" t-as="rec">
+                        <tr>
+                          <td>
+                            <t t-esc="rec.asset_type.name"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.purchase_cost"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.current_price"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.purchase_date"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.locality"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.funding_source"/>
+                          </td>
+                          <td>
+                            <!-- <t t-if="rec.attachment">
+                              <a t-att-href="'/web/content?model=property.information&id=%d&field=attachment&download=true&filename=%s' % (rec.id, rec.attachment_filename)" target="_blank">
+                        Download
+                              </a>
+                            </t> -->
+                            <t t-if="not rec.attachment">-</t>
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </t>
+              <t t-if="not nbs_id.property_info_ids">
+                <p>No property information has been added yet.</p>
+              </t>
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="property_info_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="9"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal: Add Property Information -->
+        <div class="modal fade" id="addPropertyModal" tabindex="-1" aria-labelledby="addPropertyModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <form id="propertyForm" enctype="multipart/form-data">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addPropertyModalLabel">Add Property Information</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-6">
+                    <label>Asset Type*</label>
+                    <select name="asset_type" class="form-select" required="required">
+                      <option value="">Select</option>
+                      <t t-foreach="asset_types" t-as="asset">
+                        <option t-att-value="asset.id">
+                          <t t-esc="asset.name"/>
+                        </option>
+                      </t>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Purchase Date</label>
+                    <input type="date" name="purchase_date" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Purchase Cost</label>
+                    <input type="number" step="0.01" name="purchase_cost" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Current Price</label>
+                    <input type="number" step="0.01" name="current_price" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Locality</label>
+                    <input type="text" name="locality" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Funding Source</label>
+                    <input type="text" name="funding_source" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label>Property Document (Attachment)</label>
+                    <input type="file" name="attachment" class="form-control"/>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- Accordion: Sold Assets in the Last 5 Years -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step10-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step10" aria-expanded="false" aria-controls="step10">
+      Sold Assets in the Last 5 Years
+            </button>
+          </h2>
+          <div id="step10" class="accordion-collapse collapse" aria-labelledby="step10-heading">
+            <div class="accordion-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">List of Sold Assets</h5>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addSoldAssetModal">
+          Add Sold Asset
+                </button>
+              </div>
+
+              <t t-if="nbs_id.property_sold_asset_ids">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Asset Type</th>
+                        <th>Sold Price</th>
+                        <th>Amount Utilized</th>
+                        <th>Leftover Amount</th>
+                        <th>Attachment</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-foreach="nbs_id.property_sold_asset_ids" t-as="rec">
+                        <tr>
+                          <td>
+                            <t t-esc="rec.asset_type.name"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.sold_price"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.amount_utilized"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.leftover_amount"/>
+                          </td>
+                          <td>
+                            <!-- <t t-if="rec.document_attachment"> -->
+                            <!-- <a t-att-href="'/web/content?model=property.sold.asset&id=%d&field=document_attachment&download=true&filename=%s' % (rec.id, rec.document_filename)" target="_blank">
+                        Download
+                      </a>
+                    </t> -->
+                            <t t-if="not rec.document_attachment">-</t>
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </t>
+              <t t-if="not nbs_id.property_sold_asset_ids">
+                <p>No assets sold have been added yet.</p>
+              </t>
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="property_sold_asset_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="10"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal: Add Sold Asset -->
+        <div class="modal fade" id="addSoldAssetModal" tabindex="-1" aria-labelledby="addSoldAssetModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <form id="soldAssetForm" enctype="multipart/form-data">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addSoldAssetModalLabel">Add Sold Asset</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-6">
+                    <label>Asset Type*</label>
+                    <select name="asset_type" class="form-select" required="required">
+                      <option value="">Select</option>
+                      <t t-foreach="asset_types" t-as="asset">
+                        <option t-att-value="asset.id">
+                          <t t-esc="asset.name"/>
+                        </option>
+                      </t>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Sold Price</label>
+                    <input type="number" step="0.01" name="sold_price" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Amount Utilized</label>
+                    <input type="number" step="0.01" name="amount_utilized" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Leftover Amount</label>
+                    <input type="number" step="0.01" name="leftover_amount" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label>Sale Document Attachment</label>
+                    <input type="file" name="document_attachment" class="form-control"/>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Accordion: Additional Assets per Family Member -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step11-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step11" aria-expanded="false" aria-controls="step11">
+      Additional Assets per Family Member
+            </button>
+          </h2>
+          <div id="step11" class="accordion-collapse collapse" aria-labelledby="step11-heading">
+            <div class="accordion-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">List of Additional Assets</h5>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAdditionalAssetModal">
+          Add Additional Asset
+                </button>
+              </div>
+
+              <t t-if="nbs_id.property_additional_asset_ids">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Asset Type</th>
+                        <th>Buying Price</th>
+                        <th>Current Market Value</th>
+                        <th>Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-foreach="nbs_id.property_additional_asset_ids" t-as="rec">
+                        <tr>
+                          <td>
+                            <t t-esc="rec.asset_type"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.buying_price"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.current_price"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.description or '-'"/>
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </t>
+              <t t-if="not nbs_id.property_additional_asset_ids">
+                <p>No additional assets have been added yet.</p>
+              </t>
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="property_additional_asset_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="11"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal: Add Additional Asset -->
+        <div class="modal fade" id="addAdditionalAssetModal" tabindex="-1" aria-labelledby="addAdditionalAssetModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <form id="additionalAssetForm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addAdditionalAssetModalLabel">Add Additional Asset</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-6">
+                    <label>Asset Type*</label>
+                    <select name="asset_type" class="form-select" required="required">
+                      <option value="">Select</option>
+                      <option value="gold">Gold</option>
+                      <option value="insurance">Insurance Policies</option>
+                      <option value="shares">Shares</option>
+                      <option value="prize_bonds">Prize Bonds</option>
+                      <option value="mutual_funds">Mutual Funds</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Buying Price</label>
+                    <input type="number" step="0.01" name="buying_price" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Current Market Value</label>
+                    <input type="number" step="0.01" name="current_price" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label>Additional Notes (if any)</label>
+                    <textarea name="description" class="form-control" rows="2"></textarea>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+        <!-- Accordion: Automobile Details -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step12-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step12" aria-expanded="false" aria-controls="step12">
+      Automobile Details
+            </button>
+          </h2>
+          <div id="step12" class="accordion-collapse collapse" aria-labelledby="step12-heading">
+            <div class="accordion-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">List of Automobiles</h5>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAutomobileModal">
+          Add Automobile
+                </button>
+              </div>
+
+              <t t-if="nbs_id.automobile_info_ids">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Variant</th>
+                        <th>Ownership</th>
+                        <th>Current Value</th>
+                        <th>Funding Source</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-foreach="nbs_id.automobile_info_ids" t-as="rec">
+                        <tr>
+                          <td>
+                            <t t-esc="rec.make"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.model"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.variant or '-'"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.ownership"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.current_value"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.funding_source or '-'"/>
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </t>
+              <t t-if="not nbs_id.automobile_info_ids">
+                <p>No automobile records have been added yet.</p>
+              </t>
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="automobile_info_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="12"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal: Add Automobile -->
+        <div class="modal fade" id="addAutomobileModal" tabindex="-1" aria-labelledby="addAutomobileModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <form id="automobileForm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addAutomobileModalLabel">Add Automobile</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-6">
+                    <label>Make*</label>
+                    <input type="text" name="make" class="form-control" required="required"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Model*</label>
+                    <input type="text" name="model" class="form-control" required="required"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Variant</label>
+                    <input type="text" name="variant" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Ownership*</label>
+                    <select name="ownership" class="form-select" required="required">
+                      <option value="">Select</option>
+                      <option value="owned">Owned</option>
+                      <option value="leased">Leased</option>
+                      <option value="company_provided">Company Provided</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Purchase Price</label>
+                    <input type="number" step="0.01" name="purchase_price" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Current Value</label>
+                    <input type="number" step="0.01" name="current_value" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Source of Funding</label>
+                    <input type="text" name="funding_source" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Engine Size</label>
+                    <input type="text" name="engine_size" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Token Tax (Annual)</label>
+                    <input type="number" step="0.01" name="token_tax" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Maintenance Cost (Annual)</label>
+                    <input type="number" step="0.01" name="maintenance_cost" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Is the vehicle insured?</label>
+                    <br/>
+                    <input type="checkbox" name="is_insured"/>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label>Insurance Details</label>
+                    <textarea name="insurance_details" class="form-control" rows="2"></textarea>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+
+        <!-- Accordion: International Travel Details -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step13-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step13" aria-expanded="false" aria-controls="step13">
+      International Travel Details
+            </button>
+          </h2>
+          <div id="step13" class="accordion-collapse collapse" aria-labelledby="step13-heading">
+            <div class="accordion-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">List of International Travels</h5>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addTravelModal">
+          Add Travel Record
+                </button>
+              </div>
+
+              <t t-if="nbs_id.international_travel_ids">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Family Member</th>
+                        <th>Country</th>
+                        <th>Reason</th>
+                        <th>Cost</th>
+                        <th>Funding Source</th>
+                        <th>Travel Dates</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-foreach="nbs_id.international_travel_ids" t-as="rec">
+                        <tr>
+                          <td>
+                            <t t-esc="rec.family_member_name"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.country_id.name if rec.country_id else '-'"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.reason"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.cost"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.funding_source or '-'"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.travel_start_date"/>
+ -                            <t t-esc="rec.travel_end_date"/>
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </t>
+              <t t-if="not nbs_id.international_travel_ids">
+                <p>No international travel records have been added yet.</p>
+              </t>
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="international_travel_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="13"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal: Add International Travel -->
+        <div class="modal fade" id="addTravelModal" tabindex="-1" aria-labelledby="addTravelModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <form id="internationalTravelForm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addTravelModalLabel">Add International Travel</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-6">
+                    <label>Family Member Name*</label>
+                    <input type="text" name="family_member_name" class="form-control" required="required"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Country Visited</label>
+                    <select name="country_id" class="form-select">
+                      <t t-foreach="countries" t-as="country">
+                        <option t-att-value="country.id">
+                          <t t-esc="country.name"/>
+                        </option>
+                      </t>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Reason for Travel*</label>
+                    <input type="text" name="reason" class="form-control" required="required"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Total Travel Cost</label>
+                    <input type="number" step="0.01" name="cost" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Source of Funding</label>
+                    <input type="text" name="funding_source" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Passport Info / Number</label>
+                    <input type="text" name="passport_info" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Travel Start Date</label>
+                    <input type="date" name="travel_start_date" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Travel End Date</label>
+                    <input type="date" name="travel_end_date" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Passport Attachment</label>
+                    <input type="file" name="passport_attachment" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Visa Attachment</label>
+                    <input type="file" name="visa_attachment" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Scholarship/Funding Proof</label>
+                    <input type="file" name="scholarship_attachment" class="form-control"/>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+
+
+        <!-- Accordion: Bank Account Information -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step14-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step14" aria-expanded="false" aria-controls="step14">
+      Bank Account Details
+            </button>
+          </h2>
+          <div id="step14" class="accordion-collapse collapse" aria-labelledby="step14-heading">
+            <div class="accordion-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">List of Bank Accounts</h5>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBankModal">
+          Add Bank Account
+                </button>
+              </div>
+
+              <t t-if="nbs_id.bank_account_ids">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Holder</th>
+                        <th>Bank Name</th>
+                        <th>Branch</th>
+                        <th>Account Number</th>
+                        <th>Balance</th>
+                        <th>Balance Date</th>
+                        <th>Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-foreach="nbs_id.bank_account_ids" t-as="rec">
+                        <tr>
+                          <td>
+                            <t t-esc="rec.holder_relation == 'other' and rec.other_relation or dict(rec.fields_get(allfields=['holder_relation'])['holder_relation']['selection'])[rec.holder_relation]"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.bank_name"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.bank_branch or '-'"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.account_number or '-'"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.closing_balance"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.closing_balance_date"/>
+                          </td>
+                          <td>
+                            <t t-esc="rec.account_type"/>
+                          </td>
+                        </tr>
+                      </t>
+                    </tbody>
+                  </table>
+                </div>
+              </t>
+              <t t-if="not nbs_id.bank_account_ids">
+                <p>No bank accounts have been added yet.</p>
+              </t>
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="bank_account_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="14"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal: Add Bank Account -->
+        <div class="modal fade" id="addBankModal" tabindex="-1" aria-labelledby="addBankModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <form id="bankAccountForm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addBankModalLabel">Add Bank Account</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-6">
+                    <label>Account Holder*</label>
+                    <select name="holder_relation" class="form-select" required="required">
+                      <option value="">Select</option>
+                      <option value="self">Self</option>
+                      <option value="father">Father</option>
+                      <option value="mother">Mother</option>
+                      <option value="guardian">Guardian</option>
+                      <option value="sibling1">Sibling 1</option>
+                      <option value="sibling2">Sibling 2</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>If Other, Specify</label>
+                    <input type="text" name="other_relation" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Bank Name*</label>
+                    <input type="text" name="bank_name" class="form-control" required="required"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Bank Branch</label>
+                    <input type="text" name="bank_branch" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Bank Account Number</label>
+                    <input type="text" name="account_number" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Closing Balance</label>
+                    <input type="number" step="0.01" name="closing_balance" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Date of Closing Balance</label>
+                    <input type="date" name="closing_balance_date" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Account Type</label>
+                    <select name="account_type" class="form-select">
+                      <option value="">Select</option>
+                      <option value="savings">Savings</option>
+                      <option value="current">Current</option>
+                      <option value="fixed">Fixed Deposit</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Currency</label>
+                    <select name="currency_id" class="form-select">
+                      <t t-foreach="currencies" t-as="currency">
+                        <option t-att-value="currency.id">
+                          <t t-esc="currency.name"/>
+                        </option>
+                      </t>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Attachment</label>
+                    <input type="file" name="attachment" class="form-control"/>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+        <!-- Accordion: Financial Summary -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step15-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step15" aria-expanded="false" aria-controls="step15">
+      Financial Summary and Expected Support
+            </button>
+          </h2>
+          <div id="step15" class="accordion-collapse collapse" aria-labelledby="step15-heading">
+            <div class="accordion-body">
+
+              <!-- <t t-if="df_id.financial_summary_ids"> -->
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">List of Financial Summary</h5>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#financialSummaryModal">
+          Add Financial Summary
+                </button>
+                <!-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#financialSummaryModal">
+            Edit Financial Summary
+          </button> -->
+              </div>
+              <t t-if="nbs_id.financial_summary_ids">
+                <table class="table table-bordered table-striped">
+                  <tbody>
+                    <tr>
+                      <th>Expected Financial Support</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.expected_financial_support"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Total Annual Income</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.total_annual_income"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Total Annual Expenses</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.total_annual_expenses"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Net Disposable Income</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.net_disposable_income"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Contribution Toward Education</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.total_contribution_toward_education"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Explanation of Difference</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.explanation_of_difference or '-'"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Statement of Purpose</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.statement_of_purpose or '-'"/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </t>
+              <t t-if="not nbs_id.financial_summary_ids">
+                <p>No financial summary provided yet.</p>
+              </t>
+
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="financial_summary_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="15"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal: Add/Edit Financial Summary -->
+        <div class="modal fade" id="financialSummaryModal" tabindex="-1" aria-labelledby="financialSummaryModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <form id="financialSummaryForm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="financialSummaryModalLabel">Financial Summary</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-6">
+                    <label>Expected Financial Support for Education</label>
+                    <input type="number" step="0.01" name="expected_financial_support" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Total Annual Income</label>
+                    <input type="number" step="0.01" name="total_annual_income" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Total Annual Expenses</label>
+                    <input type="number" step="0.01" name="total_annual_expenses" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Total Contribution Toward Education</label>
+                    <input type="number" step="0.01" name="total_contribution_toward_education" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label>Explanation of Difference (if any)</label>
+                    <textarea name="explanation_of_difference" class="form-control" rows="2"></textarea>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label>Statement of Purpose</label>
+                    <textarea name="statement_of_purpose" class="form-control" rows="3"></textarea>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Currency</label>
+                    <select name="currency_id" class="form-select">
+                      <t t-foreach="currencies" t-as="currency">
+                        <option t-att-value="currency.id">
+                          <t t-esc="currency.name"/>
+                        </option>
+                      </t>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+
+        <!-- Accordion: Loan & Credit Card Information -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step16-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step16" aria-expanded="false" aria-controls="step16">
+      Loan and Credit Card Information
+            </button>
+          </h2>
+          <div id="step16" class="accordion-collapse collapse" aria-labelledby="step16-heading">
+            <div class="accordion-body">
+
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">List of Loan and Credit Card Information</h5>
+                <!-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#loanInformationModal">
+            Edit Loan Information
+          </button> -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loanInformationModal">
+          Add Loan Information
+                </button>
+              </div>
+              <t t-if="nbs_id.loan_info_ids">
+                <table class="table table-bordered table-striped">
+                  <tbody>
+                    <tr>
+                      <th>Is There an Existing Loan?</th>
+                      <td>
+                        <t t-esc="nbs_id.loan_info_ids.is_existing_loan and 'Yes' or 'No'"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Total Loan</th>
+                      <td>
+                        <t t-esc="nbs_id.loan_info_ids.total_loan"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Amount Paid</th>
+                      <td>
+                        <t t-esc="nbs_id.loan_info_ids.amount_paid"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Amount Left</th>
+                      <td>
+                        <t t-esc="nbs_id.loan_info_ids.amount_left"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Annual Installments</th>
+                      <td>
+                        <t t-esc="nbs_id.loan_info_ids.annual_installments"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Reason for Loan</th>
+                      <td>
+                        <t t-esc="nbs_id.loan_info_ids.reason_for_loan or '-'"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Loan Source</th>
+                      <td>
+                        <t t-esc="nbs_id.loan_info_ids.loan_source or '-'"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Any Credit Card?</th>
+                      <td>
+                        <t t-esc="nbs_id.loan_info_ids.has_credit_card and 'Yes' or 'No'"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Total Credit Limit</th>
+                      <td>
+                        <t t-esc="nbs_id.loan_info_ids.total_limit"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Highest Credit Bill</th>
+                      <td>
+                        <t t-esc="nbs_id.loan_info_ids.highest_bill"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Lowest Credit Bill</th>
+                      <td>
+                        <t t-esc="nbs_id.loan_info_ids.lowest_bill"/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </t>
+
+              <t t-if="not nbs_id.loan_info_ids">
+                <p>No loan or credit card information provided yet.</p>
+              </t>
+            </div>
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="loan_info_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="16"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal: Loan Information Form -->
+        <div class="modal fade" id="loanInformationModal" tabindex="-1" aria-labelledby="loanInformationModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <form id="loanInformationForm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="loanInformationModalLabel">Loan and Credit Card Information</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <div class="col-md-6">
+                    <label>Is There an Existing Loan?</label>
+                    <input type="checkbox" name="is_existing_loan" class="form-check-input ms-2"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Total Loan</label>
+                    <input type="number" step="0.01" name="total_loan" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Amount Paid</label>
+                    <input type="number" step="0.01" name="amount_paid" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Amount Left</label>
+                    <input type="number" step="0.01" name="amount_left" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Annual Installments</label>
+                    <input type="number" step="0.01" name="annual_installments" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Loan Source</label>
+                    <input type="text" name="loan_source" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label>Reason for Loan</label>
+                    <textarea name="reason_for_loan" class="form-control" rows="2"></textarea>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Any Credit Card?</label>
+                    <input type="checkbox" name="has_credit_card" class="form-check-input ms-2"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Total Credit Limit</label>
+                    <input type="number" step="0.01" name="total_limit" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Highest Credit Bill</label>
+                    <input type="number" step="0.01" name="highest_bill" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Lowest Credit Bill</label>
+                    <input type="number" step="0.01" name="lowest_bill" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Currency</label>
+                    <select name="currency_id" class="form-select">
+                      <t t-foreach="currencies" t-as="currency">
+                        <option t-att-value="currency.id">
+                          <t t-esc="currency.name"/>
+                        </option>
+                      </t>
+                    </select>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+
+        <!-- Accordion: Utility Bills Information -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="step17-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step17" aria-expanded="false" aria-controls="step17">
+      Utility Bills Information
+            </button>
+          </h2>
+          <div id="step17" class="accordion-collapse collapse" aria-labelledby="step17-heading">
+            <div class="accordion-body">
+
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">List of Loan and Credit Card Information</h5>
+                <!-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#utilityBillsModal">
+            Edit Utility Bills Information
+          </button> -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#utilityBillsModal">
+          Add Utility Bills Information
+                </button>
+              </div>
+              <t t-if="nbs_id.financial_summary_ids">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th colspan="2">Gas Bill</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>Annual Bill</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.annual_bill_gas"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Highest Bill</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.highest_bill_gas"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Lowest Bill</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.lowest_bill_gas"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Shared?</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.is_bill_shared_gas and 'Yes' or 'No'"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Your Contribution</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.your_annual_contribution_gas"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Attachment</th>
+                      <td>
+                        <t t-if="nbs_id.financial_summary_ids.attachment_gas">
+                          <a t-attf-href="/web/content/#{nbs_id.financial_summary_ids.attachment_gas.id}?download=true" target="_blank">Download</a>
+                        </t>
+                        <t t-if="not nbs_id.financial_summary_ids.attachment_gas">-</t>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                  <thead>
+                    <tr>
+                      <th colspan="2">Electricity Bill</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>Annual Bill</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.annual_bill_electricity"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Highest Bill</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.highest_bill_electricity"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Lowest Bill</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.lowest_bill_electricity"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Shared?</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.is_bill_shared_electricity and 'Yes' or 'No'"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Your Contribution</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.your_annual_contribution_electricity"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Attachment</th>
+                      <td>
+                        <t t-if="nbs_id.financial_summary_ids.attachment_electricity">
+                          <a t-attf-href="/web/content/#{nbs_id.financial_summary_ids.attachment_electricity.id}?download=true" target="_blank">Download</a>
+                        </t>
+                        <t t-if="not nbs_id.financial_summary_ids.attachment_electricity">-</t>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                  <thead>
+                    <tr>
+                      <th colspan="2">Water Bill</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>Annual Bill</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.annual_bill_water"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Highest Bill</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.highest_bill_water"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Lowest Bill</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.lowest_bill_water"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Shared?</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.is_bill_shared_water and 'Yes' or 'No'"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Your Contribution</th>
+                      <td>
+                        <t t-esc="nbs_id.financial_summary_ids.your_annual_contribution_water"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Attachment</th>
+                      <td>
+                        <t t-if="nbs_id.financial_summary_ids.attachment_water">
+                          <a t-attf-href="/web/content/#{nbs_id.financial_summary_ids.attachment_water.id}?download=true" target="_blank">Download</a>
+                        </t>
+                        <t t-if="not nbs_id.financial_summary_ids.attachment_water">-</t>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </t>
+
+              <t t-if="not nbs_id.financial_summary_ids">
+                <p>No utility bill information provided yet.</p>
+
+              </t>
+            </div>
+
+            <form class="nbs-foundation-form row g-3">
+              <input type="hidden" name="step_name" value="financial_summary_ids"/>
+              <input type="hidden" name="df_step_no" id="df_step_no" value="17"/>
+              <div class="col-12 mt-2">
+                <input type="submit" style="display:none;" class="btn btn-primary"/>
+                <button class="btn btn-primary ml-2" style="background-color:#875A7B;border:None;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal: Utility Bills Form -->
+        <div class="modal fade" id="utilityBillsModal" tabindex="-1" aria-labelledby="utilityBillsModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl">
+            <form id="utilityBillsForm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="utilityBillsModalLabel">Utility Bills Information</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body row g-3">
+                  <input type="hidden" name="nbs_id" t-att-value="nbs_id.id"/>
+                  <input type="hidden" name="application_id" t-att-value="application_id.id"/>
+
+                  <!-- GAS -->
+                  <div class="col-12">
+                    <h6>Gas Bill</h6>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Annual Bill</label>
+                    <input type="number" step="0.01" name="annual_bill_gas" class="form-control"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Highest Bill</label>
+                    <input type="number" step="0.01" name="highest_bill_gas" class="form-control"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Lowest Bill</label>
+                    <input type="number" step="0.01" name="lowest_bill_gas" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Is Bill Shared?</label>
+                    <input type="checkbox" name="is_bill_shared_gas" class="form-check-input ms-2"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Your Annual Contribution</label>
+                    <input type="number" step="0.01" name="your_annual_contribution_gas" class="form-control"/>
+                  </div>
+                  <div class="col-md-12">
+                    <label>Attachment (Gas)</label>
+                    <input type="file" name="attachment_gas" class="form-control"/>
+                  </div>
+
+                  <!-- ELECTRICITY -->
+                  <div class="col-12 pt-3">
+                    <h6>Electricity Bill</h6>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Annual Bill</label>
+                    <input type="number" step="0.01" name="annual_bill_electricity" class="form-control"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Highest Bill</label>
+                    <input type="number" step="0.01" name="highest_bill_electricity" class="form-control"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Lowest Bill</label>
+                    <input type="number" step="0.01" name="lowest_bill_electricity" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Is Bill Shared?</label>
+                    <input type="checkbox" name="is_bill_shared_electricity" class="form-check-input ms-2"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Your Annual Contribution</label>
+                    <input type="number" step="0.01" name="your_annual_contribution_electricity" class="form-control"/>
+                  </div>
+                  <div class="col-md-12">
+                    <label>Attachment (Electricity)</label>
+                    <input type="file" name="attachment_electricity" class="form-control"/>
+                  </div>
+
+                  <!-- WATER -->
+                  <div class="col-12 pt-3">
+                    <h6>Water Bill</h6>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Annual Bill</label>
+                    <input type="number" step="0.01" name="annual_bill_water" class="form-control"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Highest Bill</label>
+                    <input type="number" step="0.01" name="highest_bill_water" class="form-control"/>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Lowest Bill</label>
+                    <input type="number" step="0.01" name="lowest_bill_water" class="form-control"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Is Bill Shared?</label>
+                    <input type="checkbox" name="is_bill_shared_water" class="form-check-input ms-2"/>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Your Annual Contribution</label>
+                    <input type="number" step="0.01" name="your_annual_contribution_water" class="form-control"/>
+                  </div>
+                  <div class="col-md-12">
+                    <label>Attachment (Water)</label>
+                    <input type="file" name="attachment_water" class="form-control"/>
+                  </div>
+
+                  <div class="col-md-6 mt-3">
+                    <label>Currency</label>
+                    <select name="currency_id" class="form-select">
+                      <t t-foreach="currencies" t-as="currency">
+                        <option t-att-value="currency.id">
+                          <t t-esc="currency.name"/>
+                        </option>
+                      </t>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+        <!-- <div class="accordion-item">
+        <h2 class="accordion-header" id="step20-heading">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#step5" aria-expanded="false" aria-controls="step20" disabled="disabled">
+                Step 20
+          </button>
+        </h2>
+        <div id="step5" class="accordion-collapse collapse" aria-labelledby="step20-heading">
+          <div class="accordion-body">
+            <strong>This is Step 3.</strong>
+            <p>Final step content here.</p>
+          </div>
+        </div>
+      </div> -->
+
+      </div>
+    </div>
+
+  </template>
+</odoo>

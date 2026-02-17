@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+    <template id="student_course_withdraw_template">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="report_title" t-value="'Student Course Withdraw'"/>
+                <t t-call="odoocms_assets.custom_header_report"/>
+                <br/>
+
+               <style>
+                tr,td{
+                    padding-top=2px !important;
+                    padding-bottom=2px !important;
+                }
+               </style>
+
+                <table class="table table-bordered ">
+                    <thead>
+                        <t t-if="withdraw_student">
+                            <t t-set="type" t-value="withdraw_student[0].type"/>
+                            
+                        </t>
+                        <t t-set="withdraw_date" t-value="False"/>
+                        <tr>
+                            <th style='padding-top:2px;padding-bootom:2px;'>Sr#</th>
+                            <th style='padding-top:2px;padding-bootom:2px;'>Date</th>
+                            <th style='padding-top:2px;padding-bootom:2px;'>Registration</th>
+                            <th style='padding-top:2px;padding-bootom:2px;'>Name</th>
+                            <th style='padding-top:2px;padding-bootom:2px;'>Course</th>
+                            <th style='padding-top:2px;padding-bootom:2px;'>Section</th>
+                            <th t-if="type=='reinstate'" style='padding-top:2px;padding-bootom:2px;'>WithDraw Date</th>
+                            <th t-if="type=='withdraw'" style='padding-top:2px;padding-bootom:2px;'>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="withdraw_student" t-as="doc">
+                            <tr>
+                                <t t-if="type=='reinstate'">
+                                    <t t-set="withdraw_date" t-value="request.env['odoocms.student.course.withdraw'].sudo().search([('student_id','=',doc.student_id.id),('type','=','withdraw'),],limit=1,order='id desc')"/>
+                                    
+                                </t>
+                                <td style='padding-top:2px;padding-bootom:2px;'><t t-esc="doc_index+1"/></td>
+                                <td style='padding-top:2px;padding-bootom:2px;'><t t-esc="doc.date_request"/></td>
+                                <td style='padding-top:2px;padding-bootom:2px;'><t t-esc="doc.student_id.id_number"/></td>
+                                <td style='padding-top:2px;padding-bootom:2px;'><t t-esc="doc.student_id.name"/></td>
+                                <td style='padding-top:2px;padding-bootom:2px;'><t t-esc="doc.registration_id.course_id.name"/></td>
+                                <td style='padding-top:2px;padding-bootom:2px;'><t t-esc="doc.registration_id.primary_class_id.section_id.name"/></td>
+                                <td t-if="type=='reinstate'" style='padding-top:2px;padding-bootom:2px;'><t t-esc="withdraw_date.date_effective if withdraw_date else ''"/></td> 
+                                <td t-if="type=='withdraw'" style='padding-top:2px;padding-bootom:2px;'><t t-esc="doc.reason_id.name if doc.type=='withdraw' else ''"/></td> 
+                            </tr>
+                        </t>
+                    </tbody>
+                  </table>
+            </t>
+            
+         
+        </t>
+    </template>
+
+
+    <record id="action_course_withdraw_reinstate_report" model="ir.actions.report">
+        <field name="name">Course Withdraw/Reinstate</field>
+        <field name="model">odoocms.student.course.withdraw</field>
+        <field name="report_type">qweb-html</field>
+        <field name="binding_model_id" ref="odoocms_registration.model_odoocms_student_course_withdraw"/>
+        <field name="binding_type">report</field>
+        <field name="report_name">odoocms_registration.student_course_withdraw_template</field>
+        <field name="report_file">odoocms_registration.student_course_withdraw_template</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="register_progress" name="Progress">
+        <br/>
+        <div class='container-fluid d-none d-lg-block'>
+            <div class="text-center mb-2 p-0">
+                <ul class='px-0' id="progressbar">
+                        <div class="d-flex justify-content-center"> 
+                        <t t-foreach="steps_id" t-as="step">
+                            <t t-set="icon" t-value="'\\'+ step.icon"/>
+                            <t t-set="icon" t-value=" '\''+ icon "/>
+                            <t t-set="icon" t-value=" icon +'\'' "/>
+                            <style>li<t t-esc="'#'+str(step.name).lower().split(' ')[0]"/>:before {font-family: FontAwesome;content:<t t-raw="icon"/>}</style>
+                            <li icon="\f007" t-att-id="str(step.name).lower().split(' ')[0]" t-att-class="'active' if step.sequence &lt;= application_id.step_no else '' ">
+                                <strong>
+                                    <t t-esc="step.name"/>
+                                </strong>
+                            </li>
+                        </t>
+                        
+                    </div>
+             </ul>
+        </div>
+        </div>
+</template>
+</odoo>

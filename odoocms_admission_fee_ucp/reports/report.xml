@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--***** Prospectus Challan Report *****-->
+        <record id="odoocms_admission_fee_ucp.action_prospectus_challan_rep" model="ir.actions.report">
+            <field name="name">Prospectus Challans Report</field>
+            <field name="model">prospectus.challan.rep.wiz</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odoocms_admission_fee_ucp.prospectus_challan_report</field>
+            <field name="report_file">odoocms_admission_fee_ucp.prospectus_challan_report</field>
+        </record>
+
+    </data>
+</odoo>

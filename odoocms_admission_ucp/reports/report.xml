@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_admit" model="report.paperformat">
+        <field name="name">European A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">23</field>
+        <field name="margin_left">15</field>
+        <field name="margin_right">15</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+    <record id="offer_letter_format" model="report.paperformat">
+        <field name="name">Offer Letter</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">15</field>
+        <field name="margin_right">15</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_student_admit_card" model="ir.actions.report">
+        <field name="name">Student Test Admit Card</field>
+        <field name="model">applicant.entry.test</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">odoocms_admission_ucp.report_student_admit_card</field>
+        <field name="report_file">odoocms_admission_ucp.report_student_admit_card</field>
+        <field name="binding_model_id" ref="model_applicant_entry_test"/>
+        <field name="paperformat_id" ref="odoocms_admission_ucp.paperformat_admit"/>
+    </record>
+
+    <record id="action_student_interview_admit_card" model="ir.actions.report">
+        <field name="name">Student Interview Admit Card</field>
+        <field name="model">applicant.entry.test</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">odoocms_admission_ucp.report_student_interview_admit_card</field>
+        <field name="report_file">odoocms_admission_ucp.report_student_interview_admit_card</field>
+        <field name="binding_model_id" ref="model_applicant_entry_test"/>
+        <field name="paperformat_id" ref="odoocms_admission_ucp.paperformat_admit"/>
+    </record>
+
+    <!--    offer letter-->
+    <record id="admission_offer_letter" model="ir.actions.report">
+        <field name="name">Offer Letter</field>
+        <field name="model">ucp.offer.letter</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">odoocms_admission_ucp.report_offer_letter</field>
+        <field name="report_file">odoocms_admission_ucp.report_offer_letter</field>
+        <field name="paperformat_id" ref="odoocms_admission_ucp.offer_letter_format"/>
+        <field name="binding_model_id" ref="model_ucp_offer_letter"/>
+    </record>
+</odoo>

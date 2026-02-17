@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="request_program_transfer" name="Request Program Transfer">
+
+        <!-- Second Page Contact   -->
+        <!-- <div class='container-fluid mb-3'> -->
+        <div id='request_prog_trans_header_tab'  t-attf-class="ml-3 mr-3 header_tab {{'' if application_id.state != 'draft' else 'diable_header_tab'}}  mt-0 p-2" onclick="$('#request_prog_transfer_collapse').slideToggle(1000); $('#angle_class2').toggleClass('fa-angle-down fa-angle-up');">
+            <a class="btn btn-link">
+                <i style='color: white;font-size: 25px;' class="fa-solid fa-address-card float-left"></i>
+                <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/>
+                </h2>
+            </a>
+            <a>
+                <i id='angle_class2' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+            </a>
+        </div>
+
+        <div id="request_prog_transfer_collapse" class="row container-fluid mt-3 collapse_div">
+            <br/>
+            <div class='col-8'>
+                <form id='program_transfer_request_form' class="row g-3">
+                    <input type="hidden" name="step_no" t-att-value='counter_step' />
+                    <input type='hidden' name='step_name' value='program_transfer'></input>
+                    <!-- geting email ,home phone and mobile  -->
+                   
+                    <div class="mb-1 mt-3 col-md-4">
+                        <input required="True" class="form-control inputText validate_char" type="text" t-att-program="application_id.preference_ids[0].program_id.id if application_id.preference_ids else ''" t-att-value="application_id.preference_ids[0].program_id.name  if application_id.preference_ids else ''" name="current_selected_program" id="current_selected_program"/>
+                        <span for="current_selected_program" class="floating-label">Current Program*</span>
+                    </div>
+                    <div id='new_selected_program_div'  class="mb-1 col-md-4 pb-2">
+                        <select style='margin-bottom:0px;font-size:12px'  class="form-control inputText" id="new_selected_program" name="new_selected_program">
+                            <option disabled='1' selected='True' value=''>Select New Program</option>
+                            <t t-foreach="application_id.preference_ids" t-as="pref">
+                                <option t-att-value='pref.program_id.id'><t t-esc="pref.program_id.name"/></option>
+                            </t>
+                        </select>
+                        <label class='floating-label' for="new_selected_program">Select New Preferences</label>
+                    </div>
+                    <div class="col-12">
+                        <input type="submit" style='display: none;' class="btn btn-primary"/>
+                    </div>
+                </form>
+                <button onclick="check_form_validation(this)" style='background-color:#875A7B;border:None' class="btn btn-primary ml-1">Update</button>
+
+            </div>
+            <div class='col-4'>
+
+            </div>
+        </div>
+        <br/>
+
+        <!-- </div> -->
+
+    </template>
+</odoo>

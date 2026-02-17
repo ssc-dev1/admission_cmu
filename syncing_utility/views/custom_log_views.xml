@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ========================= -->
+    <!-- SEARCH VIEW -->
+    <!-- ========================= -->
+
+    <record id="view_custom_log_search" model="ir.ui.view">
+        <field name="name">custom.log.search</field>
+        <field name="model">custom.log</field>
+        <field name="arch" type="xml">
+            <search string="Search Failed Logs">
+
+                <field name="name"/>
+                <field name="method"/>
+                <field name="log_level"/>
+                <field name="company_id"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Student"
+                            name="group_by_name"
+                            context="{'group_by': 'name'}"/>
+                    <filter string="Method"
+                            name="group_by_method"
+                            context="{'group_by': 'method'}"/>
+                    <filter string="Company"
+                            name="group_by_company"
+                            context="{'group_by': 'company_id'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- TREE VIEW (NO group attrs) -->
+    <!-- ========================= -->
+
+    <record id="view_custom_log_tree" model="ir.ui.view">
+        <field name="name">custom.log.tree</field>
+        <field name="model">custom.log</field>
+        <field name="arch" type="xml">
+            <tree string="Failed Logs" default_order="create_date desc">
+
+                <field name="name" string="Student"/>
+                <field name="create_date"/>
+                <field name="method"/>
+                <field name="model"/>
+                <field name="log_level"/>
+                <field name="to_be"/>
+                <field name="company_id"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- FORM VIEW -->
+    <!-- ========================= -->
+
+    <record id="view_custom_log_form" model="ir.ui.view">
+        <field name="name">custom.log.form</field>
+        <field name="model">custom.log</field>
+        <field name="arch" type="xml">
+            <form string="Custom Log">
+                <sheet>
+
+                    <group>
+                        <group>
+                            <field name="name" string="Student"/>
+                            <field name="log_level"/>
+                            <field name="to_be"/>
+                        </group>
+
+                        <group>
+                            <field name="model"/>
+                            <field name="method"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="message" nolabel="1"/>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ACTIONS (GROUP HERE) -->
+    <!-- ========================= -->
+
+    <record id="action_student_admission_sync_failed_logs" model="ir.actions.act_window">
+        <field name="name">Student Admission Sync Failed Logs</field>
+        <field name="res_model">custom.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_custom_log_search"/>
+        <field name="domain">[('method', '=', 'sync_student_admission_to_cms')]</field>
+        <field name="context">{'group_by': 'name'}</field>
+    </record>
+
+    <record id="action_all_failed_logs" model="ir.actions.act_window">
+        <field name="name">All Failed Logs</field>
+        <field name="res_model">custom.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_custom_log_search"/>
+        <field name="context">{'group_by': 'name'}</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- MENUS -->
+    <!-- ========================= -->
+
+    <menuitem id="menu_fail_logs"
+              name="Failed Logs"
+              parent="menu_syncing_utility_root"
+              sequence="20"/>
+
+    <menuitem id="menu_student_admission_sync_failed_logs"
+              name="Student Failed Logs"
+              parent="menu_fail_logs"
+              action="action_student_admission_sync_failed_logs"
+              sequence="1"/>
+
+</odoo>

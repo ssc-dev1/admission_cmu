@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_student_fee_defer_tree" model="ir.ui.view">
+        <field name="name">odoocms.tuition.fee.defer.tree</field>
+        <field name="model">odoocms.tuition.fee.defer</field>
+        <field name="arch" type="xml">
+            <tree string="Fee Defer">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="program_id"/>
+                <field name="batch_id"/>
+                <field name="batch_section_id" groups="odoocms_registration.group_batch_section"/>
+                <field name="term_id"/>
+                <field name="semester_id"/>
+                <field name="date_request"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_student_fee_defer_form" model="ir.ui.view">
+        <field name="name">odoocms.tuition.fee.defer.form</field>
+        <field name="model">odoocms.tuition.fee.defer</field>
+        <field name="arch" type="xml">
+            <form string="Fee Defer">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="oe_highlight" states="draft"/>
+<!--                    <button name="action_invoice" string="Make Invoice" type="object" class="oe_highlight" states="submit"-->
+<!--                            attrs="{'invisible': ['|',('state','!=','approve'),('invoice_id', '!=', False)]}"-->
+<!--                            groups="odoocms.group_cms_manager"/>-->
+<!--                    <button type="object" name="defer_term" string="Defer Term"-->
+<!--                            attrs="{'invisible': [('can_defer', '=', False)]}"-->
+<!--                            groups="odoocms.group_cms_manager"-->
+<!--                            class="oe_highlight"/>-->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submit,approve,done"/>
+<!--                    <field name="can_defer" invisible="1"/>-->
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field default_focus="1" name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="student_id"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="program_id"/>
+                            <field name="batch_id"/>
+                        </group>
+                        <group>
+                            <field name="batch_section_id" groups="odoocms_registration.group_batch_section"/>
+                            <field name="semester_id"/>
+                            <field name="current_term_id"/>
+                        </group>
+                        <group>
+                            <field name="term_id" domain="[('number','>=',term_seq)]"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+<!--                            <field name="invoice_id" readonly="1"/>-->
+                            <field name="term_seq" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="bypass"/>
+                        </group>
+                    </group>
+                    <field name="reason"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="act_fee_defer_view" model="ir.actions.act_window">
+        <field name="name">Fee Defer Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.tuition.fee.defer</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_student_fee_refund_tree" model="ir.ui.view">
+        <field name="name">odoocms.student.fee.refund.tree</field>
+        <field name="model">odoocms.student.fee.refund</field>
+        <field name="arch" type="xml">
+            <tree string="Fee Refund">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="program_id"/>
+                <field name="batch_id"/>
+                <field name="batch_section_id" groups="odoocms_registration.group_batch_section"/>
+                <field name="term_id"/>
+                <field name="semester_id"/>
+                <field name="date_request"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_student_fee_refund_form" model="ir.ui.view">
+        <field name="name">odoocms.student.fee.refund.form</field>
+        <field name="model">odoocms.student.fee.refund</field>
+        <field name="arch" type="xml">
+            <form string="Fee Refund">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="oe_highlight" states="draft"/>
+<!--                    <button name="action_invoice" string="Make Invoice" type="object" class="oe_highlight" states="submit"-->
+<!--                            attrs="{'invisible': ['|',('state','!=','approve'),('invoice_id', '!=', False)]}"-->
+<!--                            groups="odoocms.group_cms_manager"/>-->
+<!--                    <button type="object" name="defer_term" string="Defer Term"-->
+<!--                            attrs="{'invisible': [('can_defer', '=', False)]}"-->
+<!--                            groups="odoocms.group_cms_manager"-->
+<!--                            class="oe_highlight"/>-->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submit,approve,done"/>
+<!--                    <field name="can_defer" invisible="1"/>-->
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field default_focus="1" name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="student_id"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="program_id"/>
+                            <field name="batch_id"/>
+                        </group>
+                        <group>
+                            <field name="batch_section_id" groups="odoocms_registration.group_batch_section"/>
+                            <field name="semester_id"/>
+                            <field name="current_term_id"/>
+                        </group>
+                        <group>
+                            <field name="term_id" domain="[('number','>=',term_seq)]"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+<!--                            <field name="invoice_id" readonly="1"/>-->
+                            <field name="term_seq" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="bypass"/>
+                        </group>
+                    </group>
+                    <field name="reason"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="act_fee_refund_view" model="ir.actions.act_window">
+        <field name="name">Fee Refund Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.student.fee.refund</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_student_fee_installment_tree" model="ir.ui.view">
+        <field name="name">odoocms.student.fee.installment.tree</field>
+        <field name="model">odoocms.student.fee.installment</field>
+        <field name="arch" type="xml">
+            <tree string="Fee Installment">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="program_id"/>
+                <field name="batch_id"/>
+                <field name="batch_section_id" groups="odoocms_registration.group_batch_section"/>
+                <field name="term_id"/>
+                <field name="semester_id"/>
+                <field name="date_request"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_student_fee_installment_form" model="ir.ui.view">
+        <field name="name">odoocms.student.fee.installment.form</field>
+        <field name="model">odoocms.student.fee.installment</field>
+        <field name="arch" type="xml">
+            <form string="Fee Installment">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="oe_highlight" states="draft"/>
+<!--                    <button name="action_invoice" string="Make Invoice" type="object" class="oe_highlight" states="submit"-->
+<!--                            attrs="{'invisible': ['|',('state','!=','approve'),('invoice_id', '!=', False)]}"-->
+<!--                            groups="odoocms.group_cms_manager"/>-->
+<!--                    <button type="object" name="defer_term" string="Defer Term"-->
+<!--                            attrs="{'invisible': [('can_defer', '=', False)]}"-->
+<!--                            groups="odoocms.group_cms_manager"-->
+<!--                            class="oe_highlight"/>-->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submit,approve,done"/>
+<!--                    <field name="can_defer" invisible="1"/>-->
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field default_focus="1" name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="student_id"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="program_id"/>
+                            <field name="batch_id"/>
+                        </group>
+                        <group>
+                            <field name="batch_section_id" groups="odoocms_registration.group_batch_section"/>
+                            <field name="semester_id"/>
+                            <field name="current_term_id"/>
+                        </group>
+                        <group>
+                            <field name="term_id" domain="[('number','>=',term_seq)]"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+<!--                            <field name="invoice_id" readonly="1"/>-->
+                            <field name="term_seq" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="bypass"/>
+                        </group>
+                    </group>
+                    <field name="reason"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="act_fee_installment_view" model="ir.actions.act_window">
+        <field name="name">Fee Installment Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.student.fee.installment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            action="act_fee_defer_view"
+            id="menu_odoocms_request_fee_defer"
+            name="Fee Deferment"
+            parent="menu_student_request_root"
+            sequence="210"/>
+
+    <menuitem
+            action="act_fee_refund_view"
+            id="menu_odoocms_request_fee_refund"
+            name="Fee Refund"
+            parent="menu_student_request_root"
+            sequence="220"/>
+    <menuitem
+            action="act_fee_installment_view"
+            id="menu_odoocms_request_fee_installment"
+            name="Fee Installment"
+            parent="menu_student_request_root"
+            sequence="230"/>
+
+</odoo>

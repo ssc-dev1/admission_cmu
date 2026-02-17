@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="entry_test_schedule_view_form" model="ir.ui.view">
+        <field name="name">entry_test_schedule_view_form</field>
+        <field name="model">odoocms.entry.test.schedule</field>
+        <field name="arch" type="xml">
+            <form string="Entry Test Schedule">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object"
+                                name="action_view_candidate"
+                                class="oe_stat_button"
+                                icon="fa-building"> <!--attrs="{'invisible':[('picking_ids','=',[])]}-->
+                            <field name="count" widget="statinfo" string="Candidates" help="Registered Candidates"/>
+                            <!--<field name="picking_ids" invisible="1"/>-->
+                        </button>
+
+                    </div>
+                    <widget name="web_ribbon" title="Entry Test Schedule" bg_color="bg-success"/>
+                    <h3 style="text-align: center;">Entry Test Schedule</h3>
+                    <group>
+                        <group>
+                            <field name="register_id" required="1"/>
+                        </group>
+                        <group>
+                            <field name="sequence" invisible="1"/>
+                            <field name="room_capacity"></field>
+                            <field name="capacity_added" string='Capacity Added'/>
+                        </group>
+                        <group>
+                            <field name="entry_test_room_id"/>
+                            <field name="date"/>
+                            <field name="slot_type"/>
+                        </group>
+                        <group>
+                            <field name="entry_test_slots_id"/>
+                            <field name="count"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <field name="entry_test_schedule_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence"/>
+                                    <field name="program_id"/>
+                                    <field name="capacity"/>
+                                    <field name="status"/>
+                                    <field name="count"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="entry_test_schedule_view_tree" model="ir.ui.view">
+        <field name="name">entry_test_schedule_view_tree</field>
+        <field name="model">odoocms.entry.test.schedule</field>
+        <field name="arch" type="xml">
+            <tree string="Entry Test Schedule">
+                <field name="sequence"/>
+                <field name="entry_test_room_id"/>
+                <field name="entry_test_slots_id"/>
+                <field name="programs" widget="many2many_tags"/>
+                <field name="date"/>
+                <field name="capacity_added"/>
+                <field name="count"/>
+                <field name="slot_type"/>
+            </tree>
+        </field>
+    </record>
+    <record id="entry_test_schedule_action" model="ir.actions.act_window">
+        <field name="name">Entry Test Schedule</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.entry.test.schedule</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+    <menuitem
+            id="entry_test_schedule_menu"
+            name="Entry Test Schedule"
+            action="entry_test_schedule_action"
+            sequence="280"
+            parent="entry_test_room_setup_menu"
+    />
+</odoo>

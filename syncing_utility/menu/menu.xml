@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <menuitem
+        id="menu_syncing_utility_root"
+        name="Syncing Utility"
+        web_icon="syncing_utility,static/description/sync.png"
+        sequence="5"
+        groups="base.group_system"/>
+        
+    <menuitem 
+        id="student_sync_to_adm" 
+        name="Student -> CMS" 
+        action="action_student_sync_to_cms" 
+        parent="menu_syncing_utility_root" 
+        sequence="15"
+        groups="base.group_system"/>
+        
+    <!-- <menuitem
+        id="menu_syncing_configuration"
+        name="Configuration"
+        parent="menu_syncing_utility_root"
+        action="act_syncing_configuration"
+        sequence="20"
+        groups="base.group_system"/> -->
+
+</odoo>

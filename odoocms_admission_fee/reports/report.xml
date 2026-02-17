@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--***** Selected Candidate Challan  Report *****-->
+        <record id="odoocms_admission_fee.action_selected_candidate_challan_report" model="ir.actions.report">
+            <field name="name">Selected Candidate Challan Report</field>
+            <field name="model">selected.candidate.challan.report.wiz</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odoocms_admission_fee.selected_candidate_challan_report</field>
+            <field name="report_file">odoocms_admission_fee.selected_candidate_challan_report</field>
+        </record>
+
+    </data>
+</odoo>

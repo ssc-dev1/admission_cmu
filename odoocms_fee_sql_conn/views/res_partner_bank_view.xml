@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_integration_odoocms_fee_head_form" model="ir.ui.view">
+        <field name="name">.integration.odoocms.fee.head.form</field>
+        <field name="model">odoocms.fee.head</field>
+        <field name="inherit_id" ref="odoocms_fee.view_odoocms_fee_head_form"/>
+        <field name="arch" type="xml">
+            <field name="category_id" position="after">
+                <field name="mapped_fee_head" required="0"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_integration_partner_bank_form" model="ir.ui.view">
+        <field name="name">.integration.res.partner.bank.form</field>
+        <field name="model">res.partner.bank</field>
+        <field name="inherit_id" ref="base.view_partner_bank_form"/>
+        <field name="arch" type="xml">
+            <field name="active" position="after">
+                <field name="bank_account_code" required="1"/>
+                <field name="bank_ledger_code" required="1"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

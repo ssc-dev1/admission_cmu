@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="registration_stat_report_format" model="report.paperformat" >
+			<field name="name">Registration Stat Report Format</field>
+			<field name="format">A4</field>
+			<field name="orientation">Portrait</field>
+			<field name="default" eval="False" />
+			<field name="dpi" eval="90" />
+			<field name="margin_top" eval="7" />
+			<field name="margin_right" eval="7" />
+			<field name="margin_bottom" eval="7" />
+			<field name="margin_left" eval="7" />
+			<field name="header_line" eval="False" />
+			<field name="header_spacing" eval="35" />
+		</record>
+
+		<record id="load_report_format" model="report.paperformat" >
+			<field name="name">Load Report Format</field>
+			<field name="format">A4</field>
+			<field name="orientation">Portrait</field>
+			<field name="default" eval="False"/>
+			<field name="dpi" eval="90"/>
+			<field name="margin_top" eval="5"/>
+			<field name="margin_right" eval="10"/>
+			<field name="margin_bottom" eval="5"/>
+			<field name="margin_left" eval="10"/>
+			<field name="header_line" eval="False"/>
+			<field name="header_spacing" eval="35"/>
+		</record>
+
+		<record id="action_report_registration_stat" model="ir.actions.report">
+			<field name="name">Registration Stat Report</field>
+			<field name="model">odoocms.institute</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="report_name">odoocms_registration.registration_stat_report</field>
+			<field name="report_file">odoocms_registration.registration_stat_report</field>
+        	<field name="paperformat_id" ref='odoocms_registration.registration_stat_report_format'/>
+		</record>
+
+		<record id="action_teacher_course_load_report" model="ir.actions.report">
+			<field name="name">Teacher Course Load</field>
+			<field name="model">odoocms.faculty.staff</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="report_name">odoocms_registration.teacher_course_load_report_template</field>
+			<field name="report_file">odoocms_registration.teacher_course_load_report_template</field>
+			<field name="paperformat_id" ref='odoocms_registration.load_report_format'/>
+		</record>
+
+		<record id="action_teacher_info_report" model="ir.actions.report">
+			<field name="name">Teacher Info Report</field>
+			<field name="model">odoocms.faculty.staff</field>
+			<field name="report_type">qweb-html</field>
+			<field name="report_name">odoocms_registration.teacher_info_report_template</field>
+			<field name="report_file">odoocms_registration.teacher_info_report_template</field>
+		</record>
+
+
+    </data>
+</odoo>

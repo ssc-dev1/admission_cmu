@@ -1,0 +1,61 @@
+<odoo>
+    <data>
+        <record id="view_syncing_configuration_tree" model="ir.ui.view">
+            <field name="name">transfer_images.odoo.sn.aarsol.cms.con.tree</field>
+            <field name="model">odoo.sn.aarsol.cms.con</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_syncing_configuration_form" model="ir.ui.view">
+            <field name="name">Syncing Configuration</field>
+            <field name="model">odoo.sn.aarsol.cms.con</field>
+            <field name="arch" type="xml">
+                <form style="background-color:#E6E6FA">
+                    <sheet>
+                            <group>
+                                <group>
+                                    <field name="name" />
+                                </group>
+                                <group>
+                                    <field name="target_host"/>
+                                </group>
+                                <group>
+                                    <field name="target_host_web"/>
+                                </group>
+                                <group>
+                                    <field name="target_port"/>
+                                </group>
+                                <group>
+                                    <field name="target_dbname"/>
+                                </group>
+                                <group>
+                                    <field name="target_admin_user"/>
+                                </group>
+                                <group>
+                                    <field name="target_admin_password" password="True"/>
+                                </group>
+                                <group>
+                                    <field name="target_db_user"/>
+                                </group>
+                                <group>
+                                    <field name="target_db_password" password="True"/>
+                                </group>
+                                <group>
+                                    <field name="target_db_port"/>
+                                </group>
+                                
+                            </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="act_syncing_configuration" model="ir.actions.act_window">
+            <field name="name">Configuration</field>
+            <field name="res_model">odoo.sn.aarsol.cms.con</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+
+access_generate_invoice_user,generate.invoice.user.access,model_generate_invoice,base.group_user,1,1,1,0
+access_generate_invoice_account_admin,generate.invoice.account.admin.access,model_generate_invoice,account.group_account_manager,1,1,1,1
+
+access_generate_invoice_line_user,generate.invoice.line.user.access,model_generate_invoice_line,base.group_user,1,1,1,0
+access_generate_invoice_line_admin,generate.invoice.line.admin.access,model_generate_invoice_line,account.group_account_manager,1,1,1,1
+
+access_invoice_list_user,access.invoice.list.user.access,model_invoice_list,base.group_user,1,1,1,0
+access_invoice_list_account_manager_user,access.invoice.list.account.manager.access,model_invoice_list,account.group_account_manager,1,1,1,0
+
+access_selected_candidate_challan_report_wiz,selected.candidate.challan.report.wiz.access,model_selected_candidate_challan_report_wiz,base.group_user,1,1,1,1
+
+access_excel_reports_save_wizard,excel.reports.save.wizard.access,model_excel_reports_save_wizard,base.group_user,1,1,1,1

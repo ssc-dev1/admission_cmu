@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+       <record id="view_odoocms_batch_tree" model="ir.ui.view">
+            <field name="name">odoocms.batch.tree</field>
+            <field name="model">odoocms.batch</field>
+            <field name="arch" type="xml">
+                <tree string="Program Batch" multi_edit="1">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code" optional="show"/>
+                    <field name="department_id"/>
+                    <field name="career_id" optional="show"/>
+                    <field name="program_id" optional="show"/>
+                    <field name="session_id"/>
+                    <field name="batch_number" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_batch_form" model="ir.ui.view">
+            <field name="name">odoocms.batch.form</field>
+            <field name="model">odoocms.batch</field>
+            <field name="arch" type="xml">
+                <form string="Program Batch">
+                    <header>
+<!--                        <button name="generate_classes" type="object" class="oe_highlight"-->
+<!--                                string="Generate Classes" groups="odoocms.group_cms_user"-->
+<!--                                help="Click to Generate Classes for the Current Semester for All Sections"-->
+<!--                                attrs="{'invisible': [('term_id', '=',False)]}"-->
+<!--                                invisible="1"-->
+
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="batch_number"/>
+                                <field name="short_code"/>
+                            </group>
+                            <group>
+                                <field name="department_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="career_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                            <group name="session">
+                                <field name="session_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="term_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="semester_id"
+                                    options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                            <group name="program">
+                                <field name="program_id"
+                                       domain="[('career_id','=',career_id),('department_id','=',department_id)]"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="study_scheme_id"
+                                       domain="[('session_id','=',session_id),('program_id','=',program_id)]"
+                                       options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+
+<!--                                <field name="sections"/>-->
+
+                            </group>
+
+                        </group>
+                        <notebook>
+                            <page string="Requirements" name="requirements">
+                                <button name="copy_requirements" type="object" class="oe_highlight"
+                                    string="Copy Course Requirements"
+                                    help="Click to Copy Course requirements from Program"
+                                    attrs="{'invisible': [('requirement_ids', '!=',[])]}"
+                                />
+                                <group>
+                                    <field name="requirement_ids">
+                                        <tree editable="bottom">
+                                            <field name="category_id"
+                                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                            <field name="sub_category_id"
+                                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                                domain="[('category_id','=',category_id)]"/>
+                                            <field name="credits"/>
+                                            <field name="mandatory"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page name='users' string="Users">
+                                <group colspan="4">
+                                    <field name="user_ids" nolabel="1">
+                                        <tree string="Users"> <!-- create="false" delete="false" edit="false" -->
+                                            <field name="name"/>
+                                            <field name="login"/>
+                                            <field name="login_date"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page name="rooms" string="Rooms">
+                                <group>
+                                    <group>
+                                        <field name="building_id"
+                                            options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    </group>
+                                    <group>
+                                        <field name="floor_ids" widget="many2many_tags"/>
+                                    </group>
+                                </group>
+                                <group colspan="4">
+                                    <field name="room_ids" nolabel="1"
+                                        options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}">
+                                        <tree string="Rooms"> <!-- create="false" delete="false" edit="false" -->
+                                            <field name="code"/>
+                                            <field name="name"/>
+                                            <field name="room_type"/>
+                                            <field name="building_id"/>
+                                            <field name="capacity"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page name='othersettings' string="Other Settings" groups="odoocms.group_cms_manager">
+                                <sheet>
+                                    <group name="out">
+                                        <group>
+                                            <field name="vis_required"/>
+                                            <field name="can_sync"/>
+                                        </group>
+                                        <group>
+                                        </group>
+                                    </group>
+<!--                                    <group>-->
+<!--                                        <field name="registration_load_ids"/>-->
+<!--                                    </group>-->
+                                </sheet>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

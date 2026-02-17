@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_fee_receipt_barcode_assignment_form" model="ir.ui.view">
+            <field name="name">fee.receipt.barcode.assignment.view</field>
+            <field name="model">fee.receipt.barcode.assignment</field>
+            <field name="arch" type="xml">
+                <form string="Fee Receipt Barcode Assignment">
+                    <group>
+                        <field name="invoice_id" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_receipt_barcode_assignment" string="Assign Barcode" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="act_fee_receipt_barcode_assignment" model="ir.actions.act_window">
+            <field name="name">Assign Barcode</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fee.receipt.barcode.assignment</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="groups_id" eval="[(4, ref('odoocms_fee.group_fee_super_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

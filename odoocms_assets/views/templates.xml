@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="custom_header_report" name="Custom Header Report">
+        <div class="header mb-0 p-0">
+            <div  class="text-center header_custom row">
+                <div class="col-2 m-0 p-0">
+                    <img style="width:210px;height:100px;" t-att-src='image_data_uri(request.env.company.logo)'/>
+                </div>
+                <div class="col-10">
+                    <h2 class='mb-0'><t t-esc="request.env.company.name"/></h2>
+                    <!-- <p><t t-esc="request.env.company.ordinance"/></p>                     -->
+                    <strong class='mt-2'><t t-esc="report_title"/></strong>
+                </div>
+            </div>
+        <hr class='m-0 p-0' />
+        </div>
+    </template>
+</odoo>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="admission_education_view_form" model="ir.ui.view">
+        <field name="name">admission.education.view.form</field>
+        <field name="model">odoocms.admission.education</field>
+        <field name="arch" type="xml">
+            <form string="Education_admission_form">
+                <sheet>
+                    <widget name="web_ribbon" title="Academic Level" bg_color="bg-success"/>
+                    <h3 style="text-align: center;">Academic Level</h3>
+                    <group>
+                        <group>
+                            <field name="name" required="1"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="student_type"/>
+                        </group>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Degree Details">
+                            <field name="degree_ids">
+                                <tree 
+                                widget="one2many"
+                                edit="false" create='false'
+                                >
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="admission_education_view_tree" model="ir.ui.view">
+        <field name="name">admission.education.view.tree</field>
+        <field name="model">odoocms.admission.education</field>
+        <field name="arch" type="xml">
+            <tree string="admission_education_tree">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+    <record id="admission_education_action" model="ir.actions.act_window">
+        <field name="name">Academic Level</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.admission.education</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create Your Education Details here.
+            </p>
+        </field>
+    </record>
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem
+            id="menu_odoocms_academic_setup"
+            name="Academic Setup's"
+            parent="menu_admission_configuration"
+            sequence="120"/>
+
+    <menuitem
+            id="admission_education_menu"
+            name="Academic Level"
+            parent="menu_odoocms_academic_setup"
+            action="admission_education_action"
+            groups="odoocms_admission.group_admission_manager"
+            sequence="130"/>
+</odoo>

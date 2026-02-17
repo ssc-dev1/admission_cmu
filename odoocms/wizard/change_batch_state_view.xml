@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+		<record id="view_odoocms_batch_state_change" model="ir.ui.view">
+			<field name="name">odoocms.batch.state.change</field>
+			<field name="model">odoocms.batch.state.change</field>
+			<field name="arch" type="xml">
+				<form string="Change Batch State">
+					<group>
+						<group>
+							<field name="state" required="True"/>
+							<field name="date_effective" required="True"/>
+						</group>
+						<group>
+							<field name="apply"/>
+						</group>
+					</group>
+					<group>
+						<field name="description" required="True"/>
+					</group>
+
+					<notebook>
+						<page string="Batches">
+							<group>
+								<field name="batch_ids">
+									<tree string="Batches">
+										<field name="code"/>
+										<field name="name"/>
+										<field name="department_id"/>
+										<field name="career_id"/>
+										<field name="program_id"/>
+										<field name="session_id"/>
+										<field name="state" invisible="1"/>
+									</tree>
+								</field>
+							</group>
+						</page>
+					</notebook>
+					<footer>
+						<button name="change_batch_state" string="Change Status" type="object" class="btn-primary"/>
+						<button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+			   </form>
+			</field>
+		</record>
+
+		<record id="act_odoocms_change_batch_state" model="ir.actions.act_window">
+            <field name="name">Change Batch State</field>
+            <field name="res_model">odoocms.batch.state.change</field>
+			<field name="binding_model_id" ref="odoocms.model_odoocms_batch"/>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+<!--		<act_window-->
+<!--				id="act_odoocms_change_student_state"-->
+<!--				name="Change Student State"-->
+<!--				binding_model="odoocms.student"-->
+<!--				res_model="odoocms.student.state.change"-->
+<!--				binding_views="list,form"  view_mode="form"-->
+<!--				target="new"-->
+<!--				groups="odoocms.group_cms_tags"/>-->
+
+
+    </data>
+</odoo>

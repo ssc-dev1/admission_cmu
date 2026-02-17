@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="odoocms_register_program_inherit" model="ir.ui.view">
+    <field name="name">odoocms.program.form.shifts.inherit</field>
+    <field name="model">odoocms.program</field>
+    <!-- Replace ref value with the actual original program form view xml id -->
+    <field name="inherit_id" ref="odoocms_base.view_odoocms_program_form"/>
+    <field name="arch" type="xml">
+      <!-- Insert after the 'code' field (adjust xpath if needed) -->
+      <xpath expr="//field[@name='department_id']" position="after">
+        <!-- simple group with the boolean toggle -->
+        <group>
+          <field name="enable_shifts"/>
+        </group>
+
+        <!-- conditional group: visible only when enable_shifts is True -->
+        <group attrs="{'invisible': [('enable_shifts', '=', False)]}">
+          <!-- use class="o_form_label" because this is a visual label, not pointing to a field -->
+          <!-- <label string="Shifts" class="o_form_label"/> -->
+          <group>
+            <field name="morning" widget="boolean"/>
+            <field name="evening" widget="boolean"/>
+            <field name="weekend" widget="boolean"/>
+          </group>
+        </group>
+      </xpath>
+    </field>
+  </record>
+  <record id="view_odoocms_application_search_shift_inherit" model="ir.ui.view">
+    <field name="name">odoocms.application.search.shift.inherit</field>
+    <field name="model">odoocms.application</field>
+    <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='prefered_program_id']" position="after">
+            <field name="shift"/>
+        </xpath>
+
+    </field>
+</record>
+
+    <record id="view_odoocms_application_search_inherit_shift" model="ir.ui.view">
+        <field name="name">odoocms.application.search.inherit.shift</field>
+        <field name="model">odoocms.application</field>
+        <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_search"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//search" position="inside">
+                <filter string="Shift" name="filter_shift"
+                        domain="[('shift', '!=', False)]"/>
+            </xpath>
+
+            <xpath expr="//group" position="inside">
+                <filter name="group_by_shift" 
+                        string="Shift"
+                        icon="fa-clock-o"
+                        domain="[]"
+                        context="{'group_by' : 'shift'}"/>
+            </xpath>
+
+        </field>
+    </record>
+        <record id="view_odoocms_student_tree_inherit_ext_a" model="ir.ui.view">
+            <field name="name">view.odoocms.student.tree.inherit</field>
+            <field name="model">odoocms.student</field>
+            <field name="inherit_id" ref="odoocms.view_odoocms_student_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='name']" position="after">
+                <field name="shift" />
+                </xpath>
+            </field>
+        </record>
+    <record id="view_odoocms_student_search_inherit_shift" model="ir.ui.view">
+        <field name="name">odoocms.student.search.inherit.shift</field>
+        <field name="model">odoocms.student</field>
+        <field name="inherit_id" ref="odoocms.view_odoocms_student_search"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//search" position="inside">
+                <filter string="Shift" name="filter_shift"
+                        domain="[('shift', '!=', False)]"/>
+            </xpath>
+
+            <xpath expr="//group" position="inside">
+                <filter name="group_by_shift" 
+                        string="Shift"
+                        icon="fa-clock-o"
+                        domain="[]"
+                        context="{'group_by' : 'shift'}"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

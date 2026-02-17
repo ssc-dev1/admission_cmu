@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="odoocms_notify_result_wiz_form" model="ir.ui.view">
+        <field name="name">odoocms.notify.result.wiz.form</field>
+        <field name="model">odoocms.notify.result.wiz</field>
+        <field name="arch" type="xml">
+            <form string="Verify Result">
+                <group>
+                	<group>
+						<field name="term_id" domain="[('current','=',True)]"
+                            options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        <field name="institute_id"
+                            options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+		            </group>
+                </group>
+                <footer>
+                    <button name="notify_result" string="Notify Result" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+     <record id="action_odoocms_notify_result_wiz" model="ir.actions.act_window">
+        <field name="name">Notify Result</field>
+        <field name="res_model">odoocms.notify.result.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_odoocms_notify_result_wiz"
+        name="Notify Result"
+        action="action_odoocms_notify_result_wiz"
+        parent="odoocms_academic.menu_odoocms_academic_result"
+        sequence="410"/>
+
+
+</odoo>

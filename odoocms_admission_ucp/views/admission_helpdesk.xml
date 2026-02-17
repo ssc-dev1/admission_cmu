@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="admission_helpdesk_form" model="ir.ui.view">
+        <field name="name">admission.helpdesk.form</field>
+        <field name="model">admission.helpdesk</field>
+        <field name="arch" type="xml">
+            <form string="Inbound Call Record">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" required="1"/>
+                            <field name="nature" required="1"/>
+                        </group>
+                        <group>
+                            <field name="phone" required="1"/>
+                            <field name="category" required="1"/>
+                        </group>
+                        <group>
+                            <field name="admission_id" required="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="program" widget="many2many_checkboxes"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="call_tag" widget="many2many_checkboxes"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="pre_admission_info" widget="many2many_checkboxes"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="remarks"/>
+                    </group>
+                </sheet>
+                <!--<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>-->
+            </form>
+        </field>
+    </record>
+    <record id="admission_helpdesk_tree" model="ir.ui.view">
+        <field name="name">admission.helpdesk.tree</field>
+        <field name="model">admission.helpdesk</field>
+        <field name="arch" type="xml">
+            <tree string="Inbound Call Record">
+                <field name="name"/>
+                <field name="nature"/>
+                <field name="category"/>
+                <field name="admission_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_admission_helpdesk" model="ir.actions.act_window">
+        <field name="name">Admission HelpDesk</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">admission.helpdesk</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record id="admission_helpdesk_prog_setup_tree" model="ir.ui.view">
+        <field name="name">admission.helpdesk.prog.setup.tree</field>
+        <field name="model">admission.helpdesk.program.setup</field>
+        <field name="arch" type="xml">
+            <tree string="Faculty/Program" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_helpdesk_prog_setup" model="ir.actions.act_window">
+        <field name="name">Faculty/Program</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">admission.helpdesk.program.setup</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="adm_helpdesk_calltag_setup_tree" model="ir.ui.view">
+        <field name="name">adm.helpdesk.calltag.setup.tree</field>
+        <field name="model">adm.helpdesk.calltag.setup</field>
+        <field name="arch" type="xml">
+            <tree string="Call Tag/ Workcode" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_adm_helpdesk_calltag_setup" model="ir.actions.act_window">
+        <field name="name">Call Tag/ Workcode</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">adm.helpdesk.calltag.setup</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="adm_helpdesk_preinfo_setup_tree" model="ir.ui.view">
+        <field name="name">adm.helpdesk.preinfo.setup.tree</field>
+        <field name="model">adm.helpdesk.preinfo.setup</field>
+        <field name="arch" type="xml">
+            <tree string="Pre-Admission Information" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_adm_helpdesk_preinfo_setup" model="ir.actions.act_window">
+        <field name="name">Pre-Admission Information</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">adm.helpdesk.preinfo.setup</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem
+                id="menu_admission_helpdesk_main"
+                name="Help Desk"
+                parent="odoocms_admission.menu_odoocms_admission_root"
+                groups="odoocms_admission.group_admission_manager"
+                sequence="100"/>
+    <menuitem
+                id="menu_admission_helpdesk"
+                name="Inbound Calls"
+                parent="odoocms_admission_ucp.menu_admission_helpdesk_main"
+                action="action_admission_helpdesk"
+                sequence="10"/>
+
+    <menuitem
+                id="menu_helpdesk_prog_setup"
+                name="Faculty/Program"
+                parent="odoocms_admission_ucp.menu_admission_helpdesk_main"
+                action="action_helpdesk_prog_setup"
+                sequence="15"/>
+
+    <menuitem
+                id="menu_adm_helpdesk_calltag_setup_setup"
+                name="Call Tag/ Workcode"
+                parent="odoocms_admission_ucp.menu_admission_helpdesk_main"
+                action="action_adm_helpdesk_calltag_setup"
+                sequence="20"/>
+
+    <menuitem
+                id="menu_adm_helpdesk_preinfo_setup"
+                name="Pre-Admission Information"
+                parent="odoocms_admission_ucp.menu_admission_helpdesk_main"
+                action="action_adm_helpdesk_preinfo_setup"
+                sequence="25"/>
+
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+            id="menu_odoocms_root"
+            name="Odoo CMS"
+            web_icon="odoocms_base,static/description/cms.jpg"
+            sequence="5"/>
+
+    <menuitem
+            id="menu_odoocms_organization"
+            name="Organization"
+            parent="menu_odoocms_root"
+            sequence="30"/>
+
+            <menuitem
+                    id="menu_odoocms_organization_structure"
+                    name="Organization Structure"
+                    parent="menu_odoocms_organization"
+                    sequence="10"/>
+
+            <menuitem
+                    id="menu_odoocms_academic_structure"
+                    name="Academic Structure"
+                    parent="menu_odoocms_organization"
+                    sequence="20"/>
+
+    <menuitem
+            id="menu_odoocms_academic_setup"
+            name="Academic Setup"
+            parent="menu_odoocms_root"
+            sequence="40"/>
+
+    <menuitem
+            id="menu_odoocms_configuration"
+            parent="menu_odoocms_root"
+            name="Configuration"
+            sequence="100"/>
+    <!-- groups="group_cms_manager" -->
+
+            <menuitem
+                    id="menu_odoocms_config_general"
+                    name="General"
+                    parent="menu_odoocms_configuration"
+                    sequence="20"/>
+
+            <!-- groups="group_cms_manager,group_cms_user" -->
+
+
+
+</odoo>

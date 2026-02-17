@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+		<record id="view_odoocms_course_shift_tree" model="ir.ui.view">
+			<field name="name">odoocms.course.shift.tree</field>
+			<field name="model">odoocms.course.shift</field>
+			<field name="arch" type="xml">
+				<tree string="Shift Course">
+					<field name="name"/>
+					<field name="class_id"/>
+					<field name="new_class_id"/>
+					<field name="term_id"/>
+					<field name="batch_id"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_odoocms_course_shift_form" model="ir.ui.view">
+			<field name="name">odoocms.course.shift.form</field>
+			<field name="model">odoocms.course.shift</field>
+			<field name="arch" type="xml">
+				<form string="Shift Course">
+					<header>
+						<button name="fetch_students" states="draft" string="Fetch Students" type="object" class="btn-primary"/>
+						<button name="action_submit" states="draft" string="Submit" type="object" class="btn-primary"/>
+						<button name="shift_course" states="submit" string="Shift Course" type="object" class="btn-primary"/>
+						<button name="action_draft" states="submit" string="Reset to Draft" type="object"/>
+						<button name="action_cancel" states="draft,submit" string="Cancel" type="object"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,submit,done"/>
+					</header>
+					<sheet>
+						 <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+						<group>
+							<group>
+								<field name="batch_id" required="1"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+								<field name="term_id" required="1"  domain="[('current','=',True)]"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+							</group>
+							<group>
+								<field name="class_id" required="True"
+									domain="[('term_id','=',term_id),('batch_id','=',batch_id)]"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+								<field name="new_class_id" required="True"
+									domain="[('term_id','=',term_id),('batch_id','=',batch_id)]"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+							</group>
+						</group>
+						<group string="Students">
+							<field name="student_ids" widget="many2many_tags" nolabel="1"
+								options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+						</group>
+					</sheet>
+			   </form>
+			</field>
+		</record>
+
+		<record id="view_odoocms_course_shift_reg_tree" model="ir.ui.view">
+			<field name="name">odoocms.course.shift.reg.tree</field>
+			<field name="model">odoocms.course.shift.reg</field>
+			<field name="arch" type="xml">
+				<tree string="Shift Course">
+					<field name="name"/>
+					<field name="class_id"/>
+					<field name="new_class_id"/>
+					<field name="term_id"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_odoocms_course_shift_reg_form" model="ir.ui.view">
+			<field name="name">odoocms.course.shift.reg.form</field>
+			<field name="model">odoocms.course.shift.reg</field>
+			<field name="arch" type="xml">
+				<form string="Shift Course - Reg">
+					<header>
+						<button name="fetch_students" states="draft" string="Fetch Students" type="object" class="btn-primary"/>
+						<button name="action_submit" states="draft" string="Submit" type="object" class="btn-primary"/>
+						<button name="shift_course" states="submit" string="Shift Course" type="object" class="btn-primary"/>
+						<button name="action_draft" states="submit" string="Reset to Draft" type="object"/>
+						<button name="action_cancel" states="draft,submit" string="Cancel" type="object"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,submit,done"/>
+					</header>
+					<sheet>
+						 <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+						<group>
+							<group>
+								<field name="source" widget="radio"/>
+								<field name="term_id" required="1" domain="[('enrollment_active','=',True)]"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+								<field name="course_id" required="1"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+							</group>
+							<group>
+								<field name="class_id" required="True" domain="[('term_id','=',term_id),('course_id','=',course_id)]"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+								<field name="new_class_id" required="True" domain="[('term_id','=',term_id),('course_id','=',course_id)]"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+							</group>
+						</group>
+						<group string="Students" attrs="{'invisible': [('source','=','registered')]}">
+							<field name="student_ids" widget="many2many_tags" nolabel="1" domain="[('primary_class_id','=',class_id)]"
+								options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+						</group>
+						<group string="Registrations" attrs="{'invisible': [('source','=','request')]}">
+							<field name="registration_ids" widget="many2many_tags" nolabel="1" domain="[('primary_class_id','=',class_id)]"
+								options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+						</group>
+					</sheet>
+			   </form>
+			</field>
+		</record>
+
+		<record id="view_odoocms_course_change_reg_tree" model="ir.ui.view">
+			<field name="name">odoocms.course.change.reg.tree</field>
+			<field name="model">odoocms.course.change.reg</field>
+			<field name="arch" type="xml">
+				<tree string="Change Course">
+					<field name="name"/>
+					<field name="class_id"/>
+					<field name="new_class_ids"/>
+					<field name="term_id"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_odoocms_course_change_reg_form" model="ir.ui.view">
+			<field name="name">odoocms.course.change.reg.form</field>
+			<field name="model">odoocms.course.change.reg</field>
+			<field name="arch" type="xml">
+				<form string="Change Course - Reg">
+					<header>
+						<button name="fetch_students" states="draft" string="Fetch Students" type="object" class="btn-primary"/>
+						<button name="action_submit" states="draft" string="Submit" type="object" class="btn-primary"/>
+						<button name="shift_course" states="submit" string="Change Course" type="object" class="btn-primary"/>
+						<button name="action_draft" states="submit" string="Reset to Draft" type="object"/>
+						<button name="action_cancel" states="draft,submit" string="Cancel" type="object"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,submit,done"/>
+					</header>
+					<sheet>
+						 <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+						<group>
+							<group>
+<!--								<field name="source" widget="radio"/>-->
+								<field name="term_id" required="1" domain="[('enrollment_active','=',True)]"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+								<field name="course_id" required="1"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+							</group>
+							<group>
+								<field name="class_id" required="True" domain="[('term_id','=',term_id),('course_id','=',course_id)]"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+								<field name="new_class_ids" widget="many2many_tags" required="True" domain="[('term_id','=',term_id)]"
+									options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+							</group>
+						</group>
+<!--						<group string="Students" attrs="{'invisible': [('source','=','registered')]}">-->
+<!--							<field name="student_ids" widget="many2many_tags" nolabel="1" domain="[('primary_class_id','=',class_id)]"-->
+<!--								options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>-->
+<!--						</group>-->
+						<group string="Registrations">  <!-- attrs="{'invisible': [('source','=','request')]}" -->
+							<field name="registration_ids" widget="many2many_tags" nolabel="1" domain="[('primary_class_id','=',class_id)]"
+								options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+						</group>
+					</sheet>
+			   </form>
+			</field>
+		</record>
+
+		<record id="action_odoocms_course_shift" model="ir.actions.act_window">
+            <field name="name">Shift Course</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">odoocms.course.shift</field>
+            <field name="view_mode">tree,form</field>
+			<field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+		<record id="action_odoocms_course_shift_reg" model="ir.actions.act_window">
+            <field name="name">Shift Course - Registration</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">odoocms.course.shift.reg</field>
+            <field name="view_mode">tree,form</field>
+			<field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+		<record id="action_odoocms_course_change_reg" model="ir.actions.act_window">
+            <field name="name">Change Course - Registration</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">odoocms.course.change.reg</field>
+            <field name="view_mode">tree,form</field>
+			<field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+			id="menu_odoocms_shift_course"
+			name="Shift Course"
+			action="action_odoocms_course_shift"
+			parent="menu_odoocms_registration_main"
+			sequence="355"/>
+
+		<menuitem
+			id="menu_odoocms_shift_course_reg"
+			name="Shift Course - Registration"
+			action="action_odoocms_course_shift_reg"
+			parent="menu_odoocms_registration_main"
+			sequence="365"/>
+
+		<menuitem
+			id="menu_odoocms_change_course_reg"
+			name="Change Course - Registration"
+			action="action_odoocms_course_change_reg"
+			parent="menu_odoocms_registration_main"
+			sequence="366"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="allocate_slot_retest_wizard_form" model="ir.ui.view">
+        <field name="name">allocate.slot.retest.wizard</field>
+        <field name="model">allocate.slot.retest.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Form Wizard">
+                <sheet>
+                    <!--<group>
+                        <group>
+                            <field name="register_id" domain="[('state', '=', 'application')]" ></field>
+                        </group>
+                    </group>-->
+                    <notebook>
+                        <page string="Allocate Slot" name="allocate_retest_slot_page">
+                            <field name="applicant_admit_ids" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="allocate_retest_slot" string="Allocate Retest Slot" type="object" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="allocate_slot_retest_wizard_action" model="ir.actions.act_window">
+        <field name="name">Generate Retest/Missed Test Admit Card</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">allocate.slot.retest.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="odoocms_admission_ucp.model_applicant_entry_test" />
+
+    </record>
+
+    <!--<menuitem
+        id="allocate_slot_wizard_action_menu"
+        name="Allocate Slot"
+        action="allocate_slot_wizard_action"
+        parent="odoocms_admission.menu_admission_configuration"
+        />-->
+
+
+
+</odoo>

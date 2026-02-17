@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="offer_letter_view_form" model="ir.ui.view">
+        <field name="name">admission.offer.letter.view.form</field>
+        <field name="model">admission.offer.letter</field>
+        <field name="arch" type="xml">
+            <form string="Offer Letter">
+                <sheet>
+                    <widget name="web_ribbon" title="Offer Letter" bg_color="bg-success"/>
+                    <h3 style="text-align: center;">Offer Letter</h3>
+                    <group>
+                        <group>
+                            <field name="applicant_id" required="1"/>
+                            <field name="reference_no" invisible="1"/>
+                            <field name="date"/>
+                            <field name="merit_reg_id"/>
+                        </group>
+                        <group>
+                            <field name="program_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="offer_letter_view_tree" model="ir.ui.view">
+        <field name="name">admission.offer.letter.view.tree</field>
+        <field name="model">admission.offer.letter</field>
+        <field name="arch" type="xml">
+            <tree string="Offer Letter">
+                <field name="applicant_id" required="1"/>
+                <field name="merit_reg_id" required="1"/>
+                <field name="reference_no"/>
+                <field name="program_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="offer_letter_action" model="ir.actions.act_window">
+        <field name="name">Admission Offer Letter Action</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">admission.offer.letter</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+    <menuitem
+            id="admission_offer_menu"
+            name="Admission Offer Letter"
+            sequence="36"
+            parent="odoocms_admission.menu_odoocms_admission_root"
+    />
+    <menuitem
+            id="offer_letter_menu"
+            name="Admission Offer Letter"
+            action="offer_letter_action"
+            sequence="10"
+            parent="admission_offer_menu"
+    />
+
+     <record id="offer_letter_format" model="report.paperformat">
+        <field name="name">European A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">15</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">15</field>
+        <field name="margin_right">15</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+       <!--offer letter-->
+    <record id="action_admission_offer_letter" model="ir.actions.report">
+        <field name="name">Offer Letter</field>
+        <field name="model">admission.offer.letter</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">odoocms_admission_merit.report_offer_letter</field>
+        <field name="report_file">odoocms_admission_merit.report_offer_letter</field>
+        <field name="binding_model_id" ref="model_admission_offer_letter"/>
+        <field name="paperformat_id" ref="offer_letter_format"/>
+
+    </record>
+</odoo>

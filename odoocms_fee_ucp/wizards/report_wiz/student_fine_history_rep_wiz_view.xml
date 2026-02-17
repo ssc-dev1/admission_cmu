@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="student_fine_history_rep_wiz_view_form" model="ir.ui.view">
+        <field name="name">student.fine.history.rep.wiz.form</field>
+        <field name="model">student.fine.history.rep.wiz</field>
+        <field name="arch" type="xml">
+            <form string="Student Fine History Report">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="student_id" options="{'no_quick_create':True,'no_create_edit':True,'no_create':True}" required="1"/>
+                            <field name="term_id" options="{'no_quick_create':True,'no_create_edit':True,'no_create':True}"/>
+                            <field name="show_all_history"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Courses" name="registered_courses">
+                            <field name="registered_courses" domain="[('student_id','=',student_id)]">
+                                <tree>
+                                    <field name="course_id"/>
+                                    <field name="session_id"/>
+                                    <field name="term_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="print_report" string="Generate PDF Report" type="object" class="btn-primary"/>
+                    <!--                    <button name="make_excel" string="Generate Excel Report" type="object" class="btn-primary"/>-->
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_student_fine_history_rep_wiz" model="ir.actions.act_window">
+        <field name="name">Student Fine History Report</field>
+        <field name="res_model">student.fine.history.rep.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem
+            id="menu_student_fine_history_rep_wiz"
+            name="Student Fine History Report"
+            action="action_student_fine_history_rep_wiz"
+            parent="odoocms_fee.menu_fee_reports"
+            groups="odoocms_fee.group_fee_user,odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager"
+            sequence="500"/>
+
+</odoo>

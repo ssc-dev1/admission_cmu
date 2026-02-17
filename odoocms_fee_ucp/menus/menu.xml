@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+            id="menu_odoo_fee_sql_connector_root"
+            name="Fee Integration"
+            groups="group_odoo_fee_sql_connector_user"
+            web_icon="odoocms_fee_ucp,static/description/odoo_connector.png"
+            sequence="100"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_main"
+            name="Main"
+            groups="group_odoo_fee_sql_connector_user"
+            parent="menu_odoo_fee_sql_connector_root"
+            sequence="10"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_main2"
+            name="Connection Pool"
+            groups="group_odoo_fee_sql_connector_user"
+            parent="menu_odoo_fee_sql_connector_main"
+            sequence="10"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_sync_pool_main"
+            name="Data Sync Pool"
+            groups="group_odoo_fee_sql_connector_user"
+            parent="menu_odoo_fee_sql_connector_main"
+            sequence="20"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_push_main"
+            name="Pushing"
+            groups="group_odoo_fee_sql_connector_user"
+            parent="menu_odoo_fee_sql_connector_main"
+            sequence="50"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_report"
+            name="Reports"
+            parent="menu_odoo_fee_sql_connector_root"
+            groups="group_odoo_fee_sql_connector_user"
+            sequence="80"/>
+
+    <menuitem
+            id="menu_odoo_fee_sql_connector_configuration"
+            parent="menu_odoo_fee_sql_connector_root"
+            name="Configuration"
+            groups="group_odoo_fee_sql_connector_user"
+            sequence="100"/>
+
+    <!--***** HIDE MENUS *****-->
+    <menuitem id="odoocms_fee.menu_odoocms_student_fee_previous_balance" active="False"/>
+    <menuitem id="odoocms_fee.menu_odoocms_student_fee_scholarship" active="False"/>
+    <menuitem id="odoocms_fee.menu_account_invoice_group" active="False"/>
+    <menuitem id="odoocms_fee.menu_student_scholarship_fee_receipt" active="False"/>
+    <menuitem id="odoocms_fee.menu_odoocms_tuition_fee_deferment_request" active="False"/>
+    <menuitem id="odoocms_fee.menu_odoocms_student_scholarship_request" active="False"/>
+    <menuitem id="odoocms_fee.menu_odoocms_fee_advance_payment" active="False"/>
+
+
+    <!--***** HIDE Report *****-->
+    <!-- Student Financial Report Summary -->
+    <menuitem id="odoocms_fee.menu_student_fin_report_summary_wiz" active="False"/>
+    <!-- Student Dues Warning Letter -->
+    <menuitem id="odoocms_fee.menu_student_dues_warning_letter_wiz" active="False"/>
+    <!--***** Fee Tax Report *****-->
+    <menuitem id="odoocms_fee.menu_student_fee_tax_report" active="False"/>
+    <!--***** Scholarship Charged Report *****-->
+    <menuitem id="odoocms_fee.menu_scholarship_charged_report" active="False"/>
+    <!--***** Scholarship Received Report *****-->
+    <menuitem id="odoocms_fee.menu_scholarship_received_report" active="False"/>
+
+    <!--***** Student Tax Certificate Report *****-->
+    <record id="odoocms_fee.action_student_tax_certificate_report_wiz" model="ir.actions.act_window">
+        <field name="binding_model_id" eval="False"/>
+
+    </record> <!--***** Student Fee Receipt Report *****-->
+    <record id="odoocms_fee.action_report_student_invoice_landscape" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+    </record>
+
+    <!--***** Menu Name Change *****-->
+    <!-- Receipt Received Summary Report -->
+    <record model="ir.ui.menu" id="odoocms_fee.menu_receipt_received_summary_wiz">
+        <field name="name">Invoice Received Summary Report</field>
+    </record>
+
+    <!-- Receipt Received Detail Report-->
+    <record model="ir.ui.menu" id="odoocms_fee.menu_receipt_received_detail_wiz">
+        <field name="name">Invoice Received Detail Report</field>
+    </record>
+
+
+    <!--***** Class Held/Unheld Report*****-->
+    <menuitem
+            id="class_held_report_menu_fee"
+            name="Class Held/Unheld Report"
+            action="odoocms_attendance.class_held_report_action"
+            sequence="560"
+            parent="odoocms_fee.menu_fee_reports"/>
+
+</odoo>

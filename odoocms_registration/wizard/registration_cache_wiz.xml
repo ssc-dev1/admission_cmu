@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<record id="view_odoocms_registration_cache_class_wizard" model="ir.ui.view">
+			<field name="name">odoocms.registration.cache.class.wizard</field>
+			<field name="model">odoocms.registration.cache.class.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Registration Cache">
+					<notebook>
+						<page string="Classes">
+							<group>
+								<field name="primary_class_ids" colspan="4" nolabel="1">
+									<tree string="Classes">
+										<field name="code" />
+										<field name="name" />
+
+<!--										<field name="institute_id" />-->
+										<field name="state" invisible="1"/>
+									</tree>
+								</field>
+							</group>
+						</page>
+					</notebook>
+					<footer>
+						<button name="generate_registration_cache" string="Generate Cache" type="object" class="btn-primary"/>
+						<button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+			   </form>
+			</field>
+		</record>
+		<record id="generate_registration_cache_class_wiz_action" model="ir.actions.act_window">
+            <field name="name">Generate Registration Cache</field>
+            <field name="res_model">odoocms.registration.cache.class.wizard</field>
+			<field name="binding_model_id" ref="odoocms_registration.model_odoocms_class_primary"/>
+            <field name="view_mode">form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="target">new</field>
+        </record>
+
+
+		<record id="view_odoocms_registration_cache_wizard" model="ir.ui.view">
+			<field name="name">odoocms.registration.cache.wizard</field>
+			<field name="model">odoocms.registration.cache.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Registration Cache">
+					<group>
+						<field name="term_id"/>
+					</group>
+					<notebook>
+						<page string="Students">
+							<group>
+								<field name="student_ids" colspan="4" nolabel="1">
+									<tree string="Students">
+										<field name="code" />
+										<field name="name" />
+										<field name="gender"/>
+										<field name="program_id" />
+										<field name="institute_id" />
+										<field name="state" invisible="1"/>
+									</tree>
+								</field>
+							</group>
+						</page>
+					</notebook>
+					<footer>
+						<button name="generate_cache_cards" string="Generate Cards Cache" type="object" class="btn-primary"/>
+						<button name="generate_cache_classes" string="Generate Classes Cache" type="object" class="btn-primary"/>
+						<button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+			   </form>
+			</field>
+		</record>
+		<record id="generate_registration_cache_wiz_action" model="ir.actions.act_window">
+            <field name="name">Generate Registration Cache</field>
+            <field name="res_model">odoocms.registration.cache.wizard</field>
+			<field name="binding_model_id" ref="odoocms.model_odoocms_student"/>
+            <field name="view_mode">form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="target">new</field>
+        </record>
+</odoo>

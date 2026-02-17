@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <template id="guardian_details" name="Next of Kin Details">
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/steps/guardian.js"></script>
+
+    <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" onclick="$('#collapse3').slideToggle(1000); $('#angle_class3').toggleClass('fa-angle-down fa-angle-up');">
+      <a class="btn btn-link">
+        <i style='color: white;font-size: 25px;' class="fa-solid fa-people-line float-left"></i>
+        <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/>
+        </h2>
+      </a>
+      <a>
+        <i id='angle_class3' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+      </a>
+    </div>
+    <div id="collapse3" class="row container-fluid mt-2 collapse_div">
+      <br/>
+      <div class='col-8 ml-1'>
+        <form id='guardian_detail_form' class="row g-3">
+          <input type="hidden" name="step_no" t-att-value='counter_step' />
+          <input type='hidden' name='step_name' value='guardian'></input>
+          <!-- geting guardian full name ,  -->
+          <div class="mb-1 mt-3 col-md-6">
+            <select required='1' class="form-control inputText" id="guardian_relation" name="guardian_relation">
+              <option t-att-selected="application_id.guardian_relation=='0'" value='0'>Select Relationship</option>
+              <option t-att-selected="application_id.guardian_relation=='father'" value='father'>Father</option>
+              <option t-att-selected="application_id.guardian_relation=='brother'" value='brother'>Brother</option>
+              <option t-att-selected="application_id.guardian_relation=='mother'" value='mother'>Mother</option>
+              <option t-att-selected="application_id.guardian_relation=='sister'" value='sister'>Sister</option>
+              <option t-att-selected="application_id.guardian_relation=='uncle'" value='uncle'>Uncle</option>
+              <option t-att-selected="application_id.guardian_relation=='other'" value='other'>Other</option>
+            </select>
+            <label class='floating-label' for="father_status">Next of Kin Relationship*</label>
+          </div>
+          <div class="mb-1 mt-3 col-md-6">
+            <input required="True" class="form-control inputText validate_char" type="text" t-att-value="application_id.guardian_name" t-att-disabled="application_confirm" name="guardian_name" id="guardian_name"/>
+            <span for="guardian_name" class="floating-label">Next of Kin Full Name*</span>
+          </div>
+          <div class="mb-1 mt-3 col-md-4">
+            <t t-if="application_id.nationality.id ==177">
+              <input type="text" data-inputmask-clearincomplete="true" data-inputmask="'mask': '99999-9999999-9'" required='1' t-att-value='application_id.guardian_cnic' id='guardian_cnic' name='guardian_cnic' class="form-control inputText "/>
+            </t>
+            <t t-else="">
+              <input type="text" required='1' t-att-value='application_id.guardian_cnic' id='guardian_cnic' name='guardian_cnic' class="form-control inputText "/>
+            </t>
+            <span for="guardian_cnic" class="floating-label">Next of Kin CNIC/Passport *</span>
+          </div>
+          <!--  -->
+
+          <!-- getting address and mailing address-->
+          <div class="mb-1 col-md-4">
+            <t t-if="application_id.applicant_type=='national'">
+
+              <input class="form-control inputText validate_number" data-inputmask-clearincomplete="true" data-inputmask="'mask': '0399-9{7,7}'" type="text" t-att-value='application_id.guardian_cell' t-att-disabled="application_confirm" name="guardian_cell" id="guardian_cell" />
+              <span for="guardian_cell" class="floating-label">Next of Kin Mobile*</span>
+            </t>
+            <t t-else="">
+              <input class="form-control inputText validate_number" data-inputmask-clearincomplete="true" data-inputmask="'mask': '09{4,}'" type="text" t-att-value='application_id.guardian_cell' t-att-disabled="application_confirm" name="guardian_cell" id="guardian_cell" />
+              <span for="guardian_cell" class="floating-label">Next of Kin Mobile*</span>
+            </t>
+          </div>
+          <div class="mb-1 col-md-4">
+            <t t-set="guardian_education" t-value="dict(application_id.fields_get(allfields=['guardian_education'])['guardian_education']['selection'])"/>
+            <select required='1' class="form-control inputText" id="guardian_education" name="guardian_education">
+              <option selected='1' value='0'>Select Next of Kin Education</option>
+              <t t-foreach="guardian_education" t-as="edu">
+                <option t-att-selected='edu==application_id.guardian_education' t-att-value="edu">
+                  <t t-esc="edu_value"/>
+                </option>
+              </t>
+            </select>
+            <label class='floating-label' for="guardian_status">Next of Kin Education</label>
+          </div>
+          <div class="mb-1 col-md-4">
+            <select required='1' class="form-control inputText" id="guardian_profession" name="guardian_profession">
+              <option selected='1' value="">Select Profession</option>
+              <t t-foreach="profession_id" t-as="profession">
+
+                <option t-att-apply_on='profession.apply_on' t-att-selected='profession.id==application_id.guardian_profession.id' t-att-value="profession.id">
+                  <t t-esc="profession.name"/>
+                </option>
+              </t>
+            </select>
+            <label class='floating-label' for="father_status">Next of Kin Profession</label>
+          </div>
+          <div class="mb-1 col-md-4">
+            <input class="form-control inputText validate_number" type="text" t-att-value="application_id.guardian_income" t-att-disabled="application_confirm" name="guardian_income" id="guardian_income" />
+            <span for="guardian_income" class="floating-label">Income</span>
+          </div>
+          <div class="mb-1 col-12">
+            <input required="True" class="form-control inputText" type="text" t-att-value="application_id.guardian_address" t-att-disabled="application_confirm" name="guardian_address" id="guardian_address" />
+            <span for="guardian_address" class="floating-label">Address*</span>
+          </div>
+          <!-- <hr/> -->
+          <div class="col-11 mt-4 mb-0 pt-3">
+            <label for="fee_payer_detail" class="form-label ml-2">Fee Payer Details:*</label>
+          </div>
+          <div class="mb-1 col-md-4">
+            <input required="True" class="form-control inputText validate_char" type="text" t-att-value="application_id.fee_payer_name" t-att-disabled="application_confirm" name="fee_payer_name" id="fee_payer_name" />
+            <span for="fee_payer_name" class="floating-label">Fee Payer Name*</span>
+          </div>
+          <div class="mb-1 col-md-4">
+            <t t-if="application_id.nationality.id ==177">
+              <!-- <input type="text" data-inputmask-clearincomplete="true" data-inputmask="'mask': '99999-9999999-9'" required='1' t-att-value='application_id.guardian_cnic' id='guardian_cnic' name='guardian_cnic' class="form-control inputText "/> -->
+              <input required="True" class="form-control inputText" data-inputmask-clearincomplete="true" data-inputmask="'mask': '99999-9999999-9'" type="text" t-att-value="application_id.fee_payer_cnic" t-att-disabled="application_confirm" name="fee_payer_cnic" id="fee_payer_cnic" />
+            </t>
+            <t t-else="">
+              <input required="True" class="form-control inputText" type="text" t-att-value="application_id.fee_payer_cnic" t-att-disabled="application_confirm" name="fee_payer_cnic" id="fee_payer_cnic" />
+              <!-- <input type="text" required='1' t-att-value='application_id.guardian_cnic' id='guardian_cnic' name='guardian_cnic' class="form-control inputText "/> -->
+            </t>
+            <span for="fee_payer_cnic" class="floating-label">Fee Payer Passport/CNIC*</span>
+          </div>
+
+          <div class="col-12">
+            <input type="submit" style='display: none;' class="btn btn-primary"/>
+          </div>
+        </form>
+        <button onclick="check_form_validation(this)" t-attf-style="background-color:#875A7B;border:None; {{'display:none' if application_id.state != 'draft' else '' }}" class="btn btn-primary ml-1">Update</button>
+      </div>
+      <div class='col-3'>
+
+      </div>
+    </div>
+    <br/>
+  </template>
+</odoo>

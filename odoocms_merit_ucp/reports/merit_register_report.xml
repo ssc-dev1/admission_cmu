@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="merit_register_report">
+        <t t-call="web.basic_layout">
+            <t t-call="web.html_container">
+                <style>
+                    body{
+                    font-family:Times New Roman,Times,serif, Arial, Helvetica, sans-serif;
+                    ;font-size:12px;
+                    }
+                </style>
+                <t t-foreach="docs" t-as="o">
+
+                    <t t-set="company" t-value="request.env.company" />
+
+                    <div class="container row text-center m-0 p-0">
+                        <div class="col-3 m-0 p-0">
+                            <img style="width:100px;height:100px;" class='text-center m-0 p-0' t-if='request.env.company.logo' t-att-src='image_data_uri(request.env.company.logo)' />
+                        </div>
+                        <div class="col-7 mt-3 m-0 p-0">
+                            <h5 class='m-0 p-0'>
+                                <b>
+                                    <t t-out="company.name" />
+                                </b>
+                            </h5>
+                            <h5>
+                                <b>
+                                    <t t-out="str(company.city).upper()" />
+                                </b>
+                            </h5>
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+                    <!-- <div class="row justify-content-between text-center">
+                    <div style='text-align:left !important;' class=" col-4 m-0 p-0 mx-3">
+                    </div>
+                    <div class=" col-4 m-0 p-0">
+                        <span t-out="company.website" />
+                    </div>
+                </div> -->
+                    <!-- <p class='text-center m-0'>
+                    <t t-out="company.street" /> , <t t-out="company.street2" /> UAN:<t t-out="company.admission_phone" /> , Fax:<t t-out="'051-4486705'" /> , ( <t t-out="company.admission_mail" /> ) </p> -->
+                    <br/>
+                    <h5 style='background-color:grey !important;color:white;' class='text-center m-0 mb-2 py-1'>
+                        <b>Merit List (<t t-out="o.name"/>)</b>
+                    </h5>
+                    <div class="container text-center">
+                        <p>
+                            <span class='mr-1' t-if='o.ssc_aggregate_percent>0' >SSC AGGREGATE %: <t t-out="o.ssc_aggregate_percent"/></span> 
+                            <span class='mr-1' t-if='o.hssc_aggregate_percent>0' >HSSC AGGREGATE %: <t t-out="o.hssc_aggregate_percent"/></span> 
+                            <span class='mr-1' t-if='o.bs_aggregate_percent>0' >BS AGGREGATE %: <t t-out="o.bs_aggregate_percent"/></span> 
+                            <span class='mr-1' t-if='o.ms_aggregate_percent>0' >MS AGGREGATE %: <t t-out="o.ms_aggregate_percent"/></span> 
+                            <span class='mr-1' t-if='o.entry_test_aggregate_percent>0' >ENTRY TEST AGGREGATE %: <t t-out="o.entry_test_aggregate_percent"/></span> 
+                            <span class='mr-1' t-if='o.minimum_aggregate>0' >Minimum AGGREGATE %: <t t-out="o.minimum_aggregate"/></span> 
+                            <span class='mr-1' t-if='o.minimum_test_percentage>0' >Minimum TEST %: <t t-out="o.minimum_test_percentage"/></span> 
+                        </p>
+                    </div>
+                    <div class="container text-center">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Sr#.</th>
+                                <th style='text-align:left'>Ref#</th>
+                                <th style='text-align:left'>Name</th>
+                                <th>Program</th>
+                                <th>SSC%</th>
+                                <th>HSSC%</th>
+                                <th t-if='o.program_id.career_id.code=="PG"'>BS CGPA</th>
+                                <th>CBT%</th>
+                                <th>Status</th>
+                                <th>Agg</th>
+                            </thead>
+                            <tbody class='text-center'>
+                                <t t-foreach="o.merit_lines" t-as="merit_line">
+                                    <t t-set="color" t-value="'green'"/>
+                                    <t t-if="merit_line.transferred">
+                                        <t t-set="color" t-value="'orange'"/>
+                                        
+                                    </t>
+                                    
+                                    <tr t-attf-style='color:{{ color if merit_line.offer_allocated  else ""}}'>
+                                        <td class='m-0 p-1' width='5%'>
+                                            <t t-out="merit_line_index + 1"/>
+                                        </td>
+
+                                        <td style='text-align:left' class='m-0 p-1'>
+
+                                            <t t-out="merit_line.applicant_id.application_no"/>
+                                        </td>
+                                        <td style='text-align:left' class='m-0 p-1'>
+                                            <t t-out="str(merit_line.applicant_id.name).upper()"/>
+                                        </td>
+
+                                        <td class='m-0 p-1'>
+                                            <t t-out="merit_line.program_id.code"/>
+                                        </td>
+
+                                        <td class='m-0 p-1'>
+                                            <t t-out="merit_line.matric_marks_per or ''"/>
+                                        </td>
+                                        <td class='m-0 p-1'>
+                                            <t t-out="'{0:,.2f}'.format(merit_line.inter_marks_per) or ''"/>
+                                        </td>
+                                        <td t-if='o.program_id.career_id.code=="PG"' class='m-0 p-1'>
+                                            <t t-out="merit_line.bs_cgpa or ''"/>
+                                        </td>
+                                        <td class='m-0 p-1'>
+                                            
+                                            <t t-out=" '{0:,.2f}'.format(merit_line.cbt_percentage) or ''"/>
+                                        </td>
+                                        <td class='m-0 p-1'>
+                                            <t t-out="'Selected' if merit_line.selected else ''"/>
+                                            <t t-out="'Waiting' if merit_line.waiting else ''"/>
+                                            <t t-out="'Rejected' if merit_line.rejected and not merit_line.selected else ''"/>
+                                        </td>
+                                        <!--                                     
+                                    <td class='m-0 p-1'>
+                                    </td>
+                                    <td class='m-0 p-1'>
+                                    </td>
+                                    <td class='m-0 p-1'>
+                                    </td> -->
+                                        <td class='m-0 p-1'>
+                                            <t t-out="merit_line.aggregate if merit_line.aggregate else ''"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div t-attf-style="{{'page-break-after:always;' if not (o_index+1) == len(docs)  else ''}}" class="container ">
+                        <div class="row">
+                            <div class="col-7"></div>
+                            <div class="col-5">
+                                <table class="table table-striped table-bordered">
+                                    <tbody>
+
+                                        <tr>
+                                            <th>Rejected</th>
+                                            <td>
+                                                <t t-out="o.merit_lines.search_count([('rejected','=',True),('merit_reg_id','=',o.id)])"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Waiting</th>
+                                            <td>
+                                                <t t-out="o.merit_lines.search_count([('selected','=',False),('rejected','=',False),('merit_reg_id','=',o.id)])"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <t t-set="appeared" t-value="request.env['applicant.entry.test'].sudo().search_count([('program_id','=',o.program_id.id),('paper_conducted','=',True),('create_date', '>=',o.register_id.date_start)])"/>
+                                            <th>Appeared</th>
+                                            <td>
+                                                <t t-out="appeared"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Selected</th>
+                                            <td>
+                                                <t t-out="o.merit_lines.search_count([('selected','=',True),('merit_reg_id','=',o.id)])"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="merit_list_report" model="report.paperformat">
+        <field name="name">A4</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">23</field>
+        <field name="margin_left">15</field>
+        <field name="margin_right">15</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_merit_register_list" model="ir.actions.report">
+        <field name="name">Merit List Report</field>
+        <field name="model">odoocms.merit.registers</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">odoocms_merit_ucp.merit_register_report</field>
+        <field name="report_file">odoocms_merit_ucp.merit_register_report</field>
+        <field name="binding_model_id" ref="model_odoocms_merit_registers" />
+        <field name="paperformat_id" ref="merit_list_report" />
+    </record>
+</odoo>

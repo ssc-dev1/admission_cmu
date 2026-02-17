@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <template id="register_preference" name="Admission Prefernces">
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/steps/preference.js"></script>
+
+    <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" onclick="$('#admission_preference').slideToggle(1000); $('#preference_dropdown').toggleClass('fa-angle-down fa-angle-up');">
+      <a class="btn btn-link">
+        <i style='color: white;font-size: 25px;' class="fa-solid fa-list-check float-left"></i>
+        <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/>
+        </h2>
+      </a>
+      <a>
+        <i id='preference_dropdown' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+      </a>
+    </div>
+    <div id="admission_preference" class="row container-fluid mt-3 collapse_div">
+      <br/>
+      <t t-if="application_id.shift">
+        <input type="hidden" id="saved_shift_value" t-att-value='application_id.shift'/>
+      </t>
+      <input t-att-value='application_id.register_id.preferences_allowed' name='preference_allowed' id='preference_allowed' type='hidden' />
+      <div class='col-6'>
+        <button t-att-disabled='0 if not application_id.register_id or len(application_id.preference_ids) &lt; application_id.register_id.preferences_allowed else 1 ' id='view_offered_program_button' t-attf-style=";border:None; {{'pointer-events: none;' if application_id.state != 'draft' else '' }}" class="btn btn-primary px-5" type="button" data-toggle="collapse" data-target="#discipline_collapse" aria-expanded="false" aria-controls="discipline_collapse">View Offered Program</button>
+
+        <div class="collapse" id="discipline_collapse">
+
+          <div class="row">
+            <div id='program_div' style='display: contents'>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='col-5'>
+        <h3>My Preferences (You can only view programs for which you are eligible as per your previous qualification &amp; percentage/CGPA.)</h3>
+        <hr/>
+        <span id='drag_message' t-attf-style="{{ '' if not application_id.preference_ids else 'display:none' }}">Click &amp; Drag To Reorder</span>
+        <div id='prefer_div' style='display:contents'>
+          <ul id="sortable_program_list" class="list-group">
+            <t t-set="count" t-value="1"/>
+            <input type='hidden' id='step_preference_name' name='step_name' value='preference'></input>
+            <input type="hidden" id='step_preference_no' name="step_no" t-att-value='counter_step' />
+          </ul>
+        </div>
+
+        <t t-if="not application_id.preference_ids">
+          <t t-set="preference_no" t-value="1"/>
+          <t t-foreach="application_id.register_id.preferences_allowed" t-as="pref_no">
+            <input class="form-control preference_input_no" type="text" t-attf-placeholder='Preference No {{preference_no}}' />
+            <t t-set="preference_no" t-value="preference_no + 1"/>
+          </t>
+        </t>
+        <div style='display:contents' id="prefer_div_already">
+          <t t-if="application_id.preference_ids">
+            <t t-foreach="application_id.preference_ids" t-as="pref">
+              <li t-att-id='pref.program_id.id' t-att-pretest_id='pref.program_id.id' t-att-pretest_name="pref.program_id.pre_test.name if pref.program_id.pre_test else 'no_pretest'" class='list-group-item d-flex justify-content-between align-items-start border program_count'>
+                <div>
+                  <i class="fas fa-expand-arrows-alt mr-1"></i>
+                  <t t-esc="pref.program_id.name"/>
+                </div>
+                <div >
+                  <span class='badge badge-primary badge-pill count_preference color_scheme_class'>
+                    <t t-esc="count"/>
+                  </span>
+                  <span onclick='delete_preference(this)' class='delete_preference'>
+                    <i class="fas fa-trash-alt ml-1"></i>
+                  </span>
+                </div>
+              </li>
+              <t t-set="count" t-value="count+1"/>
+            </t>
+            <t t-set="candiate_preference" t-value="len(application_id.preference_ids)"/>
+            <t t-set="preference_no" t-value="1"/>
+            <t t-foreach="application_id.register_id.preferences_allowed" t-as="pref_no">
+              <input t-attf-style="{{ 'display:none' if (candiate_preference +1) &gt; preference_no  else '' }}" class="form-control preference_input_no" type="text" t-attf-placeholder='Preference No {{preference_no}}' />
+              <t t-set="preference_no" t-value="preference_no + 1"/>
+            </t>
+          </t>
+        </div>
+        <br/>
+        <t t-set="entry_test_center" t-value="request.env['ir.config_parameter'].sudo().get_param('test_center_portal_option', 'False')" />
+        <t t-if="entry_test_center == 'True'">
+          <div class="mb-1 mt-3 col-md-5" id = "test_center_div">
+            <select required="True" placeholder="Test Center" class="form-control inputText" id="test_center_id" name="test_center_id">
+              <option selected="True" value="">Select Test Center</option>
+              <t t-foreach="test_center_id" t-as="c">
+                <option t-att-value="c.id" t-att-data-note="c.note or ''" t-att-selected="(application_id.test_center_id.id and application_id.test_center_id.id == c.id) or (not application_id.test_center_id.id and c.sequence == 1) and 'selected' or None">
+                  <t t-esc="c.name" />
+                </option>
+              </t>
+            </select>
+            <label class="floating-label" for="area_id">
+      Test Center
+              <span style="color:red; font-size: 14px; font-weight: bold;">*</span>
+            </label>
+
+          </div>
+          <div id="test_center_note" class="mt-2" style="color: #444; font-style: italic;padding: 30px 0 20px 0;"></div>
+        </t>
+        <div id="shift_container" style="display:none; margin-top:10px;" class="mb-1 mt-3 col-md-5">
+          <div >
+            <label class="floating-label" for="shift_choice">Shift
+              <span style="color:red; font-size: 14px; font-weight: bold;">*</span>
+            </label>
+            <select required="True" class="form-control inputText" id="shift_choice" name="shift_choice">
+              <option value="">Select Shift</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div id='pretest_div' t-attf-style="{{'' if application_id.pre_test_marks else 'display:none' }}" class="col-6">
+          <div class="col-11 mt-2">
+            <!-- <label for="pretest" class="form-label">Pre Test:</label> -->
+            <div class="form-check">
+              <input class="form-check-input"        t-att-checked="1 if application_id.pre_test_marks or application_id.prefered_program_id.pre_test.compulsory else 0" type="checkbox" value="" id="pretest_check"/>
+              <label class="form-check-label" for="pretest_check">
+                Pre Test:
+              </label>
+             
+            </div>
+            <p style ='color:black;'>(If you have taken any HEC-approved admission test, please click the 'Pre-Test' button to enter the relevant details)</p>
+          </div>
+
+          <div class="row mt-1">  
+            <!-- t-attf-style="{{'display:none' if not application_id.pre_test_marks else '' }}" -->
+            <div class="mb-3 col-6">
+              <!-- image_data_uri(application_id.pre_test_attachment) if application_id.pre_test_attachment else -->
+              <input type='hidden' t-att-value='0 if not application_id.pre_test_attachment else 1' id='checked_prestest' />
+              <img style='height:150px;width:150px' onclick="document.getElementById('pre_test_attachment').click()" t-att-src=" image_data_uri(application_id.pre_test_attachment) if application_id.pre_test_attachment else '/odoocms_admission_portal/static/img/upload.jpg'" class="img-thumbnail" alt="..."></img>
+              <br/>
+              <label for="pre_test_attachment" class="form-label">Upload Result Card*</label>
+              <input style='display:none;' class="form-control" type="file" id="pre_test_attachment" onChange="image_preview_func(this);document.getElementById('checked_prestest').value=1" accept="image/*" name="pre_test_attachment"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-2 mx-2 col-md-4">
+
+              <select style='background-color:white' class="form-control inputText" id="pretest" name="pretest">
+
+                <t t-if="application_id.pre_test_id">
+                  <!-- <t t-esc="application_id.pre_test_id.name"/> -->
+                  <t t-foreach="application_id.preference_ids.filtered(lambda x:x.preference ==1).program_id.pre_test_ids" t-as="rec">
+                    <option t-att-selected="rec.id == application_id.pre_test_id.id" t-att-value='rec.id'>
+                      <t t-esc="rec.name"/>
+                    </option>
+
+                  </t>
+
+                </t>
+
+              </select>
+              <span class="floating-label floating-label-norequired">Pre Test Name*</span>
+            </div>
+            <div id='pre_test_marks_input' t-attf-style=" {{'' if application_id.pre_test_marks else 'display:none'}} " class="mb-1 col-md-4">
+              <input required='1' maxlength='4' t-att-value='application_id.pre_test_marks' class="form-control validate_number" type="text" name="pre_test_marks" id="pre_test_marks"/>
+              <span for="pre_test_marks" class="floating-label floating-label-norequired">Pre Test Marks*</span>
+            </div>
+          </div>
+        </div>
+
+        <div t-if="application_id.state=='draft' and application_id.register_id and application_id.register_id.career_id.code == 'PHD'" class="mb-3 col-6">
+          <label for="statement_purpose" class="form-label">Statement Of Purpose*: <span style='color:green' t-if='application_id.statement_purpose' t-out="'Already Upload!' if application_id.statement_purpose else ''"/> </label>
+          <input required="1" class="form-control" type="file" onChange="StatementOfPurpose(this)" accept="image/*,application/pdf" id="statement_purpose"/>
+        </div>
+        <div t-if="application_id.state=='draft' and application_id.register_id and application_id.register_id.career_id.code == 'PHD'" class="container-fluid">
+          <ul style='font-size:14px !important' class='text-muted'>
+            <li>
+              <b>Statement of purpose shall, at least, include the following:</b>
+            </li>
+            <li>
+              1. Title of the potential research proposal.
+            </li>
+            <li>
+              2. Clear understanding of the intended field and ideas for potential research (500 – 1000 words)
+            </li>
+            <li>
+              3. Passion and enthusiasm for the area of research. (500 words)
+            </li>
+            <li>
+              4. Explanation of the intended impact of the proposed research (500 words)
+            </li> 
+          </ul>
+          
+        </div>
+
+        <button id='preference_update' t-attf-style="border:None; {{'display:none' if application_id.state != 'draft' else '' }}" class="btn btn-primary float-right">Update</button>
+      </div>
+    </div>
+    <br/>
+
+  </template>
+</odoo>

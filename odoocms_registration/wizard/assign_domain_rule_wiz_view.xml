@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+		<record id="view_odoocms_assign_domain_rule_wiz_form" model="ir.ui.view">
+			<field name="name">odoocms.assign.domain.rule.wiz.form</field>
+			<field name="model">odoocms.assign.domain.rule.wiz</field>
+			<field name="arch" type="xml">
+				<form string="Assign Domain Rule">
+					<group>
+						<group>
+							<field name="term_id"/>
+						</group>
+						<group>
+							<field name="enroll_domain" widget="domain" options="{'model': 'odoocms.student', 'in_dialog': True}"/>
+						</group>
+					</group>
+					<group>
+						<field name="primary_class_ids" nolabel="1"/>
+					</group>
+
+					<footer>
+						<button name="assign_domain_rule" string="Assign Domain Rule" type="object" class="btn-primary"/>
+						<button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+			   </form>
+			</field>
+		</record>
+
+		<record id="action_odoocms_assign_domain_rule_wiz" model="ir.actions.act_window">
+            <field name="name">Assign Domain Rule</field>
+            <field name="res_model">odoocms.assign.domain.rule.wiz</field>
+            <field name="view_mode">form</field>
+			<field name="target">new</field>
+        </record>
+
+
+        <menuitem
+                id="menu_odoocms_assign_domain_rule"
+                name="Assign Domain Rule"
+                action="action_odoocms_assign_domain_rule_wiz"
+                parent="menu_odoocms_registration_main"
+                sequence="450"/>
+
+
+    </data>
+</odoo>

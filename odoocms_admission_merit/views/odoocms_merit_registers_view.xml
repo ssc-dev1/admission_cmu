@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="merit_register_view_form" model="ir.ui.view">
+        <field name="name">merit_register_view_form</field>
+        <field name="model">odoocms.merit.registers</field>
+        <field name="arch" type="xml">
+            <form string="Merit Register">
+                <header>
+                    <button type="object" name="calculate_merit" string="Calculate Merit"
+                            class="oe_highlight" attrs="{'invisible':[('publish_merit', '==', True)]}"/>
+
+                    <button type="object" name="submit"
+                            string="Submit"
+                            class="oe_highlight" attrs="{'invisible':[('publish_merit', '==', True)]}"/>
+
+                    <button type="object" name="generate_offer_letter"
+                            string="Generate Offer Letter for selected candidates"
+                            class="oe_highlight" attrs="{'invisible':[('publish_merit', '!=', True)]}"/>
+
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Merit Register" bg_color="bg-success"/>
+                    <h3 style="text-align: center;">Merit Register</h3>
+                    <group>
+                        <group>
+                            <field name="name" required="1" attrs="{'readonly':[('state', '==', 'done')]}"/>
+                            <field name="ssc_aggregate_percent" attrs="{'readonly':[('state', '==', 'done')]}"/>
+                            <field name="entry_test_aggregate_percent" attrs="{'readonly':[('state', '==', 'done')]}"/>
+                        </group>
+                        <group>
+                            <field name="register_id" required="1" attrs="{'readonly':[('state', '==', 'done')]}"/>
+                            <field name="hssc_aggregate_percent" attrs="{'readonly':[('state', '==', 'done')]}"/>
+
+                            <field name="pre_test_aggregate_percent" attrs="{'readonly':[('state', '==', 'done')]}"/>
+                        </group>
+                        <group>
+                            <field name="publish_merit" attrs="{'readonly':[('state', '==', 'done')]}"/>
+
+                        </group>
+                        <group>
+                            <field name="program_id" required="1" attrs="{'readonly':[('state', '==', 'done')]}"/>
+                        </group>
+                        <group>
+                            <field name="merit_seats" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>
+                           <!-- <field name="self_seats" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>
+                            <field name="international" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>-->
+                        </group>
+                       <!-- <group>
+                             <field name="kpk_seats" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>
+                            <field name="ajk_seats" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>
+                            <field name="gilgit_seats" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>
+                            &lt;!&ndash;<field name="sindh_seats" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>&ndash;&gt;
+                            <field name="baloch_seats" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>
+                        </group>-->
+                        <group>
+                           <!-- <field name="sports_seats" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>-->
+                            <field name="disabled_seats" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>
+                           <!-- <field name="minority_seats" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>-->
+                            <!--<field name="pn_seats" attrs="{'readonly':[('state', '==', 'done')]}" required="1"/>-->
+                        </group>
+                    </group>
+                    <notebook>
+                        <!--<page string="Merit Program">
+                            <field name="program_ids">
+                                <tree editable="bottom">
+                                    <field name="program_id"/>
+                                </tree>
+                            </field>
+                        </page>-->
+                        <page string="Student Merit List">
+                            <field name="merit_lines" attrs="{'readonly':[('state', '==', 'done')]}">
+                                <tree editable="bottom">
+                                    <field name="applicant_id"/>
+                                    <field name="program_id"/>
+                                    <field name="program_id" invisible="1"/>
+                                    <field name="merit_no"/>
+                                    <field name="matric_marks"/>
+                                    <field name="inter_marks"/>
+                                    <field name="open_merit"/>
+                                    <!--<field name="self_merit"/>
+                                    <field name="international"/>
+                                    <field name="kpk_seats"/>
+                                    <field name="ajk_seats"/>
+                                    <field name="gilgit_seats"/>
+                                    <field name="sindh_seats"/>
+                                    <field name="baloch_seats"/>
+                                    <field name="sports_quota"/>-->
+                                    <field name="disabled_quota"/>
+                                    <!--<field name="pn_seats"/>-->
+                                    <field name="aggregate"/>
+                                    <field name="public_visible"/>
+                                    <field name="selected"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <!-- <page string="Test Group Aggregate">
+                             <field name="merit_agg_ids" attrs="{'readonly':[('state', '==', 'done')]}">
+                                 <tree editable="bottom">
+                                     <field name="program_id"/>
+                                     <field name="name"/>
+                                     <field name="aggregate"/>
+                                 </tree>
+                             </field>
+                         </page>-->
+                        <!--<page string="Pre Test Aggregate">
+                            <field name="pre_test_agg_ids" attrs="{'readonly':[('state', '==', 'done')]}">
+                                <tree editable="bottom">
+                                    <field name="pre_test_id"/>
+                                    <field name="aggregate"/>
+                                </tree>
+                            </field>
+                        </page>-->
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="merit_register_view_tree" model="ir.ui.view">
+        <field name="name">merit_register_view_tree</field>
+        <field name="model">odoocms.merit.registers</field>
+        <field name="arch" type="xml">
+            <tree string="Merit Registers">
+                <field name="name"/>
+                <field name="register_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="merit_register_action" model="ir.actions.act_window">
+        <field name="name">Merit Register</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.merit.registers</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+    <menuitem
+            id="merit_register_main_menu"
+            name="Merit Register"
+            parent="odoocms_admission.menu_odoocms_admission_root"
+            groups="odoocms_admission.group_admission_manager"
+            sequence="35"/>
+
+    <menuitem
+            id="merit_register_menu"
+            name="Merit Register"
+            parent="merit_register_main_menu"
+            action="merit_register_action"
+            groups="odoocms_admission.group_admission_manager"
+            sequence="10"/>
+</odoo>

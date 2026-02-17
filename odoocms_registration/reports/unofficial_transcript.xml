@@ -1,0 +1,346 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+
+    <template id="student_unofficial_transcript">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="container">
+                            <t t-set="report_title" t-value="'Unofficial Transcript'"/>
+                            <t t-call="odoocms_assets.custom_header_report"/>
+                        </div>
+                            <table class="table table-borderless table-striped mb-2">
+                            <thead>
+                            </thead>    
+                            <tbody>
+                                <tr  style='color:#112B4F;background:none !important;font-size:12px'>
+                                    <th style='padding-top:2px;padding-bottom:12px;'>Registration No</th>
+                                    <th style='padding-top:2px;padding-bottom:12px;'>Name</th>
+                                    <th style='padding-top:2px;padding-bottom:12px;'>DOB</th>
+                                    <th style='padding-top:2px;padding-bottom:12px;'>Program</th>
+                                    <th style='padding-top:2px;padding-bottom:12px;'>Current Date</th>
+                                    <th style='padding-top:2px;padding-bottom:2px;' rowspan='2' scope="col">
+                                        <img t-if='doc.image_1920' style='height:80px !important;width:80px !important;' height='80px' width='80px'
+                                             t-att-src="image_data_uri(doc.image_1920)" class="img-thumbnail" alt="..."/>
+                                    </th>
+                                </tr>
+                                <tr style='color:#0059B3;font-size:14px'>
+                                    <th  style='padding-top:2px;padding-bottom:2px;'>
+                                        <t t-esc="doc.id_number"/>
+                                    </th>
+                                    <th  style='padding-top:2px;padding-bottom:2px;'>
+                                        <t t-esc="doc.name"/>
+                                    </th>
+                                    <th  style='padding-top:2px;padding-bottom:2px;'>
+                                        <t t-esc="doc.date_of_birth"/>
+                                    </th>
+                                    <th  style='padding-top:2px;padding-bottom:2px;'>
+                                        <t t-esc="doc.program_id.name"/>
+                                    </th>
+                                    <th  style='padding-top:2px;padding-bottom:2px;'>
+                                        <t t-esc="datetime.datetime.now().date()"/>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="container-fluid mt-5">
+                            <t t-set="semester" t-value="1"/>
+                            <t t-set="total_earned_credits" t-value="0"/>
+                            <t t-set="total_attempted_credits" t-value="0"/>
+                            <t t-foreach="doc.term_ids" t-as="term_result">
+                                <t t-set="semester_courses" t-value="term_result.student_course_ids.filtered(lambda l: l.include_in_transcript)"/>
+                                <t t-if="len(semester_courses) > 0">
+                                    <hr/>
+                                    <t t-if="term_result.term_id.number > 100">
+                                        <span>Semester <t t-esc="semester"/> [ <t t-esc="term_result.term_id.name"/> ]</span>
+                                    </t>
+                                    <t t-if="term_result.term_id.number &lt; 100">
+                                        <span><t t-esc="term_result.term_id.name"/></span>
+                                    </t>
+                                    <table class="table table-borderless">
+                                    <tbody>
+                                        <t t-set="total_attempted_credits" t-value="total_attempted_credits + term_result.attempted_credits "/>
+                                        <t t-set="total_earned_credits" t-value="total_earned_credits + term_result.earned_credits "/>
+                                        <t t-foreach="semester_courses" t-as="course_result">
+                                            <tr style='color:#004D99;font-size:12px'>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='20%' ><t t-esc="course_result.course_code or course_result.course_id.code"/></th>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='50%' ><t t-esc="course_result.course_name or course_result.course_id.name"/></th>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='10%' ><t t-esc="course_result.credits"/></th>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='10%' ><t t-esc="course_result.grade"/></th>
+                                            </tr>
+                                        </t>
+                                        <!-- <tr class='border'></tr> -->
+
+                                        <tr class='m-0 ' style='font-size:10px'>
+                                            <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                            <th style='padding-top:2px;padding-bottom:2px;' width='50%'>
+                                                Total <t t-esc="term_result.term_id.name"/></th>
+                                            <th class='border-top' style='padding-top:2px;padding-bottom:2px;' width='10%'>
+                                                <t t-if="term_result.term_id.number > 100">
+                                                    <t t-esc="term_result.attempted_credits"/>
+                                                </t>
+                                                <t t-if="term_result.term_id.number &lt; 100">
+                                                    <t t-esc="term_result.transferred_credits"/>
+                                                </t>
+                                            </th>
+                                            <th  style='padding-top:2px;padding-bottom:2px;' class='px-0 pl-5 border-top' width='10%'>
+                                                <t t-esc="'{0:,.2f}'.format(term_result.sgpa)"/></th>
+                                        </tr>
+                                        <t t-if="term_result.term_id.number > 100">
+                                            <tr class='m-0' style='font-size:10px'>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='50%'>Total Beginning To Date </th>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='10%'><t t-esc="total_earned_credits"/></th>
+                                                <th style='padding-top:2px;padding-bottom:2px;' class='px-0 pl-5' width='10%'>
+                                                    <t t-esc="'{0:,.2f}'.format(term_result.cgpa)"/></th>
+                                            </tr>
+                                        </t>
+                                     
+                                    </tbody>
+                                    
+                                </table>
+                                    <t t-set="total_attempted_credits" t-value="total_attempted_credits + term_result.attempted_credits "/>
+                                    <t t-if="term_result.term_id.number > 100">
+                                        <t t-set="semester" t-value="semester + 1"/>
+                                    </t>
+                                </t>
+                            </t>
+                            <hr/>
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr class='m-0' style='font-size:10px'>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='50%'>Credit Hours Attempted </th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'><t t-esc="doc.attempted_credits"/></th>    <!-- doc.attempted_credits -->
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'/>
+                                    </tr>
+                                    <tr class='m-0' style='font-size:10px'>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='50%'>Credit Hours Earned </th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'><t t-esc="doc.earned_credits"/></th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'/>
+                                    </tr>
+                                    <tr class='m-0' style='font-size:10px'>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='50%'>Cumulative Grade Point Average </th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'><t t-esc="'{0:,.2f}'.format(doc.cgpa)"/></th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'/>
+                                    </tr>
+                                    <tr class='m-0' style='font-size:10px'>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='50%'>Credit Hours accepted towards degree completion </th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'><t t-esc="doc.accepted_credits + doc.transferred_credits"/></th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                                <div class='row my-2'>
+                                    <div class="col-4"/>
+                                    <div class="col-4 text-center">
+                                        <p>-- End Transcript --</p>
+                                    </div>
+                                    <div class="col-4"/>
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="student_unofficial_transcript_2">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="container">
+                            <t t-set="report_title" t-value="'Unofficial Transcript'"/>
+                            <t t-call="odoocms_assets.custom_header_report"/>
+                        </div>
+                            <table class="table table-borderless table-striped mb-2">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr  style='color:#112B4F;background:none !important;font-size:12px'>
+                                    <th style='padding-top:2px;padding-bottom:12px;'>Registration No</th>
+                                    <th style='padding-top:2px;padding-bottom:12px;'>Name</th>
+                                    <th style='padding-top:2px;padding-bottom:12px;'>DOB</th>
+                                    <th style='padding-top:2px;padding-bottom:12px;'>Program</th>
+                                    <th style='padding-top:2px;padding-bottom:12px;'>Current Date</th>
+                                    <th style='padding-top:2px;padding-bottom:2px;' rowspan='2' scope="col">
+                                        <img t-if='doc.image_1920' style='height:80px !important;width:80px !important;' height='80px' width='80px'
+                                             t-att-src="image_data_uri(doc.image_1920)" class="img-thumbnail" alt="..."/>
+                                    </th>
+                                </tr>
+                                <tr style='color:#0059B3;font-size:14px'>
+                                    <th  style='padding-top:2px;padding-bottom:2px;'>
+                                        <t t-esc="doc.id_number"/>
+                                    </th>
+                                    <th  style='padding-top:2px;padding-bottom:2px;'>
+                                        <t t-esc="doc.name"/>
+                                    </th>
+                                    <th  style='padding-top:2px;padding-bottom:2px;'>
+                                        <t t-esc="doc.date_of_birth"/>
+                                    </th>
+                                    <th  style='padding-top:2px;padding-bottom:2px;'>
+                                        <t t-esc="doc.program_id.name"/>
+                                    </th>
+                                    <th  style='padding-top:2px;padding-bottom:2px;'>
+                                        <t t-esc="datetime.datetime.now().date()"/>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="container-fluid mt-5">
+                            <t t-set="semester" t-value="1"/>
+                            <t t-set="total_earned_credits" t-value="0"/>
+                            <t t-set="total_attempted_credits" t-value="0"/>
+                            <t t-foreach="doc.enroll_term_ids" t-as="term_result">
+                                <t t-set="semester_courses" t-value="term_result.student_course_ids.filtered(lambda l: l.include_in_transcript)"/>
+                                <t t-if="len(semester_courses) > 0">
+                                    <hr/>
+                                    <t t-if="term_result.term_id.number > 100">
+                                        <span>Semester <t t-esc="semester"/> [ <t t-esc="term_result.term_id.name"/> ] ( <t t-esc="term_result.state"/> )</span>
+                                    </t>
+                                    <t t-if="term_result.term_id.number &lt; 100">
+                                        <span><t t-esc="term_result.term_id.name"/></span>
+                                    </t>
+                                    <table class="table table-borderless">
+                                    <tbody>
+                                        <t t-set="total_attempted_credits" t-value="total_attempted_credits + term_result.attempted_credits "/>
+                                        <t t-set="total_earned_credits" t-value="total_earned_credits + term_result.earned_credits "/>
+                                        <t t-foreach="semester_courses" t-as="course_result">
+                                            <tr style='color:#004D99;font-size:12px'>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='20%' ><t t-esc="course_result.course_code or course_result.course_id.code"/></th>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='50%' ><t t-esc="course_result.course_name or course_result.course_id.name"/></th>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='10%' ><t t-esc="course_result.credits"/></th>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='10%' ><t t-esc="course_result.grade"/></th>
+                                            </tr>
+                                        </t>
+                                        <!-- <tr class='border'></tr> -->
+
+                                        <tr class='m-0 ' style='font-size:10px'>
+                                            <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                            <th style='padding-top:2px;padding-bottom:2px;' width='50%'>
+                                                Total <t t-esc="term_result.term_id.name"/></th>
+                                            <th class='border-top' style='padding-top:2px;padding-bottom:2px;' width='10%'>
+                                                <t t-if="term_result.term_id.number > 100">
+                                                    <t t-esc="term_result.attempted_credits"/>
+                                                </t>
+                                                <t t-if="term_result.term_id.number &lt; 100">
+                                                    <t t-esc="term_result.transferred_credits"/>
+                                                </t>
+                                            </th>
+                                            <th  style='padding-top:2px;padding-bottom:2px;' class='px-0 pl-5 border-top' width='10%'>
+                                                <t t-esc="'{0:,.2f}'.format(term_result.sgpa)"/></th>
+                                        </tr>
+                                        <t t-if="term_result.term_id.number > 100">
+                                            <tr class='m-0' style='font-size:10px'>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='50%'>Total Beginning To Date </th>
+                                                <th style='padding-top:2px;padding-bottom:2px;' width='10%'><t t-esc="total_earned_credits"/></th>
+                                                <th style='padding-top:2px;padding-bottom:2px;' class='px-0 pl-5' width='10%'>
+                                                    <t t-esc="'{0:,.2f}'.format(term_result.cgpa)"/></th>
+                                            </tr>
+                                        </t>
+
+                                    </tbody>
+
+                                </table>
+                                    <t t-set="total_attempted_credits" t-value="total_attempted_credits + term_result.attempted_credits "/>
+                                    <t t-if="term_result.term_id.number > 100">
+                                        <t t-set="semester" t-value="semester + 1"/>
+                                    </t>
+                                </t>
+                            </t>
+                            <hr/>
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr class='m-0' style='font-size:10px'>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='50%'>Credit Hours Attempted </th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'><t t-esc="doc.attempted_credits"/></th>    <!-- doc.attempted_credits -->
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'/>
+                                    </tr>
+                                    <tr class='m-0' style='font-size:10px'>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='50%'>Credit Hours Earned </th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'><t t-esc="doc.earned_credits"/></th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'/>
+                                    </tr>
+                                    <tr class='m-0' style='font-size:10px'>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='50%'>Cumulative Grade Point Average </th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'><t t-esc="'{0:,.2f}'.format(doc.cgpa)"/></th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'/>
+                                    </tr>
+                                    <tr class='m-0' style='font-size:10px'>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='20%'/>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='50%'>Credit Hours accepted towards degree completion </th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'><t t-esc="doc.accepted_credits + docs.transferred_credits"/></th>
+                                        <th style='padding-top:2px;padding-bottom:2px;' width='10%'/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                                <div class='row my-2'>
+                                    <div class="col-4"/>
+                                    <div class="col-4 text-center">
+                                        <p>-- End Transcript --</p>
+                                    </div>
+                                    <div class="col-4"/>
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="student_trannscript_paperformat" model="report.paperformat">
+        <field name="name">Transcript Paper Format</field>
+        <field name="format">Letter</field>
+        <field name="orientation">Portrait</field>
+        <field name="default" eval="False" />
+        <field name="dpi" eval="90" />
+        <field name="margin_top" eval="10" />
+        <field name="margin_right" eval="2" />
+        <field name="margin_bottom" eval="10" />
+        <field name="margin_left" eval="2" />
+        <field name="header_line" eval="False" />
+        <field name="header_spacing" eval="35" />
+    </record>
+
+
+    <record id="action_report_odoocms_student" model="ir.actions.report">
+        <field name="name">Unofficial Student Transcript</field>
+        <field name="model">odoocms.student</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">odoocms_registration.student_unofficial_transcript</field>
+        <field name="report_file">odoocms_registration.student_unofficial_transcript</field>
+        <field name="print_report_name">'%s Transcript' % object.name</field>
+        <field name="binding_model_id" ref="model_odoocms_student"/>
+        <field name="paperformat_id" ref="student_trannscript_paperformat"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_odoocms_student_secret" model="ir.actions.report">
+        <field name="name">Secret Student Transcript</field>
+        <field name="model">odoocms.student</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">odoocms_registration.student_unofficial_transcript_2</field>
+        <field name="report_file">odoocms_registration.student_unofficial_transcript_2</field>
+        <field name="print_report_name">'%s Transcript' % object.name</field>
+        <field name="binding_model_id" ref="model_odoocms_student"/>
+        <field name="paperformat_id" ref="student_trannscript_paperformat"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>

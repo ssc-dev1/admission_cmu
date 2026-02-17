@@ -1,0 +1,218 @@
+<odoo>
+    <template id="odoocms_admission_fee_ucp.prospectus_challan_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <style>
+                    .compact-table td, .compact-table th {
+                    padding-top: 2px; /* Reduce space at the top of the cell */
+                    padding-bottom: 2px; /* Reduce space at the bottom of the cell */
+                    line-height: 1; /* Reduce the line height for text in the cell */
+                    }
+                    .row-spacing th, .row-spacing td{
+                    margin-bottom: 10px; /* Bottom margin for spacing */
+                    }
+                </style>
+
+                <div class="page" style="page-break-inside: avoid; font-family: sans-serif;">
+
+                    <p style="text-align:center;margin-top:30px;font-size:16px;font-weight:bold;">
+                        Prospectus Sale Report For
+                        <span t-esc="term_id.name"/>
+                        (<span t-esc="term_id.code"/>)
+                    </p>
+
+                    <table class="table table-condensed compact-table" style="width:100%;">
+                        <tr style="text-align:left;font-size:7px;font-weight:bold;">
+                            <td style="border: 1px solid black !important">Sr.No</td>
+                            <td style="border: 1px solid black !important">Candidate Name</td>
+                            <td style="border: 1px solid black !important">Reference No</td>
+                            <td style="border: 1px solid black !important">Program Applied For</td>
+                            <td style="border: 1px solid black !important">Faculty</td>
+                            <td style="border: 1px solid black !important">Data Enter By</td>
+                            <td style="border: 1px solid black !important">Payment verify by</td>
+                            <td style="border: 1px solid black !important">Payment Sub Type</td>
+                            <td style="border: 1px solid black !important">Fee</td>
+                            <td style="border: 1px solid black !important">Preferences</td>
+                            <td style="border: 1px solid black !important">Paid Date</td>
+                            <td style="border: 1px solid black !important">Payment Confirmation</td>
+                            <td style="border: 1px solid black !important">Challan #</td>
+                        </tr>
+
+                        <t t-set="total" t-value="0"/>
+                        <t t-foreach="lines" t-as="line">
+                            <tr style="font-size:8px;text-align:left; height: 2px;">
+                                <td style="border: 1px solid black !important" t-esc="line_index+1"/>
+
+                                <!--***** Candidate Name*****-->
+                                <td style="border: 1px solid black !important">
+                                    <span t-esc="line.name"/>
+                                </td>
+
+                                <!--***** Reference No. *****-->
+                                <td style="border: 1px solid black !important">
+                                    <span t-esc="line.application_no"/>
+                                </td>
+
+                                <!--***** Program Applied For *****-->
+                                <td style="border: 1px solid black !important">
+                                    <span t-esc="line.prospectus_inv_id.program_id.code if line.prospectus_inv_id.program_id else line.prefered_program_id.code if line.prefered_program_id else ''"/>
+                                </td>
+
+                                <!--***** Faculty *****-->
+                                <td style="border: 1px solid black !important">
+                                    <span t-esc="line.prospectus_inv_id.program_id.institute_id.code if line.prospectus_inv_id.program_id.institute_id else line.prefered_program_id.institute_id.code if line.prefered_program_id.institute_id else ''"/>
+                                </td>
+
+                                <!--***** Data Enter By *****-->
+                                <td style="border: 1px solid black !important">
+                                    <t t-if="line.create_uid.login =='public'">
+                                        Candidate
+                                    </t>
+                                    <t t-else="">
+                                        <span t-esc="line.create_uid.login.split('@')[0]"/>
+                                    </t>
+                                </td>
+
+                                <!--***** Payment verify by *****-->
+                                <td style="border: 1px solid black !important">
+                                    <t t-if="line.fee_voucher_verify_source=='auto' or (line.create_uid.login =='public' and not line.fee_voucher_verify_by.login)">
+                                        Auto Bank
+                                    </t>
+
+                                    <!-- <t t-if="not line.fee_voucher_verify_source=='auto'"> -->
+                                    <t t-else="">
+                                        <t t-if="line.fee_voucher_verify_by.login">
+                                            <span t-esc="line.fee_voucher_verify_by.login.split('@')[0]"/>
+                                        </t>
+                                        <t t-if="not line.fee_voucher_verify_by.login and not line.fee_voucher_verify_by.login">
+                                            <span t-esc="line.create_uid.login.split('@')[0]"/>
+                                        </t>
+                                    </t>
+                                </td>
+
+                                <!--***** Payment Sub Type *****-->
+                                <td style="border: 1px solid black !important">
+                                    <span t-esc="line.prospectus_inv_id.sudo().get_paid_bank_name()"/>
+                                </td>
+
+                                <!--***** Prospectus Fee *****-->
+                                <td style="border: 1px solid black !important">
+                                    <span t-esc="'{0:,.0f}'.format(line.prospectus_inv_id.amount_total)"/>
+                                </td>
+
+                                <!--***** Preferences *****-->
+                                <td style="border: 1px solid black !important">
+                                    <span t-esc="len(line.preference_ids)"/>
+                                </td>
+
+                                <!--***** Paid Date *****-->
+                                <td style="border: 1px solid black !important">
+                                    <t t-if="line.prospectus_inv_id.payment_date">
+                                        <span t-esc="line.prospectus_inv_id.payment_date.strftime('%d-%m-%Y')"/>
+                                    </t>
+                                    <t t-if="not line.prospectus_inv_id.payment_date">
+                                        <span t-esc="line.voucher_verified_date.strftime('%d-%m-%Y')"/>
+                                    </t>
+
+                                </td>
+
+                                <!--***** Payment Confirmation *****-->
+                                <td style="border: 1px solid black !important">
+                                    <t t-if="line.prospectus_inv_id.confirmation_date">
+                                        <span t-esc="line.prospectus_inv_id.confirmation_date.strftime('%d-%m-%Y')"/>
+                                    </t>
+                                    <t t-if="not line.prospectus_inv_id.confirmation_date">
+                                        <span t-esc="line.voucher_verified_date.strftime('%d-%m-%Y')"/>
+                                    </t>
+                                </td>
+
+                                <!--***** Challan #  *****-->
+                                <td style="border: 1px solid black !important;">
+                                    <span t-esc="line.prospectus_inv_id.old_challan_no"/>
+                                </td>
+
+                            </tr>
+                            <t t-set="total" t-value="total + line.prospectus_inv_id.amount_total"/>
+
+
+                        </t>
+                        <tr style="font-size:8px;font-weight:bold;">
+                            <td colspan="8" style="border: 1px solid black !important">Total
+                            </td>
+                            <td style="border: 1px solid black !important">
+                                <span t-esc="'{0:,.0f}'.format(total)"/>
+                            </td>
+                            <td colspan="4" style="border: 1px solid black !important"/>
+                        </tr>
+                    </table>
+
+                    <!--***** Summary *****-->
+                    <table class="table table-borderless" style="width:100%;margin-top:20px;">
+                        <tr>
+                            <td colspan="5" style="text-align:center;font-size:12px;font-weight:bold;">
+                                Summary
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:20%"/>
+                            <td style="width:27%;;">
+                                <table class="table table-condensed compact-table" style="width:100%;">
+                                    <tr style="text-align:left;font-size:7px;font-weight:bold;background-color:#66CCFF">
+                                        <td style="border: 1px solid black !important">Faculty</td>
+                                        <td style="border: 1px solid black !important">Count</td>
+                                        <td style="border: 1px solid black !important">Fee Amount</td>
+                                    </tr>
+                                    <t t-set="faculty_summary_total" t-value="0"/>
+                                    <t t-foreach="faculty_summary_lines" t-as="line">
+                                        <tr style="font-size:8px;text-align:left; height: 2px;">
+                                            <td style="border: 1px solid black !important" t-esc="line['faculty']"/>
+                                            <td style="border: 1px solid black !important" t-esc="'{0:,.0f}'.format(line['cnt'])"/>
+                                            <td style="border: 1px solid black !important" t-esc="'{0:,.0f}'.format(line['amount'])"/>
+                                        </tr>
+                                        <t t-set="faculty_summary_total" t-value="faculty_summary_total + line['amount']"/>
+                                    </t>
+                                    <tr>
+                                        <td style="border: 1px solid black !important"/>
+                                        <td style="text-align:left;font-size:7px;font-weight:bold;border: 1px solid black !important">Total</td>
+                                        <td style="text-align:left;font-size:7px;font-weight:bold;border: 1px solid black !important">
+                                            <span t-esc="'{0:,.0f}'.format(faculty_summary_total)"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                            <td style="width:6%"/>
+                            <td style="width:27%;">
+                                <table class="table table-condensed compact-table" style="width:100%;">
+                                    <tr style="text-align:left;font-size:7px;font-weight:bold;background-color:#66CCFF">
+                                        <td style="border: 1px solid black !important;">DEO</td>
+                                        <td style="border: 1px solid black !important;">Count</td>
+                                        <td style="border: 1px solid black !important;">Fee Amount</td>
+                                    </tr>
+                                    <t t-set="deo_summary_total" t-value="0"/>
+                                    <t t-foreach="deo_summary_lines" t-as="line">
+                                        <tr style="font-size:8px;text-align:left; height: 2px;">
+                                            <td style="border: 1px solid black !important;" t-esc="line['deo']"/>
+                                            <td style="border: 1px solid black !important;" t-esc="'{0:,.0f}'.format(line['cnt'])"/>
+                                            <td style="border: 1px solid black !important;" t-esc="'{0:,.0f}'.format(line['amount'])"/>
+                                        </tr>
+                                        <t t-set="deo_summary_total" t-value="deo_summary_total + line['amount']"/>
+                                    </t>
+                                    <tr>
+                                        <td style="border: 1px solid black !important;"/>
+                                        <td style="text-align:left;font-size:7px;font-weight:bold;border: 1px solid black !important;">Total</td>
+                                        <td style="text-align:left;font-size:7px;font-weight:bold;border: 1px solid black !important;">
+                                            <span t-esc="'{0:,.0f}'.format(deo_summary_total)"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width:20%"/>
+                        </tr>
+                    </table>
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

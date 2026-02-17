@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="show_student_fee_challans_wiz_view" model="ir.ui.view">
+        <field name="name">show.student.fee.challans.wiz.view</field>
+        <field name="model">show.student.fee.challans.wiz</field>
+        <field name="arch" type="xml">
+            <form string="Show Challan Form">
+                <group>
+                    <group>
+                        <field name="term_id" required="1"
+                               options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>
+                        <field name="student_id_domain" invisible="1"/>
+                        <field name="student_id" domain="student_id_domain" required="1"
+                               options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="action_submit_challan_form" string="Submit" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn btn-sm btn-default" special="cancel"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_show_student_fee_challans_wiz" model="ir.actions.act_window">
+        <field name="name">Show Student Challans</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">show.student.fee.challans.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+            id="menu_show_student_fee_challans_view"
+            action="action_show_student_fee_challans_wiz"
+            name="Filter Student Challans"
+            parent="odoocms_fee.menu_student_fee_request_root"
+            sequence="620"/>
+</odoo>

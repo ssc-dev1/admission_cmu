@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <!-- =========================
+       TREE (list) VIEW
+       ========================= -->
+  <record id="view_tree_need_based_scholarship" model="ir.ui.view">
+    <field name="name">need.based.scholarship.tree</field>
+    <field name="model">need.based.scholarship</field>
+    <field name="arch" type="xml">
+      <tree string="Need-Based Scholarship Applications">
+        <field name="applicant_id"/>
+        <field name="full_name"/>
+        <field name="degree_program"/>
+        <field name="program_year"/>
+        <field name="total_monthly_income" sum="Total Income"/>
+        <field name="total_monthly_expense" sum="Total Expense"/>
+        <field name="net_monthly_income"/>
+        <field name="net_assets"/>
+        <field name="company_id" groups="base.group_multi_company"/>
+        <field name="state"/>
+      </tree>
+    </field>
+  </record>
+
+ 
+  <record id="view_form_need_based_scholarship" model="ir.ui.view">
+    <field name="name">need.based.scholarship.form</field>
+    <field name="model">need.based.scholarship</field>
+    <field name="arch" type="xml">
+      <form string="Need Based Scholarship">
+        <header>
+          <field name="state" widget="statusbar"/>
+          <button name="action_download_attachments_zip"
+                  type="object"
+                  class="oe_highlight"
+                  string="Download All Attachments (ZIP)"/>
+
+        </header>
+        <sheet>
+
+          <!-- Header summary like Dunya -->
+          <group>
+            <group>
+              <field name="applicant_id"/>
+            </group>
+            <group>
+              <field name="degree_program"/>
+              <field name="program_year"/>
+            </group>
+            <group>
+              <field name="registration_number"/>
+              <field name="contact_number"/>
+              <field name="email"/>
+            </group>
+            <group>
+              <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+            </group>
+          </group>
+
+          <notebook>
+
+            <!-- Parents/Guardian Info (merged Father + Mother) -->
+            <page string="Household Information">
+              <group string="Father">
+                <group>
+                  <field name="father_name"/>
+                  <field name="father_occupation"/>
+                  <field name="father_employer_name" attrs="{'invisible':[('father_occupation','not in',('employed','self_employed'))]}"/>
+                  <field name="father_designation"  attrs="{'invisible':[('father_occupation','not in',('employed','self_employed'))]}"/>
+                </group>
+                <group>
+                  <field name="father_unemployed_reason" attrs="{'invisible':[('father_occupation','!=','unemployed')]}"/>
+                  <field name="father_salary_slips" filename="father_salary_slips_fname"
+                         attrs="{'invisible':[('father_occupation','not in',('employed','self_employed'))]}"/>
+                  <field name="father_death_certificate" filename="father_death_certificate_fname"
+                         attrs="{'invisible':[('father_occupation','!=','deceased')]}"/>
+                </group>
+              </group>
+
+              <group string="Mother">
+                <group>
+                  <field name="mother_name"/>
+                  <field name="mother_occupation"/>
+                  <field name="mother_employer_name" attrs="{'invisible':[('mother_occupation','not in',('employed','self_employed'))]}"/>
+                  <field name="mother_designation"  attrs="{'invisible':[('mother_occupation','not in',('employed','self_employed'))]}"/>
+                </group>
+                <group>
+                  <field name="mother_unemployed_reason" attrs="{'invisible':[('mother_occupation','!=','unemployed')]}"/>
+                  <field name="mother_salary_slips" filename="mother_salary_slips_fname"
+                         attrs="{'invisible':[('mother_occupation','not in',('employed','self_employed'))]}"/>
+                  <field name="mother_death_certificate" filename="mother_death_certificate_fname"
+                         attrs="{'invisible':[('mother_occupation','!=','deceased')]}"/>
+                </group>
+              </group>
+
+              <group string="Previous Aid">
+                <group>
+                  <field name="prev_scholarship"/>
+                  <field name="prev_scholarship_details"/>
+                </group>
+              </group>
+            </page>
+
+            <!-- Household Members -->
+            <page string="Household Members">
+              <field name="household_member_ids" nolabel="1">
+                <tree editable="bottom">
+                  <field name="name"/>
+                  <field name="relation"/>
+                  <field name="occupation"/>
+                  <field name="employer_or_institute" attrs="{'invisible':[('occupation','!=','employed')]}"/>
+                  <field name="designation_or_type" attrs="{'invisible':[('occupation','!=','employed')]}"/>
+                  <field name="student_institute" attrs="{'invisible':[('occupation','!=','student')]}"/>
+                  <field name="reason_unemployed" attrs="{'invisible':[('occupation','!=','unemployed')]}"/>
+                  <field name="salary_slips" filename="salary_slips_fname" attrs="{'invisible':[('occupation','!=','employed')]}"/>
+                </tree>
+                <form>
+                  <group>
+                    <group>
+                      <field name="name"/>
+                      <field name="relation"/>
+                      <field name="occupation"/>
+                    </group>
+                    <group>
+                      <field name="employer_or_institute" attrs="{'invisible':[('occupation','!=','employed')]}"/>
+                      <field name="designation_or_type" attrs="{'invisible':[('occupation','!=','employed')]}"/>
+                      <field name="student_institute" attrs="{'invisible':[('occupation','!=','student')]}"/>
+                      <field name="reason_unemployed" attrs="{'invisible':[('occupation','!=','unemployed')]}"/>
+                      <field name="salary_slips" filename="salary_slips_fname" attrs="{'invisible':[('occupation','!=','employed')]}"/>
+                    </group>
+                  </group>
+                </form>
+              </field>
+            </page>
+
+            <!-- Income and Expenses -->
+            <page string="Income and Expenses">
+              <group string="Income (Monthly)">
+                <group>
+                  <field name="father_monthly_income"/>
+                  <field name="mother_monthly_income"/>
+                </group>
+                <group>
+                  <field name="other_income_ids" nolabel="1">
+                    <tree editable="bottom">
+                      <field name="name"/>
+                      <field name="relation"/>
+                      <field name="monthly_income"/>
+                      <field name="income_proof"/>
+                    </tree>
+                    <form>
+                      <group>
+                        <group>
+                          <field name="name"/>
+                          <field name="relation"/>
+                          <field name="monthly_income"/>
+                        </group>
+                        <group>
+                          <field name="income_proof"/>
+                        </group>
+                      </group>
+                    </form>
+                  </field>
+                </group>
+                <group string="Other Household Income">
+                  <group>
+                    <field name="income_rental"/>
+                    <field name="income_rental_amount" attrs="{'invisible':[('income_rental','=',False)]}"/>
+                    <field name="income_pension"/>
+                    <field name="income_pension_amount" attrs="{'invisible':[('income_pension','=',False)]}"/>
+                    <field name="income_zakat"/>
+                    <field name="income_zakat_amount" attrs="{'invisible':[('income_zakat','=',False)]}"/>
+                  </group>
+                  <group>
+                    <field name="income_remittance"/>
+                    <field name="income_remittance_amount" attrs="{'invisible':[('income_remittance','=',False)]}"/>
+                    <field name="income_self"/>
+                    <field name="income_self_amount" attrs="{'invisible':[('income_self','=',False)]}"/>
+                  </group>
+                </group>
+              </group>
+
+              <group string="Expenses (Monthly)">
+                <group>
+                  <field name="has_sibling_education_expense"/>
+                  <field name="sibling_expense_ids" nolabel="1" attrs="{'invisible':[('has_sibling_education_expense','=',False)]}">
+                    <tree editable="bottom">
+                      <field name="sibling_name"/>
+                      <field name="monthly_expense"/>
+                      <field name="fee_challan"/>
+                    </tree>
+                    <form>
+                      <group>
+                        <field name="sibling_name"/>
+                        <field name="monthly_expense"/>
+                        <field name="fee_challan"/>
+                      </group>
+                    </form>
+                  </field>
+                </group>
+                <group>
+                  <field name="is_living_on_rent"/>
+                  <field name="monthly_rent" attrs="{'invisible':[('is_living_on_rent','=',False)]}"/>
+                  <field name="rent_agreement" attrs="{'invisible':[('is_living_on_rent','=',False)]}"/>
+                </group>
+
+                <group string="Utilities (Latest Month)">
+                  <group>
+                    <field name="gas_bill_amount"/>
+                    <field name="gas_bill_attachment"/>
+                    <field name="elec_bill_amount"/>
+                    <field name="elec_bill_attachment"/>
+                  </group>
+                  <group>
+                    <field name="water_bill_amount"/>
+                    <field name="water_bill_attachment"/>
+                    <field name="monthly_grocery"/>
+                  </group>
+                </group>
+
+                <group string="Medical / Other Recurring">
+                  <group>
+                    <field name="has_medical_expense"/>
+                    <field name="medical_expense_nature" attrs="{'invisible':[('has_medical_expense','=',False)]}"/>
+                    <field name="medical_expense_amount" attrs="{'invisible':[('has_medical_expense','=',False)]}"/>
+                    <field name="medical_expense_attachment" attrs="{'invisible':[('has_medical_expense','=',False)]}"/>
+                  </group>
+                  <group>
+                    <field name="has_other_recurring"/>
+                    <field name="other_recurring_nature" attrs="{'invisible':[('has_other_recurring','=',False)]}"/>
+                    <field name="other_recurring_amount" attrs="{'invisible':[('has_other_recurring','=',False)]}"/>
+                    <field name="other_recurring_attachment" attrs="{'invisible':[('has_other_recurring','=',False)]}"/>
+                  </group>
+                </group>
+              </group>
+
+              <group string="Financial Summary">
+                <group>
+                  <field name="total_monthly_income"/>
+                  <field name="total_monthly_expense"/>
+                  <field name="net_monthly_income"/>
+                </group>
+              </group>
+            </page>
+
+            <!-- House Information -->
+            <page string="House Information">
+              <group>
+                <group string="House">
+                  <field name="asset_house"/>
+                  <field name="asset_house_area"  attrs="{'invisible':[('asset_house','=',False)]}"/>
+                  <field name="asset_house_value" attrs="{'invisible':[('asset_house','=',False)]}"/>
+                </group>
+                <group string="Living on Rent">
+                  <field name="is_living_on_rent"/>
+                  <field name="monthly_rent" attrs="{'invisible':[('is_living_on_rent','=',False)]}"/>
+                  <field name="rent_agreement" attrs="{'invisible':[('is_living_on_rent','=',False)]}"/>
+                </group>
+              </group>
+            </page>
+
+            <!-- Property Information -->
+            <page string="Property Information">
+              <group>
+                <group string="Land / Property">
+                  <field name="asset_land"/>
+                  <field name="asset_land_area"  attrs="{'invisible':[('asset_land','=',False)]}"/>
+                  <field name="asset_land_value" attrs="{'invisible':[('asset_land','=',False)]}"/>
+                </group>
+                <group string="Business">
+                  <field name="asset_business"/>
+                  <field name="asset_business_value" attrs="{'invisible':[('asset_business','=',False)]}"/>
+                </group>
+              </group>
+            </page>
+
+            <!-- Automobile Information -->
+            <page string="Automobile Information">
+              <field name="vehicle_ids" nolabel="1">
+                <tree editable="bottom">
+                  <field name="make_model"/>
+                  <field name="estimated_value"/>
+                </tree>
+                <form>
+                  <group>
+                    <field name="make_model"/>
+                    <field name="estimated_value"/>
+                  </group>
+                </form>
+              </field>
+            </page>
+
+            <!-- Loan Information -->
+            <page string="Loan Information">
+              <group>
+                <field name="has_loans"/>
+              </group>
+              <field name="loan_ids" nolabel="1" attrs="{'invisible':[('has_loans','=',False)]}">
+                <tree editable="bottom">
+                  <field name="purpose"/>
+                  <field name="outstanding_amount"/>
+                  <field name="proof"/>
+                </tree>
+                <form>
+                  <group>
+                    <field name="purpose"/>
+                    <field name="outstanding_amount"/>
+                    <field name="proof"/>
+                  </group>
+                </form>
+              </field>
+              <group>
+                <field name="net_assets"/>
+              </group>
+            </page>
+
+            <!-- Statement & Attachments -->
+            <page string="Statement and Attachments">
+              <group>
+                <group>
+                  <field name="sop"/>
+                  <field name="continuation_plan"/>
+                </group>
+                <group string="Declaration">
+                  <field name="declaration"/>
+                </group>
+              </group>
+
+              <group string="Mandatory Attachments">
+                <group>
+                  <field name="bank_statements_6m"/>
+                  <field name="cnic_parents"/>
+                </group>
+                <group string="House Pictures">
+                  <field name="house_pic_outside_1"/>
+                  <field name="house_pic_outside_2"/>
+                  <field name="house_pic_drawing_1"/>
+                  <field name="house_pic_drawing_2"/>
+                </group>
+              </group>
+            </page>
+
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- =========================
+       ACTION
+       ========================= -->
+  <record id="action_need_based_scholarship" model="ir.actions.act_window">
+    <field name="name">Need Based Scholarship</field>
+    <field name="res_model">need.based.scholarship</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('company_id', '=', allowed_company_ids[0])]</field>
+    <field name="context">{'default_company_id': allowed_company_ids[0]}</field>
+  </record>
+
+  <!-- =========================
+       MENU
+       ========================= -->
+  <menuitem id="menu_need_based_scholarship_root"
+          name="Need Based Scholarship"
+          parent="odoocms_admission.admission_applicant_menu"
+          action="action_need_based_scholarship"
+          sequence="30"/>
+
+</odoo>

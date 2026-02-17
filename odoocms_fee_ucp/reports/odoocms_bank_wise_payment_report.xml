@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="odoocms_bank_wise_payment_report_view" model="ir.ui.view">
+        <field name="name">odoocms.bank.wise.payment.report.view</field>
+        <field name="model">odoocms.bank.wise.payment.report</field>
+        <field name="arch" type="xml">
+            <form string="Bank Wise Payment Report">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date_from" required="1"/>
+                            <field name="date_to" required="1"/>
+                            <field name="term_id" options="{'no_quick_create':True,'no_create_edit':True,'no_create':True}" required="1"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create':True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Banks" name="bank_ids">
+                            <field name="bank_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="make_excel" string="Generate Excel Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_odoocms_bank_wise_payment_report" model="ir.actions.act_window">
+        <field name="name">Bank Wise Payment Report</field>
+        <field name="res_model">odoocms.bank.wise.payment.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem
+            id="menu_odoocms_bank_wise_payment_report"
+            name="Bank Wise Payment Report"
+            action="action_odoocms_bank_wise_payment_report"
+            parent="odoocms_fee.menu_fee_reports"
+            groups="odoocms_fee.group_fee_user,odoocms_fee.group_fee_coordinator,odoocms_fee.group_fee_manager"
+            sequence="550"/>
+
+</odoo>
+
+

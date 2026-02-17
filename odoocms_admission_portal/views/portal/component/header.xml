@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="register_header" name="Register Header">
+        <section class="py-2 text-center container-fluid">
+          <a id='dashboard_button' >
+            <div class='float-right m-2 px-2 py-1  rounded  shadow' style='color:white;'> 
+              <!-- <i class="fa-sharp fa-solid fa-power-off "></i> -->
+              <i class="fas fa-home"></i>
+              <!-- <i class="fa-sharp fa-solid fa-house-blank"></i> -->
+            </div>
+          </a>
+          <!-- position-fixed top-0 end-0 px-3 py-1 mt-2 mr-5 shadow rounded -->
+            <div class="row py-lg-2">
+              <div class="col-lg-8 col-md-8 mx-auto">
+                <h1 class="fw-light"><t t-esc="company.name"/></h1>
+                <h3 class="fw-light"><t t-esc="application_id.register_id.name"/></h3>
+                <!-- <p><span  class="btn btn-outline my-2">Main call to action</span><span  class="btn btn-outline my-2">Secondary action</span> </p> -->
+              </div>
+            </div>
+          </section>
+    </template>
+</odoo>

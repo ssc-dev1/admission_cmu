@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="admission_documents_view_form_inherit" model="ir.ui.view">
+            <field name="name">applicant.academic.detail.view.form.inherit</field>
+            <field name="model">applicant.academic.detail</field>
+            <field name="inherit_id" ref="odoocms_admission.admission_documents_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='nationality']" position="after">
+                    <field name="doc_state" string="Verification Status" readonly="1"/>
+                    <field name="verification_by" readonly="1"/>
+                    <field name="verification_date" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="odoocms_program_inherit_reinherit" model="ir.ui.view">
+            <field name="name">odoocms.program.inherit.reinherit.reinherit</field>
+            <field name="model">odoocms.application</field>
+            <field name="inherit_id" ref="odoocms_admission_ucp.odoocms_program_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='student_documents']/group" position="inside">
+                    <group>
+                        <field name="pwwf_file" widget="image"
+                               options='{"zoom":true, "preview_image":"pwwf_file"}'
+                               style="width: 80px; height: 80px;"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

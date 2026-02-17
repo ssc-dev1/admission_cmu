@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="fee_challan_merge_wiz_view" model="ir.ui.view">
+        <field name="name">fee.challan.merge.wiz.view</field>
+        <field name="model">fee.challan.merge.wiz</field>
+        <field name="arch" type="xml">
+            <form string="Merge Challans">
+                <group>
+                    <field name="invoice_ids" colspan="4" nolabel="1">
+                        <tree>
+                            <field name="old_challan_no"/>
+                            <field name="challan_type"/>
+                            <field name="amount_total_signed" string="Total Amount"/>
+                            <field name="waiver_ids" widget="many2many_tags" string="Discounts"/>
+                            <field name="waiver_percentage" string="Discount %"/>
+                            <field name="waiver_amount" string="Discount Amount"/>
+                            <field name="payment_state"/>
+                        </tree>
+                    </field>
+                </group>
+
+                <footer>
+                    <button name="action_challan_merging" string="Challan Merging" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn btn-sm btn-default" special="cancel"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fee_challan_merge_wiz" model="ir.actions.act_window">
+        <field name="name">Challan Merging</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fee.challan.merge.wiz</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="fee_challan_merge_wiz_view"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="groups_id" eval="[(4,ref('account.group_account_manager')), (4,ref('account.group_account_user'))]"/>
+    </record>
+
+</odoo>

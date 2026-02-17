@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="test_center" name="Test Center">
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/steps/slot_test.js"></script>
+
+        <div class="ml-3 mr-3  header_tab diable_header_tab mt-0 p-2 " onclick="$('#test_center_div').slideToggle(1000); $('#test_center_dropdown').toggleClass('fa-angle-down fa-angle-up');">
+            <a class="btn btn-link">
+                <i style='color: white;font-size: 25px;' class="fa-solid fa-money-check-dollar float-left"></i>
+                <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/>
+                </h2></a>
+            <a>
+                <i id='test_center_dropdown' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+            </a>
+        </div>
+
+        <div id="test_center_div" class="row container-fluid mt-3 collapse_div">
+            <div  class="container">
+                <br/>
+                <t t-if="admit_card or test_letter">
+                    <t t-if="admit_card">
+                        <a t-attf-href="/download/admit/{{'test'}}">
+                            <div class='col-3 m-1'>
+                                <button style='background-color:#875A7B;border:None' class="btn btn-primary ml-1">Download Test Letter</button>
+                            </div>
+                        </a>
+                    </t>
+                    <t t-if="test_letter">
+                        <a t-attf-href="/download/admit/{{'interview'}}">
+                            <div class='col-3 m-1'>
+                                <button style='background-color:#875A7B;border:None' class="btn btn-primary ml-1">Download Interview Letter</button>
+                            </div>
+                        </a>
+                    </t>
+                   <!-- <t t-else="">
+                        <a t-attf-href="/download/admit/{{'test'}}">
+                            <button class="btn btn-primary ml-1">Download Admit Card</button>
+                        </a>
+                        <a t-attf-href="/download/admit/{{'interview'}}">
+                            <button class="btn btn-primary ml-1">Download Admit Card</button>
+                        </a>
+                    </t>-->
+                </t>
+                <t t-else="">
+                    <div class="alert alert-primary" role="alert">
+                        <!-- A simple primary alert—check it out! -->
+                        <span style='color:red'>Please Wait We Will Mail You For Your Next Step (No Slot Assigned!)</span>
+                      </div>
+                </t>
+
+            </div>
+
+        </div>
+        <br/>
+    </template>
+</odoo>

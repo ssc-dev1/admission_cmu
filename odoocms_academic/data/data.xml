@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+<!--        <record id="assessment_template_lecture" model="odoocms.assessment.template">-->
+<!--            <field name="name">Lecture</field>-->
+<!--            <field name="code">Lecture</field>-->
+<!--            <field name="component">lecture</field>-->
+<!--            <field name="sequence">1</field>-->
+<!--            <field name="line_ids" eval="[-->
+<!--                (0, 0, {'sequence':1, 'name':'Assignment', 'code':'Assignment','weightage':15, 'min':10, 'max':20}),-->
+<!--                (0, 0, {'sequence':1, 'name':'Quiz', 'code':'Quiz','weightage':15, 'min':10, 'max':20}),-->
+<!--                (0, 0, {'sequence':1, 'name':'Mid Term', 'code':'Mid Term','weightage':30, 'min':25, 'max':40}),-->
+<!--                (0, 0, {'sequence':1, 'name':'Final', 'code':'Final','weightage':40, 'min':35, 'max':60}),-->
+<!--            ]"/>-->
+<!--        </record>-->
+
+<!--        <record id="assessment_template_lab" model="odoocms.assessment.template">-->
+<!--            <field name="name">Lab</field>-->
+<!--            <field name="code">Lab</field>-->
+<!--            <field name="component">lab</field>-->
+<!--            <field name="sequence">2</field>-->
+<!--            <field name="line_ids" eval="[-->
+<!--                (0, 0, {'sequence':1, 'name':'Lab Task', 'code':'Lab Task','weightage':10, 'min':10, 'max':20}),-->
+<!--                (0, 0, {'sequence':1, 'name':'Lab Viva', 'code':'Lab Viva','weightage':15, 'min':10, 'max':20}),-->
+<!--                (0, 0, {'sequence':1, 'name':'Project', 'code':'Project','weightage':75, 'min':30, 'max':80}),-->
+<!--            ]"/>-->
+<!--        </record>-->
+
+        <!--<record id="grade_i" model="odoocms.grade">
+            <field name="name">I</field>
+            <field name="low_per">0</field>
+            <field name="high_per">0</field>
+        </record>
+
+        <record id="grade_w" model="odoocms.grade">
+            <field name="name">W</field>
+            <field name="low_per">0</field>
+            <field name="high_per">0</field>
+        </record>
+
+        <record id="grade_f" model="odoocms.grade">
+            <field name="name">F</field>
+            <field name="low_per">0</field>
+            <field name="high_per">50</field>
+        </record>
+
+        <record id="grade_d" model="odoocms.grade">
+            <field name="name">D</field>
+            <field name="low_per">50</field>
+            <field name="high_per">55</field>
+        </record>
+
+        <record id="grade_d+" model="odoocms.grade">
+            <field name="name">D+</field>
+            <field name="low_per">55</field>
+            <field name="high_per">60</field>
+        </record>
+
+        <record id="grade_c" model="odoocms.grade">
+            <field name="name">C</field>
+            <field name="low_per">60</field>
+            <field name="high_per">70</field>
+        </record>
+
+        <record id="grade_c+" model="odoocms.grade">
+            <field name="name">C+</field>
+            <field name="low_per">70</field>
+            <field name="high_per">75</field>
+        </record>
+
+        <record id="grade_b" model="odoocms.grade">
+            <field name="name">B</field>
+            <field name="low_per">75</field>
+            <field name="high_per">85</field>
+        </record>
+
+        <record id="grade_b+" model="odoocms.grade">
+            <field name="name">B+</field>
+            <field name="low_per">85</field>
+            <field name="high_per">90</field>
+        </record>
+
+        <record id="grade_a" model="odoocms.grade">
+            <field name="name">A</field>
+            <field name="low_per">90</field>
+            <field name="high_per">100</field>
+        </record>-->
+
+        <record id="grade_method_absolute" model="odoocms.grade.method">
+            <field name="name">Absolute Grading</field>
+            <field name="method">assign_absolute_grades</field>
+            <field name="code">absolute</field>
+        </record>
+
+        <record id="grade_method_normalized" model="odoocms.grade.method">
+            <field name="name">Normalized Grading</field>
+            <field name="method">assign_normalized_grades</field>
+            <field name="code">normalized</field>
+        </record>
+
+        <record id="grade_method_grade_histogram" model="odoocms.grade.method">
+            <field name="name">Histogram Grading</field>
+            <field name="method">assign_histogram_grades</field>
+            <field name="code">histogram</field>
+        </record>
+
+        <record id="mail_act_result_submit" model="mail.activity.type">
+            <field name="name">Result Submit</field>
+            <field name="icon">fa-sun-o</field>
+            <field name="category">approval</field>
+            <field name="res_model">odoocms.class.grade</field>
+            <field name="role_domain">[["department_id.faculty_ids.employee_tag_id.name","in",["HOD"]]]</field>
+            <field name="prev_function">record.revisit_result()</field>
+            <field name="cancel_function">record.revisit_result()</field>
+            <field name="module_category_id" ref="module_category_odoocms_academic"/>
+        </record>
+
+        <record id="mail_act_result_hod_to_dean" model="mail.activity.type">
+            <field name="name">Result HOD-> Dean</field>
+            <field name="icon">fa-sun-o</field>
+            <field name="category">approval</field>
+            <field name="res_model">odoocms.class.grade</field>
+            <field name="role_domain">[["institute_id.faculty_ids.employee_tag_id.name","in",["Dean"]]]</field>
+            <field name="cancel_function">record.revisit_result()</field>
+            <field name="back_activity_type_id" ref="odoocms_academic.mail_act_result_submit"/>
+            <field name="module_category_id" ref="module_category_odoocms_academic"/>
+        </record>
+
+        <record id="mail_act_result_dean_to_controller" model="mail.activity.type">
+            <field name="name">Result Dean --> Controller</field>
+            <field name="icon">fa-sun-o</field>
+            <field name="category">approval</field>
+            <field name="res_model">odoocms.class.grade</field>
+            <field name="role_domain">[["campus_id.faculty_ids.employee_tag_id.name","in",["Controller"]]]</field>
+            <field name="post_function">record.compute_result()</field>
+            <field name="cancel_function">record.revisit_result()</field>
+            <field name="back_activity_type_id" ref="odoocms_academic.mail_act_result_hod_to_dean"/>
+            <field name="module_category_id" ref="module_category_odoocms_academic"/>
+        </record>
+
+<!--        <record id="odoocms_academic.mail_act_result_submit" model="mail.activity.type">-->
+<!--            <field name="force_next">True</field>-->
+<!--            <field name="default_next_type_id" ref="odoocms_academic.mail_act_result_hod_to_dean"/>-->
+<!--        </record>-->
+
+<!--        <record id="odoocms_academic.mail_act_result_hod_to_dean" model="mail.activity.type">-->
+<!--            <field name="force_next">True</field>-->
+<!--            <field name="default_next_type_id" ref="odoocms_academic.mail_act_result_dean_to_controller"/>-->
+<!--        </record>-->
+
+    </data>
+</odoo>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--***** Form *****-->
+    <record id="view_generate_invoice_form" model="ir.ui.view">
+        <field name="name">generate.invoice.form.view</field>
+        <field name="model">generate.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Generate Bulk Invoices">
+                <header>
+                    <button name="generate_admission_invoices_detail" type="object" states="draft" string="Generate Detail" class="oe_highlight" groups="base.group_user"/>
+                    <button name="generate_admission_invoices" type="object" states="detail" string="Generate Invoice" class="oe_highlight" groups="base.group_user"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="merit_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                   options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>
+                            <field name="program_id"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+                            <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="total_applicants" string="Applicants"/>
+                            <field name="total_amount"/>
+                            <field name="total_admission_amount" string="Admission Amount"/>
+                            <field name="total_scholarship_amount" string="Scholarship Amount"/>
+                            <field name="net_receivable" string="Net Receivable"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page name="invoice_lines" string="Detail">
+                            <field name="lines" attrs="{'readonly':[('state','=','invoice')]}">
+                                <tree>
+                                    <field name="application_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create':True,}"/>
+                                    <field name="applicant_name"/>
+                                    <field name="program_id" optional="hide"/>
+                                    <field name="merit_id" optional="hide"/>
+                                    <field name="credit_hrs"/>
+                                    <field name="credit_hrs_fee"/>
+                                    <field name="fee_amount" sum="sum_fee_amount"/>
+                                    <field name="admission_amount" sum="sum_admission_amount"/>
+                                    <field name="scholarship_id" optional="show"/>
+                                    <field name="scholarship_percentage" optional="show"/>
+                                    <field name="scholarship_amount" sum="sum_scholarship_amount"/>
+                                    <field name="net_amount" sum="sum_net_amount"/>
+                                    <field name="state" optional="hide"/>
+                                    <field name="doc_verify"/>
+                                    <field name="invoice_generated"/>
+                                </tree>
+                                <form>
+                                    <header>
+                                        <field name="state" widget="statusbar"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="application_id"/>
+                                                <field name="applicant_name"/>
+                                                <field name="program_id"/>
+                                                <field name="merit_id"/>
+                                                <field name="date"/>
+                                                <field name="doc_verify"/>
+                                                <field name="invoice_generated"/>
+                                                <field name="company_id"/>
+                                            </group>
+                                            <group>
+                                                <field name="fee_amount"/>
+                                                <field name="admission_amount"/>
+                                                <field name="scholarship_amount"/>
+                                                <field name="net_amount"/>
+                                                <field name="credit_hrs"/>
+                                                <field name="credit_hrs_fee"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--***** Tree *****-->
+    <record id="view_generate_invoice_tree" model="ir.ui.view">
+        <field name="name">generate.invoice.tree.view</field>
+        <field name="model">generate.invoice</field>
+        <field name="arch" type="xml">
+            <tree string="Generate Bulk Invoice" decoration-info="state == 'draft'" decoration-primary="state == 'detail'" decoration-success="state == 'invoice'" decoration-danger="state == 'cancel'">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="merit_id"/>
+                <field name="program_id"/>
+                <field name="date"/>
+                <field name="total_applicants" sum="sum_total_applicants" optional="hide"/>
+                <field name="total_scholarship_amount" sum="sum_total_scholarship_amount" optional="hide"/>
+                <field name="total_amount" optional="hide"/>
+                <field name="total_scholarship_amount" optional="hide"/>
+                <field name="net_receivable" optional="hide"/>
+                <field name="company_id" optional="hide" groups="base.group_multi_company"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-primary="state == 'detail'" decoration-success="state == 'invoice'" decoration-danger="state == 'cancel'"/>
+                <field name="create_uid" string="Created By" optional="show" widget="many2one_avatar_user"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--***** Pivot *****-->
+    <record id="view_generate_invoice_pivot" model="ir.ui.view">
+        <field name="name">generate.invoice.pivot</field>
+        <field name="model">generate.invoice</field>
+        <field name="priority">64</field>
+        <field name="arch" type="xml">
+            <pivot string="Generate Invoice Analysis" display_quantity="true">
+                <field name="merit_id" type="row"/>
+                <field name="total_applicants" string='Applicants' type="measure"/>
+                <field name="total_amount" string='Fee Amount' type="measure"/>
+                <field name="total_admission_amount" string='Admission Amount' type="measure"/>
+                <field name="total_scholarship_amount" string='Scholarship Amount' type="measure"/>
+                <field name="net_receivable" string='NET Receivable' type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!--***** Search *****-->
+    <record id="view_generate_invoice_search" model="ir.ui.view">
+        <field name="name">generate.invoice.search.view</field>
+        <field name="model">generate.invoice</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <search string="Generate Bulk Invoices">
+                <field name="name"/>
+                <field name="program_id"/>
+                <field name="merit_id"/>
+                <field name="date"/>
+                <field name="state"/>
+                <separator/>
+                <filter name="date" string="Date" date="date"/>
+
+                <newline/>
+                <group expand="0" string="Group By">
+                    <separator/>
+                    <filter string="Date" name="group_by_date" domain="[]" context="{'group_by':'date'}"/>
+                    <separator/>
+                    <filter string="Merit" name="group_by_merit" domain="[]" context="{'group_by':'merit_id'}"/>
+                    <separator/>
+                    <filter string="Program" name="group_by_program" domain="[]" context="{'group_by':'program_id'}"/>
+                    <separator/>
+                    <filter string="Status" name="group_by_state" domain="[]" context="{'group_by':'state'}"/>
+                    <separator/>
+                    <filter name="company_id" string="Company" domain="[]" context="{'group_by':'company_id'}"/>
+                    <separator/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!--***** Action *****-->
+    <record id="generate_invoice_action" model="ir.actions.act_window">
+        <field name="name">Generate Bulk Invoices</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">generate.invoice</field>
+        <field name="view_mode">tree,form,pivot</field>
+    </record>
+
+    <!--***** Menu *****-->
+    <menuitem id="generate_invoice_menu"
+              name="Generate Bulk Invoice"
+              action="generate_invoice_action"
+              sequence="20"
+              parent="odoocms_admission_fee.menu_odoocms_admission_finance_main"
+    />
+</odoo>

@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+
+    <template id="account_registration" name="Accound Registration">
+        <link rel="stylesheet" type="text/css" href="/odoocms_admission_portal/static/bootstrap/css/bootstrap.min.css"/>
+        <link href="/odoocms_admission_portal/static/css/account_registration.css" rel="stylesheet" />
+
+        <div class="main">
+            <div class="container_account">
+                <form action="/web/login/admission/" autocomplete='off' method='POST' class="signin-form" id="signin_form" onsubmit="this.action = this.action + location.hash">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <h2>Admission Sign In</h2>
+                    <div class="form-group-1">
+                        <input type="text" autocomplete="off" name="login" id="login" placeholder="Login" required='1' />
+                        <input type="password" autocomplete="off" name="password" id="password" placeholder="Password" required='1' />
+                    </div>
+                    <p style='color: red' class="alert alert-danger" t-if="error" role="alert">
+                        <t t-esc="error"/>
+                    </p>
+                    <p t-attf-style='color: {{color_scheme}}' class="alert alert-success" t-if="message" role="status">
+                        <t t-esc="message"/>
+                    </p>
+                    <p t-attf-style='color: {{color_scheme}};display:none;' class="alert alert-success" id='signin_message' role="status">
+                       
+                    </p>
+                    <br/>
+                    <div class="form-submit">
+                        <input type="submit" name="submit" id="submit" class="submitbtn" value="Sign In" />
+                    </div>
+                </form>
+                <button class='btn' style='color:blue;margin-left:60px' id ='signup_switch'><p style='text-decoration: none;' >Signup ?</p>
+                </button>
+                <a class='btn' style='color:blue;margin-left:40px' href='/web/reset_password' id ='reset_switch'><p style='text-decoration: none;' >Reset Password</p>
+                </a>
+              
+                <!-- signup form  -->
+                <form  style='display:none;' action="/web/admission/signup" autocomplete='off' method='POST' class="signin-form mb-2" id="signup_form" onsubmit="this.action = this.action + location.hash">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <h2>Admission Sign UP</h2>
+                    <!-- <br/> -->
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group-2">
+                                <input type="text" name='first_name' tabindex="1" required="1" placeholder="First Name" />
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group-2">
+                                <input type="text" name='last_name' tabindex="2" required="1" placeholder="Last Name" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group-2">
+                                <input type="email" name='email' tabindex="3" required="1" placeholder="Email" />
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group-2">
+                                <select class='international_student' tabindex="4" id='international_student' name='international_student' required="1">
+                                    <option class="hidden" value='' selected='1' disabled='1'>International Student</option>
+                                    <option value='national'>No</option>
+                                    <option value='international'>Yes</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group-2">
+                                <input type="text" id='cnic' data-inputmask-clearincomplete="true" data-inputmask="'mask': '99999-9999999-9'" name='cnic' tabindex="5"  placeholder="CNIC" />
+                                <div class="form-group-2">
+                                    <select class='country_id_signup' name='country_id_signup' tabindex="4" id='country_id_signup' >
+                                        <option class="hidden" value='' selected='1' disabled='1'>Country</option>
+                                        <t t-foreach="country_id" t-as="country">
+                                            <t t-if="country.id != 177">
+                                                <option t-att-phone_code='country.phone_code' t-att-value='country.id' t-att-selected='country.id == 177 '>
+                                                    <t t-esc="country.name"/>
+                                                </option>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group-2">
+                                <input type="text" data-inputmask-clearincomplete="true" data-inputmask="'mask': '0399-9{7,7}'"  id='phone_signup' name='phone_signup' tabindex="6" placeholder="Mobile" />
+                                <input type="text" data-inputmask-clearincomplete="true" data-inputmask="'mask': '09{4,}'"  name='phone_signup_international' id='phone_signup_international' style='display:none;' tabindex="6"  placeholder="Mobile" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style='color:#999'>
+                        <div class="form-check form-check-inline">
+                            <input tabindex='7' class="form-check-input" checked='1' type="radio" name="gender" id="male_radio" value="m"/>
+                            <label class="form-check-label" for="male_radio">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input tabindex='8'  class="form-check-input" type="radio" name="gender" id="female_radio" value="f"/>
+                            <label class="form-check-label" for="female_radio">Female</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input tabindex='9'  class="form-check-input" type="radio" name="gender" id="other_radio" value="o" />
+                            <label class="form-check-label" for="other_radio">Other</label>
+                        </div>
+                    </div>
+                    <p style='color:red;display:none' class="alert alert-danger" id='email_same_error'  role="alert">
+                       
+                    </p>
+                    <!-- <br/> -->
+                    <div class="form-submit">
+                        <input type="submit" name="submit" id="signup_submit" class="submitbtn" value="Sign Up" />
+                    </div>
+                </form>
+                <button class='btn' style='color:blue;display:none;padding-left:60px' id ='signin_switch'><p style='text-decoration: none;' >Already Have Account?</p>
+                </button>
+                <br/>
+                
+            </div>
+
+        </div>
+<!--        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T8GBWCR" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>-->
+        
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/dynamic_iframe_noscript.js"/>
+        <script type="text/javascript" src="/odoocms_admission_portal/static/bootstrap/js/bootstrap.min.js"/>
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery.min.js"/>
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/jquery-mask.js"/>
+        <script type="text/javascript" src="/odoocms_admission_portal/static/js/account_registration.js"/>
+
+        <script>
+            $(":input").inputmask();
+
+        </script>
+    </template>
+
+
+</odoo>

@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <template id="contact_details" name="Contact Detail">
+    <script type="text/javascript" src="/odoocms_admission_portal/static/js/steps/contact.js"></script>
+
+    <!-- Second Page Contact   -->
+    <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" onclick="$('#collapse2').slideToggle(1000); $('#contact_collapse').toggleClass('fa-angle-down fa-angle-up');">
+      <a class="btn btn-link">
+        <i style='color: white;font-size: 25px;' class="fa-solid fa-address-card float-left"></i>
+        <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/>
+        </h2>
+      </a>
+      <a >
+        <i id='contact_collapse' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+      </a>
+    </div>
+    <div id="collapse2" class="row container-fluid mt-3 collapse_div">
+      <br/>
+      <div class='col-8'>
+        <form id='contact_detail_form' class="row g-3">
+          <input type="hidden" name="step_no" t-att-value='counter_step' />
+          <input type='hidden' name='step_name' value='contact'></input>
+
+          <!-- geting email ,home phone and mobile  -->
+          <div class="mb-1 mt-3 col-md-4">
+            <input style='pointer-events:none;' required="True" class="form-control inputText" type="email" t-att-value="application_id.email" name="email" id="email"></input>
+            <span for="email" class="floating-label">Email Address*</span>
+          </div>
+          <div class="mb-1 mt-3 col-md-4">
+            <input class="form-control inputText validate_number" t-att-value="application_id.phone" type='text' minlenght='7' name="phone" id="phone" />
+            <span class="floating-label-norequired">Phone</span>
+          </div>
+          <div class="mb-1 mt-3 col-md-4">
+            <!-- <t t-esc="application_id.mobile"/> -->
+            <t t-if="application_id.applicant_type=='national'">
+
+              <input required="True" class="form-control inputText validate_number" type="number" data-inputmask-clearincomplete="true" data-inputmask="'mask': '0399-9{7,7}'" t-att-value="application_id.mobile" name="mobile" id="mobile"/>
+              <span for="mobile" class="floating-label">Mobile*</span>
+            </t>
+            <t t-else="">
+              <input required="True" class="form-control inputText validate_char" type="text" data-inputmask-clearincomplete="true" data-inputmask="'mask': '09{4,}'" t-att-value="application_id.mobile" name="mobile" id="mobile"/>
+              <span for="mobile" class="floating-label">Mobile*</span>
+
+            </t>
+          </div>
+          <!--  -->
+          <!-- getting address and mailing address-->
+
+          <div class="col-11 mt-4 mb-0 pt-3">
+            <label for="current_address" class="form-label ml-2">Current address:*</label>
+          </div>
+          <div class="mb-1 col-md-6 mt-0 pt-0">
+            <select required="True" placeholder='Country' class="form-control inputText" id="country_id" name="country_id">
+              <option selected='True' value=''>Select Country</option>
+              <t t-foreach="country_id" t-as="c">
+                <option t-att-value='c.id' t-att-selected="application_id.applicant_type=='national' and c.id==177" t-att-id='c.id'>
+                  <t t-esc="c.name"/>
+                </option>
+              </t>
+            </select>
+            <label class='floating-label' for="country_id">Country*</label>
+          </div>
+
+          <div id='city_national_div' class="mb-1 col-md-6 mt-0 pt-0">
+
+            <select required="True" placeholder='city' class="form-control inputText" id="city" name="city">
+              <option selected='1' value='0'>Select City</option>
+              <t t-foreach="city_id" t-as="c">
+                <option t-att-value='c.name' t-att-selected='application_id.city==c.name' t-att-id='c.id'>
+                  <t t-esc="c.name"/>
+                </option>
+              </t>
+            </select>
+            <label class='floating-label' for="city">City*</label>
+          </div>
+          <div id='city_foreign_div' class="mb-1 col-md-6 mt-0 pt-0">
+            <input required="True" class="form-control inputText " t-att-value="application_id.city" name="city_foreign" id="city_foreign"/>
+
+            <label class='floating-label' for="city">City*</label>
+          </div>
+
+
+          <div class="mb-1 mt-3 col-md-5">
+            <input required="True" t-att-value='application_id.street' class="form-control inputText" type="text" name="street" id="street"/>
+            <span for="per_street" class="floating-label">Street 1*</span>
+          </div>
+          <div class="mb-1 mt-3 col-md-5">
+            <input t-att-value='application_id.street2' class="form-control inputText" type="text" name="street2" id="street2"/>
+            <span for="per_street2" class="floating-label">Street 2</span>
+          </div>
+          <div class="mb-1 mt-3 col-md-2">
+            <input t-att-value='application_id.zip' class="form-control inputText " type="text" name="zip" id="zip"/>
+            <span for="zip" class="floating-label">Zip </span>
+          </div>
+
+
+          <div class="mb-1 pt-2 col-md-6 ml-2">
+            <div class="form-check form-switch">
+              <input t-attf-style=" {{'pointer-events: none;' if application_id.state != 'draft' else '' }}" class="form-check-input" t-att-checked='application_id.is_same_address' type="checkbox" name='is_same_address' role="switch" id="is_same_address" />
+              <label style='font-size:12px' class="form-check-label" for="is_same_address">Is Same Address</label>
+            </div>
+          </div>
+
+          <div class="col-11 mt-2">
+            <label for="permanent_address" class="form-label ml-2">Permanent address:*</label>
+          </div>
+          <div class="mb-1 col-md-6">
+            <select required="True" placeholder='Country' class="form-control inputText" id="per_country_id" name="per_country_id">
+              <option selected='True' value=''>Select Country</option>
+              <t t-foreach="country_id" t-as="c">
+                <option t-att-value='c.id' t-att-selected="application_id.applicant_type=='national' and c.id==177" t-att-id='c.id'>
+                  <t t-esc="c.name"/>
+                </option>
+              </t>
+            </select>
+            <label class='floating-label' for="per_country">Country*</label>
+          </div>
+          <div id='city_national_perm_div' class="mb-1 col-md-6">
+            <select required="True" placeholder='city' class="form-control inputText" id="per_city" name="per_city">
+              <option selected='1' value='0'>Select City</option>
+              <t t-foreach="city_id" t-as="c">
+                <option t-att-value='c.name' t-att-selected='application_id.per_city==c.name' t-att-id='c.id'>
+                  <t t-esc="c.name"/>
+                </option>
+              </t>
+            </select>
+            <label class='floating-label' for="city">City*</label>
+          </div>
+          <div id='city_foreign_perm_div' class="mb-1 col-md-6">
+            <input required="True" class="form-control inputText " t-att-value="application_id.city" name="per_city_foreign" id="per_city_foreign"/>
+            <label class='floating-label' for="city">City</label>
+          </div>
+          <div class="mb-1 mt-3 col-md-5">
+            <input required="True" t-att-value='application_id.per_street' class="form-control inputText" name="per_street" id="per_street"/>
+            <span for="per_street" class="floating-label">Street 1*</span>
+          </div>
+          <div class="mb-1 mt-3 col-md-5">
+            <input t-att-value='application_id.per_street2' class="form-control inputText" name="per_street2" id="per_street2"/>
+            <span for="per_street2" class="floating-label">Street 2</span>
+          </div>
+          <div class="mb-1 mt-3 col-md-2">
+            <input t-att-value='application_id.per_zip' class="form-control inputText" type="text" name="per_zip" id="per_zip"/>
+            <span for="per_zip" class="floating-label">Zip </span>
+          </div>
+          <div class="col-12">
+            <input type="submit" style='display: none;' class="btn btn-primary"/>
+          </div>
+        </form>
+        <button onclick="check_form_validation(this)" t-attf-style="border:None; {{'display:none' if application_id.state != 'draft' else '' }}" class="btn btn-primary ml-1">Update</button>
+
+      </div>
+      <div class='col-4'></div>
+    </div>
+    <br/>
+
+    <!-- </div> -->
+
+  </template>
+</odoo>

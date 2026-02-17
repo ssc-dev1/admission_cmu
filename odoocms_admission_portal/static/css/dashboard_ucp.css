@@ -1,0 +1,38 @@
+@font-face {
+    font-family: oet;
+    src: url(/odoocms_admission_portal/static/fonts/font.ttf);
+  }
+
+  @font-face {
+    font-family: Galano Grotesque;
+    src: url(/odoocms_admission_portal/static/fonts/FontsFree-Net-Galano-Grotesque3.ttf);
+  }
+body{
+    /* background-color: #112c4f; */
+    font-family: Galano Grotesque;
+    color: white;
+    background: url(/odoocms_admission_portal/static/img/thumbnail_image.png) no-repeat;
+    background-size:cover;
+}
+a{
+  font-family: Galano Grotesque;
+}
+
+p{
+  font-family: Galano Grotesque;
+}
+/* .content{
+} */
+.moto {
+    font-size: small;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+    top: -9px;
+  }
+.navbar_custom {
+    font-family: oet;
+    color: white;
+  }
+
+  

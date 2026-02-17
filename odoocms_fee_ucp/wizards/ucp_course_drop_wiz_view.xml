@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="ucp_odoocms_drop_courses_wiz_view" model="ir.ui.view">
+            <field name="name">ucp.odoocms.drop.courses.wiz.view</field>
+            <field name="model">ucp.odoocms.drop.courses.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Drop Courses">
+                    <group>
+                        <group>
+                            <field name="student_id" required="1" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="term_id" required="1" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="challan_id" domain="[('student_id','=',student_id),('term_id','=',term_id),('payment_state','not in',('paid','in_payment'))]"/>
+                            <field name="challan_type"/>
+                            <field name="challan_state"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="registered_courses" string="Registered Course">
+                            <field name="lines">
+                                <tree editable="bottom">
+                                    <field name="course_id" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    <field name="primary_class_id" options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    <field name="credit_hours"/>
+                                    <field name="drop"/>
+                                    <field name="wizard_id" optional="hide"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="action_drop_courses" string="Drop Course" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_ucp_odoocms_drop_courses_wiz" model="ir.actions.act_window">
+            <field name="name">Drop Courses</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ucp.odoocms.drop.courses.wiz</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="odoocms.model_odoocms_student"/>
+            <field name="binding_view_types">form,list</field>
+        </record>
+
+    </data>
+</odoo>

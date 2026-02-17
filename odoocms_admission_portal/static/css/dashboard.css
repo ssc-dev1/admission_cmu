@@ -1,0 +1,45 @@
+#logout_button_dashboard:hover {
+    background-color: var(--bg-col);
+    color: white;
+    box-shadow: var(--bg-col) 0px 48px 100px 0px;
+}
+
+body {
+    background-color: #E2E3E8;
+
+}
+
+.btn {
+    background-color: #E2E3E8;
+    border-radius: 100px;
+    box-shadow: var(--bg-col) 0px 5px 10px;
+    
+    color: var(--bg-col);
+    cursor: pointer;
+    display: inline-block;
+    font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.card-header {
+    
+    box-shadow: #E2E3E8 2px 3px 2px 2px;
+}
+
+.btn:hover {
+    box-shadow: var(--bg-col) 0px 5px 15px;
+    background-color: var(--bg-col);
+}
+/* 
+.card{
+  background-image: url("/odoocms_admission_portal/static/img/ucpb.jpg");
+    background-size: 0px;
+} */

@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="education_institute_view_form" model="ir.ui.view">
+        <field name="name">education.institute.view.form</field>
+        <field name="model">odoocms.application.institute.school</field>
+        <field name="arch" type="xml">
+            <form string="Educational Institute">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="code" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="education_institute_view_tree" model="ir.ui.view">
+        <field name="name">odoocms.application.institute.view.tree</field>
+        <field name="model">odoocms.application.institute.school</field>
+        <field name="arch" type="xml">
+            <tree string="Educational Institute" editable="top">
+                <field name="code" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record id="educational_institute_action" model="ir.actions.act_window">
+        <field name="name">Educational Institute</field>
+        <field name="res_model">odoocms.application.institute.school</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="educational_institite_menu" name="Educational Institute School" action='odoocms_admission_ucp.educational_institute_action' parent='odoocms_admission.menu_admission_configuration' sequence="10"/>
+    <record id="education_institute_college_view_form" model="ir.ui.view">
+        <field name="name">education.institute.view.form</field>
+        <field name="model">odoocms.application.institute.college</field>
+        <field name="arch" type="xml">
+            <form string="Educational Institute">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="code" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="education_college_institute_view_tree" model="ir.ui.view">
+        <field name="name">odoocms.application.institute.view.tree</field>
+        <field name="model">odoocms.application.institute.college</field>
+        <field name="arch" type="xml">
+            <tree string="Educational Institute" editable="top">
+                <field name="code" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="educational_college_institute_action" model="ir.actions.act_window">
+        <field name="name">Educational Institute</field>
+        <field name="res_model">odoocms.application.institute.college</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="educational_college_institute_menu" name="Educational Institute College" action='odoocms_admission_ucp.educational_college_institute_action' parent='odoocms_admission.menu_admission_configuration' sequence="10"/>
+
+
+    <record id="education_institute_university_view_form" model="ir.ui.view">
+        <field name="name">education.institute.view.form</field>
+        <field name="model">odoocms.application.institute.university</field>
+        <field name="arch" type="xml">
+            <form string="Educational Institute">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="code" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="education_university_institute_view_tree" model="ir.ui.view">
+        <field name="name">odoocms.application.institute.view.tree</field>
+        <field name="model">odoocms.application.institute.university</field>
+        <field name="arch" type="xml">
+            <tree string="Educational Institute" editable="top">
+                <field name="code" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="educational_university_institute_action" model="ir.actions.act_window">
+        <field name="name">Educational Institute</field>
+        <field name="res_model">odoocms.application.institute.university</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="educational_university_institute_menu" name="Educational Institute University" action='odoocms_admission_ucp.educational_university_institute_action' parent='odoocms_admission.menu_admission_configuration' sequence="10"/>
+
+</odoo>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="test_schedule_line_view_form" model="ir.ui.view">
+        <field name="name">test_schedule_line_view_form</field>
+        <field name="model">odoocms.entry.schedule.details</field>
+        <field name="arch" type="xml">
+            <form string="Test Schedule Line">
+                <header>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="capacity" />
+                            <field name="program_id"/>
+                            <field name="entry_schedule_id" />
+                            <!-- <field name="register_id"/> -->
+                        </group>
+                        <group>
+                            <field name="status"/>
+                            <field name="count"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="test_schedule_line_view_tree" model="ir.ui.view">
+        <field name="name">test_schedule_line_view_tree</field>
+        <field name="model">odoocms.entry.schedule.details</field>
+        <field name="arch" type="xml">
+            <tree string="Test Schedule Line">
+                <field name="capacity" />
+                <field name="program_id"/>
+                <!-- <field name="register_id"/> -->
+                <field name="status"/>
+                <field name="count"/>
+                <field name="entry_schedule_id" />
+            </tree>
+        </field>
+    </record>
+    <record id="test_schedule_line_view_search" model="ir.ui.view">
+        <field name="name">Test Schedule</field>
+        <field name="model">odoocms.entry.schedule.details</field>
+        <field name="arch" type="xml">
+            <search string="Search Schedule">
+                <field name="capacity" />
+                <field name="program_id"/>
+                <!-- <field name="register_id"/> -->
+                <field name="status"/>
+                <field name="count"/>
+                <field name="entry_schedule_id" />
+
+
+                <filter name="entry_schedule_id" string='Test Schedule' icon="fa-pencil-square-o" domain="[]" context="{'group_by' : 'entry_schedule_id'}"/>
+
+                <filter name="program_id" string='Program' icon="fa-pencil-square-o" domain="[]" context="{'group_by' : 'program_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="test_schedule_line_action" model="ir.actions.act_window">
+        <field name="name">Test Schedule Line</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">odoocms.entry.schedule.details</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="test_schedule_line_view_search"/>
+    </record>
+
+    <menuitem id="test_schedule_line_menu" name="Entry Test Schedule Line" parent="odoocms_admission_ucp.entry_test_room_setup_menu" action="test_schedule_line_action" groups="odoocms_admission.group_admission_manager" sequence="300"/>
+</odoo>
+
+
+
+

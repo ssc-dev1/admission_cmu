@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_student_admit_card">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <header>
+                            <div class="row">
+                                <div class="col-12 mt-3" style="text-align: center">
+                                    <img t-att-src='image_data_uri(request.env.company.logo)' style="max-width: 120px; height: 100px;" alt="logo"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center">
+                                    <h5>
+                                        <b>
+                                            <t t-out="request.env.company.name"/>
+                                        </b>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center">
+                                    <h6>
+                                        <b>
+                                            <t t-out="request.env.company.city"/>
+                                        </b>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center; font-size: 13px;">
+                                    <span>
+                                        <b>
+                                            <t t-out="request.env.company.website"/>
+                                        </b>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center; font-size: 13px;">
+                                    <span>
+                                        <p>
+                                            <t t-out="request.env.company.street"/>
+,                                           <t t-out="request.env.company.street2"/>
+,                                           <t t-out="request.env.company.city"/>
+.                                           <t t-out="request.env.company.admission_phone"/>
+.                                           <t t-out="request.env.company.email"/>
+                                        </p>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row" style="text-align: center; border: 1px solid black; height: 20px; background-color: black; color: white;">
+                                <div class="col-12">
+                                    <h6 style="font-color: white;">
+                                        <b>ADMISSION TEST</b>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row mt-3" style="margin-left: 20px;">
+                                <div class="col-2" style="text-align: left;">
+                                    <h6>
+                                        <b>
+                                            Date:
+                                        </b>
+                                        <br/>
+                                        <h6>
+                                            <b>
+                                                Ref No.:
+                                            </b>
+                                        </h6>
+                                        <h6>
+                                            <b>
+                                                Name:
+                                            </b>
+                                        </h6>
+                                        <br/>
+                                        <h6>
+                                            <b>
+                                                <nobr>
+                                                    Subject: <u>Schedule of Admission Test</u>
+                                                    <t t-as="o.student_id.register_id.name"/>
+                                                </nobr>
+                                            </b>
+                                        </h6>
+                                    </h6>
+                                </div>
+                                <div class="col-4 mt-1">
+                                    <h6>
+                                        <b>
+                                            <span t-esc="(datetime.date.today())"/>
+                                        </b>
+                                        <br/>
+                                        <h6>
+                                            <b>
+                                                <span t-esc="o.student_id.application_no"/>
+                                            </b>
+                                        </h6>
+                                        <h6>
+                                            <b>
+                                                <span t-esc="o.student_id.name"/>
+                                            </b>
+                                        </h6>
+                                    </h6>
+                                </div>
+                                <div class="col-6" style="text-align: right;">
+                                    <span>
+                                        <img id="profile_image" t-att-src="'data:image/png;base64,%s' % to_text(o.student_id.image)" width="100px" height="120"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-2" style="text-align: left;">
+                                    <h6>
+                                        <b>
+                                            <nobr>
+                                                Dear Applicant,
+                                            </nobr>
+                                        </b>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-12">
+                                    <h6>
+                                        <p style="text-align: justify;">
+                                            Thank you for submitting your online application for admission in
+                                            <span>
+                                                <t t-esc="o.entry_test_schedule_details_id.program_id.name"/>
+                                            </span>
+                                            at the <t t-out="request.env.company.name"/>
+.
+                                        </p>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-12">
+                                    <h6>
+                                        <p style="text-align: justify;">
+                                            The schedule for your admission test is given below:-
+                                        </p>
+                                    </h6>
+                                </div>
+                            </div>
+                            <!-- <div class="container ">
+
+                                <div class="row mt-2" style="margin-left: 40px;text-align:right">
+                                    <div class="col-2" style="text-align: left;">
+                                        <span>
+                                        Test Date:
+                                        </span>
+                                    </div>
+                                    <div class="col-2 text-left" style="text-align: right;">
+                                        <span>
+                                            <t t-esc="o.date"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2" style="margin-left: 40px;text-align:right">
+                                    <div class="col-2" style="text-align: left;">
+                                        <span>
+                                        Test Time:
+                                        </span>
+                                    </div>
+                                    <div class="col-4  text-left" style="text-align: center;">
+                                        <span>
+                                            <t t-esc="'%02d:%02d' % (divmod(o.slots.time_from * 60, 60))"/>
+                                            <t t-if="o.slots.time_from &lt; 12">AM</t>
+                                            <t t-if="o.slots.time_from &gt;= 12">PM</t>
+                                        -
+                                            <t t-esc="'%02d:%02d' % (divmod(o.slots.time_to * 60, 60))"/>
+                                            <t t-if="o.slots.time_to &lt; 12">AM</t>
+                                            <t t-if="o.slots.time_to &gt;= 12">PM</t>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2" style="margin-left: 40px;text-align:right">
+                                    <div class="col-2" style="text-align: left;">
+                                        <span>
+                                        Test Venue:
+                                        </span>
+                                    </div>
+                                    <div class="col-4  text-left" style="text-align: right;">
+                                        <span>
+                                            <t t-esc="o.room.name"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2" style="margin-left: 40px;text-align:right">
+                                    <div class="col-2" style="text-align: left;">
+                                        <span>
+                                            <nobr>
+                                            Username for Test:
+                                            </nobr>
+                                        </span>
+                                    </div>
+                                    <div class="col-2 text-left" style="text-align: right !important;">
+                                        <span class='ml-3'>
+                                            <t t-esc="o.student_id.application_no"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2" style="margin-left: 40px;text-align:right">
+                                    <div class="col-2" style="text-align: left;">
+                                        <span>
+                                            <nobr>
+                                            Password for Test:
+                                            </nobr>
+                                        </span>
+                                    </div>
+                                    <div class="col-2 text-left" style="text-align: right !important;">
+                                        <span class='ml-3'>
+                                            <t t-out="o.cbt_password"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div class="container text-center mt-2">
+                                <div  class="row mb-2">
+                                    <div class="col-3"></div>
+                                    <div style='text-align:left' class="col-3">Test Date:</div>
+                                    <div style='text-align:left' class="col-3">
+                                        <t t-out="o.date"/>
+                                    </div>
+                                    <div class="col-3"></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3"></div>
+                                    <div style='text-align:left' class="col-3">Test Time:</div>
+                                    <div style='text-align:left' class="col-3">
+                                        <span>
+                                            <!-- <t t-esc="o.slots.name"/>-->
+                                            <t t-esc="'%02d:%02d' % (divmod(o.slots.time_from * 60, 60))"/>
+                                            <t t-if="o.slots.time_from &lt; 12">AM</t>
+                                            <t t-if="o.slots.time_from &gt;= 12">PM</t>
+                                        -
+                                            <t t-esc="'%02d:%02d' % (divmod(o.slots.time_to * 60, 60))"/>
+                                            <t t-if="o.slots.time_to &lt; 12">AM</t>
+                                            <t t-if="o.slots.time_to &gt;= 12">PM</t>
+                                        </span>
+                                    </div>
+                                    <div class="col-3"></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3"></div>
+                                    <div style='text-align:left' class="col-3">Test Venue:</div>
+                                    <div style='text-align:left' class="col-3">
+                                        <t t-esc="o.room.name"/>
+                                    </div>
+                                    <div class="col-3"></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3"></div>
+                                    <div style='text-align:left' class="col-3">Username For Test:</div>
+                                    <div style='text-align:left' class="col-3">
+                                        <t t-esc="o.student_id.application_no"/>
+                                        
+                                    </div>
+                                    <div class="col-3"></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3"></div>
+                                    <div  style='text-align:left' class="col-3">Password For Test:</div>
+                                    <div style='text-align:left' class="col-3">
+                                        <t t-out="o.cbt_password"/>
+                                        
+                                    </div>
+                                    <div class="col-3"></div>
+                                </div>
+                            </div>
+
+
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-12" style="text-align: left;">
+                                    <p>
+                                        <t t-raw="o.student_id.register_id.admit_card_letter"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </header>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

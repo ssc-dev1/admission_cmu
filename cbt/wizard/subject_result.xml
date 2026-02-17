@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <record id="view_cbt_get_sub_result_form" model="ir.ui.view">
+            <field name="name">cbt.get.subject,result.form</field>
+            <field name="model">cbt.get.subject.result</field>
+            <field name="arch" type="xml">
+                <form string="Subject Wise Result" create="false">
+                    <group>
+                        <group>
+                          <h2>Subject Wise Result</h2>
+
+                        </group>
+                        <button name="get_subject_result" string="Calculate Subject Wise Result" type="object" class="btn-primary"/>
+
+                    </group>
+                    <style>
+
+                        footer{
+                        display:none !important;
+                        }
+                    </style>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_cbt_get_subject_result" model="ir.actions.act_window">
+            <field name="name">Subject Wise Result</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cbt.get.subject.result</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_cbt_get_sub_result_form"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem id="menu_cbt_subject_result"
+                  name="Subject Wise Result"
+                  parent="cbt_config_paper_menu"
+                  action="action_cbt_get_subject_result"
+                  sequence="100"/>
+
+
+
+
+    </data>
+</odoo>

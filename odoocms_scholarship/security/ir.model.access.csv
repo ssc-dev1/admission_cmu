@@ -1,0 +1,6 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_odoocms_scholarship_user,odoocms.scholarship.user,odoocms_scholarship.model_odoocms_scholarship,odoocms.group_cms_user,1,1,1,0
+access_odoocms_scholarship_manager,odoocms.scholarship.manager,odoocms_scholarship.model_odoocms_scholarship,odoocms.group_cms_manager,1,1,1,1
+
+access_odoocms_scholarship_type_user,odoocms.scholarship.type..user,odoocms_scholarship.model_odoocms_scholarship_type,odoocms.group_cms_user,1,1,1,0
+access_odoocms_scholarship_type_manager,odoocms.scholarship.type.manager,odoocms_scholarship.model_odoocms_scholarship_type,odoocms.group_cms_manager,1,1,1,1

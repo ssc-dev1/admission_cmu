@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_student_scholarship_eligibility_form" model="ir.ui.view">
+            <field name="name">odoocms.student.scholarship.eligibility.form.view</field>
+            <field name="model">odoocms.student.scholarship.eligibility</field>
+            <field name="arch" type="xml">
+                <form string="Student Scholarship Eligibility" create="false" delete="false" edit="false">
+                    <header>
+                        <button name="action_lock" type="object" class="oe_highlight" string="Lock" states="draft"/>
+                        <button name="action_unlock" type="object" class="oe_highlight" string="UnLock" states="lock"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="student_id" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="program_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="applied_term_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            </group>
+                            <group>
+                                <field name="program_term_scholarship_id" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="scholarship_id" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="scholarship_value" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_student_scholarship_eligibility_tree" model="ir.ui.view">
+            <field name="name">odoocms.student.scholarship.eligibility.tree.view</field>
+            <field name="model">odoocms.student.scholarship.eligibility</field>
+            <field name="arch" type="xml">
+                <tree string="Student Scholarship Eligibility" create="false" delete="false" edit="false"
+                      decoration-info="state=='draft'" decoration-success="state=='lock'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="student_id"/>
+                    <field name="program_id"/>
+                    <field name="applied_term_id"/>
+                    <field name="program_term_scholarship_id"/>
+                    <field name="scholarship_id"/>
+                    <field name="scholarship_value"/>
+                    <field name="create_uid" string="Created By" optional="show" widget="many2one_avatar_user"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-success="state=='lock'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_student_scholarship_eligibility_pivot" model="ir.ui.view">
+            <field name="name">odoocms.student.scholarship.eligibility.pivot.view</field>
+            <field name="model">odoocms.student.scholarship.eligibility</field>
+            <field name="arch" type="xml">
+                <pivot string="Student Scholarship Eligibility" display_quantity="true">
+                    <field name="program_id"/>
+                    <field name="applied_term_id"/>
+                    <field name="scholarship_id"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_odoocms_student_scholarship_eligibility_search" model="ir.ui.view">
+            <field name="name">odoocms.student.scholarship.eligibility.search</field>
+            <field name="model">odoocms.student.scholarship.eligibility</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Student Scholarship Eligibility">
+                    <field name="student_id"/>
+                    <field name="program_id"/>
+                    <field name="applied_term_id"/>
+                    <field name="program_term_scholarship_id"/>
+                    <field name="scholarship_id"/>
+                    <field name="scholarship_value"/>
+                    <separator/>
+
+                    <group expand="0" string="Group By...">
+                        <filter string="Term" name="group_by_applied_term_id" domain="[]" context="{'group_by':'applied_term_id'}"/>
+                        <separator/>
+                        <filter string="Program" name="group_by_program_id" domain="[]" context="{'group_by':'program_id'}"/>
+                        <separator/>
+                        <filter string="Scholarship" name="group_by_scholarship_id" domain="[]" context="{'group_by':'scholarship_id'}"/>
+                        <separator/>
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_odoocms_student_scholarship_eligibility" model="ir.actions.act_window">
+            <field name="name">Student Scholarship Eligibility</field>
+            <field name="res_model">odoocms.student.scholarship.eligibility</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form,pivot</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_student_scholarship_eligibility"
+                name="Student Scholarship Eligibility"
+                sequence='20'
+                parent="menu_student_fee_scholarship_main"
+                action="action_odoocms_student_scholarship_eligibility"
+                groups="odoocms_fee.group_fee_manager"
+        />
+
+    </data>
+</odoo>

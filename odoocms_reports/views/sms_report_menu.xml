@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_sms_report" model="ir.actions.client">
+        <field name="name">SMS Report</field>
+        <field name="tag">sms_report</field>
+    </record>
+    <!-- <record id="social_media_tracking_report" model="ir.actions.client">
+        <field name="name">Social Media Tracking</field>
+        <field name="tag">social_media_tracking</field>
+    </record> -->
+        <record id="action_admission_comparison_report" model="ir.actions.client">
+        <field name="name">Admission Comparison Report</field>
+        <field name="tag">admission_comparison_report</field>
+    </record>
+
+    <menuitem
+            id="menu_odoocms_reports_root"
+            name="Reports"
+            web_icon="odoocms_reports,static/description/icon.png"
+            sequence="5"/>
+
+    <menuitem
+            id="menu_odoocms_reports_managment"
+            name="Management Reports"
+            parent="menu_odoocms_reports_root"
+            sequence="30"/>
+    <menuitem
+            id="menu_sms_report"
+            name="SMS Report"
+            parent="menu_odoocms_reports_managment"
+            groups="group_reports_manager"
+            action="action_sms_report"
+            sequence="30"/>
+    <!-- <menuitem
+            id="email_social_media_tracking"
+            name="Social Media Tracking"
+            parent="menu_odoocms_reports_managment"
+            groups="group_reports_manager"
+            action="social_media_tracking_report"
+            sequence="31"/> -->
+    <menuitem
+            id="admission_comparison_report"
+            name="Admission Comparison Report"
+            parent="menu_odoocms_reports_managment"
+            groups="group_reports_manager"
+            action="action_admission_comparison_report"
+            sequence="32"/>
+</odoo>

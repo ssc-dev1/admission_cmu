@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Prospectus Fee Waiver Type Form -->
+    <record id="view_prospectus_fee_waiver_type_form" model="ir.ui.view">
+        <field name="name">prospectus.fee.waiver.type.form</field>
+        <field name="model">prospectus.fee.waiver.type</field>
+        <field name="arch" type="xml">
+            <form string="Prospectus Fee Waiver Type">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="percentage"/>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_prospectus_fee_waiver_type" model="ir.actions.act_window">
+        <field name="name">Prospectus Fee Waiver Types</field>
+        <field name="res_model">prospectus.fee.waiver.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_prospectus_fee_waiver_type_tree" model="ir.ui.view">
+        <field name="name">prospectus.fee.waiver.type.tree</field>
+        <field name="model">prospectus.fee.waiver.type</field>
+        <field name="arch" type="xml">
+            <tree string="Prospectus Fee Waiver Types">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="percentage"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Application Form Inherit -->
+    <record id="view_odoocms_application_form_inherit_waiver" model="ir.ui.view">
+        <field name="name">odoocms.application.waiver.button</field>
+        <field name="model">odoocms.application</field>
+        <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Button -->
+            <header position="inside">
+                <button name="open_fee_waiver_wizard" type="object" string="Apply Prospectus Fee Waiver" class="btn-primary" groups="odoo_admission_ext_a.group_prospectus_fee_waiver" attrs="{'invisible': [('state', '!=', 'submit')],'invisible': [('fee_voucher_state', '=','verify')]}"/>
+            </header>
+
+            <!-- Tag above application_no inside sheet -->
+            <xpath expr="//field[@name='application_no']" position="before">
+                <group >
+                    <field name="tag_ids" widget="many2many_tags" readonly="1"/>
+                </group>
+            </xpath>
+
+
+        </field>
+    </record>
+
+    <!-- Search View Inherit -->
+    <record id="view_odoocms_application_search_inherit_tag_ids" model="ir.ui.view">
+        <field name="name">odoocms.application.search.inherit.tag_ids</field>
+        <field name="model">odoocms.application</field>
+        <field name="inherit_id" ref="odoocms_admission.view_odoocms_application_search"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//search" position="inside">
+                <filter string="Tag" name="filter_tag_ids" domain="[('tag_ids', '!=', False)]"/>
+            </xpath>
+
+            <xpath expr="//group" position="inside">
+                <filter name="group_by_tag_ids" string="Tag" icon="fa-clock-o" context="{'group_by' : 'tag_ids'}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Student Tree -->
+    <record id="view_odoocms_student_tree_inherit_ext_a" model="ir.ui.view">
+        <field name="name">view.odoocms.student.tree.inherit</field>
+        <field name="model">odoocms.student</field>
+        <field name="inherit_id" ref="odoocms.view_odoocms_student_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='name']" position="after">
+                <field name="tag_ids"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Student Search -->
+    <record id="view_odoocms_student_search_inherit_tag_ids" model="ir.ui.view">
+        <field name="name">odoocms.student.search.inherit.tag_ids</field>
+        <field name="model">odoocms.student</field>
+        <field name="inherit_id" ref="odoocms.view_odoocms_student_search"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//search" position="inside">
+                <filter string="Tag" name="filter_tag_ids" domain="[('tag_ids', '!=', False)]"/>
+            </xpath>
+
+            <xpath expr="//group" position="inside">
+                <filter name="group_by_tag_ids" string="Tag" icon="fa-clock-o" context="{'group_by': 'tag_ids'}"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_prospectus_fee_waiver_type" parent="odoocms_fee.menu_fee_configuration_others" name="Prospectus Fee Waiver Types" action="action_prospectus_fee_waiver_type"/>
+
+</odoo>

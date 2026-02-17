@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="cbt_instruction" name="">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <t t-call-assets="portal_assets.assets_dashboard" t-js="false"/>
+                <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="all"/>-->
+
+                <!--<link href="/portal_assets/app-assets/vendors/vendors.min.css" rel="stylesheet"  media="all"/>
+                <link href="/portal_assets/app-assets/vendors/materialize-stepper/materialize-stepper.css" rel="stylesheet"  media="all"/>
+                <link href="/portal_assets/app-assets/css/themes/vertical-modern-menu-template/materialize.css" rel="stylesheet"  media="all"/>
+                <link href="/portal_assets/app-assets/css/themes/vertical-modern-menu-template/style.css" rel="stylesheet"  media="all"/>
+                <link  href="/portal_assets/app-assets/css/pages/form-wizard.css" rel="stylesheet"  media="all"/>
+                <link href="/portal_assets/app-assets/css/custom/custom.css" rel="stylesheet"  media="all"/>-->
+            </t>
+            <body class="sidebar_main_swipe header_full">
+                <div id="">
+                    <div class="row">
+                        <input type="hidden" id="timer" t-att-value="'%02d:%02d' % (divmod(paper.test_time * 60, 60))"/>
+                        <div class="col s12">
+                            <div class="">
+                                <div class="section section-form-wizard">
+                                    <t t-call="cbt_portal.cbt_widgets"/>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="card">
+                                            <div class="card-content">
+                                                <h5 class="">Instructions</h5>
+                                                <div class="divider mt-2"></div>
+                                                <t t-esc="instructions.instruction" t-options='{"widget": "html"}'/>
+                                                <div class="divider mt-2"></div>
+                                                <div t-if="not end_paper" id="paper_start" style="display:none;"
+                                                     class="mt-2">
+                                                    <t t-if="paper_date">
+
+                                                        <a href="/cbt/paper"
+                                                           class="waves-effect waves-light btn gradient-45deg-green-teal z-depth-4 mr-1 mb-2">
+                                                            Start Test
+                                                        </a>
+                                                    </t>
+                                                </div>
+                                                <div t-if="not end_paper" id="paper_start_time" style="display:none;"
+                                                     class="mt-2">
+                                                    Please wait paper will start at
+                                                    <t t-esc="'%02d:%02d' % (divmod(paper.test_time * 60, 60))"/>
+                                                </div>
+                                                <div t-if="end_paper" class="mt-2">
+                                                    Paper already attempted.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href="/web/session/logout"
+                                           class="waves-effect waves-light btn gradient-45deg-green-teal z-depth-4 mr-1 mb-2">
+                                            Logout
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            <t t-call-assets="portal_assets.assets_dashboard" t-css="false"/>
+
+            <script src="/cbt_portal/static/js/instructions.js"/>
+        </t>
+    </template>
+    <template id="cbt_finish" name="">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <t t-call-assets="portal_assets.assets_dashboard" t-js="false"/>
+
+            </t>
+            <body class="sidebar_main_swipe header_full">
+                <div id="">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="">
+                                <div class="section section-form-wizard">
+                                    <t t-call="cbt_portal.cbt_widgets"/>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="card">
+
+                                            <div class="card-content">
+                                                <h5 class="">Finish</h5>
+                                                <div class="divider mt-2"></div>
+                                                <span>Paper ended. Result will be announced soon on admission portal.
+                                                    (Best of luck.)
+                                                </span>
+                                                <!--<t t-esc="instructions.instruction" t-options='{"widget": "html"}'/>-->
+                                                <div class="divider mt-2"/>
+                                                <div class="mt-2">
+                                                    <h5 class="">Summary</h5>
+                                                    <div class="row">
+                                                        <div class="col s12 m4 l12">
+                                                            Paper:
+                                                            <t t-esc="paper.paper_name"/>
+                                                        </div>
+                                                        <div class="col s12 m4 l12">
+                                                            Discipline:
+                                                            <t t-esc="paper.program"/>
+                                                        </div>
+                                                        <div class="col s12 m12 l12">
+                                                            Test Center:
+                                                            <t t-esc="paper.test_center"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col s12 m12 l12">
+                                                            Total Questions:
+                                                            <t t-esc="len(paper.line_ids.filtered(lambda x: x.scenario_relation != 'parent'))"/>
+                                                        </div>
+                                                        <div class="col s12 m12 l12">
+                                                            Total Questions Attempted:
+                                                            <t t-esc="len(paper.line_ids.filtered(lambda l: l.answer > 0))"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <a href="/web/session/logout"
+                                                       class="waves-effect waves-light btn gradient-45deg-green-teal z-depth-4 mr-1 mb-2">
+                                                        Logout
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </t>
+    </template>
+    <template id="cbt_exception" name="">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <t t-call-assets="portal_assets.assets_dashboard" t-js="false"/>
+            </t>
+            <body class="sidebar_main_swipe header_full">
+                <div id="">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="">
+                                <div class="section section-form-wizard">
+                                    <t t-call="cbt_portal.cbt_widgets"/>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="card">
+
+                                            <div class="card-content">
+                                                <h5 class="">Finish</h5>
+                                                <div class="divider mt-2"></div>
+                                                <span>You are already login from other session.</span>
+                                                <!--<t t-esc="instructions.instruction" t-options='{"widget": "html"}'/>-->
+                                                <div class="divider mt-2"/>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </t>
+    </template>
+</odoo>

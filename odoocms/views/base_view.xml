@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Semester -->
+    <record id="view_odoocms_semester_tree" model="ir.ui.view">
+        <field name="name">odoocms.semester.tree</field>
+        <field name="model">odoocms.semester</field>
+        <field name="arch" type="xml">
+            <tree string="Semester" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="number"/>
+<!--                <field name="color" widget="color" optional="show"/>-->
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_odoocms_semester" model="ir.actions.act_window">
+        <field name="name">Semester</field>
+        <field name="res_model">odoocms.semester</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Semester here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Week Days -->
+    <record id="view_odoocms_week_day_tree" model="ir.ui.view">
+        <field name="name">odoocms.week,day.tree</field>
+        <field name="model">odoocms.week.day</field>
+        <field name="arch" type="xml">
+            <tree string="Week Days" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="number"/>
+<!--                <field name="color" widget="color" optional="show"/>-->
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_odoocms_week_day" model="ir.actions.act_window">
+        <field name="name">Week Days</field>
+        <field name="res_model">odoocms.week.day</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Week Day here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Building -->
+    <record id="view_facility_building_tree" model="ir.ui.view">
+        <field name="name">odoocms.building.tree</field>
+        <field name="model">odoocms.building</field>
+        <field name="arch" type="xml">
+            <tree string="Building">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+<!--                <field name="institute_ids" widget="many2many_tags" string="Institute/Faculty"/>-->
+                <field name="location_x"/>
+                <field name="location_y"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_facility_building_form" model="ir.ui.view">
+        <field name="name">odoocms.building.form</field>
+        <field name="model">odoocms.building</field>
+        <field name="arch" type="xml">
+            <form string="Building">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="location_x"/>
+                            <field name="location_y"/>
+<!--                            <field name="institute_ids" widget="many2many_tags" string="Institute/Faculty"/>-->
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Institutes/Faculties">
+                            <field name="institute_ids" widget="many2many_tags" nolabel="1"/>
+                        </page>
+                        <page string="Floors">
+                            <field name="floor_ids" nolabel="1"/>
+                        </page>
+                        <page string="Rooms">
+                            <field name="room_ids" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="open_building_view_action" model="ir.actions.act_window">
+        <field name="name">Building</field>
+        <field name="res_model">odoocms.building</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Building here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Building Floor -->
+    <record id="view_facility_building_floor_tree" model="ir.ui.view">
+        <field name="name">odoocms.building.floor.tree</field>
+        <field name="model">odoocms.building.floor</field>
+        <field name="arch" type="xml">
+            <tree string="Building Floor">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="building_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_facility_building_floor_form" model="ir.ui.view">
+        <field name="name">odoocms.building.floor.form</field>
+        <field name="model">odoocms.building.floor</field>
+        <field name="arch" type="xml">
+            <form string="Building Floor">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="building_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Rooms">
+                            <field name="room_ids" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="open_building_floor_view_action" model="ir.actions.act_window">
+        <field name="name">Building Floor</field>
+        <field name="res_model">odoocms.building.floor</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Building Floor here.
+            </p>
+        </field>
+    </record>
+
+
+    <!-- Class Room -->
+    <record id="view_odoocms_room_tree" model="ir.ui.view">
+        <field name="name">odoocms.room.tree</field>
+        <field name="model">odoocms.room</field>
+        <field name="arch" type="xml">
+            <tree string="Class Room">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="ip_address"/>
+                <field name="building_id"/>
+                <field name="capacity"/>
+                <field name="exam_capacity"/>
+                <field name="department_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_odoocms_room_form" model="ir.ui.view">
+        <field name="name">odoocms.room.form</field>
+        <field name="model">odoocms.room</field>
+        <field name="arch" type="xml">
+            <form string="Class Room">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                            <field name="building_id"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                        <group>
+                            <field name="ip_address"/>
+                            <field name="capacity"/>
+                        </group>
+                        <group>
+                            <field name="room_type"/>
+                            <field name="department_id"/>
+                        </group>
+                        <group>
+                            <field name="area"/>
+                            <field name="floor_id"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Exam Setup">
+                            <group>
+                                <group>
+                                    <field name="exam_capacity"/>
+                                    <field name="rows"/>
+                                    <field name="cols"/>
+                                </group>
+                                <group>
+                                    <field name="distribution"/>
+                                    <field name="unused_seats"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Features">
+                            <group colspan="4">
+                                <field name="feature_ids">
+                                    <tree string="Facilities">
+                                        <field name="name"/>
+                                        <field name="qty"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_odoocms_room_search" model="ir.ui.view">
+        <field name="name">odoocms.room.search</field>
+        <field name="model">odoocms.room</field>
+        <field name="arch" type="xml">
+            <search string="Component Class">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="ip_address"/>
+                <field name="building_id"/>
+                <field name="room_type"/>
+                <newline/>
+                <group expand="0" string="Group By...">
+                    <filter name="building_grp" string="Building" domain="[]"
+                            context="{'group_by':'building_id'}"/>
+                    <filter name="room_type_grp" string="Room Type" domain="[]" context="{'group_by':'room_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_odoocms_room" model="ir.actions.act_window">
+        <field name="name">Rooms</field>
+        <field name="res_model">odoocms.room</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the First Class Room here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Amenities -->
+    <record id="view_odoocms_amenities_tree" model="ir.ui.view">
+        <field name="name">odoocms.amenities.tree</field>
+        <field name="model">odoocms.amenities</field>
+        <field name="arch" type="xml">
+            <tree string="Amenities">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_odoocms_amenities_form" model="ir.ui.view">
+        <field name="name">odoocms.amenities.form</field>
+        <field name="model">odoocms.amenities</field>
+        <field name="arch" type="xml">
+            <form string="Amenities">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_odoocms_amenities" model="ir.actions.act_window">
+        <field name="name">Amenities</field>
+        <field name="res_model">odoocms.amenities</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first amenity here.
+            </p>
+        </field>
+    </record>
+
+<!--    <record id="view_odoocms_profs_tree" model="ir.ui.view">-->
+<!--        <field name="name">odoocms.profs.tree</field>-->
+<!--        <field name="model">odoocms.profs</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="Professions">-->
+<!--                <field name="code"/>-->
+<!--                <field name="name"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="view_odoocms_profs_form" model="ir.ui.view">-->
+<!--        <field name="name">odoocms.profs.form</field>-->
+<!--        <field name="model">odoocms.profs</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Professions">-->
+<!--                <sheet>-->
+<!--                    <group>-->
+<!--                        <group>-->
+<!--                            <field name="code"/>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="name"/>-->
+<!--                        </group>-->
+<!--                    </group>-->
+
+<!--                </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="view_odoocms_profs_search" model="ir.ui.view">-->
+<!--        <field name="name">odoocms.profs.search</field>-->
+<!--        <field name="model">odoocms.profs</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <search string="Professions">-->
+<!--                <field name="code"/>-->
+<!--                <field name="name"/>-->
+<!--            </search>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="action_odoocms_profs" model="ir.actions.act_window">-->
+<!--        <field name="name">Professions</field>-->
+<!--        <field name="res_model">odoocms.profs</field>-->
+<!--        <field name="type">ir.actions.act_window</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--        <field name="search_view_id" ref="view_odoocms_profs_search"/>-->
+<!--        <field name="domain">[]</field>-->
+<!--        <field name="context">{}</field>-->
+<!--        <field name="help" type="html">-->
+<!--            <p class="oe_view_nocontent_create">-->
+<!--                Create First Profession here.-->
+<!--            </p>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <record id="view_odoocms_selections_tree" model="ir.ui.view">
+        <field name="name">odoocms.selections.tree</field>
+        <field name="model">odoocms.selections</field>
+        <field name="arch" type="xml">
+            <tree string="Selections">
+                <field name="name"/>
+                <field name="usage"/>
+                <field name="in_use"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_odoocms_selections_form" model="ir.ui.view">
+        <field name="name">odoocms.selections.form</field>
+        <field name="model">odoocms.selections</field>
+        <field name="arch" type="xml">
+            <form string="Selections">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="usage"/>
+                        </group>
+                        <group>
+                            <field name="in_use"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Selection Values" name="selection_values">
+                            <field name="fields_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="value"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_odoocms_selections" model="ir.actions.act_window">
+        <field name="name">Selections</field>
+        <field name="res_model">odoocms.selections</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create First Selection here.
+            </p>
+        </field>
+    </record>
+<!--    <record id="mail_activity_type_view_form" model="ir.ui.view">-->
+<!--        <field name="name">mail.activity.type.view.form</field>-->
+<!--        <field name="model">mail.activity.type</field>-->
+<!--        <field name="inherit_id" ref="mail.mail_activity_type_view_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <group name="activity_planning" position="after">-->
+<!--                <group name="user">-->
+<!--                    <field name="role_domain" widget="domain"-->
+<!--                         options="{'model': 'odoocms.program', 'in_dialog': true}"/>-->
+<!--                </group>-->
+<!--            </group>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+    <menuitem
+        id="menu_building_view"
+        parent="menu_odoocms_organization_infrastructure"
+        name="Building"
+        sequence="10"
+        action="open_building_view_action"/>
+
+    <menuitem
+        id="menu_odoocms_room"
+        name="Rooms"
+        parent="menu_odoocms_organization_infrastructure"
+        action="action_odoocms_room"
+        sequence="20"/>
+
+    <menuitem
+        id="menu_odoocms_amenities"
+        name="General Facilities"
+        parent="menu_odoocms_organization_infrastructure"
+        action="action_odoocms_amenities"
+        sequence="30"/>
+
+     <menuitem
+            id="menu_odoocms_semester"
+            name="Semesters"
+            parent="odoocms_base.menu_odoocms_config_general"
+            action="action_odoocms_semester"
+            sequence="20"/>
+
+<!--    <menuitem id="menu_odoocms_profs_action"-->
+<!--          name="Professions"-->
+<!--          parent="odoocms_base.menu_odoocms_config_general"-->
+<!--          action="action_odoocms_profs"-->
+<!--          sequence="220"/>-->
+
+    <menuitem
+        id="menu_odoocms_week_day"
+        name="Week Days"
+        sequence="300"
+        action='action_odoocms_week_day'
+        parent="odoocms_base.menu_odoocms_config_general"/>
+
+    <menuitem
+        id="menu_odoocms_selections"
+        name="Selections"
+        sequence="400"
+        action='action_odoocms_selections'
+        parent="odoocms_base.menu_odoocms_config_general"
+        groups="base.group_no_one"/>
+
+    <menuitem id="menu_odoocms_error_reporting_main"
+              name="Issues"
+              parent="base.menu_security"
+              sequence="50"/>
+
+        <menuitem id="menu_cms_notification_category"
+              name="Reported Issues"
+              parent="menu_odoocms_error_reporting_main"
+              action="action_odoocms_error_reporting"
+              sequence="1"/>
+
+
+</odoo>

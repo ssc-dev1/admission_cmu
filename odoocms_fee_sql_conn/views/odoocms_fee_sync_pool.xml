@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_odoocms_fee_sync_pool_from" model="ir.ui.view">
+            <field name="name">odoocms.fee.sync.pool.form.view</field>
+            <field name="model">odoocms.fee.sync.pool</field>
+            <field name="arch" type="xml">
+                <form string="Fee Sync Pool" create="false" delete="false" edit="false">
+                    <header>
+                        <button name="action_skip_from_pushing" type="object" class="oe_highlight" string="Skip/Include In Pushing" groups="hr.group_hr_user"/>
+                        <field name="status" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="student_id" readonly="1" required="1"/>
+                                <field name="student_code" readonly="1"/>
+                                <field name="invoice_id" readonly="1" required="1"/>
+                                <field name="invoice_state" readonly="1"/>
+                                <field name="challan_term" readonly="1"/>
+                                <field name="company_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="action" readonly="1"/>
+                                <field name="date" readonly="1"/>
+                                <field name="status" readonly="1"/>
+                                <field name="to_be" readonly="1"/>
+                                <field name="skip_from_pushing" readonly="1"/>
+                            </group>
+
+                            <group>
+                                <field name="tuition_fee" readonly="1"/>
+                                <field name="admission_fee" readonly="1"/>
+                                <field name="hostel_fee" readonly="1"/>
+                                <field name="hostel_security" readonly="1"/>
+                                <field name="total_fine" readonly="1"/>
+                                <field name="tax" readonly="1"/>
+
+                            </group>
+                            <group>
+                                <field name="tuition_fee_discount" readonly="1"/>
+                                <field name="admission_fee_discount" readonly="1"/>
+                                <field name="discount_types" readonly="1"/>
+                                <field name="payable" readonly="1"/>
+                                <field name="total_payable" readonly="1"/>
+                                <field name="prev_paid" readonly="1"/>
+                            </group>
+
+                            <group>
+                                <field name="transport_fee" readonly="1"/>
+                                <field name="misc_fee" readonly="1"/>
+                                <field name="library_card_fee" readonly="1"/>
+                                <field name="graduation_fee" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="prospectus_fee" readonly="1"/>
+                                <field name="entry_test_fee" readonly="1"/>
+                                <field name="sports_fee" readonly="1"/>
+                                <field name="degree_fee" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_fee_sync_pool_tree" model="ir.ui.view">
+            <field name="name">odoocms.fee.sync.pool.tree.view</field>
+            <field name="model">odoocms.fee.sync.pool</field>
+            <field name="arch" type="xml">
+                <tree string="Fee Sync Pool" create="false" delete="false" edit="false" decoration-primary="to_be==False" decoration-success="to_be==True">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="student_code"/>
+                    <field name="invoice_id"/>
+                    <field name="invoice_state" optional="show"/>
+                    <field name="create_date" optional="hide"/>
+                    <field name="date" optional="hide"/>
+                    <field name="challan_type" optional="hide"/>
+                    <field name="institute_id" optional="hide"/>
+                    <field name="action"/>
+                    <field name="company_id"/>
+                    <field name="sql_id"/>
+                    <field name="create_uid" string="Created By" optional="show" widget="many2one_avatar_user"/>
+                    <field name="to_be"/>
+                    <field name="status"/>
+                    <field name="skip_from_pushing" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_fee_sync_pool_search" model="ir.ui.view">
+            <field name="name">odoocms.fee.sync.pool.search.view</field>
+            <field name="model">odoocms.fee.sync.pool</field>
+            <field name="arch" type="xml">
+                <search string="Fee Sync Pool">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="student_code"/>
+                    <field name="invoice_id"/>
+                    <field name="invoice_state"/>
+                    <field name="sql_id"/>
+                    <field name="date"/>
+                    <field name="action"/>
+                    <field name="company_id"/>
+                    <field name="to_be"/>
+
+                    <filter icon="terp-go-today" string="To Process" name="to_be_process" domain="[('to_be','=',True)]"/>
+
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_action" string="Action" domain="[]" context="{'group_by':'action'}"/>
+                        <separator/>
+                        <filter name="group_company" string="Company" domain="[]" context="{'group_by':'company_id'}"/>
+                        <separator/>
+                        <filter name="group_date" string="Date" domain="[]" context="{'group_by':'date'}"/>
+                        <separator/>
+                        <filter name="group_status" string="Status" domain="[]" context="{'group_by':'status'}"/>
+                        <separator/>
+                        <filter name="group_skip_from_pushing" string="Skip from Pushing" domain="[]" context="{'group_by':'skip_from_pushing'}"/>
+                        <separator/>
+                        <filter name="group_to_be" string="Record Processing " domain="[]" context="{'group_by':'to_be'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_odoocms_fee_sync_pool" model="ir.actions.act_window">
+            <field name="name">Fee Sync Pool</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">odoocms.fee.sync.pool</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_to_be_process':1}</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_fee_sync_pool"
+                name="Fee Sync Pool"
+                groups="group_odoo_fee_sql_connector_user"
+                parent="menu_odoo_fee_sql_connector_sync_pool_main"
+                action="action_odoocms_fee_sync_pool"
+                sequence="10"/>
+    </data>
+
+</odoo>

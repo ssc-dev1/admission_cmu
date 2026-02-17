@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                    (0, 0, {'view_mode': 'tree', 'view_id': ref('odoocms.view_odoocms_batch_tree')}),
+                    (0, 0, {'view_mode': 'form', 'view_id': ref('view_odoocms_batch_disposal_form')}),
+               ]"/>
+        -->
+
+        <record id="view_odoocms_batch_term_form" model="ir.ui.view">
+            <field name="name">odoocms.batch.term.form</field>
+            <field name="model">odoocms.batch.term</field>
+            <field name="arch" type="xml">
+                <form string="Batch Term" delete="false" duplicate="false" create="false" edit="false">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group name="out">
+                            <group>
+                                <field name="name"/>
+                                <field name="code" required="1"/>
+                            </group>
+                            <group>
+                                <field name="batch_id"/>
+                                <field name="department_id"/>
+                                <field name="career_id"/>
+                            </group>
+                            <group>
+                                <field name="session_id"/>
+                                <field name="term_id"/>
+<!--                                <field name="semester_id"/>-->
+                            </group>
+                            <group>
+                                <field name="program_id"
+                                       domain="[('career_id','=',career_id),('department_id','=',department_id)]"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name='grade_classes' string="Grade Classes">
+                                <field name="grade_class_ids" context="{'disposal':True}">
+                                    <tree decoration-info="dbs_action=='new'" decoration-success="dbs_action=='approve'" decoration-danger="dbs_action=='revise'"
+                                          create="false" delete="false">
+                                        <field name="dbs_action" invisible="1"/>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="student_count"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name='registrations' string="Registrations">
+                                <field name="registration_ids" context="{'disposal':True}">
+                                    <tree create="false" edit="false" delete="false">
+                                        <field name="student_id"/>
+                                        <field name="program_id" optional="hide"/>
+                                        <field name="session_id" optional="hide"/>
+                                        <field name="term_id" optional="show"/>
+                                        <field name="course_id" optional="hide"/>
+                                        <field name="primary_class_id" optional="show"/>
+                                        <field name="repeat_code" optional="hide"/>
+                                        <field name="tag" optional="hide"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name='process_waiting' string="Process Waiting">
+                                <field name="waiting_ids" context="{'disposal':True}">
+                                    <tree create="false" edit="false" delete="false">
+                                        <field name="student_id"/>
+                                        <field name="program_id" optional="hide"/>
+                                        <field name="session_id" optional="hide"/>
+                                        <field name="term_id" optional="show"/>
+                                        <field name="course_id" optional="hide"/>
+                                        <field name="primary_class_id" optional="show"/>
+                                        <field name="repeat_code" optional="hide"/>
+                                        <field name="tag" optional="hide"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_batch_term_tree" model="ir.ui.view">
+            <field name="name">odoocms.batch.term.tree</field>
+            <field name="model">odoocms.batch.term</field>
+            <field name="arch" type="xml">
+                <tree delete="false" create="false" edit="false">
+                    <field name="name"/>
+                    <field name="career_id"/>
+                    <field name="batch_id"/>
+                    <field name="program_id"/>
+                    <field name="term_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_batch_term_search" model="ir.ui.view">
+            <field name="name">odoocms.batch.term.search</field>
+            <field name="model">odoocms.batch.term</field>
+            <field name="arch" type="xml">
+                <search string="Batch Term">
+                    <field name="name"/>
+                    <field name="program_id"/>
+                    <field name="batch_id"/>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter name="state_grp" string="Status" domain="[]" context="{'group_by':'state'}"/>
+                        <filter name="department_grp" string="Department" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter name="program_grp" string="Program" domain="[]" context="{'group_by':'program_id'}"/>
+                        <filter name="batch_grp" string="Batch" domain="[]" context="{'group_by':'batch_id'}"/>
+                        <filter name="academic_term_grp" string="Academic Term" domain="[]" context="{'group_by':'term_id'}"/>
+                        <filter name="career_grp" string='Career' domain="[]" context="{'group_by':'career_id'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="career_id" icon="fa-users"/>
+                        <field name="state" icon="fa-users"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_odoocms_batch_term_section_tree" model="ir.ui.view">
+            <field name="name">odoocms.batch.term.section.tree</field>
+            <field name="model">odoocms.batch.term.section</field>
+            <field name="arch" type="xml">
+                <tree delete="false" create="false" edit="false">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="batch_term_id"/>
+                    <field name="batch_id"/>
+                    <field name="term_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_odoocms_batch_term_section_form" model="ir.ui.view">
+            <field name="name">odoocms.batch.term.section.form</field>
+            <field name="model">odoocms.batch.term.section</field>
+            <field name="arch" type="xml">
+                <form string="Batch Term Section">
+                    <sheet>
+                        <group name="out">
+                            <group>
+                                <field name="name"/>
+                                <field name="term_id" readonly="1"/>
+                                <field name="batch_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="code" readonly="1"/>
+                                <field name="batch_term_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name='primary_classes' string="Primary Classes">
+                                <field name="primary_class_ids">
+                                    <tree edit="false" create="false" delete="false">
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="term_id"/>
+                                        <field name="strength"/>
+                                        <field name="student_count"/>
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_odoocms_batch_term" model="ir.actions.act_window">
+            <field name="name">Batch Term - Disposals</field>
+            <field name="res_model">odoocms.batch.term</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+
+        </record>
+
+        <record id="action_odoocms_batch_term_section" model="ir.actions.act_window">
+            <field name="name">Batch Term - Sections</field>
+            <field name="res_model">odoocms.batch.term.section</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_batch_term"
+                name="Batch Term - Disposals"
+                action="action_odoocms_batch_term"
+                parent="menu_odoocms_academic_result"
+                sequence="100"/>
+
+         <menuitem
+                id="menu_odoocms_batch_term_section"
+                name="Batch Term - Sections"
+                action="action_odoocms_batch_term_section"
+                parent="menu_odoocms_academic_result"
+                sequence="110"/>
+    </data>
+</odoo>

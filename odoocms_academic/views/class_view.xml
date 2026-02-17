@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_odoocms_class_grade_form_academic" model="ir.ui.view">
+            <field name="name">odoocms.class.grade.form.academic</field>
+            <field name="model">odoocms.class.grade</field>
+            <field name="inherit_id" ref="odoocms_registration.view_odoocms_class_grade_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="before">
+                    <button name="assign_grades" type="object"
+                            class="oe_highlight" string="Assign Grades"
+                            invisible="context.get('dbs',False) or context.get('disposal',False)"
+                            attrs="{'invisible': [('state','not in',('current'))]}"/>
+                    <button name="unlock_class" type="object"
+                            class="oe_highlight" string="Unlock"
+                            invisible="context.get('dbs',False) or context.get('disposal',False)"
+                            attrs="{'invisible': [('state','not in',('lock'))]}"/>
+                    <button name="submit_result" type="object"
+                            invisible="context.get('dbs',False) or context.get('disposal',False)"
+                            attrs="{'invisible': ['|',('grade_assigned', '=', False),('state','not in',('lock'))]}"
+                            class="oe_highlight" string="Submit Result"/>
+                    <button name="dbs_approve_reload" type="object"
+                            groups="odoocms_academic.group_academic_dbs"
+                            attrs="{'invisible': ['|','|',
+                                ('state','!=','submit'),('dbs_id','=',False),('dbs_action','!=','new')
+                            ]}"
+                            class="oe_highlight" string="Approve"/>
+                            <!-- invisible="not context.get('dbs',False)" -->
+                    <button name="revisit_result" type="object"
+                            groups="odoocms_academic.group_academic_dbs"
+                            attrs="{'invisible': ['|',
+                                ('state','not in',('submit','disposal')),('dbs_id','=',False)
+                            ]}"
+                            string="Revise"/>
+                            <!-- '|', -->
+                            <!-- ,('dbs_action','!=','new') -->
+                            <!-- invisible="not context.get('dbs',False)" -->
+                    <button name="fbs_approve_reload" type="object"
+                            invisible="not context.get('fbs',False)"
+                            attrs="{'invisible': ['|','|',
+                                ('state','!=','approval'),('fbs_id','=',False),('fbs_action','!=','new')
+                            ]}"
+                            class="oe_highlight" string="Approve"/>
+                    <button name="revisit_result" type="object"
+                            invisible="not context.get('fbs',False)"
+                            attrs="{'invisible': ['|','|',
+                                ('state','!=','approval'),('fbs_id','=',False),('fbs_action','!=','new')
+                            ]}"
+                            string="Revise"/>
+                </xpath>
+                <xpath expr="//field[@name='grade_staff_id']" position="after">
+                    <field name="grade_method_id"
+                        attrs="{'readonly': [('state','not in',('draft','current','lock'))]}"
+                        options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    <field name="adjustment_factor_allowed"
+                        attrs="{
+                            'readonly': [('state','not in',('draft','current','lock'))],
+                            'invisible': [('grade_method_code','!=','absolute')]
+                        }"
+                        />
+                    <field name="adjustment_factor" readonly="1"
+                        attrs="{
+                            'invisible': ['|',('grade_method_code','!=','absolute'),('adjustment_factor_allowed','=',0)]
+                        }"
+                        />
+                    <field name="grade_method_code" invisible="1"/>
+                </xpath>
+                <xpath expr="//group[@name='one_right']" position="after">
+                    <group name="two_left">
+                        <field name="assign_grade_option"
+                            attrs="{'readonly': [('state','not in',('draft','current','lock'))]}"/>
+                        <field name="grade_assigned" invisible="1"/>
+                        <field name="dbs_id" invisible="1"/>
+                        <field name="dbs_action" invisible="1"/>
+                        <field name="fbs_id" invisible="1"/>
+                        <field name="fbs_action" invisible="1"/>
+                    </group>
+                    <group name="two_right">
+                        <field name="grade_submit_date"/>
+                    </group>
+                </xpath>
+
+
+                <group name="one" position="after">
+                    <div attrs="{'invisible': [('grade_method_code','!=','histogram')]}">
+                        <div attrs="{'invisible': [('plotly_error','=','no')]}">
+                            <field name="plotly_error" nolabel="1"/>
+                        </div>
+                        <div>
+                            <field name="plotly_chart" widget="plotly_chart" nolabel="1"/>
+                        </div>
+                    </div>
+                </group>
+                <page name='primary_classes' position="before">
+                    <page name="students" string="Students">
+                        <field name="registration_ids" nolabel="1">
+                            <tree name="students" string="Students" edit="false" delete="false" create="false">
+                                <field name="student_id"/>
+                                <field name="program_id"/>
+                                <field name="session_id"/>
+                                <field name="normalized_marks" string="Obtained Marks"/>
+                                <field name="grade"/>
+                                <field name="state" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="histo" string="Histogram" attrs="{'invisible': [('grade_method_code','!=','histogram')]}">
+                        <field name="histo_ids" nolabel="1">
+                            <tree name="histo" string="Histogram" edit="true" delete="false" create="false">
+                                <field name="name"/>
+                                <field name="low_per"/>
+                                <field name="high_per"/>
+                                <field name="cnt"/>
+                            </tree>
+                        </field>
+                    </page>
+                </page>
+
+            </field>
+        </record>
+
+        <record id="view_odoocms_class_grade_search" model="ir.ui.view">
+            <field name="name">odoocms.class.grade.search</field>
+            <field name="model">odoocms.class.grade</field>
+            <field name="inherit_id" ref="odoocms_registration.view_odoocms_class_grade_search"/>
+            <field name="arch" type="xml">
+                <filter name="career_grp" position="after">
+                    <filter name="grade_method" string='Grade Method' domain="[]" context="{'group_by':'grade_method_id'}"/>
+                </filter>
+                <field name="career_id" position="before">
+                    <field name="grade_method_id" icon="fa-users"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_odoocms_class_primary_tree_academic" model="ir.ui.view">
+            <field name="name">odoocms.class.primary.tree.academic</field>
+            <field name="model">odoocms.class.primary</field>
+            <field name="inherit_id" ref="odoocms_registration.view_odoocms_class_primary_tree"/>
+            <field name="arch" type="xml">
+                <field name="study_scheme_id" position="before">
+                    <field name="grade_method_id" optional="show"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_odoocms_class_primary_form_academic" model="ir.ui.view">
+            <field name="name">odoocms.class.primary.form.academic</field>
+            <field name="model">odoocms.class.primary</field>
+            <field name="inherit_id" ref="odoocms_registration.view_odoocms_class_primary_form"/>
+            <field name="arch" type="xml">
+                 <field name="grade_class_id" position="attributes">
+                    <attribute name="context">{'dbs':False}</attribute>
+                </field>
+                <field name="grade_class_id" position="after">
+                    <field name="grade_method_id"/>
+                </field>
+                <xpath expr="//field[@name='registration_ids']/tree/field[@name='term_id']" position="after">
+                    <field name="total_marks"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_odoocms_class_form_academic" model="ir.ui.view">
+            <field name="name">odoocms.class.form.academic</field>
+            <field name="model">odoocms.class</field>
+            <field name="inherit_id" ref="odoocms_registration.view_odoocms_class_form"/>
+            <field name="arch" type="xml">
+<!--                <header position="inside">-->
+
+<!--                    &lt;!&ndash;                    <button name="submit_result" type="object"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        attrs="{'invisible': ['|',('grade_assigned', '=', False),('state','!=','current')]}"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        class="oe_highlight" string="Submit Result"/>&ndash;&gt;-->
+<!--                </header>-->
+                <xpath expr="//group[@name='components']" position="before">
+                    <group>
+                        <field name="have_assessment" invisible="1"/>
+                        <field name="institute_id" invisible="1"/>
+                        <field name="assessment_template_id"
+                               attrs="{'invisible': [('have_assessment','=',True)]}"
+                               domain="[('institute_id','=',institute_id)]"
+                               options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                    </group>
+
+                </xpath>
+                <xpath expr="//tree[@name='students']/field[@name='term_id']" position="after">
+                     <field name="total_marks" string="Marks"/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='other']" position="before">
+                    <page string="Assessment Types" name="assessment_types">
+                        <group>
+                            <field name="assessment_component_ids" nolabel="1"
+                                   attrs="{'readonly': [('state','=','lock')]}">
+                                <tree editable="bottom">
+                                    <field name="type_id"
+                                           options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    <field name="weightage"/>
+                                    <field name="consideration_avg" optional="show"/>
+                                    <field name="consideration_top" optional="show"/>
+                                    <field name="best" optional="show"
+                                        attrs="{
+                                            'readonly': ['|',('consideration_avg','=',True),('consideration_top','=',False)],
+                                            'required': ['|',('consideration_top','=',True),('consideration_avg','=',False)]
+                                        }"/>
+                                    <field name="min" optional="hide"/>
+                                    <field name="max" optional="hide"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+
+                    <page string="Assessments" name="academic_activities">
+                        <group>
+                            <field name="assessment_ids" nolabel="1"
+                                   domain="[('parent_id','=',False)]"
+                                   attrs="{'readonly': [('state','=','lock')]}">
+                                <!--                                attrs="{'readonly': ['|',('state','=','lock'),('obe_enable','=',True)]}">-->
+                                <tree string="Assessment Result" editable="bottom" delete="false">
+                                    <field name="can_delete" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="assessment_component_id" required="1"
+                                        domain="[('class_id','=',parent.id)]"
+                                        options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                    <field name="name" required="1"/>
+                                    <field name="code" required="1"/>
+
+                                    <field name="date_assessment" optional="hide"/>
+                                    <field name="max_marks"/>
+                                    <field name="weightage" optional="hide"/>
+                                    <field name="average"/>
+                                    <field name="is_locked"/>
+                                    <field name="is_approved" optional="hide"/>
+                                    <button name="assessment_result" type="object" string="Result"/>
+                                    <button name="unlink" class="fa fa-trash-o" type="object" title="Unlink"
+                                        attrs="{'invisible': [('can_delete', '=', False)]}"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+
+                </xpath>
+            </field>
+        </record>
+
+
+         <record id="view_oview_odoocms_student_course_tree_academic" model="ir.ui.view">
+            <field name="name">odoocms.student.course.tree.academic</field>
+            <field name="model">odoocms.student.course</field>
+            <field name="inherit_id" ref="odoocms_registration.view_odoocms_student_course_tree"/>
+            <field name="arch" type="xml">
+                <field name="course_id" position="after">
+<!--                            <field name="total_marks"/>-->
+<!--                            <field name="normalized_marks"/>-->
+                    <field name="grade"/>
+<!--                            <field name="gpa"/>-->
+<!--                            <field name="grade_points" string="GP"/>-->
+                </field>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--***** Form *****-->
+<!--        <record id="odoocms_admission_receipt_form" model="ir.ui.view">-->
+<!--            <field name="name">odoocms.admission.receipt.form</field>-->
+<!--            <field name="model">account.move</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="Receipt" class="o_invoice_form" delete="false" create="false">-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="odoocms_admission_challan_tree" model="ir.ui.view">
+            <field name="name">odoocms.fee.barcode.tree.admission</field>
+            <field name="model">odoocms.fee.barcode</field>
+            <field name="inherit_id" ref="odoocms_fee.odoocms_challan_tree"/>
+            <field name="arch" type="xml">
+                <button name="action_challan_installment" position="after">
+                    <button name="unlink" type="object" string="Delete" class="btn btn-link"
+                            attrs="{'invisible':[('state','=','paid')]}"/>
+                </button>
+            </field>
+        </record>
+
+        <record id="action_odoocms_admission_challan" model="ir.actions.act_window">
+            <field name="name">Admission Challan</field>
+            <field name="res_model">odoocms.fee.barcode</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('label_id.type','=','admission')]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="menu_odoocms_admission_challan"
+            name="Admission Challan"
+            sequence="100"
+            parent="menu_odoocms_admission_finance_main"
+            action="action_odoocms_admission_challan"
+        />
+
+    </data>
+</odoo>

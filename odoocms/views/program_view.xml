@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_odoocms_program_form" model="ir.ui.view">
+        <field name="name">odoocms.program.form</field>
+        <field name="model">odoocms.program</field>
+        <field name="inherit_id" ref="odoocms_base.view_odoocms_program_form"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="reg_code"/>
+                <field name="sequence_number"/>
+            </field>
+            <page name="specialization" position="before">
+                <page name="requirement_ids" string="Requirements">
+                    <field name="requirement_ids">
+                        <tree editable="bottom">
+                                <field name="category_id"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                            <field name="sub_category_id"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                domain="[('category_id','=',category_id)]"/>
+                            <field name="credits"/>
+                            <field name="mandatory"/>
+                        </tree>
+                    </field>
+                </page>
+            </page>
+            <page name="specialization" position="after">
+                <page name="users" string="Users">
+                    <group colspan="4">
+                        <field name="user_ids" nolabel="1">
+                            <tree string="Users"> <!-- create="false" delete="false" edit="false" -->
+                                <field name="name"/>
+                                <field name="login"/>
+                                <field name="login_date"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+                <page name="coordinators" string="Coordinator Tracking">
+                    <group colspan="4">
+                        <field name="tracking_ids" nolabel="1">
+                            <tree string="Users" create="false" delete="false" editable="bottom">
+                                <field name="action" readonly="1"/>
+                                <field name="user_id" readonly="1"/>
+                                <field name="action_by" readonly="1"/>
+                                <field name="track_time" readonly="1"/>
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+                <page name="rooms" string="Rooms">
+                    <group>
+                        <group>
+                            <field name="building_id"
+                                options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                        </group>
+                        <group>
+                            <field name="floor_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group colspan="4">
+                        <field name="room_ids" nolabel="1"
+                            options="{'no_create': True, 'no_quick_create':True, 'no_create_edit': True, 'limit': 10}">
+                            <tree string="Rooms"> <!-- create="false" delete="false" edit="false" -->
+                                <field name="code"/>
+                                <field name="name"/>
+                                <field name="room_type"/>
+                                <field name="building_id"/>
+                                <field name="capacity"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+
+     <record id="view_odoocms_program_user_tracking_form" model="ir.ui.view">
+        <field name="name">odoocms.program.user.tracking.form</field>
+        <field name="model">odoocms.program.user.tracking</field>
+        <field name="arch" type="xml">
+            <form string="Coordinator Tracking">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="program_id" readonly="1"/>
+                            <field name="action" readonly="1"/>
+                            <field name="action_by" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="track_time" readonly="1"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+     </record>
+</odoo>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_odoocms_adddrop_policy_form" model="ir.ui.view">
+            <field name="name">odoocms.adddrop.policy.form.view</field>
+            <field name="model">odoocms.adddrop.policy</field>
+            <field name="arch" type="xml">
+                <form string="Add Drop Policy">
+                    <header>
+                        <button name="action_confirm" type="object" class="oe_highlight" string="Confirm" states="draft"/>
+                        <button name="action_cancel" type="object" class="oe_highlight" string="Cancel" states="draft"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="term_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"/>
+                                <field name="term_line_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_create_edit': True, 'limit': 10}"
+                                       domain="[('term_id','=',term_id)]"/>
+
+                                <field name="start_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="end_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+
+                            </group>
+                            <group>
+                                <field name="type" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="amount" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="drop_percentage" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="remarks" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_odoocms_adddrop_policy_tree" model="ir.ui.view">
+            <field name="name">odoocms.adddrop.policy.tree.view</field>
+            <field name="model">odoocms.adddrop.policy</field>
+            <field name="arch" type="xml">
+                <tree string="Add Drop Policy" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="term_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="type"/>
+                    <field name="amount"/>
+                    <field name="state" widget="badge" decoration-info="state=='draft'" decoration-danger="state=='cancel'" decoration-success="state=='confirm'"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_odoocms_adddrop_policy_search" model="ir.ui.view">
+            <field name="name">odoocms.adddrop.policy.search</field>
+            <field name="model">odoocms.adddrop.policy</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search string="Add Drop Policy">
+                    <field name="name"/>
+                    <field name="term_id"/>
+                    <field name="type"/>
+                    <newline/>
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                    <filter name="confirm" string="Confirm" domain="[('state', '=','confirm')]"/>
+                    <filter name="cancel" string="Cancel" domain="[('state', '=','Cancel')]"/>
+                    <separator/>
+                    <filter name="start_date" string="Start Date" date="start_date"/>
+                    <separator/>
+                    <filter name="end_date" string="End Date" date="end_date"/>
+
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Term" name="group_by_term_id" domain="[]" context="{'group_by':'term_id'}"/>
+                        <filter string="Start Date" name="group_by_start_date" domain="[]" context="{'group_by':'start_date'}"/>
+                        <filter string="End Date" name="group_by_end_date" domain="[]" context="{'group_by':'end_date'}"/>
+                        <filter string="Type" name="group_by_type" domain="[]" context="{'group_by':'type'}"/>
+                        <filter string="Status" name="group_by_status" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_odoocms_adddrop_policy" model="ir.actions.act_window">
+            <field name="name">Add Drop Policy</field>
+            <field name="res_model">odoocms.adddrop.policy</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_odoocms_adddrop_policy"
+                name="Add Drop Policy"
+                sequence="45"
+                parent="odoocms_fee.menu_odoocms_fee_others_main"
+                action="action_odoocms_adddrop_policy"
+                groups="odoocms_fee.group_fee_manager"
+        />
+
+    </data>
+</odoo>

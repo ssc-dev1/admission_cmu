@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_need_based_scholarship_user,access_need_based_scholarship_user,model_need_based_scholarship,base.group_user,1,1,1,1
+access_nbs_household_member_user,access_nbs_household_member_user,model_nbs_household_member,base.group_user,1,1,1,1
+access_nbs_other_income_user,access_nbs_other_income_user,model_nbs_other_income,base.group_user,1,1,1,1
+access_nbs_sibling_expense_user,access_nbs_sibling_expense_user,model_nbs_sibling_education_expense,base.group_user,1,1,1,1
+access_nbs_vehicle_user,access_nbs_vehicle_user,model_nbs_vehicle,base.group_user,1,1,1,1
+access_nbs_loan_user,access_nbs_loan_user,model_nbs_loan,base.group_user,1,1,1,1

@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+        <record id="custom_allocate_slot_wizard_form" model="ir.ui.view">
+        <field name="name">custom.slot.allocation.wizard</field>
+        <field name="model">custom.slot.allocation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Form Wizard">
+                <sheet>
+                    <group>
+                        <group>
+                        <field name="company_ids" invisible="1"/>
+                            <field name="slot" ></field>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Allocate Slot" name="">
+                            <field name="applicant_admit_ids" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="allocate_slot" string="Allocate Slot" type="object" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="custom_slot_allocation_wizard_action" model="ir.actions.act_window">
+        <field name="name">Custom Slot Allocation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">custom.slot.allocation.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="odoocms_admission_ucp.model_applicant_entry_test" />
+    </record>
+</odoo>
