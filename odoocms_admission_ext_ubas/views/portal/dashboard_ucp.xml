@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <template id="admission_student_dashboard_ucp" name="Admission Dashboard">
-        <!-- Determine background image based on company -->
+        <!-- Determine background image based on company (CUST / UBAS / MAJU) -->
         <t t-set="company_name_lower" t-value="(application_id.company_id.name or '').lower()" />
         <t t-set="bg_img" t-value="'/odoocms_admission_portal/static/img/cust_new.png'" />
         <t t-if="'ubas' in company_name_lower">
@@ -29,9 +29,21 @@
             <!-- ========== NAVBAR ========== -->
             <nav class="navbar py-0 container-fluid px-5">
                 <a class="navbar-brand d-flex">
-                    <img style="width:90px;height:80px;"
-                         t-att-src="image_data_uri(application_id.company_id.logo) if application_id.company_id.logo else ''"
-                         class="d-inline-block align-top m-0 p-0" alt="Logo"/>
+                    <t t-if="application_id.company_id.logo">
+                        <img style="width:90px;height:80px;object-fit:contain;"
+                             t-att-src="image_data_uri(application_id.company_id.logo)"
+                             class="d-inline-block align-top m-0 p-0" alt="Logo"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set="logo_fallback" t-value="'/odoocms_admission_portal/static/img/cust_white_logo.png'" />
+                        <t t-if="'ubas' in company_name_lower">
+                            <t t-set="logo_fallback" t-value="'/odoocms_admission_portal/static/img/ubas_white_logo.png'" />
+                        </t>
+                        <t t-if="'maju' in company_name_lower">
+                            <t t-set="logo_fallback" t-value="'/odoocms_admission_portal/static/img/maju_white_logo.png'" />
+                        </t>
+                        <img t-att-src="logo_fallback" width="90" height="80" class="d-inline-block align-top m-0 p-0" alt="Logo"/>
+                    </t>
                     <span class="align-self-center mx-2 navbar_custom">
                         <t t-out="application_id.company_id.name" />
                         <p class="py-0 mt-1 my-0 moto">Your Journey Awaits</p>
@@ -78,27 +90,27 @@
                         </div>
                     </div>
 
-                    <!-- 2  State / Verification — yellow -->
+                    <!-- 2  State — yellow (production: "Your Application State") -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div style="background-color:#fbb515" class="card-fix shadow-lg state-card">
                             <i class="fas fa-check-circle"/>
-                            <p class="small mb-1">Your State</p>
+                            <p class="small mb-1">Your Application State</p>
                             <h4><t t-esc="str(application_id.state).upper()" /></h4>
                         </div>
                     </div>
 
-                    <!-- 3  Download Form — red -->
+                    <!-- 3  Download Form (production: when not draft "Download Application Form", when draft "(Admission Form)") -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div style="background-color:#c62828" class="card-fix shadow-lg">
+                        <div class="card-fix shadow-lg card-download-form">
                             <t t-if="application_id.state != 'draft'">
                                 <a target="_blank" href="/download/admission/form" class="text-white text-decoration-none">
                                     <i class="fas fa-cloud-download-alt"/>
-                                    <h4>Download Form</h4>
+                                    <h4>Download Application Form</h4>
                                 </a>
                             </t>
                             <t t-else="">
-                                <i class="fas fa-lock opacity-50"/>
-                                <p class="small text-light">Submit Draft First</p>
+                                <i class="fas fa-lock"/>
+                                <p class="small text-white">(Admission Form)</p>
                             </t>
                         </div>
                     </div>
@@ -124,27 +136,27 @@
                         </div>
                     </div>
 
-                    <!-- 6  Processing Fee — light card -->
+                    <!-- 6  Application Processing Fee (production: draft = "Click To Download", not draft = "(First Fill Application)") -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div class="card-fix info-text shadow-lg" style="background-color:#f0f4ff !important;">
+                        <div style="background-color:#00838f" class="card-fix shadow-lg">
                             <a target="_blank" href="/download/invoice/admission/"
-                               class="text-decoration-none"
+                               class="text-white text-decoration-none"
                                t-attf-style="{{'pointer-events:none' if application_id.state == 'draft' else ''}}">
-                                <i class="fas fa-file-invoice-dollar text-primary"/>
-                                <h5>Processing Fee</h5>
+                                <i class="fas fa-file-invoice-dollar"/>
+                                <h5>Application Processing Fee</h5>
                                 <t t-if="application_id.state == 'draft'">
-                                    <span class="badge bg-danger">Draft Mode</span>
+                                    <span class="badge bg-light text-dark">(First Fill Application)</span>
                                 </t>
                                 <t t-else="">
-                                    <span class="badge bg-success">Download</span>
+                                    <span class="badge bg-light text-dark">Click To Download</span>
                                 </t>
                             </a>
                         </div>
                     </div>
 
-                    <!-- 7  Pay Online — deep purple -->
+                    <!-- 7  Pay Online — deep orange -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div style="background-color:#5e35b1" class="card-fix shadow-lg">
+                        <div style="background-color:#e65100" class="card-fix shadow-lg">
                             <a href="https://cust.paymentprocessingpage.com/" target="_blank"
                                class="text-white text-decoration-none">
                                 <i class="fas fa-receipt"/>
@@ -153,7 +165,15 @@
                         </div>
                     </div>
 
-                    <!-- 8  Program Transfer — emerald -->
+                    <!-- 8  Letter — deep red (production: #9a0000, fa-file-alt, label "Letter") -->
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div style="background-color:#9a0000" class="card-fix shadow-lg">
+                            <i class="fas fa-file-alt"/>
+                            <h4>Letter</h4>
+                        </div>
+                    </div>
+
+                    <!-- 9  Program Transfer — emerald -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div style="background-color:#2e7d32" class="card-fix shadow-lg">
                             <a href="#" data-bs-toggle="modal" data-bs-target="#TransferProgram"
@@ -164,33 +184,47 @@
                         </div>
                     </div>
 
-                    <!-- 9  Test / Interview — light green info card -->
-                    <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div class="card-fix card-fix-auto info-text shadow-lg" style="background-color:#e8f5e9 !important;">
-                            <i class="fas fa-clipboard-check text-success"/>
-                            <h5>Test / Interview</h5>
+                </div>
 
-                            <t t-if="admit_card">
-                                <a t-attf-href="/download/admit/test" class="btn btn-primary btn-sm mt-1">
-                                    Test Letter</a>
-                            </t>
-                            <t t-if="test_letter">
-                                <a t-attf-href="/download/admit/interview" class="btn btn-info btn-sm mt-1 text-white">
-                                    Interview Letter</a>
-                            </t>
-                            <t t-if="not admit_card and not test_letter">
-                                <span class="badge bg-secondary mt-1">Pending</span>
-                            </t>
-
-                            <a href="/download/offer/letter/" class="btn btn-success btn-sm mt-1"
-                               t-attf-style="{{'pointer-events:none;opacity:0.5' if not merit_student or is_blacklisted else ''}}">
-                                Download Offer</a>
-                            <a href="/download/fee/invoice/" target="_blank" class="btn btn-sm mt-1"
-                               t-attf-style="background-color:#9a0000;color:white;border:none;{{'pointer-events:none;opacity:0.5' if not fee_invoice or fee_invoice.payment_state != 'not_paid' else ''}}">
-                                Bank Challan</a>
+                <!-- Test / Interview &amp; Letters — full-width bar below grid (same logic, better layout) -->
+                <div class="row g-4 justify-content-center mt-2 mb-4 dashboard-letters-bar-row">
+                    <div class="col-12">
+                        <div class="dashboard-letters-bar shadow-lg">
+                            <div class="d-flex flex-wrap align-items-center justify-content-center gap-3 py-3 px-4">
+                                <div class="d-flex align-items-center me-2">
+                                    <i class="fas fa-clipboard-check fa-lg text-white me-2"/>
+                                    <h5 class="text-white mb-0 fw-bold">Test / Interview &amp; Letters</h5>
+                                </div>
+                                <div class="vr text-white d-none d-md-inline" style="opacity: 0.6; height: 2rem;"/>
+                                <div class="d-flex flex-wrap align-items-center gap-2">
+                                    <span class="text-white small align-self-center">Letter Of Admission Test/Interview:</span>
+                                    <t t-if="admit_card">
+                                        <a t-attf-href="/download/admit/test" class="btn btn-light btn-sm text-dark fw-semibold">Test Letter</a>
+                                    </t>
+                                    <t t-if="test_letter">
+                                        <a t-attf-href="/download/admit/interview" class="btn btn-light btn-sm text-dark fw-semibold">Interview Letter</a>
+                                    </t>
+                                    <t t-if="not admit_card and not test_letter">
+                                        <span class="btn btn-secondary btn-sm disabled" style="pointer-events:none;opacity:0.8">Interview/Test Letter Not Available</span>
+                                    </t>
+                                </div>
+                                <div class="vr text-white d-none d-md-inline" style="opacity: 0.6; height: 2rem;"/>
+                                <div class="d-flex flex-wrap align-items-center gap-2">
+                                    <span class="text-white small align-self-center">Admission Offer Letter:</span>
+                                    <a href="/download/offer/letter/" class="btn btn-success btn-sm fw-semibold"
+                                       t-attf-style="{{'pointer-events:none;opacity:0.5' if not merit_student or is_blacklisted else ''}}">
+                                        Admission Offer Letter</a>
+                                </div>
+                                <div class="vr text-white d-none d-md-inline" style="opacity: 0.6; height: 2rem;"/>
+                                <div class="d-flex flex-wrap align-items-center gap-2">
+                                    <span class="text-white small align-self-center">Candidate Bank Challan:</span>
+                                    <a href="/download/fee/invoice/" target="_blank" class="btn btn-warning btn-sm text-dark fw-semibold"
+                                       t-attf-style="{{'pointer-events:none;opacity:0.5' if not fee_invoice or fee_invoice.payment_state != 'not_paid' else ''}}">
+                                        Candidate Bank Challan</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 

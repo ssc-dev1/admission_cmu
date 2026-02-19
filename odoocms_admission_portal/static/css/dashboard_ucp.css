@@ -49,10 +49,51 @@ p {
     z-index: 1;
 }
 
+/* Modal above Bootstrap backdrop (backdrop is often body-level z-index 1040) */
+.dashboard_main_wrapper:has(.modal.show) {
+    z-index: 1060;
+}
+.dashboard_main_wrapper .modal {
+    z-index: 1065;
+}
+.dashboard_main_wrapper .modal-backdrop {
+    z-index: 1060;
+}
+
 /* ===== 3-COLUMN GRID ===== */
 .dashboard-grid {
     max-width: 1200px;
     margin: auto;
+}
+
+/* ===== FULL-WIDTH LETTERS BAR (below grid) ===== */
+.dashboard-letters-bar {
+    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    min-height: 70px;
+}
+.dashboard-letters-bar .small {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.dashboard-letters-bar .btn {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+}
+.dashboard-letters-bar .btn:hover:not(.disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+}
+.dashboard-letters-bar .vr {
+    width: 1px;
+}
+.dashboard-letters-bar-row {
+    max-width: 1200px;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 .container-fluid .row.g-4 {
@@ -75,6 +116,7 @@ p {
     cursor: pointer;
     overflow: hidden;
     backdrop-filter: blur(5px);
+    color: white;
 }
 
 .card-fix:hover {
@@ -83,27 +125,100 @@ p {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.card-fix-auto {
-    height: auto !important;
-    min-height: 155px;
-    padding: 16px !important;
+/* Test/Interview card: same height as others, compact content, no overflow */
+.card-fix-test-interview {
+    height: 155px !important;
+    min-height: 155px !important;
+    max-height: 155px !important;
+    padding: 6px 8px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+.card-fix-test-interview > * {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+.card-fix-test-interview i {
+    font-size: 1.5rem !important;
+    margin-bottom: 2px !important;
+    margin-top: 0 !important;
+}
+.card-fix-test-interview h4 {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    margin: 0 0 2px 0 !important;
+    line-height: 1.1 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.card-fix-test-interview .small {
+    font-size: 0.6rem !important;
+    font-weight: 600 !important;
+    line-height: 1.1 !important;
+    margin: 1px 0 0 0 !important;
+    padding: 0 2px !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+.card-fix-test-interview .btn {
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    padding: 2px 6px !important;
+    margin: 1px 0 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: auto !important;
+    border-width: 1px !important;
+    max-width: 100%;
+    width: auto;
+    display: inline-block;
+    box-sizing: border-box;
+}
+.card-fix-test-interview .btn.disabled {
+    opacity: 0.7 !important;
+}
+
+/* Improve button visibility - all buttons inside cards */
+.dashboard_main_wrapper .card-fix .btn {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    font-weight: 600 !important;
+}
+.dashboard_main_wrapper .card-fix .btn:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3) !important;
+    transform: translateY(-1px);
 }
 
 .card-fix i {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
     margin-bottom: 8px;
+    color: white;
 }
 
 .card-fix h4,
 .card-fix h5 {
-    font-size: 1rem;
+    font-size: 1.2rem;
+    font-weight: 700;
     margin: 0;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 .card-fix p,
 .card-fix span,
 .card-fix small {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* ===== HIGHLIGHT / GLOW ===== */
@@ -118,16 +233,27 @@ p {
     100% { box-shadow: 0 0 0 0 rgba(251, 181, 21, 0); }
 }
 
-/* ===== INFO / LIGHT CARDS ===== */
-.info-text {
-    text-align: center;
-    padding: 14px !important;
+/* Submit Draft First — amber (stands out from dark blue/green background) */
+.card-download-form {
+    background-color: #ff8f00 !important;
 }
 
-.info-text h5,
-.info-text p,
-.info-text b {
-    color: #1a2a40 !important;
+/* All card icons white (no light/white cards with black icons) */
+.card-fix i {
+    color: white !important;
+}
+
+/* Buttons inside card (Download Offer, Test Letter, etc.) – dark text so visible on light btn */
+.card-fix a.btn,
+.card-fix .btn {
+    color: #212529 !important;
+    background-color: #f8f9fa !important;
+    border-color: #dee2e6 !important;
+}
+.card-fix a.btn:hover,
+.card-fix .btn:hover {
+    color: #212529 !important;
+    background-color: #e2e6ea !important;
 }
 
 .info-text h5 {
@@ -142,7 +268,12 @@ p {
 /* ===== STATE CARD ===== */
 .state-card p {
     margin-bottom: 4px;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.state-card h4 {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
 }
 
 /* ===== NAVBAR ===== */

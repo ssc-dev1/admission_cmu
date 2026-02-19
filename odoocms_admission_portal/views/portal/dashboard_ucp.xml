@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <template id="admission_student_dashboard_ucp" name="Admission Dashboard">
-        <div class="dashboard_main_wrapper" t-attf-style="--bg-col:{{color_scheme}}; background-image: url('/odoocms_admission_portal/static/img/cust_new.png');">
+        <div class="dashboard_main_wrapper" t-attf-style="--bg-col:{{color_scheme}}; background-image: url('/odoocms_admission_portal/static/img/new_ubas.jpg');">
             <link rel="stylesheet" type="text/css"
                 href="/odoocms_admission_portal/static/bootstrap/css/bootstrap.min.css" />
             <link rel="stylesheet" type="text/css"
@@ -86,6 +86,7 @@
                                 </a>
                             </t>
                             <t t-else="">
+
                                 <i class="fas fa-lock opacity-50"/>
                                 <p class="small text-light">Submit Draft First</p>
                             </t>
@@ -131,9 +132,9 @@
                         </div>
                     </div>
 
-                    <!-- 7  Pay Online — deep purple -->
+                    <!-- 7  Pay Online — deep orange -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div style="background-color:#5e35b1" class="card-fix shadow-lg">
+                        <div style="background-color:#e65100" class="card-fix shadow-lg">
                             <a href="https://cust.paymentprocessingpage.com/" target="_blank"
                                class="text-white text-decoration-none">
                                 <i class="fas fa-receipt"/>
@@ -153,11 +154,11 @@
                         </div>
                     </div>
 
-                    <!-- 9  Test / Interview — light green info card -->
+                    <!-- 9  Test / Interview — blue-grey -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div class="card-fix card-fix-auto info-text shadow-lg" style="background-color:#e8f5e9 !important;">
-                            <i class="fas fa-clipboard-check text-success"/>
-                            <h5>Test / Interview</h5>
+                        <div style="background-color:#455a64" class="card-fix card-fix-auto shadow-lg">
+                            <i class="fas fa-clipboard-check"/>
+                            <h4>Test / Interview</h4>
 
                             <t t-if="admit_card">
                                 <a t-attf-href="/download/admit/test" class="btn btn-primary btn-sm mt-1">
