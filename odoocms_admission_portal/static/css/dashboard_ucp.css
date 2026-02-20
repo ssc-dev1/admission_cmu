@@ -103,6 +103,7 @@ p {
 
 /* ===== CARD STYLES ===== */
 .card-fix {
+    position: relative;
     height: 155px;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -117,6 +118,18 @@ p {
     overflow: hidden;
     backdrop-filter: blur(5px);
     color: white;
+}
+
+/* Entire card is clickable when it contains a link (click anywhere, not just on text) */
+.card-fix > a {
+    position: absolute;
+    inset: 0;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    box-sizing: border-box;
 }
 
 .card-fix:hover {
