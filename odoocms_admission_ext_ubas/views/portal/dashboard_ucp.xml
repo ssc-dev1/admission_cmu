@@ -99,18 +99,20 @@
                         </div>
                     </div>
 
-                    <!-- 3  Download Form (production: when not draft "Download Application Form", when draft "(Admission Form)") -->
+                    <!-- 3  Download Form: when available "Click here to download", when draft dull + (Not available) -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div class="card-fix shadow-lg card-download-form">
                             <t t-if="application_id.state != 'draft'">
                                 <a target="_blank" href="/download/admission/form" class="text-white text-decoration-none">
                                     <i class="fas fa-cloud-download-alt"/>
                                     <h4>Download Application Form</h4>
+                                    <span class="badge bg-light text-dark mt-1">Click here to download</span>
                                 </a>
                             </t>
                             <t t-else="">
                                 <i class="fas fa-lock"/>
-                                <p class="small text-white">(Admission Form)</p>
+                                <p class="small text-white mb-0">(Admission Form)</p>
+                                <p class="small text-white opacity-75">(Not available)</p>
                             </t>
                         </div>
                     </div>
@@ -136,19 +138,19 @@
                         </div>
                     </div>
 
-                    <!-- 6  Application Processing Fee (production: draft = "Click To Download", not draft = "(First Fill Application)") -->
+                    <!-- 6  Application Processing Fee: when available "Click here to download", when not dull + (Not available). Production CMU: draft disables. -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div style="background-color:#00838f" class="card-fix shadow-lg">
                             <a target="_blank" href="/download/invoice/admission/"
                                class="text-white text-decoration-none"
-                               t-attf-style="{{'pointer-events:none' if application_id.state == 'draft' else ''}}">
+                               t-attf-style="{{'pointer-events:none;opacity:0.7' if application_id.state == 'draft' else ''}}">
                                 <i class="fas fa-file-invoice-dollar"/>
                                 <h5>Application Processing Fee</h5>
                                 <t t-if="application_id.state == 'draft'">
-                                    <span class="badge bg-light text-dark">(First Fill Application)</span>
+                                    <span class="badge bg-light text-dark mt-1">(Not available)</span>
                                 </t>
                                 <t t-else="">
-                                    <span class="badge bg-light text-dark">Click To Download</span>
+                                    <span class="badge bg-light text-dark mt-1">Click here to download</span>
                                 </t>
                             </a>
                         </div>
@@ -199,28 +201,34 @@
                                 <div class="d-flex flex-wrap align-items-center gap-2">
                                     <span class="text-white small align-self-center">Letter Of Admission Test/Interview:</span>
                                     <t t-if="admit_card">
-                                        <a t-attf-href="/download/admit/test" class="btn btn-light btn-sm text-dark fw-semibold">Test Letter</a>
+                                        <a t-attf-href="/download/admit/test" class="btn btn-light btn-sm text-dark fw-semibold">Click here to download</a>
                                     </t>
                                     <t t-if="test_letter">
-                                        <a t-attf-href="/download/admit/interview" class="btn btn-light btn-sm text-dark fw-semibold">Interview Letter</a>
+                                        <a t-attf-href="/download/admit/interview" class="btn btn-light btn-sm text-dark fw-semibold">Click here to download</a>
                                     </t>
                                     <t t-if="not admit_card and not test_letter">
-                                        <span class="btn btn-secondary btn-sm disabled" style="pointer-events:none;opacity:0.8">Interview/Test Letter Not Available</span>
+                                        <span class="btn btn-secondary btn-sm disabled" style="pointer-events:none;opacity:0.7">(Not available)</span>
                                     </t>
                                 </div>
                                 <div class="vr text-white d-none d-md-inline" style="opacity: 0.6; height: 2rem;"/>
                                 <div class="d-flex flex-wrap align-items-center gap-2">
                                     <span class="text-white small align-self-center">Admission Offer Letter:</span>
-                                    <a href="/download/offer/letter/" class="btn btn-success btn-sm fw-semibold"
-                                       t-attf-style="{{'pointer-events:none;opacity:0.5' if not merit_student or is_blacklisted else ''}}">
-                                        Admission Offer Letter</a>
+                                    <t t-if="merit_student and not is_blacklisted">
+                                        <a href="/download/offer/letter/" class="btn btn-success btn-sm fw-semibold">Click here to download</a>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="btn btn-secondary btn-sm disabled" style="pointer-events:none;opacity:0.7">(Not available)</span>
+                                    </t>
                                 </div>
                                 <div class="vr text-white d-none d-md-inline" style="opacity: 0.6; height: 2rem;"/>
                                 <div class="d-flex flex-wrap align-items-center gap-2">
                                     <span class="text-white small align-self-center">Candidate Bank Challan:</span>
-                                    <a href="/download/fee/invoice/" target="_blank" class="btn btn-warning btn-sm text-dark fw-semibold"
-                                       t-attf-style="{{'pointer-events:none;opacity:0.5' if not fee_invoice or fee_invoice.payment_state != 'not_paid' else ''}}">
-                                        Candidate Bank Challan</a>
+                                    <t t-if="fee_invoice and fee_invoice.payment_state == 'not_paid'">
+                                        <a href="/download/fee/invoice/" target="_blank" class="btn btn-warning btn-sm text-dark fw-semibold">Click here to download</a>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="btn btn-secondary btn-sm disabled text-dark" style="pointer-events:none;opacity:0.7">(Not available)</span>
+                                    </t>
                                 </div>
                             </div>
                         </div>
