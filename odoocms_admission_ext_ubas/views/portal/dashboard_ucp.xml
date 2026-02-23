@@ -1,11 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <template id="admission_student_dashboard_ucp" name="Admission Dashboard">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"/>
         <!-- Determine background image based on company (CUST / UBAS / MAJU) -->
-        <t t-set="company_name_lower" t-value="(application_id.company_id.name or '').lower()" />
+        <t t-set="company_name_lower" t-value="(application_id.company_id.short_name or '').lower()" />
         <t t-set="bg_img" t-value="'/odoocms_admission_portal/static/img/cust_new.png'" />
         <t t-if="'ubas' in company_name_lower">
-            <t t-set="bg_img" t-value="'/odoocms_admission_portal/static/img/ubas_new.png'" />
+            <t t-set="bg_img" t-value="'/odoocms_admission_portal/static/img/new_ubas.jpg'" />
         </t>
         <t t-if="'maju' in company_name_lower">
             <t t-set="bg_img" t-value="'/odoocms_admission_portal/static/img/maju_new.png'" />
@@ -156,7 +157,7 @@
                         </div>
                     </div>
 
-                    <!-- 7  Pay Online — deep orange -->
+                    <!-- 7  Pay Online — deep orange (with NBS: row 3 has 3 cards; without: row 2 has 3) -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div style="background-color:#e65100" class="card-fix shadow-lg">
                             <a href="https://cust.paymentprocessingpage.com/" target="_blank"
@@ -167,16 +168,15 @@
                         </div>
                     </div>
 
-                    <!-- 8  Letter — deep red (production: #9a0000, fa-file-alt, label "Letter") -->
-                    <div class="col-xl-4 col-lg-4 col-md-6">
+                    <!-- 8 + 9  Letter & Program Transfer — with NBS: col-4 each (3-card row); without NBS: col-6 each (2-card row, no gap) -->
+                    <t t-set="has_nbs" t-value="bool(application_id.meritlist_id and application_id.need_based_scholarship_applied)"/>
+                    <div t-attf-class="col-xl-{{ 4 if has_nbs else 6 }} col-lg-{{ 4 if has_nbs else 6 }} col-md-6">
                         <div style="background-color:#9a0000" class="card-fix shadow-lg">
                             <i class="fas fa-file-alt"/>
                             <h4>Letter</h4>
                         </div>
                     </div>
-
-                    <!-- 9  Program Transfer — emerald -->
-                    <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div t-attf-class="col-xl-{{ 4 if has_nbs else 6 }} col-lg-{{ 4 if has_nbs else 6 }} col-md-6">
                         <div style="background-color:#2e7d32" class="card-fix shadow-lg">
                             <a href="#" data-bs-toggle="modal" data-bs-target="#TransferProgram"
                                class="text-white text-decoration-none">

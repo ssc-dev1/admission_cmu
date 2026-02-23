@@ -309,3 +309,68 @@ p {
     border: none;
     margin-top: 15px !important;
 }
+
+/* ===== RESPONSIVE: same UI at all resolutions (viewport scaling, like CBT) ===== */
+.dashboard_main_wrapper {
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    font-size: clamp(11px, 0.833vw, 16px);
+}
+.dashboard_main_wrapper *,
+.dashboard_main_wrapper *::before,
+.dashboard_main_wrapper *::after {
+    box-sizing: border-box;
+}
+/* All sizes in rem so layout scales identically at every resolution */
+.dashboard_main_wrapper .container-fluid { max-width: 100%; }
+.dashboard_main_wrapper .card-fix {
+    height: 9.7rem;
+    padding: 0.875rem;
+    border-radius: 1rem;
+}
+.dashboard_main_wrapper .card-fix > a { padding: 0.875rem; }
+.dashboard_main_wrapper .card-fix i {
+    font-size: 2.25rem !important;
+    margin-bottom: 0.5rem !important;
+}
+.dashboard_main_wrapper .card-fix h4,
+.dashboard_main_wrapper .card-fix h5 { font-size: 1.15rem; }
+.dashboard_main_wrapper .card-fix p,
+.dashboard_main_wrapper .card-fix span,
+.dashboard_main_wrapper .card-fix small { font-size: 0.95rem; }
+.dashboard_main_wrapper .state-card h4 { font-size: 1.2rem !important; }
+.dashboard_main_wrapper .navbar_custom { font-size: 1.05rem; }
+.dashboard_main_wrapper .moto { font-size: 0.8rem; }
+/* Test / Interview & Letters bar: keep readable and clickable at all resolutions */
+.dashboard_main_wrapper .dashboard-letters-bar {
+    min-height: 60px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+}
+.dashboard_main_wrapper .dashboard-letters-bar .small {
+    font-size: 0.9rem;
+}
+.dashboard_main_wrapper .dashboard-letters-bar h5 {
+    font-size: 1.1rem !important;
+}
+.dashboard_main_wrapper .dashboard-letters-bar .btn {
+    font-size: 0.9rem !important;
+    min-height: 34px;
+    padding: 0.35rem 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.dashboard_main_wrapper .card-fix-test-interview {
+    height: 9.7rem !important;
+    min-height: 9.7rem !important;
+    max-height: 9.7rem !important;
+}
+@media (max-width: 768px) {
+    .dashboard_main_wrapper .dashboard-letters-bar .d-flex {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}
