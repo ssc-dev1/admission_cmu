@@ -44,19 +44,35 @@ p {
     z-index: 0;
 }
 
-.dashboard_main_wrapper > * {
+/* Direct children sit above wrapper’s ::before; modals stay fixed to viewport */
+.dashboard_main_wrapper > *:not(.modal) {
     position: relative;
     z-index: 1;
 }
 
-/* Modal above Bootstrap backdrop (backdrop is often body-level z-index 1040) */
+/* Modals: keep viewport-fixed and centered (not at bottom of page) */
 .dashboard_main_wrapper:has(.modal.show) {
     z-index: 1060;
 }
 .dashboard_main_wrapper .modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
     z-index: 1065;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0;
+    padding: 0;
 }
 .dashboard_main_wrapper .modal-backdrop {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 1060;
 }
 
@@ -367,10 +383,107 @@ p {
     min-height: 9.7rem !important;
     max-height: 9.7rem !important;
 }
+/* Tablet: letters bar stacks */
 @media (max-width: 768px) {
     .dashboard_main_wrapper .dashboard-letters-bar .d-flex {
         flex-direction: column;
         align-items: center;
         gap: 0.5rem;
+    }
+}
+
+/* ===== MOBILE: phones and small devices – readable layout ===== */
+@media (max-width: 768px) {
+    .dashboard_main_wrapper {
+        font-size: 14px;
+    }
+    .dashboard_main_wrapper .navbar .container-fluid,
+    .dashboard_main_wrapper .container-fluid.px-5 {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    .dashboard_main_wrapper .container-fluid.mt-5 {
+        margin-top: 1rem !important;
+    }
+    .dashboard_main_wrapper .dashboard-grid {
+        margin-bottom: 0.5rem;
+    }
+    .dashboard_main_wrapper .navbar-brand img {
+        width: 50px !important;
+        height: 44px !important;
+    }
+    .dashboard_main_wrapper .navbar_custom {
+        font-size: 0.85rem !important;
+    }
+    .dashboard_main_wrapper .navbar .h4 {
+        font-size: 0.95rem !important;
+    }
+    .dashboard_main_wrapper .card-fix {
+        height: auto;
+        min-height: 80px;
+        padding: 0.75rem;
+    }
+    .dashboard_main_wrapper .card-fix > a {
+        padding: 0.75rem;
+    }
+    .dashboard_main_wrapper .card-fix i {
+        font-size: 1.75rem !important;
+    }
+    .dashboard_main_wrapper .card-fix h4,
+    .dashboard_main_wrapper .card-fix h5 {
+        font-size: 1rem !important;
+    }
+    .dashboard_main_wrapper .card-fix p,
+    .dashboard_main_wrapper .card-fix span,
+    .dashboard_main_wrapper .card-fix small {
+        font-size: 0.85rem !important;
+    }
+    .dashboard_main_wrapper .dashboard-letters-bar {
+        min-height: auto;
+        padding: 0.75rem 0.5rem;
+        font-size: 14px;
+    }
+    .dashboard_main_wrapper .dashboard-letters-bar .d-flex {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    .dashboard_main_wrapper .dashboard-letters-bar .vr {
+        display: none;
+    }
+    .dashboard_main_wrapper .dashboard-letters-bar .small {
+        font-size: 0.85rem !important;
+    }
+    .dashboard_main_wrapper .dashboard-letters-bar .btn {
+        font-size: 0.85rem !important;
+        min-height: 36px;
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard_main_wrapper {
+        font-size: 13px;
+    }
+    .dashboard_main_wrapper .navbar-brand img {
+        width: 42px !important;
+        height: 38px !important;
+    }
+    .dashboard_main_wrapper .navbar_custom {
+        font-size: 0.8rem !important;
+    }
+    .dashboard_main_wrapper .card-fix {
+        min-height: 72px;
+        padding: 0.5rem;
+    }
+    .dashboard_main_wrapper .card-fix i {
+        font-size: 1.5rem !important;
+    }
+    .dashboard_main_wrapper .card-fix h4,
+    .dashboard_main_wrapper .card-fix h5 {
+        font-size: 0.95rem !important;
     }
 }
