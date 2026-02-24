@@ -50,11 +50,11 @@ p {
     z-index: 1;
 }
 
-/* Modals: keep viewport-fixed and centered (not at bottom of page) */
+/* Modals: keep viewport-fixed and centered only when OPEN (do not override display when closed or clicks are blocked) */
 .dashboard_main_wrapper:has(.modal.show) {
     z-index: 1060;
 }
-.dashboard_main_wrapper .modal {
+.dashboard_main_wrapper .modal.show {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
@@ -67,7 +67,17 @@ p {
     margin: 0;
     padding: 0;
 }
-.dashboard_main_wrapper .modal-backdrop {
+/* When closed: fully hide so no brief flash at top when Bootstrap removes .show */
+.dashboard_main_wrapper .modal:not(.show) {
+    pointer-events: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    display: none !important;
+}
+.dashboard_main_wrapper .modal-backdrop:not(.show) {
+    display: none !important;
+}
+.dashboard_main_wrapper .modal-backdrop.show {
     position: fixed !important;
     top: 0;
     left: 0;
