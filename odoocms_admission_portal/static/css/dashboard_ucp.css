@@ -8,17 +8,41 @@
     src: url(/odoocms_admission_portal/static/fonts/FontsFree-Net-Galano-Grotesque3.ttf);
 }
 
+:root {
+    /* Base font size - scales with screen width */
+    font-size: calc(12px + 0.2vw);
+    overflow-x: hidden;
+}
+
+/* Scale everything proportionally based on screen width */
+@media (min-width: 1920px) {
+    :root {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 1366px) {
+    :root {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 1024px) {
+    :root {
+        font-size: 11px;
+    }
+}
+
 body {
     font-family: Galano Grotesque, Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
+    font-size: 1rem;
+    overflow-x: hidden;
+    width: 100%;
 }
 
-a {
-    font-family: Galano Grotesque, Arial, Helvetica, sans-serif;
-}
-
-p {
+a, p {
     font-family: Galano Grotesque, Arial, Helvetica, sans-serif;
 }
 
@@ -29,7 +53,12 @@ p {
     background-position: center center;
     background-attachment: scroll;
     position: relative;
-    padding-bottom: 50px;
+    padding-bottom: 1.5rem;
+    max-width: 100vw;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .dashboard_main_wrapper::before {
@@ -44,13 +73,13 @@ p {
     z-index: 0;
 }
 
-/* Direct children sit above wrapper’s ::before; modals stay fixed to viewport */
+/* Direct children sit above wrapper's ::before; modals stay fixed to viewport */
 .dashboard_main_wrapper > *:not(.modal) {
     position: relative;
     z-index: 1;
 }
 
-/* Modals: keep viewport-fixed and centered only when OPEN (do not override display when closed or clicks are blocked) */
+/* Modals: keep viewport-fixed and centered only when OPEN */
 .dashboard_main_wrapper:has(.modal.show) {
     z-index: 1060;
 }
@@ -67,7 +96,6 @@ p {
     margin: 0;
     padding: 0;
 }
-/* When closed: fully hide so no brief flash at top when Bootstrap removes .show */
 .dashboard_main_wrapper .modal:not(.show) {
     pointer-events: none !important;
     visibility: hidden !important;
@@ -88,65 +116,74 @@ p {
 
 /* ===== 3-COLUMN GRID ===== */
 .dashboard-grid {
-    max-width: 1200px;
-    margin: auto;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 /* ===== FULL-WIDTH LETTERS BAR (below grid) ===== */
 .dashboard-letters-bar {
     background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
-    border-radius: 16px;
+    border-radius: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(8px);
-    min-height: 70px;
+    min-height: 3.5rem;
 }
 .dashboard-letters-bar .small {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 .dashboard-letters-bar .btn {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
     white-space: nowrap;
+    font-size: 0.8rem !important;
+    min-height: 2.2rem;
+    padding: 0.25rem 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 .dashboard-letters-bar .btn:hover:not(.disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0.1875rem 0.5rem rgba(0, 0, 0, 0.25);
 }
 .dashboard-letters-bar .vr {
     width: 1px;
 }
 .dashboard-letters-bar-row {
-    max-width: 1200px;
+    max-width: 1100px;
     margin-left: auto !important;
     margin-right: auto !important;
 }
 
 .container-fluid .row.g-4 {
-    --bs-gutter-x: 1.25rem;
-    --bs-gutter-y: 1.25rem;
+    --bs-gutter-x: 1rem;
+    --bs-gutter-y: 1rem;
 }
 
 /* ===== CARD STYLES ===== */
 .card-fix {
     position: relative;
-    height: 155px;
-    border-radius: 16px;
+    height: 140px;
+    border-radius: 0.9rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 14px;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
     overflow: hidden;
     backdrop-filter: blur(5px);
     color: white;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Entire card is clickable when it contains a link (click anywhere, not just on text) */
+/* Entire card is clickable when it contains a link */
 .card-fix > a {
     position: absolute;
     inset: 0;
@@ -154,51 +191,64 @@ p {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 14px;
+    padding: 0.5rem;
     box-sizing: border-box;
+    text-decoration: none;
+    color: white;
 }
 
 .card-fix:hover {
-    transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+    transform: translateY(-0.3rem) scale(1.02);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3) !important;
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Test/Interview card: same height as others, compact content, no overflow */
-.card-fix-test-interview {
-    height: 155px !important;
-    min-height: 155px !important;
-    max-height: 155px !important;
-    padding: 6px 8px !important;
+/* Test/Interview card - FIXED to match others exactly */
+.card-fix-test-interview,
+.card-fix.card-fix-auto,
+div[style*="background-color:#455a64"] {
+    height: 140px !important;
+    min-height: 140px !important;
+    max-height: 140px !important;
+    padding: 0.35rem 0.4rem !important;
     overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: flex-start !important;
+    justify-content: center !important;
+    align-items: center !important;
     width: 100%;
     box-sizing: border-box;
 }
-.card-fix-test-interview > * {
+.card-fix-test-interview > *,
+.card-fix.card-fix-auto > *,
+div[style*="background-color:#455a64"] > * {
     max-width: 100%;
     box-sizing: border-box;
 }
-.card-fix-test-interview i {
-    font-size: 1.5rem !important;
-    margin-bottom: 2px !important;
+.card-fix-test-interview i,
+.card-fix.card-fix-auto i,
+div[style*="background-color:#455a64"] i {
+    font-size: 1.3rem !important;
+    margin-bottom: 0.1rem !important;
     margin-top: 0 !important;
 }
-.card-fix-test-interview h4 {
-    font-size: 0.95rem !important;
+.card-fix-test-interview h4,
+.card-fix.card-fix-auto h4,
+div[style*="background-color:#455a64"] h4 {
+    font-size: 0.8rem !important;
     font-weight: 700 !important;
-    margin: 0 0 2px 0 !important;
+    margin: 0 0 0.1rem 0 !important;
     line-height: 1.1 !important;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
-.card-fix-test-interview .small {
-    font-size: 0.6rem !important;
+.card-fix-test-interview .small,
+.card-fix.card-fix-auto .small,
+div[style*="background-color:#455a64"] .small {
+    font-size: 0.55rem !important;
     font-weight: 600 !important;
     line-height: 1.1 !important;
-    margin: 1px 0 0 0 !important;
-    padding: 0 2px !important;
+    margin: 0.05rem 0 0 0 !important;
+    padding: 0 0.1rem !important;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
     white-space: nowrap;
     overflow: hidden;
@@ -207,57 +257,77 @@ p {
     display: block;
     box-sizing: border-box;
 }
-.card-fix-test-interview .btn {
-    font-size: 0.7rem !important;
+.card-fix-test-interview .btn,
+.card-fix.card-fix-auto .btn,
+div[style*="background-color:#455a64"] .btn {
+    font-size: 0.6rem !important;
     font-weight: 600 !important;
-    padding: 2px 6px !important;
-    margin: 1px 0 !important;
-    line-height: 1.2 !important;
+    padding: 0.1rem 0.25rem !important;
+    margin: 0.05rem 0 !important;
+    line-height: 1.1 !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-height: auto !important;
+    min-height: 1.2rem !important;
+    max-height: 1.4rem !important;
     border-width: 1px !important;
     max-width: 100%;
     width: auto;
     display: inline-block;
     box-sizing: border-box;
+    border-radius: 0.2rem;
 }
-.card-fix-test-interview .btn.disabled {
-    opacity: 0.7 !important;
+
+/* Button container for Test/Interview card */
+.card-fix-test-interview .d-flex,
+.card-fix.card-fix-auto .d-flex,
+div[style*="background-color:#455a64"] .d-flex {
+    gap: 0.15rem !important;
+    margin-top: 0.1rem !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
 }
 
 /* Improve button visibility - all buttons inside cards */
 .dashboard_main_wrapper .card-fix .btn {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.15) !important;
     font-weight: 600 !important;
+    color: #212529 !important;
+    background-color: #f8f9fa !important;
+    border-color: #dee2e6 !important;
 }
 .dashboard_main_wrapper .card-fix .btn:hover {
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 0.1875rem 0.375rem rgba(0, 0, 0, 0.2) !important;
     transform: translateY(-1px);
+    color: #212529 !important;
+    background-color: #e2e6ea !important;
 }
 
 .card-fix i {
-    font-size: 2.4rem;
-    margin-bottom: 8px;
-    color: white;
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
+    color: white !important;
 }
 
 .card-fix h4,
 .card-fix h5 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
     margin: 0;
     color: white;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    line-height: 1.2;
 }
 
 .card-fix p,
 .card-fix span,
 .card-fix small {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
     font-weight: 600;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    margin: 0;
+    line-height: 1.2;
 }
 
 /* ===== HIGHLIGHT / GLOW ===== */
@@ -268,50 +338,32 @@ p {
 
 @keyframes pulse-glow {
     0%   { box-shadow: 0 0 0 0 rgba(251, 181, 21, 0.4); }
-    70%  { box-shadow: 0 0 0 15px rgba(251, 181, 21, 0); }
+    70%  { box-shadow: 0 0 0 0.7rem rgba(251, 181, 21, 0); }
     100% { box-shadow: 0 0 0 0 rgba(251, 181, 21, 0); }
 }
 
-/* Submit Draft First — amber (stands out from dark blue/green background) */
+/* Submit Draft First */
 .card-download-form {
     background-color: #ff8f00 !important;
 }
 
-/* All card icons white (no light/white cards with black icons) */
-.card-fix i {
-    color: white !important;
-}
-
-/* Buttons inside card (Download Offer, Test Letter, etc.) – dark text so visible on light btn */
-.card-fix a.btn,
-.card-fix .btn {
-    color: #212529 !important;
-    background-color: #f8f9fa !important;
-    border-color: #dee2e6 !important;
-}
-.card-fix a.btn:hover,
-.card-fix .btn:hover {
-    color: #212529 !important;
-    background-color: #e2e6ea !important;
-}
-
 .info-text h5 {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
 }
 
 .info-text .btn {
-    font-size: 0.75rem;
-    padding: 5px 12px;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
 }
 
 /* ===== STATE CARD ===== */
 .state-card p {
-    margin-bottom: 4px;
-    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+    font-size: 0.8rem;
     font-weight: 600;
 }
 .state-card h4 {
-    font-size: 1.25rem !important;
+    font-size: 1.1rem !important;
     font-weight: 700 !important;
 }
 
@@ -320,180 +372,176 @@ p {
     font-family: oet, Arial, Helvetica, sans-serif;
     color: white;
     font-weight: 700;
-    font-size: 1.05rem;
+    font-size: 1rem;
+    line-height: 1.2;
 }
 
 .moto {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     opacity: 0.8;
     font-style: italic;
     color: white;
+    margin-top: 0.1rem !important;
 }
 
 .dropdown-menu {
-    border-radius: 12px;
+    border-radius: 0.6rem;
     border: none;
-    margin-top: 15px !important;
+    margin-top: 0.7rem !important;
 }
 
-/* ===== RESPONSIVE: same UI at all resolutions (viewport scaling, like CBT) ===== */
-.dashboard_main_wrapper {
-    max-width: 100vw;
-    overflow-x: hidden;
-    box-sizing: border-box;
-    font-size: clamp(11px, 0.833vw, 16px);
+@media (min-width: 1280px) and (max-width: 1368px) and (max-height: 800px) {
+    :root {
+        font-size: 11px;
+    }
+    
+    .dashboard-grid {
+        max-width: 1000px;
+    }
+    
+    .card-fix,
+    .card-fix-test-interview,
+    .card-fix.card-fix-auto,
+    div[style*="background-color:#455a64"] {
+        height: 130px !important;
+        min-height: 130px !important;
+        max-height: 130px !important;
+    }
+    
+    .container-fluid.px-5 {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
 }
-.dashboard_main_wrapper *,
-.dashboard_main_wrapper *::before,
-.dashboard_main_wrapper *::after {
-    box-sizing: border-box;
+
+/* Tablet: adjust card heights */
+@media (max-width: 992px) {
+    .card-fix,
+    .card-fix-test-interview,
+    .card-fix.card-fix-auto,
+    div[style*="background-color:#455a64"] {
+        height: 130px !important;
+        min-height: 130px !important;
+        max-height: 130px !important;
+    }
 }
-/* All sizes in rem so layout scales identically at every resolution */
-.dashboard_main_wrapper .container-fluid { max-width: 100%; }
-.dashboard_main_wrapper .card-fix {
-    height: 9.7rem;
-    padding: 0.875rem;
-    border-radius: 1rem;
-}
-.dashboard_main_wrapper .card-fix > a { padding: 0.875rem; }
-.dashboard_main_wrapper .card-fix i {
-    font-size: 2.25rem !important;
-    margin-bottom: 0.5rem !important;
-}
-.dashboard_main_wrapper .card-fix h4,
-.dashboard_main_wrapper .card-fix h5 { font-size: 1.15rem; }
-.dashboard_main_wrapper .card-fix p,
-.dashboard_main_wrapper .card-fix span,
-.dashboard_main_wrapper .card-fix small { font-size: 0.95rem; }
-.dashboard_main_wrapper .state-card h4 { font-size: 1.2rem !important; }
-.dashboard_main_wrapper .navbar_custom { font-size: 1.05rem; }
-.dashboard_main_wrapper .moto { font-size: 0.8rem; }
-/* Test / Interview & Letters bar: keep readable and clickable at all resolutions */
-.dashboard_main_wrapper .dashboard-letters-bar {
-    min-height: 60px;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-}
-.dashboard_main_wrapper .dashboard-letters-bar .small {
-    font-size: 0.9rem;
-}
-.dashboard_main_wrapper .dashboard-letters-bar h5 {
-    font-size: 1.1rem !important;
-}
-.dashboard_main_wrapper .dashboard-letters-bar .btn {
-    font-size: 0.9rem !important;
-    min-height: 34px;
-    padding: 0.35rem 0.75rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-.dashboard_main_wrapper .card-fix-test-interview {
-    height: 9.7rem !important;
-    min-height: 9.7rem !important;
-    max-height: 9.7rem !important;
-}
+
 /* Tablet: letters bar stacks */
 @media (max-width: 768px) {
     .dashboard_main_wrapper .dashboard-letters-bar .d-flex {
         flex-direction: column;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.4rem;
+    }
+    
+    .card-fix,
+    .card-fix-test-interview,
+    .card-fix.card-fix-auto,
+    div[style*="background-color:#455a64"] {
+        height: 120px !important;
+        min-height: 120px !important;
+        max-height: 120px !important;
     }
 }
 
-/* ===== MOBILE: phones and small devices – readable layout ===== */
+/* ===== MOBILE: phones and small devices ===== */
 @media (max-width: 768px) {
-    .dashboard_main_wrapper {
-        font-size: 14px;
-    }
     .dashboard_main_wrapper .navbar .container-fluid,
     .dashboard_main_wrapper .container-fluid.px-5 {
         padding-left: 0.5rem !important;
         padding-right: 0.5rem !important;
     }
     .dashboard_main_wrapper .container-fluid.mt-5 {
-        margin-top: 1rem !important;
+        margin-top: 0.8rem !important;
     }
     .dashboard_main_wrapper .dashboard-grid {
         margin-bottom: 0.5rem;
     }
     .dashboard_main_wrapper .navbar-brand img {
-        width: 50px !important;
-        height: 44px !important;
+        width: 2.8rem !important;
+        height: 2.5rem !important;
     }
     .dashboard_main_wrapper .navbar_custom {
-        font-size: 0.85rem !important;
+        font-size: 0.8rem !important;
     }
     .dashboard_main_wrapper .navbar .h4 {
-        font-size: 0.95rem !important;
+        font-size: 0.9rem !important;
     }
-    .dashboard_main_wrapper .card-fix {
-        height: auto;
-        min-height: 80px;
-        padding: 0.75rem;
+    .card-fix i {
+        font-size: 1.6rem !important;
     }
-    .dashboard_main_wrapper .card-fix > a {
-        padding: 0.75rem;
+    .card-fix h4,
+    .card-fix h5 {
+        font-size: 0.9rem !important;
     }
-    .dashboard_main_wrapper .card-fix i {
-        font-size: 1.75rem !important;
-    }
-    .dashboard_main_wrapper .card-fix h4,
-    .dashboard_main_wrapper .card-fix h5 {
-        font-size: 1rem !important;
-    }
-    .dashboard_main_wrapper .card-fix p,
-    .dashboard_main_wrapper .card-fix span,
-    .dashboard_main_wrapper .card-fix small {
-        font-size: 0.85rem !important;
+    .card-fix p,
+    .card-fix span,
+    .card-fix small {
+        font-size: 0.75rem !important;
     }
     .dashboard_main_wrapper .dashboard-letters-bar {
         min-height: auto;
-        padding: 0.75rem 0.5rem;
-        font-size: 14px;
+        padding: 0.5rem 0.5rem;
+        font-size: 0.8rem;
     }
     .dashboard_main_wrapper .dashboard-letters-bar .d-flex {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.5rem;
+        gap: 0.4rem;
         text-align: center;
     }
     .dashboard_main_wrapper .dashboard-letters-bar .vr {
         display: none;
     }
     .dashboard_main_wrapper .dashboard-letters-bar .small {
-        font-size: 0.85rem !important;
+        font-size: 0.75rem !important;
     }
     .dashboard_main_wrapper .dashboard-letters-bar .btn {
-        font-size: 0.85rem !important;
-        min-height: 36px;
+        font-size: 0.75rem !important;
+        min-height: 2rem;
         width: 100%;
-        max-width: 280px;
+        max-width: 15rem;
         margin: 0 auto;
     }
 }
 
 @media (max-width: 576px) {
-    .dashboard_main_wrapper {
-        font-size: 13px;
+    .navbar-brand img {
+        width: 2.4rem !important;
+        height: 2.2rem !important;
     }
-    .dashboard_main_wrapper .navbar-brand img {
-        width: 42px !important;
-        height: 38px !important;
+    .navbar_custom {
+        font-size: 0.75rem !important;
     }
-    .dashboard_main_wrapper .navbar_custom {
-        font-size: 0.8rem !important;
+    .card-fix i {
+        font-size: 1.4rem !important;
     }
-    .dashboard_main_wrapper .card-fix {
-        min-height: 72px;
-        padding: 0.5rem;
+    .card-fix h4,
+    .card-fix h5 {
+        font-size: 0.85rem !important;
     }
-    .dashboard_main_wrapper .card-fix i {
-        font-size: 1.5rem !important;
-    }
-    .dashboard_main_wrapper .card-fix h4,
-    .dashboard_main_wrapper .card-fix h5 {
-        font-size: 0.95rem !important;
-    }
+}
+
+/* Ensure no horizontal scroll on any screen */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Fix for Bootstrap containers */
+.container-fluid {
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 100%;
+}
+
+/* Ensure all cards have exactly the same height */
+[class*="col-"] {
+    display: flex;
+}
+
+[class*="col-"] > div {
+    width: 100%;
 }
