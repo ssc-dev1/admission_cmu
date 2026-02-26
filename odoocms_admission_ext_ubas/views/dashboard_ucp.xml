@@ -26,6 +26,7 @@
             <link rel="stylesheet" type="text/css"
                 href="/odoocms_admission_portal/static/css/dashboard_ucp.css" />
 
+            <div class="dashboard-scale-inner">
             <!-- ========== NAVBAR ========== -->
             <nav class="navbar py-0 container-fluid px-5">
                 <a class="navbar-brand d-flex">
@@ -87,18 +88,20 @@
                         </div>
                     </div>
 
-                    <!-- 3  Download Form — red -->
+                    <!-- 3  Download Application Form -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div style="background-color:#c62828" class="card-fix shadow-lg">
+                        <div class="card-fix shadow-lg card-download-form">
                             <t t-if="application_id.state != 'draft'">
                                 <a target="_blank" href="/download/admission/form" class="text-white text-decoration-none">
                                     <i class="fas fa-cloud-download-alt"/>
-                                    <h4>Download Form</h4>
+                                    <h4>Download Application Form</h4>
+                                    <span class="badge bg-light text-dark mt-1">Click here to download</span>
                                 </a>
                             </t>
                             <t t-else="">
-                                <i class="fas fa-lock opacity-50"/>
-                                <p class="small text-light">Submit Draft First</p>
+                                <i class="fas fa-lock"/>
+                                <h4>Download Application Form</h4>
+                                <span class="badge bg-light text-dark mt-1">First Fill Application</span>
                             </t>
                         </div>
                     </div>
@@ -124,21 +127,22 @@
                         </div>
                     </div>
 
-                    <!-- 6  Processing Fee — light card -->
+                    <!-- 6  Application Processing Fee -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div class="card-fix info-text shadow-lg" style="background-color:#f0f4ff !important;">
-                            <a target="_blank" href="/download/invoice/admission/"
-                               class="text-decoration-none"
-                               t-attf-style="{{'pointer-events:none' if application_id.state == 'draft' else ''}}">
-                                <i class="fas fa-file-invoice-dollar text-primary"/>
-                                <h5>Processing Fee</h5>
-                                <t t-if="application_id.state == 'draft'">
-                                    <span class="badge bg-danger">Draft Mode</span>
-                                </t>
-                                <t t-else="">
-                                    <span class="badge bg-success">Download</span>
-                                </t>
-                            </a>
+                        <div style="background-color:#00838f" class="card-fix shadow-lg">
+                            <t t-if="application_id.state != 'draft'">
+                                <a target="_blank" href="/download/invoice/admission/"
+                                   class="text-white text-decoration-none">
+                                    <i class="fas fa-file-invoice-dollar"/>
+                                    <h4>Application Processing Fee</h4>
+                                    <span class="badge bg-light text-dark mt-1">Click here to download</span>
+                                </a>
+                            </t>
+                            <t t-else="">
+                                <i class="fas fa-file-invoice-dollar"/>
+                                <h4>Application Processing Fee</h4>
+                                <span class="badge bg-light text-dark mt-1">First Fill Application</span>
+                            </t>
                         </div>
                     </div>
 
@@ -179,15 +183,24 @@
                                     Interview Letter</a>
                             </t>
                             <t t-if="not admit_card and not test_letter">
-                                <span class="badge bg-secondary mt-1">Pending</span>
+                                <span class="badge bg-light text-dark mt-1">Unavailable</span>
                             </t>
 
-                            <a href="/download/offer/letter/" class="btn btn-success btn-sm mt-1"
-                               t-attf-style="{{'pointer-events:none;opacity:0.5' if not merit_student or is_blacklisted else ''}}">
-                                Download Offer</a>
-                            <a href="/download/fee/invoice/" target="_blank" class="btn btn-sm mt-1"
-                               t-attf-style="background-color:#9a0000;color:white;border:none;{{'pointer-events:none;opacity:0.5' if not fee_invoice or fee_invoice.payment_state != 'not_paid' else ''}}">
-                                Bank Challan</a>
+                            <t t-if="merit_student and not is_blacklisted">
+                                <a href="/download/offer/letter/" class="btn btn-success btn-sm mt-1">
+                                    Download Offer</a>
+                            </t>
+                            <t t-else="">
+                                <span class="badge bg-light text-dark mt-1">Unavailable</span>
+                            </t>
+                            <t t-if="fee_invoice and fee_invoice.payment_state == 'not_paid'">
+                                <a href="/download/fee/invoice/" target="_blank" class="btn btn-sm mt-1"
+                                   style="background-color:#9a0000;color:white;border:none;">
+                                    Bank Challan</a>
+                            </t>
+                            <t t-else="">
+                                <span class="badge bg-light text-dark mt-1">Unavailable</span>
+                            </t>
                         </div>
                     </div>
 
@@ -334,6 +347,7 @@
                 </div>
             </div>
 
+            </div>
         </div>
     </template>
 </odoo>

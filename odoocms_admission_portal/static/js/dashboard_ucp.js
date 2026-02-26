@@ -1,4 +1,23 @@
 $(document).ready(function () {
+    /* ===== Dashboard viewport scaling ===== */
+    /* Renders at a fixed 1920×1200 design size and scales down proportionally */
+    function updateDashboardScale() {
+        var wrapper = document.querySelector('.dashboard_main_wrapper');
+        if (!wrapper) return;
+        var vw = window.innerWidth;
+        var vh = window.innerHeight;
+        var scale = Math.min(1, vw / 1920, vh / 1200);
+        wrapper.style.setProperty('--dashboard-scale', scale);
+    }
+    updateDashboardScale();
+    $(window).on('resize', updateDashboardScale);
+
+    /* Fallback for browsers that don't support :has() selector */
+    if (document.querySelector('.dashboard_main_wrapper')) {
+        document.documentElement.classList.add('has-dashboard-wrapper');
+        document.body.classList.add('has-dashboard-wrapper');
+    }
+
     $('#logout_button_dashboard').on('click', function (e) {
         e.preventDefault();
         let confirmAction = confirm("Are you sure you want to logout?");

@@ -27,6 +27,7 @@
             <link rel="stylesheet" type="text/css"
                 href="/odoocms_admission_portal/static/css/dashboard_ucp.css" />
 
+            <div class="dashboard-scale-inner">
             <!-- ========== NAVBAR ========== -->
             <nav class="navbar py-0 container-fluid px-5">
                 <a class="navbar-brand d-flex">
@@ -100,7 +101,7 @@
                         </div>
                     </div>
 
-                    <!-- 3  Download Form: when available "Click here to download", when draft dull + (Unavailable) -->
+                    <!-- 3  Download Application Form -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div class="card-fix shadow-lg card-download-form">
                             <t t-if="application_id.state != 'draft'">
@@ -112,8 +113,8 @@
                             </t>
                             <t t-else="">
                                 <i class="fas fa-lock"/>
-                                <h4 class="text-white">Download Application Form</h4>
-                                <span class="badge bg-light text-dark mt-1 d-block">First Fill Application</span>
+                                <h4>Download Application Form</h4>
+                                <span class="badge bg-light text-dark mt-1">First Fill Application</span>
                             </t>
                         </div>
                     </div>
@@ -139,21 +140,22 @@
                         </div>
                     </div>
 
-                    <!-- 6  Application Processing Fee: when available "Click here to download", when not dull + (Unavailable). Production CMU: draft disables. -->
+                    <!-- 6  Application Processing Fee -->
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div style="background-color:#00838f" class="card-fix shadow-lg">
-                            <a target="_blank" href="/download/invoice/admission/"
-                               class="text-white text-decoration-none"
-                               t-attf-style="{{'pointer-events:none' if application_id.state == 'draft' else ''}}">
-                                <i class="fas fa-file-invoice-dollar"/>
-                                <h5>Application Processing Fee</h5>
-                                <t t-if="application_id.state == 'draft'">
-                                    <span class="badge bg-light text-dark mt-1 d-block">First Fill Application</span>
-                                </t>
-                                <t t-else="">
+                            <t t-if="application_id.state != 'draft'">
+                                <a target="_blank" href="/download/invoice/admission/"
+                                   class="text-white text-decoration-none">
+                                    <i class="fas fa-file-invoice-dollar"/>
+                                    <h4>Application Processing Fee</h4>
                                     <span class="badge bg-light text-dark mt-1">Click here to download</span>
-                                </t>
-                            </a>
+                                </a>
+                            </t>
+                            <t t-else="">
+                                <i class="fas fa-file-invoice-dollar"/>
+                                <h4>Application Processing Fee</h4>
+                                <span class="badge bg-light text-dark mt-1">First Fill Application</span>
+                            </t>
                         </div>
                     </div>
 
@@ -207,7 +209,7 @@
                                         <a t-attf-href="/download/admit/interview" class="btn btn-light btn-sm text-dark fw-semibold">Click here to download</a>
                                     </t>
                                     <t t-if="not admit_card and not test_letter">
-                                        <span class="btn btn-secondary btn-sm disabled" style="pointer-events:none;opacity:0.7">(Unavailable)</span>
+                                        <span class="badge bg-light text-dark">Unavailable</span>
                                     </t>
                                 </div>
                                 <div class="vr text-white d-none d-md-inline" style="opacity: 0.6; height: 2rem;"/>
@@ -217,7 +219,7 @@
                                         <a href="/download/offer/letter/" class="btn btn-success btn-sm fw-semibold">Click here to download</a>
                                     </t>
                                     <t t-else="">
-                                        <span class="btn btn-secondary btn-sm disabled" style="pointer-events:none;opacity:0.7">(Unavailable)</span>
+                                        <span class="badge bg-light text-dark">Unavailable</span>
                                     </t>
                                 </div>
                                 <div class="vr text-white d-none d-md-inline" style="opacity: 0.6; height: 2rem;"/>
@@ -227,7 +229,7 @@
                                         <a href="/download/fee/invoice/" target="_blank" class="btn btn-warning btn-sm text-dark fw-semibold">Click here to download</a>
                                     </t>
                                     <t t-else="">
-                                        <span class="btn btn-secondary btn-sm disabled " style="pointer-events:none;opacity:0.7">(Unavailable)</span>
+                                        <span class="badge bg-light text-dark">Unavailable</span>
                                     </t>
                                 </div>
                             </div>
@@ -376,6 +378,7 @@
                 </div>
             </div>
 
+            </div>
         </div>
     </template>
 </odoo>

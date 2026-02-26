@@ -32,7 +32,7 @@ class AccountRegistration(Controller):
         website_id = request.env['website'].sudo().search([('domain', '=', domain)])
         _logger.warning("Website: %s" % (website_id and website_id.id or 'Not Found'))
         #company_id = website_id.company_id
-        company_id = request.env['res.company'].sudo().browse(2)
+        company_id = request.env['res.company'].sudo().browse(4)
 
         # company_name = domain.split('.')[1]
         company_name = company_id.short_name
@@ -72,7 +72,7 @@ class AccountRegistration(Controller):
         domain = parsed_url.netloc
         website_id = request.env['website'].sudo().search([('domain', '=', domain)])
         ####company_id = website_id.company_id
-        company_id = request.env['res.company'].sudo().browse(2)
+        company_id = request.env['res.company'].sudo().browse(4)
 
         values = {
             'company': company_id
@@ -90,7 +90,7 @@ class AdmissionSignUp(Home):
         
         website_id = request.env['website'].sudo().search([('domain', '=', domain)])
         ###company_id = website_id.company_id
-        company_id = request.env['res.company'].sudo().browse(2)
+        company_id = request.env['res.company'].sudo().browse(4)
 
         # company_name = domain.split('.')[1]
         company_name = company_id.short_name
@@ -316,7 +316,7 @@ class AdmissionSignUp(Home):
         domain = parsed_url.netloc
         website_id = request.env['website'].sudo().search([('domain', '=', domain)])
         # company_id = website_id.company_id
-        company_id = request.env['res.company'].sudo().browse(2)
+        company_id = request.env['res.company'].sudo().browse(4)
 
         # company_name = domain.split('.')[1]
         company_name = company_id.short_name
